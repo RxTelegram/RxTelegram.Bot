@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramInterface", "Telegr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{C376FC5C-4CE4-4E54-8216-39143DE1A55B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{267D6A48-1E57-4ABD-8050-B540B6EF500E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C376FC5C-4CE4-4E54-8216-39143DE1A55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C376FC5C-4CE4-4E54-8216-39143DE1A55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C376FC5C-4CE4-4E54-8216-39143DE1A55B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{267D6A48-1E57-4ABD-8050-B540B6EF500E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{267D6A48-1E57-4ABD-8050-B540B6EF500E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{267D6A48-1E57-4ABD-8050-B540B6EF500E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{267D6A48-1E57-4ABD-8050-B540B6EF500E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
