@@ -2,7 +2,7 @@ root=true
 [*]
 end_of_line=lf
 insert_final_newline=true
-indent_style=tab
+indent_style=space
 max_line_length=140
 indent_size=4
 trim_trailing_whitespace=true
@@ -99,6 +99,6 @@ resharper_web_config_type_not_resolved_highlighting=warning
 resharper_web_config_wrong_module_highlighting=warning
 
 [*.{appxmanifest,asax,ascx,aspx,build,cs,cshtml,dtd,fs,fsi,fsscript,fsx,master,ml,mli,nuspec,razor,resw,resx,skin,vb,xaml,xamlx,xoml,xsd}]
-indent_style=tab
-indent_size=tab
+indent_style=space
+indent_size=4
 tab_width=4
