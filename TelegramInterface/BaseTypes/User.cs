@@ -5,7 +5,7 @@
     /// </summary>
     public class User
     {
-	    /// <summary>
+        /// <summary>
         /// Unique identifier for this user or bot
         /// </summary>
         public int Id { get; set; }

@@ -1,5 +1,4 @@
-﻿
-namespace TelegramInterface.BaseTypes
+﻿namespace TelegramInterface.BaseTypes
 {
     /// <summary>
     /// This object represents a general file (as opposed to <see cref="PhotoSize"/> and <see cref="Audio"/> files).

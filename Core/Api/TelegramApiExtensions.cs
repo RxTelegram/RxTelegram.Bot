@@ -14,6 +14,7 @@ namespace Core.Api
         {
             var apiResponse = await responseMessage.Content.ReadAsStreamAsync()
                                                    .Deserialize<ApiResponse<T>>();
+
             if (apiResponse.Ok != true)
             {
                 throw new Exception("todo");

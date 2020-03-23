@@ -8,7 +8,7 @@ namespace TelegramInterface.Stickers
     /// </summary>
     public class Sticker : FileBase
     {
-	    /// <summary>
+        /// <summary>
         /// Identifier for this file, which can be used to download or reuse the file
         /// </summary>
         public string FileId { get; set; }

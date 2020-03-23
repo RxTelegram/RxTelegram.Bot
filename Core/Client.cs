@@ -10,8 +10,8 @@ namespace Core
 
         public Client(string token, HttpClient httpClient = null)
         {
-	        Token = new BotInfo(token);
-	        HttpClient = httpClient ?? new HttpClient();
+            Token = new BotInfo(token);
+            HttpClient = httpClient ?? new HttpClient();
         }
 
         ~Client() => HttpClient.Dispose();
