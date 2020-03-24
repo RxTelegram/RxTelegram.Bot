@@ -1,3 +1,4 @@
+using TelegramInterface.BaseTypes.Requests.Attachments;
 using TelegramInterface.BaseTypes.Requests.Base;
 
 namespace TelegramInterface.BaseTypes.Requests.Chats
