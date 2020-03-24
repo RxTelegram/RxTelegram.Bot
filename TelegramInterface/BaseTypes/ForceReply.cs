@@ -1,9 +1,12 @@
-﻿namespace TelegramInterface.BaseTypes
+﻿using TelegramInterface.BaseTypes.Requests;
+using TelegramInterface.BaseTypes.Requests.Base.Interfaces;
+
+namespace TelegramInterface.BaseTypes
 {
     /// <summary>
     /// This Object represents a ForeReply Object<see cref="https://core.telegram.org/bots/api#forcereply"/>
     /// </summary>
-    public class ForceReply
+    public class ForceReply : IReplyMarkup
     {
         /// <summary>
         /// Shows reply interface to the user, as if they manually selected the bot‘s message and tapped ’Reply'

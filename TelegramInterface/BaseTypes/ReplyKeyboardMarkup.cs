@@ -1,6 +1,9 @@
-﻿namespace TelegramInterface.BaseTypes
+﻿using TelegramInterface.BaseTypes.Requests;
+using TelegramInterface.BaseTypes.Requests.Base.Interfaces;
+
+namespace TelegramInterface.BaseTypes
 {
-    public class ReplyKeyboardMarkup
+    public class ReplyKeyboardMarkup : IReplyMarkup
     {
         /// <summary>
         /// Array of button rows, each represented by an Array of <see cref="KeyboardButton"/> objects
