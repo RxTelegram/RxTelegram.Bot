@@ -1,6 +1,5 @@
 using System;
 using Newtonsoft.Json;
-using TelegramInterface.BaseTypes.Requests;
 using TelegramInterface.BaseTypes.Requests.Attachments;
 
 namespace Core.Utils
@@ -12,6 +11,17 @@ namespace Core.Utils
             if (!string.IsNullOrWhiteSpace(value.Value))
             {
                 writer.WriteValue(value.Value);
+            }
+            else
+            {
+                if (writer is MultiPartJsonWriter jsonWriter)
+                {
+                    jsonWriter.WriteStream(value.Stream, value.FileName);
+                }
+                else
+                {
+                    writer.WriteNull();
+                }
             }
         }
 

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Core.Utils;
 using Newtonsoft.Json;
@@ -57,28 +55,21 @@ namespace Core.Api
 
         public Task<Message> SendDocument(SendDocument message) => Post<Message>("sendDocument", message);
 
+        public Task<Message> SendMediaGroup(SendMediaGroup message) => Post<Message>("sendMediaGroup", message);
+
         private async Task<T> Get<T>(string uri) => await _client.GetAsync(uri)
                                                                  .ParseResponse<T>();
 
         private async Task<T> Post<T>(string uri, object payload)
         {
-            // if any input file use a stream we need to send the files as form data instread of json
-            var formDataRequest = Reflection.FindInputFileRecursive(payload)
-                                .Where(x => x.Stream != null)
-                                .ToList();
-
-            HttpContent httpContent;
-            if (formDataRequest.Any())
+            var serializer = JsonSerializer.Create(JsonSerializerSettings);
+            var multipartFormDataContent = new MultipartFormDataContent("boundray" + Guid.NewGuid());
+            using (var writer = new MultiPartJsonWriter(multipartFormDataContent))
             {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                var stringPayload = JsonConvert.SerializeObject(payload, JsonSerializerSettings);
-                httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
+                serializer.Serialize(writer, payload);
             }
 
-            return await _client.PostAsync(uri, httpContent)
+            return await _client.PostAsync(uri, multipartFormDataContent)
                                 .ParseResponse<T>();
         }
     }
