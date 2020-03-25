@@ -1,4 +1,6 @@
-﻿namespace TelegramInterface.BaseTypes.InputMedia
+﻿using TelegramInterface.BaseTypes.Requests.Attachments;
+
+namespace TelegramInterface.BaseTypes.InputMedia
 {
     public abstract class BaseInputMedia
     {
@@ -13,6 +15,6 @@
         /// upload a new one using multipart/form-data under <file_attach_name> name.
         /// <see cref="https://core.telegram.org/bots/api#sending-files"/>»
         /// </summary>
-        public string Media { get; set; }
+        public InputFile Media { get; set; }
     }
 }

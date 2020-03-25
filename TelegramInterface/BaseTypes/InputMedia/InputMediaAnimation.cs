@@ -1,4 +1,6 @@
-﻿namespace TelegramInterface.BaseTypes.InputMedia
+﻿using TelegramInterface.BaseTypes.Requests.Attachments;
+
+namespace TelegramInterface.BaseTypes.InputMedia
 {
     public class InputMediaAnimation : BaseInputMedia
     {
@@ -15,7 +17,7 @@
         /// the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
         /// <see cref="https://core.telegram.org/bots/api#sending-files"/>
         /// </summary>
-        public string Thumb { get; set; }
+        public InputFile Thumb { get; set; }
 
         /// <summary>
         /// Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
