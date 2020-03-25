@@ -27,17 +27,6 @@ Only the base Result type is implemented as an abstract class. For further Detai
 * InlineQueryResultVideo
 * InlineQueryResultVoice
 
-### Telegram Passport
-Only the base Error type is implemented as an abstract class. For further Details see [PassportElementError](https://core.telegram.org/bots/api#passportelementerror).
-* PassportElementErrorDataField
-* PassportElementErrorFrontSide
-* PassportElementErrorReverseSide
-* PassportElementErrorSelfie
-* PassportElementErrorFile
-* PassportElementErrorFiles
-* PassportElementErrorTranslationFile
-* PassportElementErrorTranslationFiles
-* PassportElementErrorUnspecified
 
 ## Todos
 * Create Enums for all string fields in the api types that can only contain a specified number of values, so we can map them easily.
