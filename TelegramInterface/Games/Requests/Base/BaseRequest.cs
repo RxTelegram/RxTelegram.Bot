@@ -5,6 +5,6 @@
         /// <summary>
         /// Unique identifier for the target chat
         /// </summary>
-        public int ChatId { get; set; }
+        public string ChatId { get; set; }
     }
 }
