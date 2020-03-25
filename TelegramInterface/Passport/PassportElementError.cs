@@ -6,5 +6,24 @@
     /// </summary>
     public abstract class PassportElementError
     {
+        /// <summary>
+        /// Error source
+        /// </summary>
+        public abstract string Source { get; }
+
+        /// <summary>
+        /// Name of the data field which has the error
+        /// </summary>
+        public string FieldName { get; set; }
+
+        /// <summary>
+        /// Base64-encoded data hash
+        /// </summary>
+        public string DataHash { get; set; }
+
+        /// <summary>
+        /// ErrorMessage
+        /// </summary>
+        public string Message { get; set; }
     }
 }
