@@ -1,12 +1,7 @@
 namespace TelegramInterface.BaseTypes.Requests.Base
 {
-    public abstract class BaseSend : BaseRequest
+    public abstract class BaseSend : BaseTextRequest
     {
-        /// <summary>
-        /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-        /// </summary>
-        public string ParseMode { get; set; }
-
         /// <summary>
         /// Sends the message silently. Users will receive a notification with no sound.
         /// </summary>
