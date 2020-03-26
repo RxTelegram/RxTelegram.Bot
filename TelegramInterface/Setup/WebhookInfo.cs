@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace TelegramInterface.Setup
 {
@@ -40,6 +41,6 @@ namespace TelegramInterface.Setup
         /// <summary>
         /// A list of update types the bot is subscribed to. Defaults to all update types
         /// </summary>
-        public string[] AllowedUpdates { get; set; }
+        public IEnumerable<string> AllowedUpdates { get; set; }
     }
 }

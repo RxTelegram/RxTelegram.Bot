@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TelegramInterface.BaseTypes;
 
 namespace TelegramInterface.Games
@@ -20,7 +21,7 @@ namespace TelegramInterface.Games
         /// <summary>
         /// Photo that will be displayed in the game message in chats.
         /// </summary>
-        public PhotoSize[] Photo { get; set; }
+        public IEnumerable<PhotoSize> Photo { get; set; }
 
         /// <summary>
         /// Brief description of the game or high scores included in the game message.
@@ -31,7 +32,7 @@ namespace TelegramInterface.Games
         /// <summary>
         /// Special entities that appear in text, such as usernames, URLs, bot commands, etc.
         /// </summary>
-        public MessageEntity[] TextEntities { get; set; }
+        public IEnumerable<MessageEntity> TextEntities { get; set; }
 
         /// <summary>
         /// Animation that will be displayed in the game message in chats. Upload via BotFather.

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TelegramInterface.BaseTypes.Requests.Base;
 using TelegramInterface.BaseTypes.Requests.Base.Interfaces;
 
@@ -18,7 +19,7 @@ namespace TelegramInterface.BaseTypes.Requests.Attachments
         /// Required
         /// A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
         /// </summary>
-        public string[] Options { get; set; }
+        public IEnumerable<string>  Options { get; set; }
 
         /// <summary>
         /// Optional

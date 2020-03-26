@@ -1,4 +1,6 @@
-﻿namespace TelegramInterface.InlineMode
+﻿using System.Collections.Generic;
+
+namespace TelegramInterface.InlineMode
 {
     public class AnswerInlineQuery
     {
@@ -12,7 +14,7 @@
         /// Required
         /// A JSON-serialized array of results for the inline query
         /// </summary>
-        public InlineQueryResult[] Type { get; set; }
+        public IEnumerable<InlineQueryResult> Type { get; set; }
 
         /// <summary>
         /// Optional
