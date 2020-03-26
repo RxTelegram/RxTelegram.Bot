@@ -13,7 +13,7 @@ namespace Core.Api
             {
                 sr = new StreamReader(stream);
                 var reader = new JsonTextReader(sr);
-                var serializer = JsonSerializer.Create(TelegramApi.JsonSerializerSettings);
+                var serializer = JsonSerializer.Create(BaseTelegramApi.JsonSerializerSettings);
 
                 return serializer.Deserialize<T>(reader);
             }

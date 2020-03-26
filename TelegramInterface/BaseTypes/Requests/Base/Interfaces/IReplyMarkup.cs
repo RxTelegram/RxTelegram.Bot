@@ -5,6 +5,5 @@ namespace TelegramInterface.BaseTypes.Requests.Base.Interfaces
     /// </summary>
     public interface IReplyMarkup
     {
-
     }
 }

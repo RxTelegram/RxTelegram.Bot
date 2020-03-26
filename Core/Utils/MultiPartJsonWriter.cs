@@ -11,7 +11,8 @@ namespace Core.Utils
     {
         private readonly MultipartFormDataContent _multipartFormDataContent;
         private string _propertyName;
-        private int _depth = 0;
+        private int _depth;
+        public bool StreamContent { get; private set; }
 
         public MultiPartJsonWriter(MultipartFormDataContent multipartFormDataContent)
         {
@@ -20,6 +21,7 @@ namespace Core.Utils
 
         public void WriteStream(Stream stream, string filename)
         {
+            StreamContent = true;
             filename = filename ?? Guid.NewGuid().ToString();
             if (_depth > 1)
             {
@@ -51,7 +53,6 @@ namespace Core.Utils
         public override void WriteValue(DateTime value)
         {
             base.WriteValue(value);
-
             WriteValueElement(value.ToString(CultureInfo.InvariantCulture));
         }
 
