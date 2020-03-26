@@ -14,10 +14,8 @@ namespace Core.Utils
         private int _depth;
         public bool StreamContent { get; private set; }
 
-        public MultiPartJsonWriter(MultipartFormDataContent multipartFormDataContent)
-        {
+        public MultiPartJsonWriter(MultipartFormDataContent multipartFormDataContent) =>
             _multipartFormDataContent = multipartFormDataContent;
-        }
 
         public void WriteStream(Stream stream, string filename)
         {
@@ -193,10 +191,6 @@ namespace Core.Utils
         {
             _depth--;
             base.WriteEndConstructor();
-        }
-
-        public override void Flush()
-        {
         }
     }
 }

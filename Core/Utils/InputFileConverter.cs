@@ -4,8 +4,10 @@ using TelegramInterface.BaseTypes.Requests.Attachments;
 
 namespace Core.Utils
 {
-    public class InputFileConverter  : JsonConverter<InputFile>
+    public class InputFileConverter : JsonConverter<InputFile>
     {
+        public override bool CanRead { get; } = false;
+
         public override void WriteJson(JsonWriter writer, InputFile value, JsonSerializer serializer)
         {
             if (!string.IsNullOrWhiteSpace(value.Value))
@@ -26,6 +28,10 @@ namespace Core.Utils
         }
 
         public override InputFile ReadJson(
-            JsonReader reader, Type objectType, InputFile existingValue, bool hasExistingValue, JsonSerializer serializer) => throw new NotImplementedException();
+            JsonReader reader,
+            Type objectType,
+            InputFile existingValue,
+            bool hasExistingValue,
+            JsonSerializer serializer) => throw new NotImplementedException();
     }
 }
