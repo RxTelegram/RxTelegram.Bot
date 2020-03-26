@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TelegramInterface.BaseTypes
 {
     /// <summary>
@@ -18,6 +20,6 @@ namespace TelegramInterface.BaseTypes
         /// <summary>
         /// 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
         /// </summary>
-        public int[] OptionIds { get; set; }
+        public IEnumerable<int> OptionIds { get; set; }
     }
 }

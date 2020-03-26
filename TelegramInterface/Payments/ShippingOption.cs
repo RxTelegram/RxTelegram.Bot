@@ -1,4 +1,6 @@
-﻿namespace TelegramInterface.Payments
+﻿using System.Collections.Generic;
+
+namespace TelegramInterface.Payments
 {
     /// <summary>
     /// This object represents one shipping option.
@@ -19,6 +21,6 @@
         /// <summary>
         /// List of price portions
         /// </summary>
-        public LabeledPrice[] Prices { get; set; }
+        public IEnumerable<LabeledPrice> Prices { get; set; }
     }
 }

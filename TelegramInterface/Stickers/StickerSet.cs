@@ -1,4 +1,6 @@
-﻿namespace TelegramInterface.Stickers
+﻿using System.Collections.Generic;
+
+namespace TelegramInterface.Stickers
 {
     /// <summary>
     /// This object represents a sticker set.
@@ -29,6 +31,6 @@
         /// <summary>
         /// List of all set stickers
         /// </summary>
-        public Sticker[] Stickers { get; set; }
+        public IEnumerable<Sticker> Stickers { get; set; }
     }
 }
