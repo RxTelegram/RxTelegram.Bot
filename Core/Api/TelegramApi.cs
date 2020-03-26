@@ -7,9 +7,9 @@ namespace Core.Api
 {
     public class TelegramApi : BaseTelegramApi
     {
-        public TelegramApi(BotInfo botInfo) : base(botInfo)
-        {
-        }
+        public IUpdateManager Updates { get; }
+
+        public TelegramApi(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(botInfo);
 
         public Task<User> GetMe() => Get<User>("getMe");
 
