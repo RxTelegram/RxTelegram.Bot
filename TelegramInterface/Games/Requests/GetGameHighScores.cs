@@ -1,4 +1,4 @@
-﻿using TelegramInterface.Games.Requests.Base;
+﻿using TelegramInterface.BaseTypes.Requests.Base;
 
 namespace TelegramInterface.Games.Requests
 {

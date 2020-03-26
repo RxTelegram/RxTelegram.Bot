@@ -23,7 +23,7 @@ namespace TelegramInterface.BaseTypes
         /// <summary>
         /// Optional. Contact's user identifier in Telegram
         /// </summary>
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// Optional. Additional data about the contact in the form of a vCard

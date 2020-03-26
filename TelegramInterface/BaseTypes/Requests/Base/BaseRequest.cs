@@ -1,6 +1,6 @@
 namespace TelegramInterface.BaseTypes.Requests.Base
 {
-    public class BaseRequest
+    public abstract class BaseRequest
     {
         /// <summary>
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)

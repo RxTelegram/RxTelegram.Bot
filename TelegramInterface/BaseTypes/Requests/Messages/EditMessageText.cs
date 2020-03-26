@@ -12,7 +12,7 @@ namespace TelegramInterface.BaseTypes.Requests.Messages
         /// Optional
         /// Required if inline_message_id is not specified. Identifier of the message to edit
         /// </summary>
-        public int MessageId { get; set; }
+        public int? MessageId { get; set; }
 
         /// <summary>
         /// Optional
@@ -30,7 +30,7 @@ namespace TelegramInterface.BaseTypes.Requests.Messages
         /// Optional
         /// Disables link previews for links in this message
         /// </summary>
-        public bool DisableWebPagePreview { get; set; }
+        public bool? DisableWebPagePreview { get; set; }
 
         /// <summary>
         /// Optional

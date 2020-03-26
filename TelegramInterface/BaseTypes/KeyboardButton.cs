@@ -10,12 +10,12 @@
         /// <summary>
         /// Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
         /// </summary>
-        public bool RequestContact { get; set; }
+        public bool? RequestContact { get; set; }
 
         /// <summary>
         /// Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
         /// </summary>
-        public bool RequestLocation { get; set; }
+        public bool? RequestLocation { get; set; }
 
         /// <summary>
         /// Optional. If specified, the user will be asked to create a poll and send it

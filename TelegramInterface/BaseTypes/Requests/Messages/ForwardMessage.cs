@@ -18,7 +18,7 @@ namespace TelegramInterface.BaseTypes.Requests.Messages
         /// Optional
         /// Sends the message silently. Users will receive a notification with no sound.
         /// </summary>
-        public bool DisableNotification { get; set; }
+        public bool? DisableNotification { get; set; }
 
         /// <summary>
         /// Required

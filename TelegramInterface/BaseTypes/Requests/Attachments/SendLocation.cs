@@ -1,9 +1,28 @@
+using TelegramInterface.BaseTypes.Requests.Base;
 using TelegramInterface.BaseTypes.Requests.Base.Interfaces;
 
-namespace TelegramInterface.BaseTypes.Requests.Base
+namespace TelegramInterface.BaseTypes.Requests.Attachments
 {
-    public abstract class BaseSend : BaseTextRequest
+    public class SendLocation : BaseRequest
     {
+        /// <summary>
+        /// Required
+        /// Latitude of the location
+        /// </summary>
+        public double Latitude { get; set; }
+
+        /// <summary>
+        /// Required
+        /// Longitude of the location
+        /// </summary>
+        public double Longitude { get; set; }
+
+        /// <summary>
+        /// Optional
+        /// Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
+        /// </summary>
+        public int? LivePeriod { get; set; }
+
         /// <summary>
         /// Sends the message silently. Users will receive a notification with no sound.
         /// </summary>
