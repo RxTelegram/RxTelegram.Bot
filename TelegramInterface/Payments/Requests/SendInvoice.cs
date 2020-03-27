@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TelegramInterface.BaseTypes;
 
 namespace TelegramInterface.Payments.Requests
@@ -53,7 +54,7 @@ namespace TelegramInterface.Payments.Requests
         /// Required
         /// Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
         /// </summary>
-        public LabeledPrice[] Prices { get; set; }
+        public IEnumerable<LabeledPrice> Prices { get; set; }
 
         /// <summary>
         /// Optional

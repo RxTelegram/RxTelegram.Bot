@@ -92,12 +92,12 @@ namespace TelegramInterface.BaseTypes
         /// <summary>
         /// Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
         /// </summary>
-        public MessageEntity[] Entities { get; set; }
+        public IEnumerable<MessageEntity> Entities { get; set; }
 
         /// <summary>
         /// Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
         /// </summary>
-        public MessageEntity[] CaptionEntities { get; set; }
+        public IEnumerable<MessageEntity> CaptionEntities { get; set; }
 
         /// <summary>
         /// Optional. Description is an audio file, information about the file
@@ -123,7 +123,7 @@ namespace TelegramInterface.BaseTypes
         /// <summary>
         /// Optional. Description is a photo, available sizes of the photo
         /// </summary>
-        public PhotoSize[] Photo { get; set; }
+        public IEnumerable<PhotoSize> Photo { get; set; }
 
         /// <summary>
         /// Optional. Description is a sticker, information about the sticker
@@ -173,7 +173,7 @@ namespace TelegramInterface.BaseTypes
         /// <summary>
         /// Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
         /// </summary>
-        public User[] NewChatMembers { get; set; }
+        public IEnumerable<User> NewChatMembers { get; set; }
 
         /// <summary>
         /// Optional. A member was removed from the group, information about them (this member may be bot itself)
@@ -188,7 +188,7 @@ namespace TelegramInterface.BaseTypes
         /// <summary>
         /// Optional. A group photo was change to this value
         /// </summary>
-        public PhotoSize[] NewChatPhoto { get; set; }
+        public IEnumerable<PhotoSize> NewChatPhoto { get; set; }
 
         /// <summary>
         /// Optional. Informs that the group photo was deleted

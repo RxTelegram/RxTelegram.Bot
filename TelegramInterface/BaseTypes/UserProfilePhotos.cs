@@ -1,4 +1,6 @@
-﻿namespace TelegramInterface.BaseTypes
+﻿using System.Collections.Generic;
+
+namespace TelegramInterface.BaseTypes
 {
     /// <summary>
     /// This object represent a user's profile pictures.
@@ -13,6 +15,6 @@
         /// <summary>
         /// Requested profile pictures (in up to 4 sizes each)
         /// </summary>
-        public PhotoSize[][] Photos { get; set; }
+        public IEnumerable<IEnumerable<PhotoSize>> Photos { get; set; }
     }
 }

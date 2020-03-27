@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TelegramInterface.Payments.Requests.Base;
 
 namespace TelegramInterface.Payments.Requests
@@ -18,6 +19,6 @@ namespace TelegramInterface.Payments.Requests
         /// Optional
         /// Required if ok is True. A JSON-serialized array of available shipping options.
         /// </summary>
-        public ShippingOption[] ShippingOptions { get; set; }
+        public IEnumerable<ShippingOption> ShippingOptions { get; set; }
     }
 }

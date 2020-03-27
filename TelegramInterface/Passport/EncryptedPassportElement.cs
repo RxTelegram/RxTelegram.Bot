@@ -1,4 +1,6 @@
-﻿namespace TelegramInterface.Passport
+﻿using System.Collections.Generic;
+
+namespace TelegramInterface.Passport
 {
     /// <summary>
     /// Contains information about documents or other Telegram Passport elements shared with the bot by the user.
@@ -35,7 +37,7 @@
         /// “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types.
         /// Files can be decrypted and verified using the accompanying <see cref="EncryptedCredentials"/>.
         /// </summary>
-        public PassportFile[] Files { get; set; }
+        public IEnumerable<PassportFile> Files { get; set; }
 
         /// <summary>
         /// Optional. Encrypted file with the front side of the document, provided by the user. Available for “passport”,

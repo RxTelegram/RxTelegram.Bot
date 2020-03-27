@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TelegramInterface.BaseTypes
 {
     /// <summary>
@@ -18,7 +20,7 @@ namespace TelegramInterface.BaseTypes
         /// <summary>
         /// List of poll options
         /// </summary>
-        public PollOption[] Options { get; set; }
+        public IEnumerable<PollOption> Options { get; set; }
 
         /// <summary>
         /// Total number of users that voted in the poll

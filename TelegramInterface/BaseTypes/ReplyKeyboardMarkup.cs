@@ -1,4 +1,4 @@
-﻿using TelegramInterface.BaseTypes.Requests;
+﻿using System.Collections.Generic;
 using TelegramInterface.BaseTypes.Requests.Base.Interfaces;
 
 namespace TelegramInterface.BaseTypes
@@ -8,7 +8,7 @@ namespace TelegramInterface.BaseTypes
         /// <summary>
         /// Array of button rows, each represented by an Array of <see cref="KeyboardButton"/> objects
         /// </summary>
-        public KeyboardButton[][] Keyboard { get; set; }
+        public IEnumerable<IEnumerable<KeyboardButton>> Keyboard { get; set; }
 
         /// <summary>
         /// Optional. Requests clients to resize the keyboard vertically for optimal fit
