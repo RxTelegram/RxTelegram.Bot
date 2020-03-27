@@ -393,6 +393,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-/.idea/.idea.TelegramBotApi/.idea/vcs.xml
-/.idea/.idea.TelegramBotApi/.idea/projectSettingsUpdater.xml
-/.idea/.idea.TelegramBotApi/.idea/indexLayout.xml
+.idea/**/.name
+.idea/**/vcs.xml
+.idea/**/projectSettingsUpdater.xml
+.idea/**/indexLayout.xml
