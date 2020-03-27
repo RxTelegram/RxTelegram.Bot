@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -45,24 +46,38 @@ namespace RxTelegram.Bot.Api
             }
         }
 
-        protected async Task<T> Get<T>(string uri) => await _client.GetAsync(uri)
-                                                                   .ParseResponse<T>();
+        protected Task<T> Get<T>(string uri, object payload = default, CancellationToken cancellationToken = default) =>
+            Request<T>(HttpMethod.Get, uri, payload, cancellationToken);
 
-        protected async Task<T> Post<T>(string uri, object payload)
+        protected Task<T> Post<T>(string uri, object payload, CancellationToken cancellationToken = default) =>
+            Request<T>(HttpMethod.Post, uri, payload, cancellationToken);
+
+        private async Task<T> Request<T>(HttpMethod httpMethod, string uri, object payload, CancellationToken cancellationToken = default)
         {
-            var serializer = JsonSerializer.Create(JsonSerializerSettings);
-            var multipartFormDataContent = new MultipartFormDataContent("boundary" + Guid.NewGuid());
-            var writer = new MultiPartJsonWriter(multipartFormDataContent);
-            serializer.Serialize(writer, payload);
-
-            StringContent stringContent = null;
-            // use json, if we dont have stream contents (like photos, documents, etc.)
-            if (!writer.StreamContent)
+            HttpContent httpContent = null;
+            if (payload != null)
             {
-                stringContent = new StringContent(writer.Token.ToString(Formatting.Indented), Encoding.UTF8, "application/json");
+                var serializer = JsonSerializer.Create(JsonSerializerSettings);
+                var multipartFormDataContent = new MultipartFormDataContent("boundary" + Guid.NewGuid());
+                var writer = new MultiPartJsonWriter(multipartFormDataContent);
+                serializer.Serialize(writer, payload);
+
+                StringContent stringContent = null;
+                // use json, if we dont have stream contents (like photos, documents, etc.)
+                if (!writer.StreamContent)
+                {
+                    stringContent = new StringContent(writer.Token.ToString(Formatting.Indented), Encoding.UTF8, "application/json");
+                }
+
+                httpContent = (HttpContent) stringContent ?? multipartFormDataContent;
+
             }
 
-            return await _client.PostAsync(uri, (HttpContent) stringContent ?? multipartFormDataContent)
+            var httpRequest = new HttpRequestMessage(httpMethod, uri)
+                              {
+                                  Content = httpContent
+                              };
+            return await _client.SendAsync(httpRequest, cancellationToken)
                                 .ParseResponse<T>();
         }
     }
