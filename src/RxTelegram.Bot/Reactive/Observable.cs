@@ -1,23 +1,25 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace RxTelegram.Bot.Reactive
 {
-    internal class Observable<T> : IObservable<T>
+    internal sealed class Observable<T> : IObservable<T>
     {
-        private readonly List<IObserver<T>> _observers = new List<IObserver<T>>();
+        private readonly ObservableCollection<IObserver<T>> _observers = new ObservableCollection<IObserver<T>>();
 
-        public event EventHandler AddObserver;
-
-        public event EventHandler RemoveObserver;
+        internal event NotifyCollectionChangedEventHandler CollectionChanged
+        {
+            add => _observers.CollectionChanged += value;
+            remove => _observers.CollectionChanged -= value;
+        }
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
             if (!_observers.Contains(observer))
             {
                 _observers.Add(observer);
-                AddObserver?.Invoke(this, EventArgs.Empty);
             }
 
             return new Unsubscriber(() => Remove(observer));
@@ -27,8 +29,11 @@ namespace RxTelegram.Bot.Reactive
 
         private void Remove(IObserver<T> observer)
         {
-            _observers.RemoveAll(x => x == observer);
-            RemoveObserver?.Invoke(this, EventArgs.Empty);
+            if (!_observers.Contains(observer))
+            {
+                return;
+            }
+            _observers.Remove(observer);
         }
 
         internal void OnNext(T updateMessage)

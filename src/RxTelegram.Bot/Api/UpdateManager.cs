@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
 using RxTelegram.Bot.Interface.BaseTypes;
@@ -13,7 +13,7 @@ using RxTelegram.Bot.Reactive;
 
 namespace RxTelegram.Bot.Api
 {
-    public class UpdateManager : TelegramApi, IUpdateManager
+    public class UpdateManager : BaseTelegramApi, IUpdateManager
     {
         private readonly Observable<Update> _update = new Observable<Update>();
         private readonly Observable<Message> _message = new Observable<Message>();
@@ -56,44 +56,47 @@ namespace RxTelegram.Bot.Api
 
         public UpdateManager(BotInfo botInfo) : base(botInfo)
         {
-            RegisterEvents(_update);
-            RegisterEvents(_message);
-            RegisterEvents(_editedMessage);
-            RegisterEvents(_inlineQuery);
-            RegisterEvents(_chosenInlineResult);
-            RegisterEvents(_pollAnswer);
-            RegisterEvents(_poll);
-            RegisterEvents(_callbackQuery);
-            RegisterEvents(_channelPost);
-            RegisterEvents(_editedChannelPost);
-            RegisterEvents(_shippingQuery);
-            RegisterEvents(_preCheckoutQuery);
+            _update.CollectionChanged += CollectionChanged;
+            _message.CollectionChanged += CollectionChanged;
+            _editedMessage.CollectionChanged += CollectionChanged;
+            _inlineQuery.CollectionChanged += CollectionChanged;
+            _chosenInlineResult.CollectionChanged += CollectionChanged;
+            _pollAnswer.CollectionChanged += CollectionChanged;
+            _poll.CollectionChanged += CollectionChanged;
+            _callbackQuery.CollectionChanged += CollectionChanged;
+            _channelPost.CollectionChanged += CollectionChanged;
+            _editedChannelPost.CollectionChanged += CollectionChanged;
+            _shippingQuery.CollectionChanged += CollectionChanged;
+            _preCheckoutQuery.CollectionChanged += CollectionChanged;
         }
 
-        private void RegisterEvents<T>(Observable<T> observable)
+        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs eventArgs)
         {
-            observable.AddObserver += OnAddObserver;
-            observable.RemoveObserver += OnRemoveObservere;
-        }
-
-        private void OnRemoveObservere(object sender, EventArgs e)
-        {
-            if (AnyObserver() == false)
+            switch (eventArgs.Action)
             {
-                // stop all
-            }
-        }
+                case NotifyCollectionChangedAction.Add:
+                    if (_isRunning)
+                    {
+                        // todo update allowed_updates
+                        return;
+                    }
 
-        private void OnAddObserver(object sender, EventArgs e)
-        {
-            if (_isRunning)
-            {
-                // todo update allowed_updates
-                return;
+                    _isRunning = true;
+                    Task.Run(RunUpdate);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Reset:
+                    if (AnyObserver() == false)
+                    {
+                        // stop all
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Replace:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-
-            _isRunning = true;
-            Task.Run(RunUpdate);
         }
 
         private async Task RunUpdate()
