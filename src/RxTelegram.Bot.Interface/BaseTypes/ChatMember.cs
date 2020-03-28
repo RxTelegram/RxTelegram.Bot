@@ -1,4 +1,5 @@
 using System;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 
 namespace RxTelegram.Bot.Interface.BaseTypes
 {
@@ -15,7 +16,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// <summary>
         /// The member's status in the chat.
         /// </summary>
-        public string Status { get; set; }
+        public ChatMemberStatus Status { get; set; }
 
         /// <summary>
         /// Optional. Owner and administrators only. Custom title for this user

@@ -1,4 +1,6 @@
-﻿namespace RxTelegram.Bot.Interface.Passport
+﻿using RxTelegram.Bot.Interface.Passport.Enum;
+
+namespace RxTelegram.Bot.Interface.Passport
 {
     /// <summary>
     /// This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user.
@@ -25,5 +27,7 @@
         /// ErrorMessage
         /// </summary>
         public string Message { get; set; }
+
+        public ElementType Type { get; set; }
     }
 }

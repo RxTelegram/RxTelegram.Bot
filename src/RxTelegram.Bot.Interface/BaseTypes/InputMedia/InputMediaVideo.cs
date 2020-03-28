@@ -1,4 +1,5 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+﻿using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
 {
@@ -28,7 +29,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic,
         /// fixed-width text or inline URLs in the media caption.
         /// </summary>
-        public string ParseMode { get; set; }
+        public ParseMode ParseMode { get; set; }
 
         /// <summary>
         /// Optional. Video width

@@ -1,4 +1,5 @@
 ﻿using System;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 
 namespace RxTelegram.Bot.Interface.BaseTypes
 {
@@ -15,7 +16,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// <summary>
         /// Type of chat
         /// </summary>
-        public string Type { get; set; }
+        public ChatType Type { get; set; }
 
         /// <summary>
         /// Optional. Title, for channels and group chats

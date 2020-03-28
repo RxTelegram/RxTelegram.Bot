@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RxTelegram.Bot.Interface.Passport.Enum;
 
 namespace RxTelegram.Bot.Interface.Passport
 {
@@ -13,7 +14,7 @@ namespace RxTelegram.Bot.Interface.Passport
         /// “internal_passport”, “address”, “utility_bill”, “bank_statement”, “rental_agreement”,
         /// “passport_registration”, “temporary_registration”, “phone_number”, “email”.
         /// </summary>
-        public string Type { get; set; }
+        public ElementType Type { get; set; }
 
         /// <summary>
         /// Optional. Base64-encoded encrypted Telegram Passport element data provided by the user,

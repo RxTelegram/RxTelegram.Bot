@@ -1,7 +1,9 @@
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
+
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Base
 {
     public class BaseTextRequest : BaseRequest
     {
-        public string ParseMode { get; set; }
+        public ParseMode ParseMode { get; set; }
     }
 }

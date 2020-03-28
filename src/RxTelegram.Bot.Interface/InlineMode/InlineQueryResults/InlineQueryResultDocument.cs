@@ -1,3 +1,5 @@
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
+
 namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
 {
     /// <summary>
@@ -13,7 +15,7 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic,
         /// fixed-width text or inline URLs in the media caption.
         /// </summary>
-        public string ParseMode { get; set; }
+        public ParseMode ParseMode { get; set; }
 
         /// <summary>
         /// Optional.

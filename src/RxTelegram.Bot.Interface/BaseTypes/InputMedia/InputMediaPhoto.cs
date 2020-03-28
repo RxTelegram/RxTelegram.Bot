@@ -1,4 +1,6 @@
-﻿namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
+﻿using RxTelegram.Bot.Interface.BaseTypes.Enums;
+
+namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
 {
     public class InputMediaPhoto : BaseInputMedia
     {
@@ -16,6 +18,6 @@
         /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold,
         /// italic, fixed-width text or inline URLs in the media caption.
         /// </summary>
-        public string ParseMode { get; set; }
+        public ParseMode ParseMode { get; set; }
     }
 }

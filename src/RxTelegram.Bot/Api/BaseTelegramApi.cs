@@ -35,7 +35,8 @@ namespace RxTelegram.Bot.Api
                 var convert = new List<JsonConverter>
                               {
                                   new UnixDateTimeConverter(),
-                                  new InputFileConverter()
+                                  new InputFileConverter(),
+                                  new StringEnumConverter(new SnakeCaseNamingStrategy())
                               };
                 return _jsonSerializerSettings = new JsonSerializerSettings
                                                  {
