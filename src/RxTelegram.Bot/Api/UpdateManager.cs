@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using RxTelegram.Bot.Interface.BaseTypes;
@@ -8,25 +7,27 @@ using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Setup;
-using RxTelegram.Bot.Reactive;
 
 namespace RxTelegram.Bot.Api
 {
     public class UpdateManager : IUpdateManager
     {
-        private readonly Observable<Update> _update = new Observable<Update>();
-        private readonly Observable<Message> _message = new Observable<Message>();
-        private readonly Observable<Message> _editedMessage = new Observable<Message>();
-        private readonly Observable<InlineQuery> _inlineQuery = new Observable<InlineQuery>();
-        private readonly Observable<ChosenInlineResult> _chosenInlineResult = new Observable<ChosenInlineResult>();
-        private readonly Observable<PollAnswer> _pollAnswer = new Observable<PollAnswer>();
-        private readonly Observable<Poll> _poll = new Observable<Poll>();
-        private readonly Observable<CallbackQuery> _callbackQuery = new Observable<CallbackQuery>();
-        private readonly Observable<Message> _channelPost = new Observable<Message>();
-        private readonly Observable<Message> _editedChannelPost = new Observable<Message>();
-        private readonly Observable<ShippingQuery> _shippingQuery = new Observable<ShippingQuery>();
-        private readonly Observable<PreCheckoutQuery> _preCheckoutQuery = new Observable<PreCheckoutQuery>();
+        private readonly IDictionary<UpdateType, List<object>> _observerDictionary;
+        private readonly List<object> _updateObservers;
+        private readonly Observable<Update> _update;
+        private readonly Observable<Message> _message;
+        private readonly Observable<Message> _editedMessage;
+        private readonly Observable<InlineQuery> _inlineQuery;
+        private readonly Observable<ChosenInlineResult> _chosenInlineResult;
+        private readonly Observable<PollAnswer> _pollAnswer;
+        private readonly Observable<Poll> _poll;
+        private readonly Observable<CallbackQuery> _callbackQuery;
+        private readonly Observable<Message> _channelPost;
+        private readonly Observable<Message> _editedChannelPost;
+        private readonly Observable<ShippingQuery> _shippingQuery;
+        private readonly Observable<PreCheckoutQuery> _preCheckoutQuery;
         private bool _isRunning;
+        private readonly TelegramApi _telegramApi;
 
         public IObservable<Update> Update => _update;
 
@@ -52,52 +53,28 @@ namespace RxTelegram.Bot.Api
 
         public IObservable<PollAnswer> PollAnswer => _pollAnswer;
 
-        private TelegramApi TelegramApi { get; }
+        private bool AnyObserver => _observerDictionary.Any(x => x.Value.Any()) || _updateObservers.Any();
+
+        private IEnumerable<UpdateType> GetUpdateTypes => _observerDictionary.Where(x => x.Value.Any())
+                                                                             .Select(x => x.Key);
 
         public UpdateManager(TelegramApi telegramApi)
         {
-            _update.CollectionChanged += CollectionChanged;
-            _message.CollectionChanged += CollectionChanged;
-            _editedMessage.CollectionChanged += CollectionChanged;
-            _inlineQuery.CollectionChanged += CollectionChanged;
-            _chosenInlineResult.CollectionChanged += CollectionChanged;
-            _pollAnswer.CollectionChanged += CollectionChanged;
-            _poll.CollectionChanged += CollectionChanged;
-            _callbackQuery.CollectionChanged += CollectionChanged;
-            _channelPost.CollectionChanged += CollectionChanged;
-            _editedChannelPost.CollectionChanged += CollectionChanged;
-            _shippingQuery.CollectionChanged += CollectionChanged;
-            _preCheckoutQuery.CollectionChanged += CollectionChanged;
-            TelegramApi = telegramApi;
-        }
-
-        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs eventArgs)
-        {
-            switch (eventArgs.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    if (_isRunning)
-                    {
-                        // todo update allowed_updates
-                        return;
-                    }
-
-                    _isRunning = true;
-                    Task.Run(RunUpdate);
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                case NotifyCollectionChangedAction.Reset:
-                    if (AnyObserver() == false)
-                    {
-                        // stop all
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                case NotifyCollectionChangedAction.Replace:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            _telegramApi = telegramApi;
+            _updateObservers = new List<object>();
+            _observerDictionary = new Dictionary<UpdateType, List<object>>();
+            _preCheckoutQuery = new Observable<PreCheckoutQuery>(UpdateType.PreCheckoutQuery, this);
+            _shippingQuery = new Observable<ShippingQuery>(UpdateType.ShippingQuery, this);
+            _editedChannelPost = new Observable<Message>(UpdateType.EditedChannelPost, this);
+            _channelPost = new Observable<Message>(UpdateType.ChannelPost, this);
+            _callbackQuery = new Observable<CallbackQuery>(UpdateType.CallbackQuery, this);
+            _poll = new Observable<Poll>(UpdateType.Poll, this);
+            _pollAnswer = new Observable<PollAnswer>(UpdateType.PollAnswer, this);
+            _chosenInlineResult = new Observable<ChosenInlineResult>(UpdateType.ChosenInlineResult, this);
+            _inlineQuery = new Observable<InlineQuery>(UpdateType.InlineQuery, this);
+            _editedMessage = new Observable<Message>(UpdateType.EditedMessage, this);
+            _message = new Observable<Message>(UpdateType.Message, this);
+            _update = new Observable<Update>(null, this);
         }
 
         private async Task RunUpdate()
@@ -105,15 +82,15 @@ namespace RxTelegram.Bot.Api
             int? offset = null;
             try
             {
-                while (AnyObserver())
+                while (AnyObserver)
                 {
                     var getUpdate = new GetUpdate
                                     {
                                         Offset = offset,
                                         Timeout = 10,
-                                        AllowedUpdates = GetUpdateTypes()
+                                        AllowedUpdates = GetUpdateTypes
                                     };
-                    var result = await TelegramApi.GetUpdate(getUpdate);
+                    var result = await _telegramApi.GetUpdate(getUpdate);
                     if (!result.Any())
                     {
                         await Task.Delay(1000);
@@ -123,112 +100,186 @@ namespace RxTelegram.Bot.Api
                     offset = result.Max(x => x.UpdateId) + 1;
                     foreach (var update in result)
                     {
-                        if (update.Message != null)
-                        {
-                            _message.OnNext(update.Message);
+                        OnNext(null, update);
+                        if (update.PreCheckoutQuery != null) {
+                            OnNext(UpdateType.PreCheckoutQuery, update.PreCheckoutQuery);
+                        }
+                        if (update.ShippingQuery != null) {
+                            OnNext(UpdateType.ShippingQuery, update.ShippingQuery);
+                        }
+                        if (update.EditedChannelPost != null) {
+                            OnNext(UpdateType.EditedChannelPost, update.EditedChannelPost);
+                        }
+                        if (update.ChannelPost != null) {
+                            OnNext(UpdateType.ChannelPost, update.ChannelPost);
+                        }
+                        if (update.CallbackQuery != null) {
+                            OnNext(UpdateType.CallbackQuery, update.CallbackQuery);
+                        }
+                        if (update.Poll != null) {
+                            OnNext(UpdateType.Poll, update.Poll);
+                        }
+                        if (update.PollAnswer != null) {
+                            OnNext(UpdateType.PollAnswer, update.PollAnswer);
+                        }
+                        if (update.ChosenInlineResult != null) {
+                            OnNext(UpdateType.ChosenInlineResult, update.ChosenInlineResult);
+                        }
+                        if (update.InlineQuery != null) {
+                            OnNext(UpdateType.InlineQuery, update.InlineQuery);
+                        }
+                        if (update.EditedMessage != null) {
+                            OnNext(UpdateType.EditedMessage, update.EditedMessage);
+                        }
+                        if (update.Message != null) {
+                            OnNext(UpdateType.Message, update.Message);
                         }
                     }
                 }
             }
             catch (Exception exception)
             {
-                _update.OnException(exception);
-                _message.OnException(exception);
-                _editedMessage.OnException(exception);
-                _inlineQuery.OnException(exception);
-                _chosenInlineResult.OnException(exception);
-                _pollAnswer.OnException(exception);
-                _poll.OnException(exception);
-                _callbackQuery.OnException(exception);
-                _channelPost.OnException(exception);
-                _editedChannelPost.OnException(exception);
-                _shippingQuery.OnException(exception);
-                _preCheckoutQuery.OnException(exception);
+                OnException(exception);
             }
 
             _isRunning = false;
         }
 
-        private bool AnyObserver() => _callbackQuery.HasObserver ||
-                                      _channelPost.HasObserver ||
-                                      _chosenInlineResult.HasObserver ||
-                                      _editedChannelPost.HasObserver ||
-                                      _editedMessage.HasObserver ||
-                                      _editedMessage.HasObserver ||
-                                      _inlineQuery.HasObserver ||
-                                      _message.HasObserver ||
-                                      _poll.HasObserver ||
-                                      _pollAnswer.HasObserver ||
-                                      _preCheckoutQuery.HasObserver ||
-                                      _shippingQuery.HasObserver ||
-                                      _update.HasObserver;
-
-        public IEnumerable<UpdateType> GetUpdateTypes()
+        private void OnNext<T>(UpdateType? updateType, T updateMessage)
         {
-            if (_update.HasObserver)
+            var observers = GetObservers(updateType);
+            if (!observers.Any())
             {
-                yield break;
+                return;
             }
 
-            if (_message.HasObserver)
+            foreach (var observerObject in observers)
             {
-                yield return UpdateType.Message;
+                if (!(observerObject is IObserver<T> observer))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    observer.OnNext(updateMessage);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+        }
+
+        private void OnException(Exception exception)
+        {
+            if (!AnyObserver)
+            {
+                return;
             }
 
-            if (_editedMessage.HasObserver)
+            foreach (var observer in _observerDictionary.Values.SelectMany(x => x)
+                                                        .ToList())
             {
-                yield return UpdateType.EditedMessage;
+                var observerType = observer.GetType();
+                if (observerType.GetInterfaces()
+                                .Contains(typeof(IObserver<>)))
+                {
+                    continue;
+                }
+
+                const string onErrorName = nameof(IObserver<object>.OnError);
+                var methodInfo = observerType.GetMethod(onErrorName);
+                if (methodInfo == null)
+                {
+                    // observer without onerror function should never happened
+                    continue;
+                }
+
+                try
+                {
+                    methodInfo.Invoke(observer, new object[] {exception});
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+        }
+
+        private List<object> GetObservers(UpdateType? updateType)
+        {
+            if (!updateType.HasValue)
+            {
+                return _updateObservers;
             }
 
-            if (_editedMessage.HasObserver)
+            if (!_observerDictionary.ContainsKey(updateType.Value))
             {
-                yield return UpdateType.EditedMessage;
+                _observerDictionary.Add(updateType.Value, new List<object>());
             }
 
-            if (_inlineQuery.HasObserver)
+            return _observerDictionary[updateType.Value];
+        }
+
+        private IDisposable Subscribe<T>(UpdateType? updateType, IObserver<T> observer)
+        {
+            var observers = GetObservers(updateType);
+            if (!observers.Contains(observer))
             {
-                yield return UpdateType.InlineQuery;
+                observers.Add(observer);
             }
 
-            if (_chosenInlineResult.HasObserver)
+            if (!_isRunning)
             {
-                yield return UpdateType.ChosenInlineResult;
+                _isRunning = true;
+                Task.Run(RunUpdate);
+            }
+            else
+            {
+                // todo update allowed_updates
             }
 
-            if (_pollAnswer.HasObserver)
+            return new Unsubscriber(() => Remove(updateType, observer));
+        }
+
+        private void Remove<T>(UpdateType? updateType, IObserver<T> observer)
+        {
+            var observers = GetObservers(updateType);
+            if (!observers.Contains(observer))
             {
-                yield return UpdateType.PollAnswer;
+                return;
             }
 
-            if (_poll.HasObserver)
+            observers.Remove(observer);
+
+            if (AnyObserver == false)
             {
-                yield return UpdateType.Poll;
+                // cancel current requests
+            }
+        }
+
+        private class Observable<T> : IObservable<T>
+        {
+            private readonly UpdateManager _updateManager;
+            private readonly UpdateType? _updateType;
+
+            public Observable(UpdateType? updateType, UpdateManager updateManager)
+            {
+                _updateType = updateType;
+                _updateManager = updateManager;
             }
 
-            if (_callbackQuery.HasObserver)
-            {
-                yield return UpdateType.CallbackQuery;
-            }
+            public IDisposable Subscribe(IObserver<T> observer) => _updateManager.Subscribe(_updateType, observer);
+        }
 
-            if (_channelPost.HasObserver)
-            {
-                yield return UpdateType.ChannelPost;
-            }
+        private class Unsubscriber : IDisposable
+        {
+            private readonly Action _dispose;
 
-            if (_editedChannelPost.HasObserver)
-            {
-                yield return UpdateType.EditedChannelPost;
-            }
+            public Unsubscriber(Action action) => _dispose = action;
 
-            if (_shippingQuery.HasObserver)
-            {
-                yield return UpdateType.ShippingQuery;
-            }
-
-            if (_preCheckoutQuery.HasObserver)
-            {
-                yield return UpdateType.PreCheckoutQuery;
-            }
+            public void Dispose() => _dispose?.Invoke();
         }
     }
 }
