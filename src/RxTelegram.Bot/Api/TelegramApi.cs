@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
+using RxTelegram.Bot.Interface.Setup;
 
 namespace RxTelegram.Bot.Api
 {
@@ -9,9 +11,11 @@ namespace RxTelegram.Bot.Api
     {
         public IUpdateManager Updates { get; }
 
-        public TelegramApi(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(botInfo);
+        public TelegramApi(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
 
         public Task<User> GetMe() => Get<User>("getMe");
+
+        public Task<Update[]> GetUpdate(GetUpdate update) => Get<Update[]>("getUpdates", update);
 
         public Task<Message> SendMessage(SendMessage message) => Post<Message>("sendMessage", message);
 

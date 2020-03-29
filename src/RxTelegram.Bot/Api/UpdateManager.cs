@@ -13,7 +13,7 @@ using RxTelegram.Bot.Reactive;
 
 namespace RxTelegram.Bot.Api
 {
-    public class UpdateManager : BaseTelegramApi, IUpdateManager
+    public class UpdateManager : IUpdateManager
     {
         private readonly Observable<Update> _update = new Observable<Update>();
         private readonly Observable<Message> _message = new Observable<Message>();
@@ -54,7 +54,9 @@ namespace RxTelegram.Bot.Api
 
         public IObservable<PollAnswer> PollAnswer => _pollAnswer;
 
-        public UpdateManager(BotInfo botInfo) : base(botInfo)
+        private TelegramApi TelegramApi { get; }
+
+        public UpdateManager(TelegramApi telegramApi)
         {
             _update.CollectionChanged += CollectionChanged;
             _message.CollectionChanged += CollectionChanged;
@@ -68,6 +70,7 @@ namespace RxTelegram.Bot.Api
             _editedChannelPost.CollectionChanged += CollectionChanged;
             _shippingQuery.CollectionChanged += CollectionChanged;
             _preCheckoutQuery.CollectionChanged += CollectionChanged;
+            TelegramApi = telegramApi;
         }
 
         private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs eventArgs)
@@ -106,13 +109,13 @@ namespace RxTelegram.Bot.Api
             {
                 while (AnyObserver())
                 {
-                    var payload = new
-                                  {
-                                      offset,
-                                      timeout = 10,
-                                      allowed_updates = GetUpdateTypes()
-                                  };
-                    var result = await Get<Update[]>("getUpdates", payload);
+                    var getUpdate = new GetUpdate
+                                    {
+                                        Offset = offset,
+                                        Timeout = 10,
+                                        AllowedUpdates = GetUpdateTypes()
+                                    };
+                    var result = await TelegramApi.GetUpdate(getUpdate);
                     if (!result.Any())
                     {
                         await Task.Delay(1000);
@@ -162,76 +165,72 @@ namespace RxTelegram.Bot.Api
                                       _shippingQuery.HasObserver ||
                                       _update.HasObserver;
 
-        public List<string> GetUpdateTypes()
+        public IEnumerable<UpdateType> GetUpdateTypes()
         {
-            var list = new List<UpdateType>();
             if (_update.HasObserver)
             {
-                return null;
+                yield break;
             }
 
             if (_message.HasObserver)
             {
-                list.Add(UpdateType.Message);
+                yield return UpdateType.Message;
             }
 
             if (_editedMessage.HasObserver)
             {
-                list.Add(UpdateType.EditedMessage);
+                yield return UpdateType.EditedMessage;
             }
 
             if (_editedMessage.HasObserver)
             {
-                list.Add(UpdateType.EditedMessage);
+                yield return UpdateType.EditedMessage;
             }
 
             if (_inlineQuery.HasObserver)
             {
-                list.Add(UpdateType.InlineQuery);
+                yield return UpdateType.InlineQuery;
             }
 
             if (_chosenInlineResult.HasObserver)
             {
-                list.Add(UpdateType.ChosenInlineResult);
+                yield return UpdateType.ChosenInlineResult;
             }
 
             if (_pollAnswer.HasObserver)
             {
-                list.Add(UpdateType.PollAnswer);
+                yield return UpdateType.PollAnswer;
             }
 
             if (_poll.HasObserver)
             {
-                list.Add(UpdateType.Poll);
+                yield return UpdateType.Poll;
             }
 
             if (_callbackQuery.HasObserver)
             {
-                list.Add(UpdateType.CallbackQuery);
+                yield return UpdateType.CallbackQuery;
             }
 
             if (_channelPost.HasObserver)
             {
-                list.Add(UpdateType.ChannelPost);
+                yield return UpdateType.ChannelPost;
             }
 
             if (_editedChannelPost.HasObserver)
             {
-                list.Add(UpdateType.EditedChannelPost);
+                yield return UpdateType.EditedChannelPost;
             }
 
             if (_shippingQuery.HasObserver)
             {
-                list.Add(UpdateType.ShippingQuery);
+                yield return UpdateType.ShippingQuery;
             }
 
             if (_preCheckoutQuery.HasObserver)
             {
-                list.Add(UpdateType.PreCheckoutQuery);
+                yield return UpdateType.PreCheckoutQuery;
             }
-
-            return list.Select(x => _snakeCaseNamingStrategy.GetPropertyName(x.ToString(), false))
-                       .ToList();
         }
     }
 }
