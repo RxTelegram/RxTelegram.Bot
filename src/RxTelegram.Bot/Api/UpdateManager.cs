@@ -62,7 +62,10 @@ namespace RxTelegram.Bot.Api
         {
             _telegramApi = telegramApi;
             _updateObservers = new List<object>();
-            _observerDictionary = new Dictionary<UpdateType, List<object>>();
+            _observerDictionary = Enum.GetValues(typeof(UpdateType))
+                                      .Cast<UpdateType>()
+                                      .ToDictionary(updateType => updateType,
+                                                    updateType => new List<object>());
             _preCheckoutQuery = new Observable<PreCheckoutQuery>(UpdateType.PreCheckoutQuery, this);
             _shippingQuery = new Observable<ShippingQuery>(UpdateType.ShippingQuery, this);
             _editedChannelPost = new Observable<Message>(UpdateType.EditedChannelPost, this);
@@ -182,8 +185,8 @@ namespace RxTelegram.Bot.Api
                                                         .ToList())
             {
                 var observerType = observer.GetType();
-                if (observerType.GetInterfaces()
-                                .Contains(typeof(IObserver<>)))
+                if (!observerType.GetInterfaces()
+                                 .Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IObserver<>)))
                 {
                     continue;
                 }
@@ -207,20 +210,8 @@ namespace RxTelegram.Bot.Api
             }
         }
 
-        private List<object> GetObservers(UpdateType? updateType)
-        {
-            if (!updateType.HasValue)
-            {
-                return _updateObservers;
-            }
-
-            if (!_observerDictionary.ContainsKey(updateType.Value))
-            {
-                _observerDictionary.Add(updateType.Value, new List<object>());
-            }
-
-            return _observerDictionary[updateType.Value];
-        }
+        private List<object> GetObservers(UpdateType? updateType) =>
+            !updateType.HasValue ? _updateObservers : _observerDictionary[updateType.Value];
 
         private IDisposable Subscribe<T>(UpdateType? updateType, IObserver<T> observer)
         {
