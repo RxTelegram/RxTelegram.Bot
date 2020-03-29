@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Serialization;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.InlineMode;
@@ -27,7 +26,6 @@ namespace RxTelegram.Bot.Api
         private readonly Observable<Message> _editedChannelPost = new Observable<Message>();
         private readonly Observable<ShippingQuery> _shippingQuery = new Observable<ShippingQuery>();
         private readonly Observable<PreCheckoutQuery> _preCheckoutQuery = new Observable<PreCheckoutQuery>();
-        private readonly SnakeCaseNamingStrategy _snakeCaseNamingStrategy = new SnakeCaseNamingStrategy();
         private bool _isRunning;
 
         public IObservable<Update> Update => _update;
