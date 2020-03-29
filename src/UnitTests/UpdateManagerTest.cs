@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using RxTelegram.Bot.Api;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
@@ -18,11 +20,18 @@ namespace RxTelegram.Bot.UnitTests
             var updateManager = new UpdateManager(telegram);
             updateManager.Message.Subscribe();
             updateManager.EditedChannelPost.Subscribe();
-            var types = updateManager.GetUpdateTypes()
-                                     .ToList();
-            Assert.That(types.Count , Is.EqualTo(2));
-            CollectionAssert.Contains(types, UpdateType.Message);
-            CollectionAssert.Contains(types, UpdateType.EditedChannelPost);
+            var prop = typeof(UpdateManager).GetProperty("GetUpdateTypes", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (prop == null)
+                throw new Exception("Property not found!");
+            var getter = prop.GetGetMethod(nonPublic: true);
+            var objectList = getter.Invoke(updateManager, null);
+            if (!(objectList is IEnumerable<UpdateType> updateTypesList))
+                throw new Exception("Property cast not possible!");
+            var updateTypes = updateTypesList.ToList();
+            Assert.That(updateTypes.Count, Is.EqualTo(2));
+            CollectionAssert.Contains(updateTypes, UpdateType.Message);
+            CollectionAssert.Contains(updateTypes, UpdateType.EditedChannelPost);
+            return;
         }
     }
 }
