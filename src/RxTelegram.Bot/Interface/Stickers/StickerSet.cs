@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RxTelegram.Bot.Interface.BaseTypes;
 
 namespace RxTelegram.Bot.Interface.Stickers
 {
@@ -32,5 +33,10 @@ namespace RxTelegram.Bot.Interface.Stickers
         /// List of all set stickers
         /// </summary>
         public IEnumerable<Sticker> Stickers { get; set; }
+
+        /// <summary>
+        /// Optional. Sticker set thumbnail in the .WEBP or .TGS format
+        /// </summary>
+        public PhotoSize Thumb { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RxTelegram.Bot.Interface.BaseTypes.Requests;
 using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Passport;
 using RxTelegram.Bot.Interface.Payments;
@@ -168,6 +169,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Message is a native poll, information about the poll
         /// </summary>
         public Poll Poll { get; set; }
+
+        /// <summary>
+        /// Optional. Message is a dice with random value from 1 to 6
+        /// </summary>
+        public Dice Dice { get; set; }
 
         /// <summary>
         /// Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)

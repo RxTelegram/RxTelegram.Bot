@@ -25,7 +25,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL
         /// as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
         /// </summary>
-        public InputFile PngSticker { get; set; }
+        public InputFile TgsSticker { get; set; }
 
         /// <summary>
         /// Required
