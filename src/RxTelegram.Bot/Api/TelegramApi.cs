@@ -36,5 +36,9 @@ namespace RxTelegram.Bot.Api
         public Task<Message> SendMediaGroup(SendMediaGroup message) => Post<Message>("sendMediaGroup", message);
 
         public Task<Message> SendLocation(SendLocation message) => Post<Message>("sendLocation", message);
+
+        public Task<Message> ForwardMessage(ForwardMessage forwardMessage) => Post<Message>("forwardMessage", forwardMessage);
+
+        
     }
 }
