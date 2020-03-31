@@ -9,16 +9,6 @@ namespace RxTelegram.Bot.Interface.Stickers
     public class Sticker : FileBase
     {
         /// <summary>
-        /// Identifier for this file, which can be used to download or reuse the file
-        /// </summary>
-        public string FileId { get; set; }
-
-        /// <summary>
-        /// Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-        /// </summary>
-        public string FileUniqueId { get; set; }
-
-        /// <summary>
         /// Sticker width
         /// </summary>
         public int Width { get; set; }
@@ -52,10 +42,5 @@ namespace RxTelegram.Bot.Interface.Stickers
         /// Optional. For mask stickers, the position where the mask should be placed
         /// </summary>
         public MaskPosition MaskPosition { get; set; }
-
-        /// <summary>
-        /// Optional. File size, if known
-        /// </summary>
-        public int FileSize { get; set; }
     }
 }

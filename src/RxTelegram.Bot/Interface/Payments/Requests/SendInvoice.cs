@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Interface.Payments.Requests
 {
     /// <summary>
     /// Use this method to send invoices. On success, the sent Message is returned.
     /// </summary>
-    public class SendInvoice
+    public class SendInvoice : BaseValidation
     {
         /// <summary>
         /// Required
@@ -148,5 +150,7 @@ namespace RxTelegram.Bot.Interface.Payments.Requests
         /// If not empty, the first button must be a Pay button.
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

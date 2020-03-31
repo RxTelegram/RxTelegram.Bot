@@ -20,5 +20,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// Notifications are always disabled in channels.
         /// </summary>
         public bool DisableNotification { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

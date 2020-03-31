@@ -20,5 +20,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// If the messages are a reply, ID of the original message
         /// </summary>
         public int? ReplyToMessageId { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

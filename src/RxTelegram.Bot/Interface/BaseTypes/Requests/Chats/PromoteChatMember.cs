@@ -1,10 +1,13 @@
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
+
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
 {
     /// <summary>
     /// Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to
     /// work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
     /// </summary>
-    public class PromoteChatMember
+    public class PromoteChatMember : BaseValidation
     {
         /// <summary>
         /// Required
@@ -60,5 +63,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
         /// </summary>
         public bool? CanPromoteMembers { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

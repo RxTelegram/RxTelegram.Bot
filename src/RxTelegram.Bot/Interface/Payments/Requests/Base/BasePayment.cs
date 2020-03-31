@@ -1,6 +1,9 @@
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
+
 namespace RxTelegram.Bot.Interface.Payments.Requests.Base
 {
-    public class BasePayment
+    public abstract class BasePayment : BaseValidation
     {
         /// <summary>
         /// Optional

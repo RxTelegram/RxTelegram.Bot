@@ -50,5 +50,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Pass True, if the uploaded video is suitable for streaming
         /// </summary>
         public bool SupportsStreaming { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

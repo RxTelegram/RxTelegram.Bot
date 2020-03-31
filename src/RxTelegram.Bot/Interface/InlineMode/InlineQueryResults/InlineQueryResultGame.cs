@@ -11,5 +11,7 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// Short name of the game
         /// </summary>
         public string GameShortName { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

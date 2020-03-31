@@ -1,8 +1,9 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
-    public class UploadStickerFile
+    public class UploadStickerFile : BaseValidation
     {
         /// <summary>
         /// Required
@@ -16,5 +17,11 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// must be exactly 512px. More info on Sending Files »
         /// </summary>
         public InputFile PngSticker { get; set; }
+
+        protected override void Validate()
+        {
+            ValidateCondition(UserId < 1, Validation.ValidationErrors.IdLowerThanOne, nameof(UserId));
+            ValidateRequired<UploadStickerFile>(x => x.UserId, x => x.PngSticker);
+        }
     }
 }

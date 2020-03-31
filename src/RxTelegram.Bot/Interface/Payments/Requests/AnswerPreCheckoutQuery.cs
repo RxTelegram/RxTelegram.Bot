@@ -14,5 +14,7 @@ namespace RxTelegram.Bot.Interface.Payments.Requests
         /// Unique identifier for the query to be answered
         /// </summary>
         public string PreCheckoutQueryId { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

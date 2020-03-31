@@ -12,5 +12,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// Unique identifier of the target user
         /// </summary>
         public int UserId { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

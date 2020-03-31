@@ -1,9 +1,11 @@
-﻿namespace RxTelegram.Bot.Interface.Stickers.Requests
+﻿using RxTelegram.Bot.Interface.Validation;
+
+namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
     /// <summary>
     /// Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
     /// </summary>
-    public class SetStickerPositionInSet
+    public class SetStickerPositionInSet : BaseValidation
     {
         /// <summary>
         /// File identifier of the sticker
@@ -14,5 +16,7 @@
         /// New sticker position in the set, zero-based
         /// </summary>
         public int Position { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

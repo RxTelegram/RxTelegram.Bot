@@ -18,5 +18,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
         /// </summary>
         public string Caption { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

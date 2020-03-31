@@ -1,4 +1,7 @@
-﻿namespace RxTelegram.Bot.Interface.Passport.Requests
+﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
+
+namespace RxTelegram.Bot.Interface.Passport.Requests
 {
     /// <summary>
     /// Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit
@@ -9,7 +12,7 @@
     /// birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the
     /// error message to make sure the user knows how to correct the issues.
     /// </summary>
-    public class SetPassportDataErrors
+    public class SetPassportDataErrors : BaseValidation
     {
         /// <summary>
         /// Required
@@ -22,5 +25,7 @@
         /// A JSON-serialized array describing the errors
         /// </summary>
         public PassportElementError Type { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

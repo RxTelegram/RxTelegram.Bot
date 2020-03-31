@@ -1,4 +1,5 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
@@ -6,7 +7,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
     /// Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set.
     /// Returns True on success.
     /// </summary>
-    public class CreateNewStickerSet
+    public class CreateNewStickerSet : BaseValidation
     {
         /// <summary>
         /// Required
@@ -34,6 +35,13 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL
         /// as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
         /// </summary>
+        public InputFile PngSticker { get; set; }
+
+        /// <summary>
+        /// Optional
+        /// TGS animation with the sticker, uploaded using multipart/form-data.
+        /// See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        /// </summary>
         public InputFile TgsSticker { get; set; }
 
         /// <summary>
@@ -53,5 +61,15 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// A JSON-serialized object for position where the mask should be placed on faces
         /// </summary>
         public MaskPosition MaskPosition { get; set; }
+
+        protected override void Validate()
+        {
+            ValidateCondition(UserId < 1,  Validation.ValidationErrors.IdLowerThanOne, nameof(UserId));
+            ValidateCondition(PngSticker.IsNull() && TgsSticker.IsNull(), Validation.ValidationErrors.NonePropertySet,
+                                  nameof(PngSticker), nameof(TgsSticker));
+            ValidateCondition(PngSticker.IsNotNull() && TgsSticker.IsNotNull(), Validation.ValidationErrors.OnlyONePropertyCanBeSet,
+                                  nameof(PngSticker), nameof(TgsSticker));
+            ValidateRequired<CreateNewStickerSet>(x => x.UserId, x => x.Name, x => x.Title, x => x.Emojis);
+        }
     }
 }

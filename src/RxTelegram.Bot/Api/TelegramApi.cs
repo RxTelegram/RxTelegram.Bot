@@ -4,6 +4,7 @@ using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.Setup;
+using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Api
 {
@@ -39,6 +40,9 @@ namespace RxTelegram.Bot.Api
 
         public Task<Message> ForwardMessage(ForwardMessage forwardMessage) => Post<Message>("forwardMessage", forwardMessage);
 
-        
+        public Task<bool> CreateNewStickerSet(CreateNewStickerSet createNewStickerSet) =>
+            Post<bool>("createNewStickerSet", createNewStickerSet);
+
+
     }
 }

@@ -13,5 +13,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// New chat title, 1-255 characters
         /// </summary>
         public string Title { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

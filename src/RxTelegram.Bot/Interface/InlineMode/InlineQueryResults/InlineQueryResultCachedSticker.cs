@@ -18,5 +18,6 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// </summary>
         public InputMessageContent InputMessageContent { get; set; }
 
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

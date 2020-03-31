@@ -36,5 +36,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>.
         /// </summary>
         public InputFile Thumb { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

@@ -1,10 +1,13 @@
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
+
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
 {
     /// <summary>
     /// Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must
     /// have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
     /// </summary>
-    public class RestrictChatMember
+    public class RestrictChatMember : BaseValidation
     {
         /// <summary>
         /// Unique identifier of the target user
@@ -21,5 +24,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// seconds from the current time, they are considered to be restricted forever
         /// </summary>
         public int UntilDate { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

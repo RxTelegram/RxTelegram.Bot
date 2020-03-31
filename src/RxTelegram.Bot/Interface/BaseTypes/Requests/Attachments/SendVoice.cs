@@ -27,5 +27,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Duration of the voice message in seconds
         /// </summary>
         public int? Duration { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

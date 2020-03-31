@@ -20,5 +20,7 @@ namespace RxTelegram.Bot.Interface.Payments.Requests
         /// Required if ok is True. A JSON-serialized array of available shipping options.
         /// </summary>
         public IEnumerable<ShippingOption> ShippingOptions { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

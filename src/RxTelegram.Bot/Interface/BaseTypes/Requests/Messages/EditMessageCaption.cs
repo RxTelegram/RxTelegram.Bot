@@ -28,5 +28,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
 
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

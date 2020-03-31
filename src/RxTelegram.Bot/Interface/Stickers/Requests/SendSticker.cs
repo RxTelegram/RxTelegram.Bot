@@ -1,12 +1,13 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
+using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
     /// <summary>
     /// Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
     /// </summary>
-    public class SendSticker
+    public class SendSticker : BaseValidation
     {
         /// <summary>
         /// Required
@@ -39,5 +40,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// reply keyboard or to force a reply from the user.
         /// </summary>
         public IReplyMarkup ReplyMarkup { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

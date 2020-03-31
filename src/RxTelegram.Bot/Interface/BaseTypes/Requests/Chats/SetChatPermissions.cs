@@ -12,5 +12,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// New default chat permissions
         /// </summary>
         public ChatPermissions Permissions { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

@@ -28,5 +28,7 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// If not empty, the first button must launch the game.
         /// </summary>
         public InlineKeyboardMarkup Type { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

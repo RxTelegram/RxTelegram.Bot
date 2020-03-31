@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
@@ -6,7 +7,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
     /// Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only.
     /// Returns True on success.
     /// </summary>
-    public class SetStickerSetThumb
+    public class SetStickerSetThumb : BaseValidation
     {
         /// <summary>
         /// Required
@@ -29,5 +30,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// More info on Sending Files ». Animated sticker set thumbnail can't be uploaded via HTTP URL.
         /// </summary>
         public InputFile Thumb { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

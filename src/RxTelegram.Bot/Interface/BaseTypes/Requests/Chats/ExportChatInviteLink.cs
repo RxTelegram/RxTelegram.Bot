@@ -14,6 +14,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     /// </summary>
     public class ExportChatInviteLink : BaseRequest
     {
-
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

@@ -11,5 +11,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
         /// </summary>
         public string Action { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

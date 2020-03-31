@@ -25,5 +25,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// Message identifier in the chat specified in from_chat_id
         /// </summary>
         public int MessageId { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

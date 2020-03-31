@@ -28,5 +28,7 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// fixed-width text or inline URLs in the media caption.
         /// </summary>
         public ParseMode ParseMode { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

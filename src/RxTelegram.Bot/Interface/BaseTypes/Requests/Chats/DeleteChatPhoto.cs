@@ -8,6 +8,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     /// </summary>
     public class DeleteChatPhoto : BaseRequest
     {
-
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

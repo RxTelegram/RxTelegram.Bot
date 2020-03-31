@@ -9,6 +9,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     /// </summary>
     public class GetChatAdministrators : BaseRequest
     {
-
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

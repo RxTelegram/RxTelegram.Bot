@@ -9,6 +9,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     /// </summary>
     public class UnpinChatMessage : BaseRequest
     {
-
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

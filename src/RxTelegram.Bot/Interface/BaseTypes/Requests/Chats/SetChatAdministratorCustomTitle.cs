@@ -18,5 +18,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// New custom title for the administrator; 0-16 characters, emoji are not allowed
         /// </summary>
         public string CustomTitle { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

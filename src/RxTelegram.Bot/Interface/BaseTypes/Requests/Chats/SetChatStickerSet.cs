@@ -14,5 +14,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// Name of the sticker set to be set as the group sticker set
         /// </summary>
         public string StickerSetName { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

@@ -53,5 +53,7 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// Thumbnail height
         /// </summary>
         public int? ThumbHeight { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

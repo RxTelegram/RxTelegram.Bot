@@ -47,5 +47,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
         /// </summary>
         public string Caption { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

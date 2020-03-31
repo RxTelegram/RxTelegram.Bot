@@ -8,5 +8,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     public class GetChatMember : BaseRequest
     {
         public int UserId { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

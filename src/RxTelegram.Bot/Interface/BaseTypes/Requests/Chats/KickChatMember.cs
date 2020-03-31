@@ -20,5 +20,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// </summary>
         public int UntilDate { get; set; }
 
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

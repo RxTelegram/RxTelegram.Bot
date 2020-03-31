@@ -38,5 +38,7 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// Required if chat_id and message_id are not specified. Identifier of the inline message
         /// </summary>
         public string InlineMessageId { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

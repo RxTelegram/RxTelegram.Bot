@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -7,6 +8,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using RxTelegram.Bot.Exceptions;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Utils;
 
 namespace RxTelegram.Bot.Api
@@ -58,6 +62,14 @@ namespace RxTelegram.Bot.Api
             HttpContent httpContent = null;
             if (payload != null)
             {
+                if (payload is BaseValidation castedPayload)
+                {
+                    if (castedPayload.IsValid())
+                    {
+                        throw new RequestValidationException(castedPayload.ValidationErrors);
+                    }
+                }
+
                 var serializer = JsonSerializer.Create(JsonSerializerSettings);
                 var multipartFormDataContent = new MultipartFormDataContent("boundary" + Guid.NewGuid());
                 var writer = new MultiPartJsonWriter(multipartFormDataContent);

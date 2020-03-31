@@ -36,5 +36,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         /// </summary>
         public IReplyMarkup Type { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

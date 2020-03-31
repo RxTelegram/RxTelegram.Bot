@@ -14,5 +14,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// New chat photo, uploaded using multipart/form-data
         /// </summary>
         public InputFile Photo { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

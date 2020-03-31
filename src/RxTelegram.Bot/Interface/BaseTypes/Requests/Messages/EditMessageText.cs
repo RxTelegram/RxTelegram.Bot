@@ -37,5 +37,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// A JSON-serialized object for an inline keyboard.
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

@@ -1,6 +1,8 @@
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
 {
-    public class SendPhoto
+    public class SendPhoto : BaseSend
     {
         /// <summary>
         /// Photo to send
@@ -11,5 +13,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
         /// </summary>
         public string Caption { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

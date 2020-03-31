@@ -7,6 +7,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     /// </summary>
     public class GetChatMembersCount : BaseRequest
     {
-
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

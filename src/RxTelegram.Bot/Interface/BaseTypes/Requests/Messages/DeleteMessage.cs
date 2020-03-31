@@ -19,5 +19,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// Identifier of the message to delete
         /// </summary>
         public int MessageId { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

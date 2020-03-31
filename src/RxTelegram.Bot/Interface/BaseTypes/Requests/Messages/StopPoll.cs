@@ -1,9 +1,12 @@
-﻿namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
+﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
+
+namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
 {
     /// <summary>
     /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
     /// </summary>
-    public class StopPoll
+    public class StopPoll : BaseValidation
     {
         /// <summary>
         /// Required
@@ -16,5 +19,7 @@
         /// A JSON-serialized object for a new message inline keyboard.
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

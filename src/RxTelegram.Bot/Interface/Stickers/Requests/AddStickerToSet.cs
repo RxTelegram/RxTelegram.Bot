@@ -1,11 +1,13 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
     /// <summary>
     /// Use this method to add a new sticker to a set created by the bot. Returns True on success.
     /// </summary>
-    public class AddStickerToSet
+    public class AddStickerToSet : BaseValidation
     {
         /// <summary>
         /// Required
@@ -38,5 +40,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// A JSON-serialized object for position where the mask should be placed on faces
         /// </summary>
         public MaskPosition MaskPosition { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }

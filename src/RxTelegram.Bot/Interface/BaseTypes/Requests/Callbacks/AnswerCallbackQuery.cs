@@ -1,10 +1,13 @@
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.Validation;
+
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks
 {
     /// <summary>
     /// Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a
     /// notification at the top of the chat screen or as an alert. On success, True is returned.
     /// </summary>
-    public class AnswerCallbackQuery
+    public class AnswerCallbackQuery : BaseValidation
     {
         /// <summary>
         /// Required
@@ -30,5 +33,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks
         /// support caching starting in version 3.14. Defaults to 0.
         /// </summary>
         public int CacheTime { get; set; }
+
+        protected override void Validate() => throw new System.NotImplementedException();
     }
 }
