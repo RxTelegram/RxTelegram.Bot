@@ -64,15 +64,17 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         public MaskPosition MaskPosition { get; set; }
 
         protected override void Validate() => Validation
-                                              .ValidateCondition(UserId < 1, Bot.Validation.ValidationErrors.IdLowerThanOne, nameof(UserId))
-                                              .ValidateCondition(PngSticker == null && TgsSticker == null,
-                                                                 Bot.Validation.ValidationErrors.NonePropertySet, nameof(PngSticker),
-                                                                 nameof(TgsSticker))
+                                              .ValidateCondition(UserId < 1, ValidationErrors.IdLowerThanOne, nameof(UserId))
+                                              .ValidateCondition(PngSticker == null && TgsSticker == null, ValidationErrors.NonePropertySet,
+                                                                 nameof(PngSticker), nameof(TgsSticker))
                                               .ValidateCondition(PngSticker != null && TgsSticker != null,
-                                                                 Bot.Validation.ValidationErrors.OnlyONePropertyCanBeSet,
-                                                                 nameof(PngSticker),
+                                                                 ValidationErrors.OnlyONePropertyCanBeSet, nameof(PngSticker),
                                                                  nameof(TgsSticker))
-                                              .ValidateRequired<CreateNewStickerSet>(this, x => x.UserId, x => x.Name, x => x.Title,
-                                                                                     x => x.Emojis);
+                                              .ValidateRequired<CreateNewStickerSet>(this, x => x.UserId)
+                                              .ValidateRequired<CreateNewStickerSet>(this, x => x.Name)
+                                              .ValidateRequired<CreateNewStickerSet>(this, x => x.Title)
+                                              .ValidateRequired<CreateNewStickerSet>(this, x => x.Emojis)
+                                              .ValidateCondition(Name.Contains("_by_"), Bot.Validation.ValidationErrors.InvalidStickerName,
+                                                                 nameof(Name));
     }
 }

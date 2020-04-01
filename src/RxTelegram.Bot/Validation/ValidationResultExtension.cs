@@ -46,41 +46,39 @@ namespace RxTelegram.Bot.Validation
         /// Checks if all properties given by selectors are unequal to default. If not a ValidationError is created.
         /// </summary>
         /// <param name="selectors">List of Required Properties</param>
-        /// <param name="res"></param>
+        /// <param name="res">Objects that keeps track of all Validation Errors</param>
         /// <param name="obj">use this</param>
         /// <typeparam name="T">Type of Class which has the properties</typeparam>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public static ValidationResult ValidateRequired<T>(this ValidationResult res, object obj, params Expression<Func<T, object>>[] selectors)
+        public static ValidationResult ValidateRequired<T>(this ValidationResult res, object obj, Expression<Func<T, object>> selector)
         {
-            foreach (var selector in selectors)
+            if (selector.NodeType != ExpressionType.Lambda)
             {
-                if (selector.NodeType != ExpressionType.Lambda)
-                {
-                    throw new ArgumentException("Selector must be lambda expression", nameof(selector));
-                }
+                throw new ArgumentException("Selector must be lambda expression", nameof(selector));
+            }
 
-                var lambda = (LambdaExpression) selector;
+            var lambda = (LambdaExpression) selector;
 
-                var memberExpression = ExtractMemberExpression(lambda.Body);
+            var memberExpression = ExtractMemberExpression(lambda.Body);
 
-                if (memberExpression == null)
-                {
-                    throw new ArgumentException("Selector must be member access expression", nameof(selector));
-                }
+            if (memberExpression == null)
+            {
+                throw new ArgumentException("Selector must be member access expression", nameof(selector));
+            }
 
-                if (memberExpression.Member.DeclaringType == null)
-                {
-                    throw new InvalidOperationException("Property does not have declaring type");
-                }
+            if (memberExpression.Member.DeclaringType == null)
+            {
+                throw new InvalidOperationException("Property does not have declaring type");
+            }
 
-                var property = memberExpression.Member.DeclaringType.GetProperty(memberExpression.Member.Name);
-                var value = property?.GetValue(obj);
-                if (value == null || value != GetDefault(value.GetType(), obj))
-                {
-                    AddNewValidationError(res, string.IsNullOrEmpty(property?.Name) ? "Property name not found!" : property.Name,
-                                          ValidationErrors.FieldRequired);
-                }
+            var property = memberExpression.Member.DeclaringType.GetProperty(memberExpression.Member.Name);
+            var value = property?.GetValue(obj);
+            if (value == null ||
+                value != GetDefault(value.GetType(), obj))
+            {
+                AddNewValidationError(res, string.IsNullOrEmpty(property?.Name) ? "Property name not found!" : property.Name,
+                                      ValidationErrors.FieldRequired);
             }
 
             return res;

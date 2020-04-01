@@ -14,6 +14,9 @@ namespace RxTelegram.Bot.Validation
         OnlyONePropertyCanBeSet,
 
         [ValidationErrorsString("One of these properties need to be set")]
-        NonePropertySet
+        NonePropertySet,
+
+        [ValidationErrorsString("Stickersets Created by bots need to end with _by_<botname> ")]
+        InvalidStickerName,
     }
 }

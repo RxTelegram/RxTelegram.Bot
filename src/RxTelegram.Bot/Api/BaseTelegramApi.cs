@@ -66,7 +66,7 @@ namespace RxTelegram.Bot.Api
                 {
                     if (castedPayload.IsValid())
                     {
-                        throw new RequestValidationException(castedPayload.ValidationErrors);
+                        throw new RequestValidationException(castedPayload.Errors);
                     }
                 }
 

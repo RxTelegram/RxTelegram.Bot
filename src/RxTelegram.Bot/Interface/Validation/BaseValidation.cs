@@ -17,9 +17,9 @@ namespace RxTelegram.Bot.Interface.Validation
         public bool IsValid()
         {
             Validate();
-            return Validation.ValidationErrors.Any();
+            return Validation.IsValid();
         }
 
-        public List<ValidationError> ValidationErrors => Validation.ValidationErrors;
+        public List<ValidationError> Errors => Validation.ValidationErrors;
     }
 }
