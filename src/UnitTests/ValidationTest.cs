@@ -27,7 +27,7 @@ namespace RxTelegram.Bot.UnitTests
         {
             var obj = new CreateNewStickerSet();
             obj.IsValid();
-            Assert.That(obj.Errors.Count, Is.EqualTo(5));
+            Assert.That(obj.Errors.Count, Is.EqualTo(6));
         }
 
     }

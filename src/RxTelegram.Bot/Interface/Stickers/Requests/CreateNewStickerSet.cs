@@ -74,7 +74,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
                                               .ValidateRequired<CreateNewStickerSet>(this, x => x.Name)
                                               .ValidateRequired<CreateNewStickerSet>(this, x => x.Title)
                                               .ValidateRequired<CreateNewStickerSet>(this, x => x.Emojis)
-                                              .ValidateCondition(Name.Contains("_by_"), Bot.Validation.ValidationErrors.InvalidStickerName,
+                                              .ValidateCondition(Name != null && Name.Contains("_by_"), ValidationErrors.InvalidStickerName,
                                                                  nameof(Name));
     }
 }
