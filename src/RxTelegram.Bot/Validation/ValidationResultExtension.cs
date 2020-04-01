@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
+using RxTelegram.Bot.Interface.Stickers.Requests;
+using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Validation
 {
@@ -11,7 +13,7 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="property">Property which is involved in the error</param>
         /// <param name="error">Errormessage as String</param>
-        public static void AddNewValidationError(ValidationResult res, string property, string error) =>
+        public static void AddNewValidationError<T>(ValidationResult<T> res, string property, string error) =>
             res.ValidationErrors.Add(new ValidationError(property, error));
 
         /// <summary>
@@ -20,7 +22,7 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="property">Property which is involved in the error</param>
         /// <param name="error">Errormessage as Enum</param>
-        public static void AddNewValidationError(ValidationResult res, string property, ValidationErrors error) =>
+        public static void AddNewValidationError<T>(ValidationResult<T> res, string property, ValidationErrors error) =>
             res.ValidationErrors.Add(new ValidationError(property, error));
 
         /// <summary>
@@ -30,9 +32,9 @@ namespace RxTelegram.Bot.Validation
         /// <param name="condition">Condition to test for</param>
         /// <param name="validationErrors">Enum error for Errormessage</param>
         /// <param name="property">Property which is involved in the error</param>
-        public static ValidationResult ValidateCondition(this ValidationResult res, bool condition, ValidationErrors validationErrors, params string[] property)
+        public static ValidationResult<T> ValidateCondition<T>(this ValidationResult<T> res, Func<T, bool> condition, ValidationErrors validationErrors, params string[] property)
         {
-            if (condition == false)
+            if (condition(res.Value) == false)
             {
                 AddNewValidationError(res, string.Join(", ", property), validationErrors);
             }
@@ -51,7 +53,7 @@ namespace RxTelegram.Bot.Validation
         /// <typeparam name="T">Type of Class which has the properties</typeparam>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public static ValidationResult ValidateRequired<T>(this ValidationResult res, object obj, Expression<Func<T, object>> selector)
+        public static ValidationResult<T> ValidateRequired<T>(this ValidationResult<T> res, Expression<Func<T, object>> selector)
         {
             if (selector.NodeType != ExpressionType.Lambda)
             {
@@ -73,9 +75,9 @@ namespace RxTelegram.Bot.Validation
             }
 
             var property = memberExpression.Member.DeclaringType.GetProperty(memberExpression.Member.Name);
-            var value = property?.GetValue(obj);
+            var value = property?.GetValue(res.Value);
             if (value == null ||
-                value != GetDefault(value.GetType(), obj))
+                value == GetDefault(value.GetType(), res.Value))
             {
                 AddNewValidationError(res, string.IsNullOrEmpty(property?.Name) ? "Property name not found!" : property.Name,
                                       ValidationErrors.FieldRequired);

@@ -1,6 +1,7 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.Validation;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
@@ -41,6 +42,6 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// </summary>
         public MaskPosition MaskPosition { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.Payments.Requests.Base;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Payments.Requests
 {
@@ -15,6 +16,6 @@ namespace RxTelegram.Bot.Interface.Payments.Requests
         /// </summary>
         public string PreCheckoutQueryId { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

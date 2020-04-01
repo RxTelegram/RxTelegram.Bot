@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
 {
@@ -28,6 +29,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// </summary>
         public int? Duration { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

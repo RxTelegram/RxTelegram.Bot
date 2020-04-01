@@ -9,17 +9,25 @@ namespace RxTelegram.Bot.Interface.Validation
 {
     public abstract class BaseValidation
     {
-        [JsonIgnore]
-        protected ValidationResult Validation { get; } = new ValidationResult();
+        private IValidationResult _validationResult;
 
-        protected abstract void Validate();
-
-        public bool IsValid()
+        private IValidationResult ValidationResult
         {
-            Validate();
-            return Validation.IsValid();
+            get
+            {
+                if (_validationResult == null)
+                {
+                    _validationResult = Validate();
+                }
+
+                return _validationResult;
+            }
         }
 
-        public List<ValidationError> Errors => Validation.ValidationErrors;
+        protected abstract IValidationResult Validate();
+
+        public bool IsValid() => ValidationResult.IsValid();
+
+        public List<ValidationError> Errors => ValidationResult.Errors();
     }
 }

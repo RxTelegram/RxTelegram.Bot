@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
 {
@@ -49,6 +50,6 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// </summary>
         public ParseMode ParseMode { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }
