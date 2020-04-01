@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using RxTelegram.Bot.Interface.Validation;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Exceptions
 {

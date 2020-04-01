@@ -1,5 +1,6 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.Validation;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
@@ -62,14 +63,16 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// </summary>
         public MaskPosition MaskPosition { get; set; }
 
-        protected override void Validate()
-        {
-            ValidateCondition(UserId < 1,  Validation.ValidationErrors.IdLowerThanOne, nameof(UserId));
-            ValidateCondition(PngSticker.IsNull() && TgsSticker.IsNull(), Validation.ValidationErrors.NonePropertySet,
-                                  nameof(PngSticker), nameof(TgsSticker));
-            ValidateCondition(PngSticker.IsNotNull() && TgsSticker.IsNotNull(), Validation.ValidationErrors.OnlyONePropertyCanBeSet,
-                                  nameof(PngSticker), nameof(TgsSticker));
-            ValidateRequired<CreateNewStickerSet>(x => x.UserId, x => x.Name, x => x.Title, x => x.Emojis);
-        }
+        protected override void Validate() => Validation
+                                              .ValidateCondition(UserId < 1, Bot.Validation.ValidationErrors.IdLowerThanOne, nameof(UserId))
+                                              .ValidateCondition(PngSticker == null && TgsSticker == null,
+                                                                 Bot.Validation.ValidationErrors.NonePropertySet, nameof(PngSticker),
+                                                                 nameof(TgsSticker))
+                                              .ValidateCondition(PngSticker != null && TgsSticker != null,
+                                                                 Bot.Validation.ValidationErrors.OnlyONePropertyCanBeSet,
+                                                                 nameof(PngSticker),
+                                                                 nameof(TgsSticker))
+                                              .ValidateRequired<CreateNewStickerSet>(this, x => x.UserId, x => x.Name, x => x.Title,
+                                                                                     x => x.Emojis);
     }
 }

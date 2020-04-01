@@ -1,6 +1,7 @@
 using System.Linq;
+using RxTelegram.Bot.Interface.Validation;
 
-namespace RxTelegram.Bot.Interface.Validation
+namespace RxTelegram.Bot.Validation
 {
     public static class ValidationsErrorExtension
     {

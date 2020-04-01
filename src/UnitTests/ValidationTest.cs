@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 using RxTelegram.Bot.Interface.Validation;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.UnitTests
 {

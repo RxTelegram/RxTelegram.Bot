@@ -1,4 +1,4 @@
-namespace RxTelegram.Bot.Interface.Validation
+namespace RxTelegram.Bot.Validation
 {
     public class ValidationError
     {
@@ -14,9 +14,9 @@ namespace RxTelegram.Bot.Interface.Validation
             Error = error;
         }
 
-        public string PropertyName { get; }
+        private string PropertyName { get; }
 
-        public string Error { get; }
+        private string Error { get; }
 
         public override string ToString() => $"({PropertyName}): \"{Error}\"";
 

@@ -1,4 +1,6 @@
-namespace RxTelegram.Bot.Interface.Validation
+using RxTelegram.Bot.Interface.Validation;
+
+namespace RxTelegram.Bot.Validation
 {
     public enum ValidationErrors
     {

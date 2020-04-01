@@ -1,4 +1,5 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+﻿using System;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
@@ -18,10 +19,8 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// </summary>
         public InputFile PngSticker { get; set; }
 
-        protected override void Validate()
-        {
-            ValidateCondition(UserId < 1, Validation.ValidationErrors.IdLowerThanOne, nameof(UserId));
-            ValidateRequired<UploadStickerFile>(x => x.UserId, x => x.PngSticker);
-        }
+        //ValidateCondition(UserId < 1, Bot.Validation.ValidationErrors.IdLowerThanOne, nameof(UserId));
+        //ValidateRequired<UploadStickerFile>(x => x.UserId, x => x.PngSticker);
+        protected override void Validate() => throw new NotImplementedException();
     }
 }
