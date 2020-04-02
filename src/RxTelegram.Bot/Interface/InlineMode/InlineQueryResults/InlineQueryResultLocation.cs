@@ -1,3 +1,5 @@
+using RxTelegram.Bot.Validation;
+
 namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
 {
     /// <summary>
@@ -42,6 +44,6 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// </summary>
         public int? ThumbHeight { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

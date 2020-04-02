@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace RxTelegram.Bot.Validation
@@ -11,7 +13,7 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="property">Property which is involved in the error</param>
         /// <param name="error">Errormessage as String</param>
-        public static void AddNewValidationError(ValidationResult res, string property, string error) =>
+        private static void AddNewValidationError<T>(ValidationResult<T> res, string property, string error) =>
             res.ValidationErrors.Add(new ValidationError(property, error));
 
         /// <summary>
@@ -20,7 +22,7 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="property">Property which is involved in the error</param>
         /// <param name="error">Errormessage as Enum</param>
-        public static void AddNewValidationError(ValidationResult res, string property, ValidationErrors error) =>
+        private static void AddNewValidationError<T>(ValidationResult<T> res, string property, ValidationErrors error) =>
             res.ValidationErrors.Add(new ValidationError(property, error));
 
         /// <summary>
@@ -29,29 +31,70 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="condition">Condition to test for</param>
         /// <param name="validationErrors">Enum error for Errormessage</param>
-        /// <param name="property">Property which is involved in the error</param>
-        public static ValidationResult ValidateCondition(this ValidationResult res, bool condition, ValidationErrors validationErrors, params string[] property)
+        /// <param name="error">Error message string</param>
+        public static ValidationResult<T> IsTrue<T>(
+            this ValidationResult<T> res,
+            Expression<Func<T, bool>> condition,
+            ValidationErrors? validationErrors = null,
+            string error = null) => BoolComparison(res, condition, false, validationErrors, error);
+
+        /// <summary>
+        /// Test whether the condition evaluates to true. If so, we add a new error to the ValidationErrors
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="condition">Condition to test for</param>
+        /// <param name="validationErrors">Enum error for Errormessage</param>
+        /// <param name="error">Error message string</param>
+        public static ValidationResult<T> IsFalse<T>(
+            this ValidationResult<T> res,
+            Expression<Func<T, bool>> condition,
+            ValidationErrors? validationErrors = null,
+            string error = null) => BoolComparison(res, condition, true, validationErrors, error);
+
+        private static ValidationResult<T> BoolComparison<T>(
+            ValidationResult<T> res,
+            Expression<Func<T, bool>> condition,
+            bool shouldBe,
+            ValidationErrors? validationErrors = null,
+            string error = null)
         {
-            if (condition == false)
+            var memberNames = string.Join(", ", GetMemberNames(condition)
+                                                .Distinct()
+                                                .OrderBy(x => x));
+            var conditionFunc = condition.Compile();
+            if (conditionFunc(res.Value) == shouldBe)
             {
-                AddNewValidationError(res, string.Join(", ", property), validationErrors);
+                return res;
+            }
+
+            if (validationErrors.HasValue)
+            {
+                AddNewValidationError(res, memberNames, validationErrors.Value);
+            }
+            else if (!string.IsNullOrEmpty(error))
+            {
+                AddNewValidationError(res, memberNames, error);
+            }
+            else
+            {
+                throw new NotImplementedException(nameof(validationErrors) + " or " + nameof(error) + "need to be set!");
             }
 
             return res;
         }
+
 
         #region Required Properties
 
         /// <summary>
         /// Checks if all properties given by selectors are unequal to default. If not a ValidationError is created.
         /// </summary>
-        /// <param name="selectors">List of Required Properties</param>
+        /// <param name="selector">List of Required Properties</param>
         /// <param name="res">Objects that keeps track of all Validation Errors</param>
-        /// <param name="obj">use this</param>
         /// <typeparam name="T">Type of Class which has the properties</typeparam>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public static ValidationResult ValidateRequired<T>(this ValidationResult res, object obj, Expression<Func<T, object>> selector)
+        public static ValidationResult<T> ValidateRequired<T>(this ValidationResult<T> res, Expression<Func<T, object>> selector)
         {
             if (selector.NodeType != ExpressionType.Lambda)
             {
@@ -73,9 +116,9 @@ namespace RxTelegram.Bot.Validation
             }
 
             var property = memberExpression.Member.DeclaringType.GetProperty(memberExpression.Member.Name);
-            var value = property?.GetValue(obj);
+            var value = property?.GetValue(res.Value);
             if (value == null ||
-                value != GetDefault(value.GetType(), obj))
+                value == GetDefault(value.GetType(), res.Value))
             {
                 AddNewValidationError(res, string.IsNullOrEmpty(property?.Name) ? "Property name not found!" : property.Name,
                                       ValidationErrors.FieldRequired);
@@ -121,6 +164,44 @@ namespace RxTelegram.Bot.Validation
                     return null;
             }
         }
+
         #endregion
+
+        private static IEnumerable<string> GetMemberNames(Expression expression)
+        {
+            var stack = new Stack<Expression>(new[] {expression});
+            while (stack.Count > 0)
+            {
+                switch (stack.Pop())
+                {
+                    case null:
+                        yield break;
+                    case LambdaExpression lambdaExpression:
+                    {
+                        var operation = (BinaryExpression)lambdaExpression.Body;
+                        stack.Push(operation.Left);
+                        stack.Push(operation.Right);
+                        break;
+                    }
+                    case BinaryExpression binaryExpression:
+                    {
+                        stack.Push(binaryExpression.Left);
+                        stack.Push(binaryExpression.Right);
+                        break;
+                    }
+                    case ConstantExpression _:
+                        // ignored
+                        break;
+                    case MethodCallExpression methodCallExpression:
+                        stack.Push(methodCallExpression.Object);
+                        break;
+                    case MemberExpression memberExpression:
+                        yield return memberExpression.Member.Name;
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace RxTelegram.Bot.Interface.Validation
+namespace RxTelegram.Bot.Validation
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class ValidationErrorsStringAttribute : Attribute

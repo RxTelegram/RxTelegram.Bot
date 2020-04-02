@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
@@ -23,12 +24,31 @@ namespace RxTelegram.Bot.UnitTests
         }
 
         [Test]
-        public void Test ()
+        public void TestInvalid()
         {
             var obj = new CreateNewStickerSet();
-            obj.IsValid();
-            Assert.That(obj.Errors.Count, Is.EqualTo(6));
+            Assert.False(obj.IsValid());
+            Assert.That(obj.Errors.Count, Is.EqualTo(5));
+            var errors = obj.Errors.Select(x => x.GetMessage).ToList();
+            CollectionAssert.Contains(errors, "(PngSticker, TgsSticker): \"One of these properties need to be set\"");
+            CollectionAssert.Contains(errors, "(Name): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Title): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Emojis): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Name): \"Stickersets Created by bots need to end with _by_<botname> \"");
         }
 
+        [Test]
+        public void TestValid()
+        {
+            var obj = new CreateNewStickerSet
+                      {
+                          Emojis = "❤",
+                          Name = "StickerSet_by_BlaBot",
+                          Title = "Title",
+                          PngSticker = new InputFile("Path")
+                      };
+            Assert.That(obj.IsValid());
+            Assert.That(obj.Errors.Count, Is.EqualTo(0));
+        }
     }
 }

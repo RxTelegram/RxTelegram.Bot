@@ -1,6 +1,6 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
-using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.Validation;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
@@ -22,10 +22,16 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         public string Name { get; set; }
 
         /// <summary>
-        /// Required
+        /// Optional
         /// Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height
         /// must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL
         /// as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
+        /// </summary>
+        public InputFile PngSticker { get; set; }
+
+        /// <summary>
+        /// Optional
+        /// TGS animation with the sticker, uploaded using multipart/form-data.
         /// </summary>
         public InputFile TgsSticker { get; set; }
 
@@ -41,6 +47,6 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// </summary>
         public MaskPosition MaskPosition { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

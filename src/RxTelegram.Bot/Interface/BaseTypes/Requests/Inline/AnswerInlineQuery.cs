@@ -1,6 +1,7 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Validation;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Inline
 {
@@ -62,6 +63,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Inline
         /// </summary>
         public string SwitchPmParameter { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

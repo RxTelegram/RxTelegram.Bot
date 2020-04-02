@@ -1,6 +1,7 @@
 ﻿using System;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.Validation;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests
 {
@@ -21,6 +22,6 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
 
         //ValidateCondition(UserId < 1, Bot.Validation.ValidationErrors.IdLowerThanOne, nameof(UserId));
         //ValidateRequired<UploadStickerFile>(x => x.UserId, x => x.PngSticker);
-        protected override void Validate() => throw new NotImplementedException();
+        protected override IValidationResult Validate() => throw new NotImplementedException();
     }
 }

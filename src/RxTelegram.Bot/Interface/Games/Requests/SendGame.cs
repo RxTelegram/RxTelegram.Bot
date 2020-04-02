@@ -1,5 +1,6 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Games.Requests
 {
@@ -29,6 +30,6 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// </summary>
         public InlineKeyboardMarkup Type { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

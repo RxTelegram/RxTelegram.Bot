@@ -1,5 +1,6 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
 {
@@ -63,6 +64,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// </summary>
         public IReplyMarkup ReplyMarkup { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

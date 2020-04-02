@@ -1,5 +1,6 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.Validation;
+using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Passport.Requests
 {
@@ -26,6 +27,6 @@ namespace RxTelegram.Bot.Interface.Passport.Requests
         /// </summary>
         public PassportElementError Type { get; set; }
 
-        protected override void Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
 }

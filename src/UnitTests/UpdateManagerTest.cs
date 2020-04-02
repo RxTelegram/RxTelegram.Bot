@@ -23,7 +23,7 @@ namespace RxTelegram.Bot.UnitTests
             var prop = typeof(UpdateManager).GetProperty("GetUpdateTypes", BindingFlags.NonPublic | BindingFlags.Instance);
             if (prop == null)
                 throw new Exception("Property not found!");
-            var getter = prop.GetGetMethod(nonPublic: true);
+            var getter = prop.GetGetMethod(true);
             var objectList = getter.Invoke(updateManager, null);
             if (!(objectList is IEnumerable<UpdateType> updateTypesList))
                 throw new Exception("Property cast not possible!");
@@ -31,7 +31,6 @@ namespace RxTelegram.Bot.UnitTests
             Assert.That(updateTypes.Count, Is.EqualTo(2));
             CollectionAssert.Contains(updateTypes, UpdateType.Message);
             CollectionAssert.Contains(updateTypes, UpdateType.EditedChannelPost);
-            return;
         }
     }
 }
