@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
-using RxTelegram.Bot.Interface.Stickers.Requests;
-using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Validation
 {
@@ -31,16 +31,46 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="condition">Condition to test for</param>
         /// <param name="validationErrors">Enum error for Errormessage</param>
-        /// <param name="property">Property which is involved in the error</param>
-        public static ValidationResult<T> ValidateCondition<T>(this ValidationResult<T> res, Func<T, bool> condition, ValidationErrors validationErrors, params string[] property)
+        /// <param name="error">Error message string</param>
+        public static ValidationResult<T> IsTrue<T>(
+            this ValidationResult<T> res, Expression<Func<T, bool>> condition, ValidationErrors? validationErrors = null,
+            string error = null) => BoolComparison(res, condition, false, validationErrors, error);
+
+        /// <summary>
+        /// Test whether the condition evaluates to true. If so, we add a new error to the ValidationErrors
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="condition">Condition to test for</param>
+        /// <param name="validationErrors">Enum error for Errormessage</param>
+        /// <param name="error">Error message string</param>
+        public static ValidationResult<T> IsFalse<T>(
+            this ValidationResult<T> res, Expression<Func<T, bool>> condition, ValidationErrors? validationErrors = null,
+            string error = null) => BoolComparison(res, condition, true, validationErrors, error);
+
+        private static ValidationResult<T> BoolComparison<T>(
+            ValidationResult<T> res, Expression<Func<T, bool>> condition, bool shouldBe, ValidationErrors? validationErrors = null,
+            string error = null)
         {
-            if (condition(res.Value) == false)
+            var memberNames = GetMemberNames(condition);
+            var conditionFunc = condition.Compile();
+            if (conditionFunc(res.Value) == shouldBe)
+                return res;
+            if (validationErrors.HasValue)
             {
-                AddNewValidationError(res, string.Join(", ", property), validationErrors);
+                AddNewValidationError(res, memberNames, validationErrors.Value);
+            }
+            else if (!string.IsNullOrEmpty(error))
+            {
+                AddNewValidationError(res, memberNames, error);
+            }
+            else
+            {
+                throw new NotImplementedException(nameof(validationErrors) + " or " + nameof(error) + "need to be set!");
             }
 
             return res;
         }
+
 
         #region Required Properties
 
@@ -124,5 +154,48 @@ namespace RxTelegram.Bot.Validation
             }
         }
         #endregion
+
+        private static string GetMemberNames(Expression expression, List<string> result = null)
+        {
+            if (result == null)
+            {
+                result = new List<string>();
+            }
+            if (expression == null)
+            {
+                return string.Empty;
+            }
+
+            if (expression is LambdaExpression lambdaExpression)
+            {
+                var operation = (BinaryExpression)lambdaExpression.Body;
+                if (operation.Left is MemberExpression operationLeft)
+                {
+                    result.Add(operationLeft.Member.Name);
+                }
+
+                if (operation.Right is MemberExpression operationRight)
+                {
+                    result.Add(operationRight.Member.Name);
+                }
+                GetMemberNames(operation.Left, result);
+                GetMemberNames(operation.Right, result);
+            }
+
+            if (expression is BinaryExpression binaryExpression)
+            {
+                if (binaryExpression.Left is MemberExpression operationLeft)
+                {
+                    result.Add(operationLeft.Member.Name);
+                }
+
+                if (binaryExpression.Right is MemberExpression operationRight)
+                {
+                    result.Add(operationRight.Member.Name);
+                }
+            }
+
+            return string.Join(", ", result.Distinct());
+        }
     }
 }
