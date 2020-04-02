@@ -13,7 +13,7 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="property">Property which is involved in the error</param>
         /// <param name="error">Errormessage as String</param>
-        public static void AddNewValidationError<T>(ValidationResult<T> res, string property, string error) =>
+        private static void AddNewValidationError<T>(ValidationResult<T> res, string property, string error) =>
             res.ValidationErrors.Add(new ValidationError(property, error));
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="property">Property which is involved in the error</param>
         /// <param name="error">Errormessage as Enum</param>
-        public static void AddNewValidationError<T>(ValidationResult<T> res, string property, ValidationErrors error) =>
+        private static void AddNewValidationError<T>(ValidationResult<T> res, string property, ValidationErrors error) =>
             res.ValidationErrors.Add(new ValidationError(property, error));
 
         /// <summary>
@@ -51,10 +51,14 @@ namespace RxTelegram.Bot.Validation
             ValidationResult<T> res, Expression<Func<T, bool>> condition, bool shouldBe, ValidationErrors? validationErrors = null,
             string error = null)
         {
-            var memberNames = GetMemberNames(condition);
+            var memberNames = string.Join(", ", GetMemberNames(condition)
+                                                .Distinct()
+                                                .OrderBy(x => x));
             var conditionFunc = condition.Compile();
             if (conditionFunc(res.Value) == shouldBe)
+            {
                 return res;
+            }
             if (validationErrors.HasValue)
             {
                 AddNewValidationError(res, memberNames, validationErrors.Value);
@@ -77,9 +81,8 @@ namespace RxTelegram.Bot.Validation
         /// <summary>
         /// Checks if all properties given by selectors are unequal to default. If not a ValidationError is created.
         /// </summary>
-        /// <param name="selectors">List of Required Properties</param>
+        /// <param name="selector">List of Required Properties</param>
         /// <param name="res">Objects that keeps track of all Validation Errors</param>
-        /// <param name="obj">use this</param>
         /// <typeparam name="T">Type of Class which has the properties</typeparam>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
@@ -155,47 +158,41 @@ namespace RxTelegram.Bot.Validation
         }
         #endregion
 
-        private static string GetMemberNames(Expression expression, List<string> result = null)
+        private static IEnumerable<string> GetMemberNames(Expression expression)
         {
-            if (result == null)
+            var stack = new Stack<Expression>(new[] {expression});
+            while (stack.Count > 0)
             {
-                result = new List<string>();
-            }
-            if (expression == null)
-            {
-                return string.Empty;
-            }
-
-            if (expression is LambdaExpression lambdaExpression)
-            {
-                var operation = (BinaryExpression)lambdaExpression.Body;
-                if (operation.Left is MemberExpression operationLeft)
+                switch (stack.Pop())
                 {
-                    result.Add(operationLeft.Member.Name);
-                }
-
-                if (operation.Right is MemberExpression operationRight)
-                {
-                    result.Add(operationRight.Member.Name);
-                }
-                GetMemberNames(operation.Left, result);
-                GetMemberNames(operation.Right, result);
-            }
-
-            if (expression is BinaryExpression binaryExpression)
-            {
-                if (binaryExpression.Left is MemberExpression operationLeft)
-                {
-                    result.Add(operationLeft.Member.Name);
-                }
-
-                if (binaryExpression.Right is MemberExpression operationRight)
-                {
-                    result.Add(operationRight.Member.Name);
+                    case null:
+                        yield break;
+                    case LambdaExpression lambdaExpression:
+                    {
+                        var operation = (BinaryExpression)lambdaExpression.Body;
+                        stack.Push(operation.Left);
+                        stack.Push(operation.Right);
+                        break;
+                    }
+                    case BinaryExpression binaryExpression:
+                    {
+                        stack.Push(binaryExpression.Left);
+                        stack.Push(binaryExpression.Right);
+                        break;
+                    }
+                    case ConstantExpression _:
+                        // ignored
+                        break;
+                    case MethodCallExpression methodCallExpression:
+                        stack.Push(methodCallExpression.Object);
+                        break;
+                    case MemberExpression memberExpression:
+                        yield return memberExpression.Member.Name;
+                        break;
+                    default:
+                        throw new NotImplementedException();
                 }
             }
-
-            return string.Join(", ", result.Distinct());
         }
     }
 }

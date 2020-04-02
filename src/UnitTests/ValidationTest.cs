@@ -30,11 +30,11 @@ namespace RxTelegram.Bot.UnitTests
             Assert.False(obj.IsValid());
             Assert.That(obj.Errors.Count, Is.EqualTo(5));
             var errors = obj.Errors.Select(x => x.GetMessage).ToList();
-            Assert.That(errors.Contains("(PngSticker, TgsSticker): \"One of these properties need to be set\""));
-            Assert.That(errors.Contains("(Name): \"Field is not set, but required\""));
-            Assert.That(errors.Contains("(Title): \"Field is not set, but required\""));
-            Assert.That(errors.Contains("(Emojis): \"Field is not set, but required\""));
-            Assert.That(errors.Contains("(Name): \"Stickersets Created by bots need to end with _by_<botname> \""));
+            CollectionAssert.Contains(errors, "(PngSticker, TgsSticker): \"One of these properties need to be set\"");
+            CollectionAssert.Contains(errors, "(Name): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Title): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Emojis): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Name): \"Stickersets Created by bots need to end with _by_<botname> \"");
         }
 
         [Test]
