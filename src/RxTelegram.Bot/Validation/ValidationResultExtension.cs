@@ -33,7 +33,9 @@ namespace RxTelegram.Bot.Validation
         /// <param name="validationErrors">Enum error for Errormessage</param>
         /// <param name="error">Error message string</param>
         public static ValidationResult<T> IsTrue<T>(
-            this ValidationResult<T> res, Expression<Func<T, bool>> condition, ValidationErrors? validationErrors = null,
+            this ValidationResult<T> res,
+            Expression<Func<T, bool>> condition,
+            ValidationErrors? validationErrors = null,
             string error = null) => BoolComparison(res, condition, false, validationErrors, error);
 
         /// <summary>
@@ -44,11 +46,16 @@ namespace RxTelegram.Bot.Validation
         /// <param name="validationErrors">Enum error for Errormessage</param>
         /// <param name="error">Error message string</param>
         public static ValidationResult<T> IsFalse<T>(
-            this ValidationResult<T> res, Expression<Func<T, bool>> condition, ValidationErrors? validationErrors = null,
+            this ValidationResult<T> res,
+            Expression<Func<T, bool>> condition,
+            ValidationErrors? validationErrors = null,
             string error = null) => BoolComparison(res, condition, true, validationErrors, error);
 
         private static ValidationResult<T> BoolComparison<T>(
-            ValidationResult<T> res, Expression<Func<T, bool>> condition, bool shouldBe, ValidationErrors? validationErrors = null,
+            ValidationResult<T> res,
+            Expression<Func<T, bool>> condition,
+            bool shouldBe,
+            ValidationErrors? validationErrors = null,
             string error = null)
         {
             var memberNames = string.Join(", ", GetMemberNames(condition)
@@ -59,6 +66,7 @@ namespace RxTelegram.Bot.Validation
             {
                 return res;
             }
+
             if (validationErrors.HasValue)
             {
                 AddNewValidationError(res, memberNames, validationErrors.Value);
@@ -156,6 +164,7 @@ namespace RxTelegram.Bot.Validation
                     return null;
             }
         }
+
         #endregion
 
         private static IEnumerable<string> GetMemberNames(Expression expression)
