@@ -21,5 +21,8 @@ namespace RxTelegram.Bot.Validation
 
         [ValidationErrorsString("InlineMessageId, ChatId or MessageId is required.")]
         InlineMessageIdChatIdMessageIdRequired,
+
+        [ValidationErrorsString("Only InputMediaPhoto or InputMediaVideo allowed")]
+        OnlyInputMediaPhotoOrInputMediaVideo,
     }
 }
