@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Validation
@@ -28,6 +29,9 @@ namespace RxTelegram.Bot.Validation
                 .ValidateRequired(x => x.Longitude)
                 .IsTrue(x => x.ChatId == null && x.MessageId == null && x.InlineMessageId == null,
                         ValidationErrors.InlineMessageIdChatIdMessageIdRequired);
+
+        public static ValidationResult<GetChat> CreateValidation(this GetChat value) =>
+            new ValidationResult<GetChat>(value).ValidateRequired(x => x.ChatId);
 
     }
 }
