@@ -43,6 +43,9 @@ namespace RxTelegram.Bot.Api
         public Task<bool> CreateNewStickerSet(CreateNewStickerSet createNewStickerSet) =>
             Post<bool>("createNewStickerSet", createNewStickerSet);
 
+        public Task<bool> EditMessageLiveLocation(EditMessageLiveLocation editMessageLiveLocation) =>
+            Post<bool>("editMessageLiveLocation", editMessageLiveLocation);
+
 
     }
 }

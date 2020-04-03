@@ -1,3 +1,4 @@
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Validation
@@ -14,5 +15,19 @@ namespace RxTelegram.Bot.Validation
                 .ValidateRequired(x => x.Title)
                 .ValidateRequired(x => x.Emojis)
                 .IsFalse(x => x.Name != null && x.Name.Contains("_by_"), ValidationErrors.InvalidStickerName);
+
+        public static ValidationResult<SendLocation> CreateValidation(this SendLocation value) =>
+            new ValidationResult<SendLocation>(value)
+                .ValidateRequired(x => x.ChatId)
+                .ValidateRequired(x => x.Latitude)
+                .ValidateRequired(x => x.Longitude);
+
+        public static ValidationResult<EditMessageLiveLocation> CreateValidation(this EditMessageLiveLocation value) =>
+            new ValidationResult<EditMessageLiveLocation>(value)
+                .ValidateRequired(x => x.Latitude)
+                .ValidateRequired(x => x.Longitude)
+                .IsTrue(x => x.ChatId == null && x.MessageId == null && x.InlineMessageId == null,
+                        ValidationErrors.InlineMessageIdChatIdMessageIdRequired);
+
     }
 }

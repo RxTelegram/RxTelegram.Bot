@@ -18,5 +18,8 @@ namespace RxTelegram.Bot.Validation
 
         [ValidationErrorsString("Stickersets Created by bots need to end with _by_<botname> ")]
         InvalidStickerName,
+
+        [ValidationErrorsString("InlineMessageId, ChatId or MessageId is required.")]
+        InlineMessageIdChatIdMessageIdRequired,
     }
 }
