@@ -10,6 +10,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     {
         public int UserId { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

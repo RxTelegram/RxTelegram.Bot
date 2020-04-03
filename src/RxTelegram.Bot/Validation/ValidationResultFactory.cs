@@ -33,5 +33,12 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<GetChat> CreateValidation(this GetChat value) =>
             new ValidationResult<GetChat>(value).ValidateRequired(x => x.ChatId);
 
+        public static ValidationResult<GetChatMember> CreateValidation(this GetChatMember value) =>
+            new ValidationResult<GetChatMember>(value).ValidateRequired(x => x.ChatId)
+                                                      .ValidateRequired(x => x.UserId);
+
+        public static ValidationResult<GetStickerSet> CreateValidation(this GetStickerSet value) =>
+            new ValidationResult<GetStickerSet>(value).ValidateRequired(x => x.Name);
+
     }
 }

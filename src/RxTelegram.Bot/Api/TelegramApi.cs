@@ -5,6 +5,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.Setup;
+using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Api
@@ -48,6 +49,10 @@ namespace RxTelegram.Bot.Api
             Post<bool>("editMessageLiveLocation", editMessageLiveLocation);
 
         public Task<Chat> GetChat(GetChat getChat) => Post<Chat>("getChat", getChat);
+
+        public Task<ChatMember> GetChatMember(GetChatMember getChatMember) => Post<ChatMember>("getChatMember", getChatMember);
+
+        public Task<StickerSet> GetStickerSet(GetStickerSet getStickerSet) => Post<StickerSet>("getStickerSet", getStickerSet);
 
 
     }
