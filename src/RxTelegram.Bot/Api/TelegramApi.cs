@@ -57,5 +57,8 @@ namespace RxTelegram.Bot.Api
 
         public Task<UserProfilePhotos> GetUserProfilePhotos(GetUserProfilePhotos getUserProfilePhotos) =>
             Post<UserProfilePhotos>("getUserProfilePhotos", getUserProfilePhotos);
+
+        public Task<IEnumerable<ChatMember>> GetChatAdministrators(GetChatAdministrators getChatAdministrators) =>
+            Post<IEnumerable<ChatMember>>("getChatAdministrators", getChatAdministrators);
     }
 }

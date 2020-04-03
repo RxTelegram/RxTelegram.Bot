@@ -44,5 +44,10 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<GetUserProfilePhotos> CreateValidation(this GetUserProfilePhotos value) =>
             new ValidationResult<GetUserProfilePhotos>(value).ValidateRequired(x => x.UserId);
 
+        public static ValidationResult<GetChatAdministrators> CreateValidation(this GetChatAdministrators value) =>
+            new ValidationResult<GetChatAdministrators>(value).ValidateRequired(x => x.ChatId);
+
+
+
     }
 }
