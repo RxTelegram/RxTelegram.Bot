@@ -4,6 +4,7 @@ using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Requests;
@@ -54,6 +55,7 @@ namespace RxTelegram.Bot.Api
 
         public Task<StickerSet> GetStickerSet(GetStickerSet getStickerSet) => Post<StickerSet>("getStickerSet", getStickerSet);
 
-
+        public Task<UserProfilePhotos> GetUserProfilePhotos(GetUserProfilePhotos getUserProfilePhotos) =>
+            Post<UserProfilePhotos>("getUserProfilePhotos", getUserProfilePhotos);
     }
 }

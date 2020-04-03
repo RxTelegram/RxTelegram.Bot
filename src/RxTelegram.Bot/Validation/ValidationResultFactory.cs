@@ -1,5 +1,6 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Validation
@@ -39,6 +40,9 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<GetStickerSet> CreateValidation(this GetStickerSet value) =>
             new ValidationResult<GetStickerSet>(value).ValidateRequired(x => x.Name);
+
+        public static ValidationResult<GetUserProfilePhotos> CreateValidation(this GetUserProfilePhotos value) =>
+            new ValidationResult<GetUserProfilePhotos>(value).ValidateRequired(x => x.UserId);
 
     }
 }
