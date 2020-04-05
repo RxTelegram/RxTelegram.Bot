@@ -67,5 +67,9 @@ namespace RxTelegram.Bot.Api
         public Task<bool> KickChatMember(KickChatMember kickChatMember) => Post<bool>("kickChatMember", kickChatMember);
 
         public Task<bool> DeleteMessage(DeleteMessage deleteMessage) => Post<bool>("deleteMessage", deleteMessage);
+
+        public Task<bool> DeleteChatPhoto(DeleteChatPhoto deleteChatPhoto) => Post<bool>("deleteChatPhoto", deleteChatPhoto);
+
+        public Task<bool> LeaveChat(LeaveChat leaveChat) => Post<bool>("leaveChat", leaveChat);
     }
 }
