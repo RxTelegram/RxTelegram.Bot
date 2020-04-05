@@ -60,5 +60,12 @@ namespace RxTelegram.Bot.Api
 
         public Task<IEnumerable<ChatMember>> GetChatAdministrators(GetChatAdministrators getChatAdministrators) =>
             Post<IEnumerable<ChatMember>>("getChatAdministrators", getChatAdministrators);
+
+        public Task<int> GetChatMembersCount(GetChatMembersCount getChatMembersCount) =>
+            Post<int>("getChatMembersCount", getChatMembersCount);
+
+        public Task<bool> KickChatMember(KickChatMember kickChatMember) => Post<bool>("kickChatMember", kickChatMember);
+
+        public Task<bool> DeleteMessage(DeleteMessage deleteMessage) => Post<bool>("deleteMessage", deleteMessage);
     }
 }

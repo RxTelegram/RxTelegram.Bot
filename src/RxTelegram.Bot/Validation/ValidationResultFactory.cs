@@ -1,5 +1,6 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
@@ -47,7 +48,15 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<GetChatAdministrators> CreateValidation(this GetChatAdministrators value) =>
             new ValidationResult<GetChatAdministrators>(value).ValidateRequired(x => x.ChatId);
 
+        public static ValidationResult<GetChatMembersCount> CreateValidation(this GetChatMembersCount value) =>
+            new ValidationResult<GetChatMembersCount>(value).ValidateRequired(x => x.ChatId);
 
+        public static ValidationResult<KickChatMember> CreateValidation(this KickChatMember value) =>
+            new ValidationResult<KickChatMember>(value).ValidateRequired(x => x.ChatId)
+                                                       .ValidateRequired(x => x.UserId);
 
+        public static ValidationResult<DeleteMessage> CreateValidation(this DeleteMessage value) =>
+            new ValidationResult<DeleteMessage>(value).ValidateRequired(x => x.ChatId)
+                                                      .ValidateRequired(x => x.MessageId);
     }
 }

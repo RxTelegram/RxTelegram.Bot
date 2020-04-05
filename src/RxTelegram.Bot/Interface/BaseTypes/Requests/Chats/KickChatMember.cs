@@ -11,16 +11,18 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     public class KickChatMember : BaseRequest
     {
         /// <summary>
+        /// Required
         /// Unique identifier of the target user
         /// </summary>
         public int UserId { get; set; }
 
         /// <summary>
+        /// Optional
         /// Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the
         /// current time they are considered to be banned forever
         /// </summary>
         public int UntilDate { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

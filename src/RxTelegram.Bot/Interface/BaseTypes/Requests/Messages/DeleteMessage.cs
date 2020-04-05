@@ -21,6 +21,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// </summary>
         public int MessageId { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }
