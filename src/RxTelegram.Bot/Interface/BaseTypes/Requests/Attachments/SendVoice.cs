@@ -29,6 +29,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// </summary>
         public int? Duration { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

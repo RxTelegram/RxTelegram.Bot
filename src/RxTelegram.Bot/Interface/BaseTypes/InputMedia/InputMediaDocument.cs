@@ -1,4 +1,6 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Enums;
+﻿using System;
+using System.IO;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
@@ -30,5 +32,17 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         /// fixed-width text or inline URLs in the media caption.
         /// </summary>
         public ParseMode ParseMode { get; set; }
+
+        public InputMediaDocument(string fileId) : base(fileId)
+        {
+        }
+
+        public InputMediaDocument(Uri uri) : base(uri)
+        {
+        }
+
+        public InputMediaDocument(Stream stream, string fileName = default) : base(stream, fileName)
+        {
+        }
     }
 }

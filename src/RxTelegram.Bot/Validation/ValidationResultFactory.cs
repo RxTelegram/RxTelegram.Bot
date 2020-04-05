@@ -1,3 +1,5 @@
+using System.Linq;
+using RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
@@ -48,9 +50,50 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<GetChatAdministrators> CreateValidation(this GetChatAdministrators value) =>
             new ValidationResult<GetChatAdministrators>(value).ValidateRequired(x => x.ChatId);
 
+        public static ValidationResult<SendMessage> CreateValidation(this SendMessage value) =>
+            new ValidationResult<SendMessage>(value).ValidateRequired(x => x.ChatId)
+                                                    .ValidateRequired(x => x.Text);
+
+        public static ValidationResult<ForwardMessage> CreateValidation(this ForwardMessage value) =>
+            new ValidationResult<ForwardMessage>(value).ValidateRequired(x => x.ChatId)
+                                                       .ValidateRequired(x => x.FromChatId)
+                                                       .ValidateRequired(x => x.MessageId);
+
+        public static ValidationResult<SendPhoto> CreateValidation(this SendPhoto value)
+            => new ValidationResult<SendPhoto>(value).ValidateRequired(x => x.ChatId)
+                                                     .ValidateRequired(x => x.Photo);
+
+        public static ValidationResult<SendAudio> CreateValidation(this SendAudio value)
+            => new ValidationResult<SendAudio>(value).ValidateRequired(x => x.ChatId)
+                                                     .ValidateRequired(x => x.Audio);
+
+        public static ValidationResult<SendDocument> CreateValidation(this SendDocument value)
+            => new ValidationResult<SendDocument>(value).ValidateRequired(x => x.ChatId)
+                                                        .ValidateRequired(x => x.Document);
+
+        public static ValidationResult<SendVideo> CreateValidation(this SendVideo value)
+            => new ValidationResult<SendVideo>(value).ValidateRequired(x => x.ChatId)
+                                                     .ValidateRequired(x => x.Video);
+
+        public static ValidationResult<SendAnimation> CreateValidation(this SendAnimation value)
+            => new ValidationResult<SendAnimation>(value).ValidateRequired(x => x.ChatId)
+                                                         .ValidateRequired(x => x.Animation);
+
+        public static ValidationResult<SendVoice> CreateValidation(this SendVoice value)
+            => new ValidationResult<SendVoice>(value).ValidateRequired(x => x.ChatId)
+                                                     .ValidateRequired(x => x.Voice);
         public static ValidationResult<GetChatMembersCount> CreateValidation(this GetChatMembersCount value) =>
             new ValidationResult<GetChatMembersCount>(value).ValidateRequired(x => x.ChatId);
 
+        public static ValidationResult<SendVideoNote> CreateValidation(this SendVideoNote value)
+            => new ValidationResult<SendVideoNote>(value).ValidateRequired(x => x.ChatId)
+                                                         .ValidateRequired(x => x.VideoNote);
+
+        public static ValidationResult<SendMediaGroup> CreateValidation(this SendMediaGroup value) =>
+            new ValidationResult<SendMediaGroup>(value).ValidateRequired(x => x.ChatId)
+                                                       .ValidateRequired(x => x.Media)
+                                                       .IsFalse(x => x.Media != null && x.Media.All(input => input.GetType() == typeof(InputMediaPhoto) || input.GetType() == typeof(InputMediaVideo)),
+                                                                ValidationErrors.OnlyInputMediaPhotoOrInputMediaVideo);
         public static ValidationResult<KickChatMember> CreateValidation(this KickChatMember value) =>
             new ValidationResult<KickChatMember>(value).ValidateRequired(x => x.ChatId)
                                                        .ValidateRequired(x => x.UserId);

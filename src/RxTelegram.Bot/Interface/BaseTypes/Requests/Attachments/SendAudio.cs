@@ -51,6 +51,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// </summary>
         public InputFile Thumb { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

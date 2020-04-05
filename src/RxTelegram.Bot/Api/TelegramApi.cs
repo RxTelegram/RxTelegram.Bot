@@ -17,11 +17,13 @@ namespace RxTelegram.Bot.Api
 
         public TelegramApi(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
 
-        public Task<User> GetMe() => Get<User>("getMe");
-
         public Task<Update[]> GetUpdate(GetUpdate update) => Get<Update[]>("getUpdates", update);
 
+        public Task<User> GetMe() => Get<User>("getMe");
+
         public Task<Message> SendMessage(SendMessage message) => Post<Message>("sendMessage", message);
+
+        public Task<Message> ForwardMessage(ForwardMessage forwardMessage) => Post<Message>("forwardMessage", forwardMessage);
 
         public Task<Message> SendPhoto(SendPhoto message) => Post<Message>("sendPhoto", message);
 
@@ -37,11 +39,9 @@ namespace RxTelegram.Bot.Api
 
         public Task<Message> SendVideoNote(SendVideoNote message) => Post<Message>("sendVideoNote", message);
 
-        public Task<Message> SendMediaGroup(SendMediaGroup message) => Post<Message>("sendMediaGroup", message);
+        public Task<Message[]> SendMediaGroup(SendMediaGroup message) => Post<Message[]>("sendMediaGroup", message);
 
         public Task<Message> SendLocation(SendLocation message) => Post<Message>("sendLocation", message);
-
-        public Task<Message> ForwardMessage(ForwardMessage forwardMessage) => Post<Message>("forwardMessage", forwardMessage);
 
         public Task<bool> CreateNewStickerSet(CreateNewStickerSet createNewStickerSet) =>
             Post<bool>("createNewStickerSet", createNewStickerSet);

@@ -18,7 +18,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
 
         public InputFile(Uri uri)
         {
-            Value = uri.AbsolutePath;
+            Value = uri.AbsoluteUri;
         }
 
         public InputFile(Stream stream, string fileName = default)

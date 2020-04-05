@@ -1,4 +1,6 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Enums;
+﻿using System;
+using System.IO;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
@@ -45,5 +47,17 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         /// Optional. Video duration
         /// </summary>
         public int Duration { get; set; }
+
+        public InputMediaAnimation(string fileId) : base(fileId)
+        {
+        }
+
+        public InputMediaAnimation(Uri uri) : base(uri)
+        {
+        }
+
+        public InputMediaAnimation(Stream stream, string fileName = default) : base(stream, fileName)
+        {
+        }
     }
 }

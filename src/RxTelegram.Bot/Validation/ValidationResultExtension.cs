@@ -172,10 +172,14 @@ namespace RxTelegram.Bot.Validation
             var stack = new Stack<Expression>(new[] {expression});
             while (stack.Count > 0)
             {
-                switch (stack.Pop())
+                var asd = stack.Pop();
+                switch (asd)
                 {
                     case null:
-                        yield break;
+                    case ConstantExpression _:
+                    case ParameterExpression _:
+                        // ignore
+                        break;
                     case LambdaExpression lambdaExpression:
                     {
                         var operation = (BinaryExpression)lambdaExpression.Body;
@@ -189,16 +193,18 @@ namespace RxTelegram.Bot.Validation
                         stack.Push(binaryExpression.Right);
                         break;
                     }
-                    case ConstantExpression _:
-                        // ignored
-                        break;
                     case MethodCallExpression methodCallExpression:
+                        foreach (var argument in methodCallExpression.Arguments)
+                        {
+                            stack.Push(argument);
+                        }
                         stack.Push(methodCallExpression.Object);
                         break;
                     case MemberExpression memberExpression:
                         yield return memberExpression.Member.Name;
                         break;
                     default:
+                        Console.WriteLine(asd);
                         throw new NotImplementedException();
                 }
             }

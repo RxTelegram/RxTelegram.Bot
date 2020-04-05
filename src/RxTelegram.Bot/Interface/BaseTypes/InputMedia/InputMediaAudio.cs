@@ -1,4 +1,6 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Enums;
+﻿using System;
+using System.IO;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
@@ -45,5 +47,17 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         /// Optional. Title of the audio
         /// </summary>
         public string Title { get; set; }
+
+        public InputMediaAudio(string fileId) : base(fileId)
+        {
+        }
+
+        public InputMediaAudio(Uri uri) : base(uri)
+        {
+        }
+
+        public InputMediaAudio(Stream stream, string fileName = default) : base(stream, fileName)
+        {
+        }
     }
 }

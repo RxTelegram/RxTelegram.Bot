@@ -46,7 +46,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// <summary>
         /// Optional. For forwarded channel posts, identifier of the original message in the channel
         /// </summary>
-        public int ForwardFromMessageId { get; set; }
+        public int? ForwardFromMessageId { get; set; }
 
         /// <summary>
         /// Optional. For messages forwarded from channels, signature of the post author if present
@@ -198,32 +198,32 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// <summary>
         /// Optional. Informs that the group photo was deleted
         /// </summary>
-        public bool DeleteChatPhoto { get; set; }
+        public bool? DeleteChatPhoto { get; set; }
 
         /// <summary>
         /// Optional. Informs that the group has been created
         /// </summary>
-        public bool GroupChatCreated { get; set; }
+        public bool? GroupChatCreated { get; set; }
 
         /// <summary>
         /// Optional. Service message: the supergroup has been created
         /// </summary>
-        public bool SupergroupChatCreated { get; set; }
+        public bool? SupergroupChatCreated { get; set; }
 
         /// <summary>
         /// Optional. Service message: the channel has been created
         /// </summary>
-        public bool ChannelChatCreated { get; set; }
+        public bool? ChannelChatCreated { get; set; }
 
         /// <summary>
         /// Optional. The group has been migrated to a supergroup with the specified identifier
         /// </summary>
-        public long MigrateToChatId { get; set; }
+        public long? MigrateToChatId { get; set; }
 
         /// <summary>
         /// Optional. The supergroup has been migrated from a group with the specified identifier
         /// </summary>
-        public long MigrateFromChatId { get; set; }
+        public long? MigrateFromChatId { get; set; }
 
         /// <summary>
         /// Optional. Specified message was pinned. Note that the Description object in this field

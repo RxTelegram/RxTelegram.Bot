@@ -1,4 +1,6 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Enums;
+﻿using System;
+using System.IO;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
@@ -50,5 +52,17 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         /// Optional. Pass True, if the uploaded video is suitable for streaming
         /// </summary>
         public bool SupportsStreaming { get; set; }
+
+        public InputMediaVideo(string fileId) : base(fileId)
+        {
+        }
+
+        public InputMediaVideo(Uri uri) : base(uri)
+        {
+        }
+
+        public InputMediaVideo(Stream stream, string fileName = default) : base(stream, fileName)
+        {
+        }
     }
 }
