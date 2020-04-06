@@ -71,5 +71,10 @@ namespace RxTelegram.Bot.Api
         public Task<bool> DeleteChatPhoto(DeleteChatPhoto deleteChatPhoto) => Post<bool>("deleteChatPhoto", deleteChatPhoto);
 
         public Task<bool> LeaveChat(LeaveChat leaveChat) => Post<bool>("leaveChat", leaveChat);
+
+        public Task<bool> AddStickerToSet(AddStickerToSet addStickerToSet) => Post<bool>("addStickerToSet", addStickerToSet);
+
+        public Task<bool> DeleteStickerFromSet(DeleteStickerFromSet deleteStickerFromSet) =>
+            Post<bool>("deleteStickerFromSet", deleteStickerFromSet);
     }
 }

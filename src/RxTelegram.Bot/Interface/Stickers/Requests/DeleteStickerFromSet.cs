@@ -13,6 +13,6 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// </summary>
         public string Sticker { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

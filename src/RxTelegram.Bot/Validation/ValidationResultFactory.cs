@@ -11,7 +11,7 @@ namespace RxTelegram.Bot.Validation
     public static class ValidationResultFactory
     {
         public static ValidationResult<CreateNewStickerSet> CreateValidation(this CreateNewStickerSet value) =>
-            new ValidationResult<CreateNewStickerSet>(value).IsFalse(x => x.UserId < 1, ValidationErrors.IdLowerThanOne)
+            new ValidationResult<CreateNewStickerSet>(value).IsTrue(x => x.UserId < 1, ValidationErrors.IdLowerThanOne)
                                                             .IsTrue(x => x.PngSticker == null && x.TgsSticker == null,
                                                                     ValidationErrors.NonePropertySet)
                                                             .IsTrue(x => x.PngSticker != null && x.TgsSticker != null,
@@ -112,5 +112,17 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<LeaveChat> CreateValidation(this LeaveChat value) =>
             new ValidationResult<LeaveChat>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<AddStickerToSet> CreateValidation(this AddStickerToSet value) =>
+            new ValidationResult<AddStickerToSet>(value).ValidateRequired(x => x.UserId)
+                                                        .ValidateRequired(x => x.Name)
+                                                        .ValidateRequired(x => x.Emojis)
+                                                        .IsTrue(x => x.PngSticker == null && x.TgsSticker == null,
+                                                                ValidationErrors.NonePropertySet)
+                                                        .IsTrue(x => x.PngSticker != null && x.TgsSticker != null,
+                                                                ValidationErrors.OnlyONePropertyCanBeSet);
+
+        public static ValidationResult<DeleteStickerFromSet> CreateValidation(this DeleteStickerFromSet value) =>
+            new ValidationResult<DeleteStickerFromSet>(value).ValidateRequired(x => x.Sticker);
     }
 }
