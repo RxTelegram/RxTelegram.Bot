@@ -10,10 +10,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     public class SetChatPermissions : BaseRequest
     {
         /// <summary>
+        /// Required
         /// New default chat permissions
         /// </summary>
         public ChatPermissions Permissions { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

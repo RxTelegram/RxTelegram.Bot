@@ -124,5 +124,36 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<DeleteStickerFromSet> CreateValidation(this DeleteStickerFromSet value) =>
             new ValidationResult<DeleteStickerFromSet>(value).ValidateRequired(x => x.Sticker);
+
+        public static ValidationResult<PinChatMessage> CreateValidation(this PinChatMessage value) =>
+            new ValidationResult<PinChatMessage>(value).ValidateRequired(x => x.ChatId)
+                                                       .ValidateRequired(x => x.MessageId);
+
+        public static ValidationResult<UnpinChatMessage> CreateValidation(this UnpinChatMessage value) =>
+            new ValidationResult<UnpinChatMessage>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<SetChatDescription> CreateValidation(this SetChatDescription value) =>
+            new ValidationResult<SetChatDescription>(value).ValidateRequired(x => x.ChatId)
+                                                           .ValidateRequired(x => x.Description);
+
+        public static ValidationResult<SetChatPermissions> CreateValidation(this SetChatPermissions value) =>
+            new ValidationResult<SetChatPermissions>(value).ValidateRequired(x => x.ChatId)
+                                                           .ValidateRequired(x => x.Permissions);
+
+        public static ValidationResult<SetChatTitle> CreateValidation(this SetChatTitle value) =>
+            new ValidationResult<SetChatTitle>(value).ValidateRequired(x => x.ChatId)
+                                                     .ValidateRequired(x => x.Title);
+
+        public static ValidationResult<SetChatStickerSet> CreateValidation(this SetChatStickerSet value) =>
+            new ValidationResult<SetChatStickerSet>(value).ValidateRequired(x => x.ChatId)
+                                                          .ValidateRequired(x => x.StickerSetName);
+
+        public static ValidationResult<SendSticker> CreateValidation(this SendSticker value) =>
+            new ValidationResult<SendSticker>(value).ValidateRequired(x => x.ChatId)
+                                                    .ValidateRequired(x => x.Sticker);
+
+        public static ValidationResult<SetChatPhoto> CreateValidation(this SetChatPhoto value) =>
+            new ValidationResult<SetChatPhoto>(value).ValidateRequired(x => x.ChatId)
+                                                     .ValidateRequired(x => x.Photo);
     }
 }

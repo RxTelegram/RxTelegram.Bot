@@ -76,5 +76,21 @@ namespace RxTelegram.Bot.Api
 
         public Task<bool> DeleteStickerFromSet(DeleteStickerFromSet deleteStickerFromSet) =>
             Post<bool>("deleteStickerFromSet", deleteStickerFromSet);
+
+        public Task<bool> PinChatMessage(PinChatMessage pinChatMessage) => Post<bool>("pinChatMessage", pinChatMessage);
+
+        public Task<bool> UnpinChatMessage(UnpinChatMessage unpinChatMessage) => Post<bool>("unpinChatMessage", unpinChatMessage);
+
+        public Task<bool> SetChatDescription(SetChatDescription setChatDescription) => Post<bool>("setChatDescription", setChatDescription);
+
+        public Task<bool> SetChatPermissions(SetChatPermissions setChatPermissions) => Post<bool>("setChatPermissions", setChatPermissions);
+
+        public Task<bool> SetChatTitle(SetChatTitle setChatTitle) => Post<bool>("setChatTitle", setChatTitle);
+
+        public Task<bool> SetChatStickerSet(SetChatStickerSet setChatStickerSet) => Post<bool>("setChatStickerSet", setChatStickerSet);
+
+        public Task<Message> SendSticker(SendSticker sendSticker) => Post<Message>("sendSticker", sendSticker);
+
+        public Task<bool> SetChatPhoto(SetChatPhoto setChatPhoto) => Post<bool>("setChatPhoto", setChatPhoto);
     }
 }
