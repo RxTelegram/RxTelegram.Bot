@@ -92,5 +92,10 @@ namespace RxTelegram.Bot.Api
         public Task<Message> SendSticker(SendSticker sendSticker) => Post<Message>("sendSticker", sendSticker);
 
         public Task<bool> SetChatPhoto(SetChatPhoto setChatPhoto) => Post<bool>("setChatPhoto", setChatPhoto);
+
+        public Task<string> ExportChatInviteLink(ExportChatInviteLink exportChatInviteLink) =>
+            Post<string>("exportChatInviteLink", exportChatInviteLink);
+
+        public Task<string> PromoteChatMember(PromoteChatMember promoteChatMember) => Post<string>("promoteChatMember", promoteChatMember);
     }
 }

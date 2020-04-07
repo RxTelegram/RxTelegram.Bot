@@ -155,5 +155,12 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<SetChatPhoto> CreateValidation(this SetChatPhoto value) =>
             new ValidationResult<SetChatPhoto>(value).ValidateRequired(x => x.ChatId)
                                                      .ValidateRequired(x => x.Photo);
+
+        public static ValidationResult<ExportChatInviteLink> CreateValidation(this ExportChatInviteLink value) =>
+            new ValidationResult<ExportChatInviteLink>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<PromoteChatMember> CreateValidation(this PromoteChatMember value) =>
+            new ValidationResult<PromoteChatMember>(value).ValidateRequired(x => x.ChatId)
+                                                          .ValidateRequired(x => x.UserId);
     }
 }
