@@ -32,7 +32,7 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<EditMessageLiveLocation>(value).ValidateRequired(x => x.Latitude)
                                                                 .ValidateRequired(x => x.Longitude)
                                                                 .IsTrue(x => x.ChatId == null && x.MessageId == null && x.InlineMessageId == null,
-                                                                        ValidationErrors.InlineMessageIdChatIdMessageIdRequired);
+                                                                        ValidationErrors.InlineMessageIdChatIdMessageIdRequiredOr);
 
         public static ValidationResult<GetChat> CreateValidation(this GetChat value) =>
             new ValidationResult<GetChat>(value).ValidateRequired(x => x.ChatId);
@@ -162,5 +162,32 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<PromoteChatMember> CreateValidation(this PromoteChatMember value) =>
             new ValidationResult<PromoteChatMember>(value).ValidateRequired(x => x.ChatId)
                                                           .ValidateRequired(x => x.UserId);
+
+        public static ValidationResult<RestrictChatMember> CreateValidation(this RestrictChatMember value) =>
+            new ValidationResult<RestrictChatMember>(value).ValidateRequired(x => x.Permissions)
+                                                           .ValidateRequired(x => x.UserId)
+                                                           .ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<SendContact> CreateValidation(this SendContact value) =>
+            new ValidationResult<SendContact>(value).ValidateRequired(x => x.FirstName)
+                                                    .ValidateRequired(x => x.PhoneNumber)
+                                                    .ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<UploadStickerFile> CreateValidation(this UploadStickerFile value) =>
+            new ValidationResult<UploadStickerFile>(value).ValidateRequired(x => x.UserId)
+                                                          .ValidateRequired(x => x.PngSticker);
+
+        public static ValidationResult<EditMessageText> CreateValidation(this EditMessageText value) =>
+            new ValidationResult<EditMessageText>(value)
+                .IsTrue(x => string.IsNullOrEmpty(x.ChatId) && x.MessageId == null && string.IsNullOrEmpty(x.InlineMessageId),
+                        ValidationErrors.InlineMessageIdChatIdMessageIdRequiredOr)
+                .IsTrue(x => !string.IsNullOrEmpty(x.ChatId) && x.MessageId != null && !string.IsNullOrEmpty(x.InlineMessageId),
+                        ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
+                .IsTrue(x => string.IsNullOrEmpty(x.ChatId) && x.MessageId != null && !string.IsNullOrEmpty(x.InlineMessageId),
+                        ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
+                .IsTrue(x => !string.IsNullOrEmpty(x.ChatId) && x.MessageId == null && !string.IsNullOrEmpty(x.InlineMessageId),
+                        ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
+                // todo ValidationErrorsExtension needs to decide if its a PropertyExpression and TypedParameterExpression because the erroring Property would always be Length instead of Text
+                .IsTrue(x => x.Text.Length > 4096, ValidationErrors.TextTooLong);
     }
 }

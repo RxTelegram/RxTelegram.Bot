@@ -20,9 +20,15 @@ namespace RxTelegram.Bot.Validation
         InvalidStickerName,
 
         [ValidationErrorsString("InlineMessageId, ChatId or MessageId is required.")]
-        InlineMessageIdChatIdMessageIdRequired,
+        InlineMessageIdChatIdMessageIdRequiredOr,
+
+        [ValidationErrorsString("InlineMessageId or ChatId and MessageId required.")]
+        InlineMessageIdOrChatIdAndMessageId,
 
         [ValidationErrorsString("Only InputMediaPhoto or InputMediaVideo allowed")]
         OnlyInputMediaPhotoOrInputMediaVideo,
+
+        [ValidationErrorsString("Text can only be 4096 chars long")]
+        TextTooLong
     }
 }

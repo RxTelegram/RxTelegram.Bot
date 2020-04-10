@@ -22,6 +22,6 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
 
         //ValidateCondition(UserId < 1, Bot.Validation.ValidationErrors.IdLowerThanOne, nameof(UserId));
         //ValidateRequired<UploadStickerFile>(x => x.UserId, x => x.PngSticker);
-        protected override IValidationResult Validate() => throw new NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

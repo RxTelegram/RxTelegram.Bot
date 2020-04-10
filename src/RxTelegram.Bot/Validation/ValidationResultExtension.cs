@@ -203,6 +203,9 @@ namespace RxTelegram.Bot.Validation
                     case MemberExpression memberExpression:
                         yield return memberExpression.Member.Name;
                         break;
+                    case UnaryExpression unaryExpression:
+                        stack.Push(unaryExpression.Operand);
+                        break;
                     default:
                         Console.WriteLine(asd);
                         throw new NotImplementedException();

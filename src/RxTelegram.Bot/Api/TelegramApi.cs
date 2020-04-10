@@ -96,6 +96,14 @@ namespace RxTelegram.Bot.Api
         public Task<string> ExportChatInviteLink(ExportChatInviteLink exportChatInviteLink) =>
             Post<string>("exportChatInviteLink", exportChatInviteLink);
 
-        public Task<string> PromoteChatMember(PromoteChatMember promoteChatMember) => Post<string>("promoteChatMember", promoteChatMember);
+        public Task<bool> PromoteChatMember(PromoteChatMember promoteChatMember) => Post<bool>("promoteChatMember", promoteChatMember);
+
+        public Task<bool> RestrictChatMember(RestrictChatMember restrictChatMember) => Post<bool>("restrictChatMember", restrictChatMember);
+
+        public Task<Message> SendContact(SendContact sendContact) => Post<Message>("sendContact", sendContact);
+
+        public Task<File> UploadStickerFile(UploadStickerFile uploadStickerFile) => Post<File>("uploadStickerFile", uploadStickerFile);
+
+        public Task<Message> EditMessageText(EditMessageText editMessageText) => Post<Message>("editMessageText", editMessageText);
     }
 }
