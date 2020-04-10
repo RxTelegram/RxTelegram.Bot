@@ -28,10 +28,11 @@ namespace RxTelegram.Bot.UnitTests
         {
             var obj = new CreateNewStickerSet();
             Assert.False(obj.IsValid());
-            Assert.That(obj.Errors.Count, Is.EqualTo(5));
+            Assert.That(obj.Errors.Count, Is.EqualTo(6));
             var errors = obj.Errors.Select(x => x.GetMessage).ToList();
             CollectionAssert.Contains(errors, "(PngSticker, TgsSticker): \"One of these properties need to be set\"");
             CollectionAssert.Contains(errors, "(Name): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(UserId): \"ID lower than 1 is not allowed.\"");
             CollectionAssert.Contains(errors, "(Title): \"Field is not set, but required\"");
             CollectionAssert.Contains(errors, "(Emojis): \"Field is not set, but required\"");
             CollectionAssert.Contains(errors, "(Name): \"Stickersets Created by bots need to end with _by_<botname> \"");
@@ -42,6 +43,7 @@ namespace RxTelegram.Bot.UnitTests
         {
             var obj = new CreateNewStickerSet
                       {
+                          UserId = 2,
                           Emojis = "❤",
                           Name = "StickerSet_by_BlaBot",
                           Title = "Title",
