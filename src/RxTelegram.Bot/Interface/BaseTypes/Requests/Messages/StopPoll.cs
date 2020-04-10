@@ -7,7 +7,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
     /// <summary>
     /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
     /// </summary>
-    public class StopPoll : BaseValidation
+    public class StopPoll : BaseRequest
     {
         /// <summary>
         /// Required
@@ -21,6 +21,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

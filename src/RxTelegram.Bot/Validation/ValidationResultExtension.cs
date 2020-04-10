@@ -182,10 +182,22 @@ namespace RxTelegram.Bot.Validation
                         break;
                     case LambdaExpression lambdaExpression:
                     {
-                        var operation = (BinaryExpression)lambdaExpression.Body;
-                        stack.Push(operation.Left);
-                        stack.Push(operation.Right);
-                        break;
+                        if (lambdaExpression.Body is BinaryExpression binaryExpression)
+                        {
+                            stack.Push(binaryExpression.Left);
+                            stack.Push(binaryExpression.Right);
+                            break;
+                        }
+
+                        if (lambdaExpression.Body is MethodCallExpression methodCallExpression)
+                        {
+                            foreach (var argument in methodCallExpression.Arguments)
+                            {
+                                stack.Push(argument);
+                            }
+                            break;
+                        }
+                        throw new NotImplementedException();
                     }
                     case BinaryExpression binaryExpression:
                     {

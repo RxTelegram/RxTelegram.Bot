@@ -105,5 +105,21 @@ namespace RxTelegram.Bot.Api
         public Task<File> UploadStickerFile(UploadStickerFile uploadStickerFile) => Post<File>("uploadStickerFile", uploadStickerFile);
 
         public Task<Message> EditMessageText(EditMessageText editMessageText) => Post<Message>("editMessageText", editMessageText);
+
+        public Task<bool> SetStickerPositionInSet(SetStickerPositionInSet setStickerPositionInSet) =>
+            Post<bool>("setStickerPositionInSet", setStickerPositionInSet);
+
+        public Task<bool> SendChatAction(SendChatAction sendChatAction) =>
+            Post<bool>("sendChatAction", sendChatAction);
+
+        public Task<bool> SendPoll(SendPoll sendPoll) => Post<bool>("sendPoll", sendPoll);
+
+        public Task<Poll> StopPoll(StopPoll stopPoll) => Post<Poll>("stopPoll", stopPoll);
+
+        public Task<bool> SetChatAdministratorCustomTitle(SetChatAdministratorCustomTitle setChatAdministratorCustomTitle) =>
+            Post<bool>("setChatAdministratorCustomTitle", setChatAdministratorCustomTitle);
+
+        public Task<bool> UnbanChatMember(UnbanChatMember unbanChatMember) =>
+            Post<bool>("unbanChatMember", unbanChatMember);
     }
 }

@@ -9,15 +9,17 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
     public class SetStickerPositionInSet : BaseValidation
     {
         /// <summary>
+        /// Required
         /// File identifier of the sticker
         /// </summary>
         public string Sticker { get; set; }
 
         /// <summary>
+        /// Required
         /// New sticker position in the set, zero-based
         /// </summary>
         public int Position { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

@@ -1,4 +1,5 @@
 using System.Linq;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
@@ -189,5 +190,34 @@ namespace RxTelegram.Bot.Validation
                         ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
                 // todo ValidationErrorsExtension needs to decide if its a PropertyExpression and TypedParameterExpression because the erroring Property would always be Length instead of Text
                 .IsTrue(x => x.Text.Length > 4096, ValidationErrors.TextTooLong);
+
+        public static ValidationResult<SetStickerPositionInSet> CreateValidation(this SetStickerPositionInSet value) =>
+            new ValidationResult<SetStickerPositionInSet>(value).ValidateRequired(x => x.Position)
+                                                                .ValidateRequired(x => x.Sticker);
+
+        public static ValidationResult<SendChatAction> CreateValidation(this SendChatAction value) =>
+            new ValidationResult<SendChatAction>(value).ValidateRequired(x => x.ChatId)
+                                                       .ValidateRequired(x => x.Action);
+
+        public static ValidationResult<SendPoll> CreateValidation(this SendPoll value) =>
+            new ValidationResult<SendPoll>(value)
+                .ValidateRequired(x => x.ChatId)
+                .ValidateRequired(x => x.Question)
+                .ValidateRequired(x => x.Options)
+                .IsFalse(x => x.Question.Length > 0 && x.Question.Length < 256, ValidationErrors.QuestionTooLong)
+                .IsFalse(x => x.Options.Count() > 1 && x.Options.Count() <= 10, ValidationErrors.InvalidOptionCount)
+                .IsFalse(x => x.Options.All(y => y.Length > 0 && y.Length <= 100), ValidationErrors.OptionStringTooLong)
+                .IsTrue(x => x.Type == PollType.Quiz && x.CorrectOptionId == null, ValidationErrors.CorrectOptionRequired);
+
+        public static ValidationResult<StopPoll> CreateValidation(this StopPoll value) =>
+            new ValidationResult<StopPoll>(value).ValidateRequired(x => x.MessageId);
+
+        public static ValidationResult<SetChatAdministratorCustomTitle> CreateValidation(this SetChatAdministratorCustomTitle value) =>
+            new ValidationResult<SetChatAdministratorCustomTitle>(value).ValidateRequired(x => x.CustomTitle)
+                                                                        .ValidateRequired(x => x.UserId)
+                                                                        .ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<UnbanChatMember> CreateValidation(this UnbanChatMember value) =>
+            new ValidationResult<UnbanChatMember>(value).ValidateRequired(x => x.UserId);
     }
 }

@@ -29,6 +29,18 @@ namespace RxTelegram.Bot.Validation
         OnlyInputMediaPhotoOrInputMediaVideo,
 
         [ValidationErrorsString("Text can only be 4096 chars long")]
-        TextTooLong
+        TextTooLong,
+
+        [ValidationErrorsString("Question can only be 1-255 chars long")]
+        QuestionTooLong,
+
+        [ValidationErrorsString("Only two to ten Options are allowed")]
+        InvalidOptionCount,
+
+        [ValidationErrorsString("Options can only be 1 to 100 Chars long")]
+        OptionStringTooLong,
+
+        [ValidationErrorsString("Correct Option is required in Quizmode")]
+        CorrectOptionRequired
     }
 }

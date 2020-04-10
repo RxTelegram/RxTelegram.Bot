@@ -1,3 +1,4 @@
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Validation;
 
@@ -11,8 +12,8 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files,
         /// upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
         /// </summary>
-        public string Action { get; set; }
+        public ChatActions Action { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }
