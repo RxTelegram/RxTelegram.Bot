@@ -19,7 +19,13 @@ namespace RxTelegram.Bot.Api
     {
         private readonly HttpClient _client = new HttpClient();
 
-        protected BaseTelegramApi(BotInfo botInfo) => _client.BaseAddress = new Uri(botInfo.BotUrl);
+        protected readonly HttpClient FileClient = new HttpClient();
+
+        protected BaseTelegramApi(BotInfo botInfo)
+        {
+            _client.BaseAddress = new Uri(botInfo.BotUrl);
+            FileClient.BaseAddress = new Uri(botInfo.BotFileUrl);
+        }
 
         private static JsonSerializerSettings _jsonSerializerSettings;
 

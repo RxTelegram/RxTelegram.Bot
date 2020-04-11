@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace RxTelegram.Bot.Utils
 {
-    public class MultiPartJsonWriter : JTokenWriter
+    internal class MultiPartJsonWriter : JTokenWriter
     {
         private readonly MultipartFormDataContent _multipartFormDataContent;
         private string _propertyName;

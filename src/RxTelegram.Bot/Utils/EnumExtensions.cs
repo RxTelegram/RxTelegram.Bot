@@ -2,7 +2,7 @@ using System;
 
 namespace RxTelegram.Bot.Utils
 {
-    public static class EnumExtensions
+    internal static class EnumExtensions
     {
         /// <summary>
         /// Gets an attribute on an enum field value

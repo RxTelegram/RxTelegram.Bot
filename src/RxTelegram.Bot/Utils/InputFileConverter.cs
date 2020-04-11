@@ -4,7 +4,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Utils
 {
-    public class InputFileConverter : JsonConverter<InputFile>
+    internal class InputFileConverter : JsonConverter<InputFile>
     {
         public override bool CanRead { get; } = false;
 
