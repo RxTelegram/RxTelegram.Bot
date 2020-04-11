@@ -5,6 +5,8 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
+using RxTelegram.Bot.Interface.Games;
+using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Requests;
@@ -109,8 +111,7 @@ namespace RxTelegram.Bot.Api
         public Task<bool> SetStickerPositionInSet(SetStickerPositionInSet setStickerPositionInSet) =>
             Post<bool>("setStickerPositionInSet", setStickerPositionInSet);
 
-        public Task<bool> SendChatAction(SendChatAction sendChatAction) =>
-            Post<bool>("sendChatAction", sendChatAction);
+        public Task<bool> SendChatAction(SendChatAction sendChatAction) => Post<bool>("sendChatAction", sendChatAction);
 
         public Task<bool> SendPoll(SendPoll sendPoll) => Post<bool>("sendPoll", sendPoll);
 
@@ -119,7 +120,15 @@ namespace RxTelegram.Bot.Api
         public Task<bool> SetChatAdministratorCustomTitle(SetChatAdministratorCustomTitle setChatAdministratorCustomTitle) =>
             Post<bool>("setChatAdministratorCustomTitle", setChatAdministratorCustomTitle);
 
-        public Task<bool> UnbanChatMember(UnbanChatMember unbanChatMember) =>
-            Post<bool>("unbanChatMember", unbanChatMember);
+        public Task<bool> UnbanChatMember(UnbanChatMember unbanChatMember) => Post<bool>("unbanChatMember", unbanChatMember);
+
+        public Task<Message> SendGame(SendGame sendGame) => Post<Message>("sendGame", sendGame);
+
+        public Task<bool> SetInlineGameScore(SetGameScore setGameScore) => Post<bool>("setGameScore", setGameScore);
+
+        public Task<Message> SetGameScore(SetGameScore setGameScore) => Post<Message>("setGameScore", setGameScore);
+
+        public Task<IEnumerable<GameHighScore>> GetGameHighScores(GetGameHighScores getGameHighScores) =>
+            Post<IEnumerable<GameHighScore>>("getGameHighScores", getGameHighScores);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.InputMedia;
@@ -5,6 +6,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
+using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Validation
@@ -219,5 +221,20 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<UnbanChatMember> CreateValidation(this UnbanChatMember value) =>
             new ValidationResult<UnbanChatMember>(value).ValidateRequired(x => x.UserId);
+
+        public static ValidationResult<SendGame> CreateValidation(this SendGame value) => new ValidationResult<SendGame>(value)
+                                                                                          .ValidateRequired(x => x.GameShortName)
+                                                                                          .ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<SetGameScore> CreateValidation(this SetGameScore value) => new ValidationResult<SetGameScore>(value)
+                                                                                                  .ValidateRequired(x => x.UserId)
+                                                                                                  .ValidateRequired(x => x.Score);
+
+        public static ValidationResult<GetGameHighScores> CreateValidation(this GetGameHighScores value) =>
+            new ValidationResult<GetGameHighScores>(value).ValidateRequired(x => x.UserId)
+                                                          .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.ChatId == null,
+                                                                  ValidationErrors.FieldRequired)
+                                                          .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
+                                                                  ValidationErrors.FieldRequired);
     }
 }

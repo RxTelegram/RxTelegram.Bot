@@ -10,6 +10,7 @@ namespace RxTelegram.Bot.Interface.Games.Requests
     public class SendGame : BaseRequest
     {
         /// <summary>
+        /// Required
         /// Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
         /// </summary>
         public string GameShortName { get; set; }
@@ -30,6 +31,6 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// </summary>
         public InlineKeyboardMarkup Type { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

@@ -11,11 +11,13 @@ namespace RxTelegram.Bot.Interface.Games.Requests
     public class SetGameScore : BaseRequest
     {
         /// <summary>
+        /// Required
         /// User identifier
         /// </summary>
         public int UserId { get; set; }
 
         /// <summary>
+        /// Required
         /// New score, must be non-negative
         /// </summary>
         public int Score { get; set; }
@@ -40,6 +42,6 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// </summary>
         public string InlineMessageId { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }
