@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
@@ -10,6 +11,7 @@ using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Requests;
+using File = RxTelegram.Bot.Interface.BaseTypes.File;
 
 namespace RxTelegram.Bot.Api
 {
@@ -20,6 +22,14 @@ namespace RxTelegram.Bot.Api
         public TelegramApi(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
 
         public Task<Update[]> GetUpdate(GetUpdate update) => Get<Update[]>("getUpdates", update);
+
+        public Task<File> GetFile(string fileId) => Get<File>("getFile", new {fileId});
+
+        public Task<Stream> DownloadFileStream(string filePath) => FileClient.GetStreamAsync(filePath);
+
+        public Task<string> DownloadFileString(string filePath) => FileClient.GetStringAsync(filePath);
+
+        public Task<byte[]> DownloadFileByteArray(string filePath) => FileClient.GetByteArrayAsync(filePath);
 
         public Task<User> GetMe() => Get<User>("getMe");
 

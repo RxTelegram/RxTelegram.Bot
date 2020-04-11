@@ -1,54 +1,39 @@
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.IO;
 using System.Threading.Tasks;
-using RxTelegram.Bot.Exceptions;
-using RxTelegram.Bot.Interface.BaseTypes;
-using RxTelegram.Bot.Utils;
+using File = RxTelegram.Bot.Interface.BaseTypes.File;
 
 namespace RxTelegram.Bot.Api
 {
-    internal static class TelegramApiExtensions
+    public static class TelegramApiExtensions
     {
-        public static async Task<T> ParseResponse<T>(this Task<HttpResponseMessage> responseMessage) =>
-            await ParseResponse<T>(await responseMessage);
+        public static Task<Stream> DownloadFileStream(this TelegramApi telegramApi, File file) =>
+            telegramApi.DownloadFileStream(file.FilePath);
 
-        private static async Task<T> ParseResponse<T>(this HttpResponseMessage responseMessage)
+        public static Task<string> DownloadFileString(this TelegramApi telegramApi, File file) =>
+            telegramApi.DownloadFileString(file.FilePath);
+
+        public static Task<byte[]> DownloadFileByteArray(this TelegramApi telegramApi, File file) =>
+            telegramApi.DownloadFileByteArray(file.FilePath);
+
+        public static async Task<(File file, Stream content)> GetFileAndDownloadStream(this TelegramApi telegramApi, string fileId)
         {
-            switch (responseMessage.StatusCode)
-            {
-                // official errors code of https://core.telegram.org/api/errors
-                // try to parse response
-                case HttpStatusCode.BadRequest:
-                case HttpStatusCode.Unauthorized:
-                case HttpStatusCode.Forbidden:
-                case HttpStatusCode.NotFound:
-                    break;
-                default:
-                    responseMessage.EnsureSuccessStatusCode();
-                    break;
-            }
+            var file = await telegramApi.GetFile(fileId);
+            var content = await telegramApi.DownloadFileStream(file.FilePath);
+            return (file, content);
+        }
 
-            var apiResponse = await responseMessage.Content.ReadAsStreamAsync()
-                                                   .Deserialize<ApiResponse<T>>();
+        public static async Task<(File file, string content)> GetFileAndDownloadString(this TelegramApi telegramApi, string fileId)
+        {
+            var file = await telegramApi.GetFile(fileId);
+            var content = await telegramApi.DownloadFileString(file.FilePath);
+            return (file, content);
+        }
 
-            switch (apiResponse?.Ok)
-            {
-                case true:
-                    return apiResponse.Result;
-                case null:
-                    throw new GeneralApiException(responseMessage.StatusCode);
-                default:
-                {
-                    var errorCode = Enum.GetValues(typeof(ErrorCode))
-                                        .Cast<ErrorCode?>()
-                                        .FirstOrDefault(code => code.GetAttribute<RegexAttribute>()
-                                                                    ?.Match(apiResponse.Description) ==
-                                                                true);
-                    throw new ApiException(responseMessage.StatusCode, apiResponse.Description, apiResponse.Parameters, errorCode);
-                }
-            }
+        public static async Task<(File file, byte[] content)> GetFileAndDownloadByteArray(this TelegramApi telegramApi, string fileId)
+        {
+            var file = await telegramApi.GetFile(fileId);
+            var content = await telegramApi.DownloadFileByteArray(file.FilePath);
+            return (file, content);
         }
     }
 }
