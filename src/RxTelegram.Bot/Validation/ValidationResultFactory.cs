@@ -236,5 +236,11 @@ namespace RxTelegram.Bot.Validation
                                                                   ValidationErrors.FieldRequired)
                                                           .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
                                                                   ValidationErrors.FieldRequired);
+
+        public static ValidationResult<StopMessageLiveLocation> CreateValidation(this StopMessageLiveLocation value) =>
+            new ValidationResult<StopMessageLiveLocation>(value).IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.ChatId == null,
+                                                                        ValidationErrors.FieldRequired)
+                                                                .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
+                                                                        ValidationErrors.FieldRequired);
     }
 }

@@ -58,8 +58,8 @@ namespace RxTelegram.Bot.Api
         public Task<bool> CreateNewStickerSet(CreateNewStickerSet createNewStickerSet) =>
             Post<bool>("createNewStickerSet", createNewStickerSet);
 
-        public Task<bool> EditMessageLiveLocation(EditMessageLiveLocation editMessageLiveLocation) =>
-            Post<bool>("editMessageLiveLocation", editMessageLiveLocation);
+        public Task<Message> EditMessageLiveLocation(EditMessageLiveLocation editMessageLiveLocation) =>
+            Post<Message>("editMessageLiveLocation", editMessageLiveLocation);
 
         public Task<Chat> GetChat(GetChat getChat) => Post<Chat>("getChat", getChat);
 
@@ -134,11 +134,17 @@ namespace RxTelegram.Bot.Api
 
         public Task<Message> SendGame(SendGame sendGame) => Post<Message>("sendGame", sendGame);
 
-        public Task<bool> SetInlineGameScore(SetGameScore setGameScore) => Post<bool>("setGameScore", setGameScore);
+        public Task<bool> SetGameScoreInlineMessage(SetGameScore setGameScore) => Post<bool>("setGameScore", setGameScore);
 
         public Task<Message> SetGameScore(SetGameScore setGameScore) => Post<Message>("setGameScore", setGameScore);
 
         public Task<IEnumerable<GameHighScore>> GetGameHighScores(GetGameHighScores getGameHighScores) =>
             Post<IEnumerable<GameHighScore>>("getGameHighScores", getGameHighScores);
+
+        public Task<Message> StopMessageLiveLocation(StopMessageLiveLocation stopMessageLiveLocation) =>
+            Post<Message>("stopMessageLiveLocation", stopMessageLiveLocation);
+
+        public Task<bool> StopMessageLiveLocationInlineMessage(StopMessageLiveLocation stopMessageLiveLocation) =>
+            Post<bool>("stopMessageLiveLocation", stopMessageLiveLocation);
     }
 }
