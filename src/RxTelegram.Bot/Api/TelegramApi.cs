@@ -159,5 +159,7 @@ namespace RxTelegram.Bot.Api
         public Task<IEnumerable<BotCommand>> GetMyCommands() => Get<IEnumerable<BotCommand>>("getMyCommands");
 
         public Task<bool> SetMyCommands(SetMyCommands setMyCommands) => Post<bool>("setMyCommands", setMyCommands);
+
+        public Task<Message> SendVenue(SendVenue sendVenue) => Post<Message>("sendVenue", sendVenue);
     }
 }

@@ -64,6 +64,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// </summary>
         public IReplyMarkup ReplyMarkup { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

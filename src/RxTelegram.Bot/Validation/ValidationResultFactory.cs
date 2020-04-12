@@ -388,5 +388,12 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<SetMyCommands> CreateValidation(this SetMyCommands value) =>
             new ValidationResult<SetMyCommands>(value).ValidateRequired(x => x.Commands)
                                                       .IsTrue(x => x.Commands.Count() > 100, ValidationErrors.CommandLimit);
+
+        public static ValidationResult<SendVenue> CreateValidation(this SendVenue value) =>
+            new ValidationResult<SendVenue>(value).ValidateRequired(x => x.ChatId)
+                                                  .ValidateRequired(x => x.Latitude)
+                                                  .ValidateRequired(x => x.Title)
+                                                  .ValidateRequired(x => x.Address)
+                                                  .ValidateRequired(x => x.Longitude);
     }
 }
