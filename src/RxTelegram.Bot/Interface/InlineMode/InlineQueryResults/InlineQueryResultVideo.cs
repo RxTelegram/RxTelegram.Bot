@@ -65,6 +65,6 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// </summary>
         public string Description { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

@@ -11,7 +11,7 @@ namespace RxTelegram.Bot.Validation
         FieldRequired,
 
         [ValidationErrorsString("Only one of there properties can be set")]
-        OnlyONePropertyCanBeSet,
+        OnlyOnePropertyCanBeSet,
 
         [ValidationErrorsString("One of these properties need to be set")]
         NonePropertySet,

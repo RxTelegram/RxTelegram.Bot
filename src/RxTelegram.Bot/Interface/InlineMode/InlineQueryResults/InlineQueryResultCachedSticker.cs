@@ -1,3 +1,4 @@
+using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
@@ -20,6 +21,14 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// </summary>
         public InputMessageContent InputMessageContent { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Optional.
+        /// Inline keyboard attached to the message
+        /// </summary>
+        public InlineKeyboardMarkup ReplyMarkup { get; set; }
+
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

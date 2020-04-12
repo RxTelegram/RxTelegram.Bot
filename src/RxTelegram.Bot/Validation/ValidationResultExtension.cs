@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Validation
 {
@@ -221,6 +225,47 @@ namespace RxTelegram.Bot.Validation
                     default:
                         Console.WriteLine(asd);
                         throw new NotImplementedException();
+                }
+            }
+        }
+
+        internal static void ValidateNested<T>(this ValidationResult<T> res)
+        {
+            foreach (var propertyInfo in res.Value.GetType()
+                                            .GetProperties())
+            {
+
+
+                // Check if we need to validate this property
+                if(propertyInfo.PropertyType.IsClass && typeof(BaseValidation).IsAssignableFrom(propertyInfo.PropertyType))
+                {
+                    // Get the value of the Property
+                    var value = propertyInfo.GetValue(res.Value, null);
+                    if (value is BaseValidation baseValidation)
+                    {
+                        res.ValidationErrors.AddRange(baseValidation.Errors);
+                    }
+                    continue;
+                }
+
+                // if the property's type is some kind of collection, we need to validate each item in the list
+                if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType) &&
+                    typeof(BaseValidation).IsAssignableFrom(propertyInfo.PropertyType.GetGenericArguments()
+                                                                        .FirstOrDefault()))
+                {
+                    // Get the value of the Property
+                    var value = propertyInfo.GetValue(res.Value, null);
+                    if (value is IEnumerable list)
+                    {
+                        foreach (var ag in list)
+                        {
+                            if (ag is BaseValidation bv)
+                            {
+                                res.ValidationErrors.AddRange(bv.Errors);
+                            }
+                        }
+                    }
+
                 }
             }
         }

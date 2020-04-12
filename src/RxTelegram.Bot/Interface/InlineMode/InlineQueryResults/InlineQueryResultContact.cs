@@ -1,3 +1,5 @@
+using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
@@ -6,8 +8,10 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
     /// Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use
     /// input_message_content to send a message with the specified content instead of the contact.
     /// </summary>
-    public class InlineQueryResultContact : BaseInlineQueryResultMedia
+    public class InlineQueryResultContact : BaseInlineQueryResult
     {
+        public string Id { get; set; }
+
         public override string Type { get; } = "contact";
 
         /// <summary>
@@ -50,6 +54,17 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// </summary>
         public int? ThumbHeight { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        /// <summary>
+        /// Optional.
+        /// Inline keyboard attached to the message
+        /// </summary>
+        public InlineKeyboardMarkup ReplyMarkup { get; set; }
+
+        /// <summary>
+        /// Content of the message to be sent
+        /// </summary>
+        public InputMessageContent InputMessageContent { get; set; }
+
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }
