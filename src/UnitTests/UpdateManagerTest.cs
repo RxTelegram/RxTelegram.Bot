@@ -20,7 +20,7 @@ namespace RxTelegram.Bot.UnitTests
             var updateManager = new UpdateManager(telegram);
             updateManager.Message.Subscribe();
             updateManager.EditedChannelPost.Subscribe();
-            var prop = typeof(UpdateManager).GetProperty("GetUpdateTypes", BindingFlags.NonPublic | BindingFlags.Instance);
+            var prop = typeof(UpdateManager).GetProperty("UpdateTypes", BindingFlags.NonPublic | BindingFlags.Instance);
             if (prop == null)
             {
                 throw new Exception("Property not found!");
