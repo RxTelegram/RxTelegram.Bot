@@ -155,5 +155,9 @@ namespace RxTelegram.Bot.Api
             Post<bool>("answerCallbackQuery", answerCallbackQuery);
 
         public Task<bool> AnswerInlineQuery(AnswerInlineQuery answerInlineQuery) => Post<bool>("answerInlineQuery", answerInlineQuery);
+
+        public Task<IEnumerable<BotCommand>> GetMyCommands() => Get<IEnumerable<BotCommand>>("getMyCommands");
+
+        public Task<bool> SetMyCommands(SetMyCommands setMyCommands) => Post<bool>("setMyCommands", setMyCommands);
     }
 }

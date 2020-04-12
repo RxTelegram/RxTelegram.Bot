@@ -41,6 +41,9 @@ namespace RxTelegram.Bot.Validation
         OptionStringTooLong,
 
         [ValidationErrorsString("Correct Option is required in Quizmode")]
-        CorrectOptionRequired
+        CorrectOptionRequired,
+
+        [ValidationErrorsString("At most 100 commands can be specified.")]
+        CommandLimit
     }
 }

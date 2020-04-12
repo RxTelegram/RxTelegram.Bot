@@ -384,5 +384,9 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<InputContactMessageContent> CreateValidation(this InputContactMessageContent value) =>
             new ValidationResult<InputContactMessageContent>(value).ValidateRequired(x => x.PhoneNumber)
                                                                    .ValidateRequired(x => x.FirstName);
+
+        public static ValidationResult<SetMyCommands> CreateValidation(this SetMyCommands value) =>
+            new ValidationResult<SetMyCommands>(value).ValidateRequired(x => x.Commands)
+                                                      .IsTrue(x => x.Commands.Count() > 100, ValidationErrors.CommandLimit);
     }
 }
