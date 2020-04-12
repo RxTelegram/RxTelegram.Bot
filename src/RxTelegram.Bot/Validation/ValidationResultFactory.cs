@@ -3,6 +3,7 @@ using System.Linq;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
@@ -242,5 +243,8 @@ namespace RxTelegram.Bot.Validation
                                                                         ValidationErrors.FieldRequired)
                                                                 .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
                                                                         ValidationErrors.FieldRequired);
+
+        public static ValidationResult<AnswerCallbackQuery> CreateValidation(this AnswerCallbackQuery value) =>
+            new ValidationResult<AnswerCallbackQuery>(value).ValidateRequired(x => x.CallbackQueryId);
     }
 }

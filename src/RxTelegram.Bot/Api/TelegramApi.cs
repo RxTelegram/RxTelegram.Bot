@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
@@ -148,5 +149,8 @@ namespace RxTelegram.Bot.Api
 
         public Task<bool> StopMessageLiveLocationInlineMessage(StopMessageLiveLocation stopMessageLiveLocation) =>
             Post<bool>("stopMessageLiveLocation", stopMessageLiveLocation);
+
+        public Task<bool> AnswerCallbackQuery(AnswerCallbackQuery answerCallbackQuery) =>
+            Post<bool>("answerCallbackQuery", answerCallbackQuery);
     }
 }
