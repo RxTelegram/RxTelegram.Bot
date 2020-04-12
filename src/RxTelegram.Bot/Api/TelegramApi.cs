@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
@@ -21,7 +22,8 @@ namespace RxTelegram.Bot.Api
 
         public TelegramApi(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
 
-        public Task<Update[]> GetUpdate(GetUpdate update) => Get<Update[]>("getUpdates", update);
+        public Task<Update[]> GetUpdate(GetUpdate update, CancellationToken cancellationToken = default) =>
+            Get<Update[]>("getUpdates", update, cancellationToken);
 
         public Task<File> GetFile(string fileId) => Get<File>("getFile", new {fileId});
 

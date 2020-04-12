@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
@@ -12,23 +13,6 @@ namespace RxTelegram.Bot.Api
 {
     public class UpdateManager : IUpdateManager
     {
-        private readonly IDictionary<UpdateType, List<object>> _observerDictionary;
-        private readonly List<object> _updateObservers;
-        private readonly Observable<Update> _update;
-        private readonly Observable<Message> _message;
-        private readonly Observable<Message> _editedMessage;
-        private readonly Observable<InlineQuery> _inlineQuery;
-        private readonly Observable<ChosenInlineResult> _chosenInlineResult;
-        private readonly Observable<PollAnswer> _pollAnswer;
-        private readonly Observable<Poll> _poll;
-        private readonly Observable<CallbackQuery> _callbackQuery;
-        private readonly Observable<Message> _channelPost;
-        private readonly Observable<Message> _editedChannelPost;
-        private readonly Observable<ShippingQuery> _shippingQuery;
-        private readonly Observable<PreCheckoutQuery> _preCheckoutQuery;
-        private bool _isRunning;
-        private readonly TelegramApi _telegramApi;
-
         public IObservable<Update> Update => _update;
 
         public IObservable<Message> Message => _message;
@@ -53,10 +37,28 @@ namespace RxTelegram.Bot.Api
 
         public IObservable<PollAnswer> PollAnswer => _pollAnswer;
 
-        private bool AnyObserver => _observerDictionary.Any(x => x.Value.Any()) || _updateObservers.Any();
-
-        private IEnumerable<UpdateType> GetUpdateTypes => _observerDictionary.Where(x => x.Value.Any())
-                                                                             .Select(x => x.Key);
+        private readonly IDictionary<UpdateType, List<object>> _observerDictionary;
+        private readonly List<object> _updateObservers;
+        private readonly Observable<Update> _update;
+        private readonly Observable<Message> _message;
+        private readonly Observable<Message> _editedMessage;
+        private readonly Observable<InlineQuery> _inlineQuery;
+        private readonly Observable<ChosenInlineResult> _chosenInlineResult;
+        private readonly Observable<PollAnswer> _pollAnswer;
+        private readonly Observable<Poll> _poll;
+        private readonly Observable<CallbackQuery> _callbackQuery;
+        private readonly Observable<Message> _channelPost;
+        private readonly Observable<Message> _editedChannelPost;
+        private readonly Observable<ShippingQuery> _shippingQuery;
+        private readonly Observable<PreCheckoutQuery> _preCheckoutQuery;
+        private readonly TelegramApi _telegramApi;
+        private bool _isRunning;
+        private CancellationTokenSource _cancellationTokenSource;
+        private bool AnyObserver => _updateObservers.Any() || _observerDictionary.Any(x => x.Value.Any());
+        private IEnumerable<UpdateType> UpdateTypes => _updateObservers.Any()
+                                                           ? _observerDictionary.Select(x => x.Key)
+                                                           : _observerDictionary.Where(x => x.Value.Any())
+                                                                                .Select(x => x.Key);
 
         public UpdateManager(TelegramApi telegramApi)
         {
@@ -80,20 +82,40 @@ namespace RxTelegram.Bot.Api
             _update = new Observable<Update>(null, this);
         }
 
+        private async Task RunUpdateSafe()
+        {
+            try
+            {
+                _isRunning = true;
+                _cancellationTokenSource = new CancellationTokenSource();
+                await RunUpdate();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
+                _isRunning = false;
+                _cancellationTokenSource = null;
+            }
+        }
+
         private async Task RunUpdate()
         {
             int? offset = null;
-            try
+
+            while (AnyObserver)
             {
-                while (AnyObserver)
+                try
                 {
                     var getUpdate = new GetUpdate
                                     {
                                         Offset = offset,
-                                        Timeout = 10,
-                                        AllowedUpdates = GetUpdateTypes
+                                        Timeout = 60,
+                                        AllowedUpdates = UpdateTypes
                                     };
-                    var result = await _telegramApi.GetUpdate(getUpdate);
+                    var result = await _telegramApi.GetUpdate(getUpdate, _cancellationTokenSource.Token);
                     if (!result.Any())
                     {
                         await Task.Delay(1000);
@@ -101,51 +123,88 @@ namespace RxTelegram.Bot.Api
                     }
 
                     offset = result.Max(x => x.UpdateId) + 1;
-                    foreach (var update in result)
-                    {
-                        OnNext(null, update);
-                        if (update.PreCheckoutQuery != null) {
-                            OnNext(UpdateType.PreCheckoutQuery, update.PreCheckoutQuery);
-                        }
-                        if (update.ShippingQuery != null) {
-                            OnNext(UpdateType.ShippingQuery, update.ShippingQuery);
-                        }
-                        if (update.EditedChannelPost != null) {
-                            OnNext(UpdateType.EditedChannelPost, update.EditedChannelPost);
-                        }
-                        if (update.ChannelPost != null) {
-                            OnNext(UpdateType.ChannelPost, update.ChannelPost);
-                        }
-                        if (update.CallbackQuery != null) {
-                            OnNext(UpdateType.CallbackQuery, update.CallbackQuery);
-                        }
-                        if (update.Poll != null) {
-                            OnNext(UpdateType.Poll, update.Poll);
-                        }
-                        if (update.PollAnswer != null) {
-                            OnNext(UpdateType.PollAnswer, update.PollAnswer);
-                        }
-                        if (update.ChosenInlineResult != null) {
-                            OnNext(UpdateType.ChosenInlineResult, update.ChosenInlineResult);
-                        }
-                        if (update.InlineQuery != null) {
-                            OnNext(UpdateType.InlineQuery, update.InlineQuery);
-                        }
-                        if (update.EditedMessage != null) {
-                            OnNext(UpdateType.EditedMessage, update.EditedMessage);
-                        }
-                        if (update.Message != null) {
-                            OnNext(UpdateType.Message, update.Message);
-                        }
-                    }
+                    DistributeUpdates(result);
+                }
+                catch (TaskCanceledException)
+                {
+                    // create new token and check observers
+                    offset = null;
+                    _cancellationTokenSource = new CancellationTokenSource();
+                }
+                catch (Exception exception)
+                {
+                    // unexpected exception report them to the observers and cancel run update
+                    OnException(exception);
+                    throw;
                 }
             }
-            catch (Exception exception)
+        }
+
+        private void DistributeUpdates(Update[] updates)
+        {
+            if (updates?.Any() != true)
             {
-                OnException(exception);
+                return;
             }
 
-            _isRunning = false;
+            foreach (var update in updates)
+            {
+                OnNext(null, update);
+                if (update.PreCheckoutQuery != null)
+                {
+                    OnNext(UpdateType.PreCheckoutQuery, update.PreCheckoutQuery);
+                }
+
+                if (update.ShippingQuery != null)
+                {
+                    OnNext(UpdateType.ShippingQuery, update.ShippingQuery);
+                }
+
+                if (update.EditedChannelPost != null)
+                {
+                    OnNext(UpdateType.EditedChannelPost, update.EditedChannelPost);
+                }
+
+                if (update.ChannelPost != null)
+                {
+                    OnNext(UpdateType.ChannelPost, update.ChannelPost);
+                }
+
+                if (update.CallbackQuery != null)
+                {
+                    OnNext(UpdateType.CallbackQuery, update.CallbackQuery);
+                }
+
+                if (update.Poll != null)
+                {
+                    OnNext(UpdateType.Poll, update.Poll);
+                }
+
+                if (update.PollAnswer != null)
+                {
+                    OnNext(UpdateType.PollAnswer, update.PollAnswer);
+                }
+
+                if (update.ChosenInlineResult != null)
+                {
+                    OnNext(UpdateType.ChosenInlineResult, update.ChosenInlineResult);
+                }
+
+                if (update.InlineQuery != null)
+                {
+                    OnNext(UpdateType.InlineQuery, update.InlineQuery);
+                }
+
+                if (update.EditedMessage != null)
+                {
+                    OnNext(UpdateType.EditedMessage, update.EditedMessage);
+                }
+
+                if (update.Message != null)
+                {
+                    OnNext(UpdateType.Message, update.Message);
+                }
+            }
         }
 
         private void OnNext<T>(UpdateType? updateType, T updateMessage)
@@ -215,6 +274,7 @@ namespace RxTelegram.Bot.Api
 
         private IDisposable Subscribe<T>(UpdateType? updateType, IObserver<T> observer)
         {
+            var updatesTypes = UpdateTypes.Count();
             var observers = GetObservers(updateType);
             if (!observers.Contains(observer))
             {
@@ -223,12 +283,12 @@ namespace RxTelegram.Bot.Api
 
             if (!_isRunning)
             {
-                _isRunning = true;
-                Task.Run(RunUpdate);
+                Task.Run(RunUpdateSafe);
             }
-            else
+            else if (updatesTypes != UpdateTypes.Count())
             {
-                // todo update allowed_updates
+                // cancel current requests to update types
+                _cancellationTokenSource.Cancel();
             }
 
             return new Unsubscriber(() => Remove(updateType, observer));
@@ -244,9 +304,9 @@ namespace RxTelegram.Bot.Api
 
             observers.Remove(observer);
 
-            if (AnyObserver == false)
+            if (AnyObserver == false && _isRunning)
             {
-                // cancel current requests
+                _cancellationTokenSource.Cancel();
             }
         }
 
