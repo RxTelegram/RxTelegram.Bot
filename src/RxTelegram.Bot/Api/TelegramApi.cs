@@ -163,5 +163,8 @@ namespace RxTelegram.Bot.Api
         public Task<Message> SendVenue(SendVenue sendVenue) => Post<Message>("sendVenue", sendVenue);
 
         public Task<Message> EditMessageCaption(EditMessageCaption sendLocation) => Post<Message>("editMessageCaption", sendLocation);
+
+        public Task<Message> EditMessageReplyMarkup(EditMessageReplyMarkup editMessageReplyMarkup) =>
+            Post<Message>("editMessageReplyMarkup", editMessageReplyMarkup);
     }
 }

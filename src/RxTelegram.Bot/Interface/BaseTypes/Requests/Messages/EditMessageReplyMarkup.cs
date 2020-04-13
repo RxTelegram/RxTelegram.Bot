@@ -12,7 +12,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// <summary>
         /// Required if inline_message_id is not specified. Identifier of the message to edit
         /// </summary>
-        public int MessageId { get; set; }
+        public int? MessageId { get; set; }
 
         /// <summary>
         /// Required if chat_id and message_id are not specified. Identifier of the inline message
@@ -24,6 +24,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

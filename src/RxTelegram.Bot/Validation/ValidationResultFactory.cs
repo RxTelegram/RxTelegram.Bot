@@ -253,6 +253,12 @@ namespace RxTelegram.Bot.Validation
                                                            .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
                                                                    ValidationErrors.FieldRequired);
 
+        public static ValidationResult<EditMessageReplyMarkup> CreateValidation(this EditMessageReplyMarkup value) =>
+            new ValidationResult<EditMessageReplyMarkup>(value).IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.ChatId == null,
+                                                                       ValidationErrors.FieldRequired)
+                                                               .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
+                                                                       ValidationErrors.FieldRequired);
+
         public static ValidationResult<AnswerCallbackQuery> CreateValidation(this AnswerCallbackQuery value) =>
             new ValidationResult<AnswerCallbackQuery>(value).ValidateRequired(x => x.CallbackQueryId);
 
