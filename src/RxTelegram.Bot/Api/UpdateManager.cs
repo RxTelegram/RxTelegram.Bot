@@ -9,6 +9,10 @@ using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Setup;
 
+#if NETSTANDARD2_1
+using RxTelegram.Bot.Utils;
+#endif
+
 namespace RxTelegram.Bot.Api
 {
     public class UpdateManager : IUpdateManager
@@ -52,9 +56,13 @@ namespace RxTelegram.Bot.Api
         private readonly Observable<ShippingQuery> _shippingQuery;
         private readonly Observable<PreCheckoutQuery> _preCheckoutQuery;
         private readonly TelegramApi _telegramApi;
-        private bool _isRunning;
+        private const int NotRunning = 0;
+        private const int Running = 1;
+        private int _isRunning = NotRunning;
         private CancellationTokenSource _cancellationTokenSource;
+
         private bool AnyObserver => _updateObservers.Any() || _observerDictionary.Any(x => x.Value.Any());
+
         private IEnumerable<UpdateType> UpdateTypes => _updateObservers.Any()
                                                            ? _observerDictionary.Select(x => x.Key)
                                                            : _observerDictionary.Where(x => x.Value.Any())
@@ -66,8 +74,7 @@ namespace RxTelegram.Bot.Api
             _updateObservers = new List<object>();
             _observerDictionary = Enum.GetValues(typeof(UpdateType))
                                       .Cast<UpdateType>()
-                                      .ToDictionary(updateType => updateType,
-                                                    updateType => new List<object>());
+                                      .ToDictionary(updateType => updateType, updateType => new List<object>());
             _preCheckoutQuery = new Observable<PreCheckoutQuery>(UpdateType.PreCheckoutQuery, this);
             _shippingQuery = new Observable<ShippingQuery>(UpdateType.ShippingQuery, this);
             _editedChannelPost = new Observable<Message>(UpdateType.EditedChannelPost, this);
@@ -86,7 +93,6 @@ namespace RxTelegram.Bot.Api
         {
             try
             {
-                _isRunning = true;
                 _cancellationTokenSource = new CancellationTokenSource();
                 await RunUpdate();
             }
@@ -96,7 +102,7 @@ namespace RxTelegram.Bot.Api
             }
             finally
             {
-                _isRunning = false;
+                Volatile.Write(ref _isRunning, NotRunning);
                 _cancellationTokenSource = null;
             }
         }
@@ -109,6 +115,13 @@ namespace RxTelegram.Bot.Api
             {
                 try
                 {
+                    // if the token already canceled before the first request reset token
+                    if (_cancellationTokenSource.IsCancellationRequested)
+                    {
+                        _cancellationTokenSource = new CancellationTokenSource();
+                    }
+
+                    Console.WriteLine("requst" + string.Join(",", UpdateTypes));
                     var getUpdate = new GetUpdate
                                     {
                                         Offset = offset,
@@ -133,6 +146,7 @@ namespace RxTelegram.Bot.Api
                 }
                 catch (Exception exception)
                 {
+                    Console.WriteLine(exception.GetType());
                     // unexpected exception report them to the observers and cancel run update
                     OnException(exception);
                     throw;
@@ -274,14 +288,20 @@ namespace RxTelegram.Bot.Api
 
         private IDisposable Subscribe<T>(UpdateType? updateType, IObserver<T> observer)
         {
-            var updatesTypes = UpdateTypes.Count();
             var observers = GetObservers(updateType);
-            if (!observers.Contains(observer))
+
+            int updatesTypes;
+            lock (observers)
             {
-                observers.Add(observer);
+                updatesTypes = UpdateTypes.Count();
+
+                if (!observers.Contains(observer))
+                {
+                    observers.Add(observer);
+                }
             }
 
-            if (!_isRunning)
+            if (Interlocked.Exchange(ref _isRunning, Running) == NotRunning)
             {
                 Task.Run(RunUpdateSafe);
             }
@@ -302,9 +322,13 @@ namespace RxTelegram.Bot.Api
                 return;
             }
 
-            observers.Remove(observer);
+            lock (observers)
+            {
+                observers.Remove(observer);
+            }
 
-            if (AnyObserver == false && _isRunning)
+            if (AnyObserver == false &&
+                Volatile.Read(ref _isRunning) == Running)
             {
                 _cancellationTokenSource.Cancel();
             }
@@ -332,5 +356,31 @@ namespace RxTelegram.Bot.Api
 
             public void Dispose() => _dispose?.Invoke();
         }
+
+#if NETSTANDARD2_1
+        public IAsyncEnumerable<Update> UpdateEnumerable() => _update.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<Message> MessageEnumerable() => _message.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<Message> EditedMessageEnumerable() => _editedMessage.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<InlineQuery> InlineQueryEnumerable() => _inlineQuery.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<ChosenInlineResult> ChosenInlineResultEnumerable() => _chosenInlineResult.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<CallbackQuery> CallbackQueryEnumerable() => _callbackQuery.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<Message> ChannelPostEnumerable() => _channelPost.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<Message> EditedChannelPostEnumerable() => _editedChannelPost.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<ShippingQuery> ShippingQueryEnumerable() => _shippingQuery.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<PreCheckoutQuery> PreCheckoutQueryEnumerable() => _preCheckoutQuery.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<Poll> PollEnumerable() => _poll.ToAsyncEnumerable();
+
+        public IAsyncEnumerable<PollAnswer> PollAnswerEnumerable() => _pollAnswer.ToAsyncEnumerable();
+#endif
     }
 }
