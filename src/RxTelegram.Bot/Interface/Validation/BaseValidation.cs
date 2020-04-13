@@ -11,8 +11,12 @@ namespace RxTelegram.Bot.Interface.Validation
 
         protected abstract IValidationResult Validate();
 
+        public string GetPath() => ValidationResult.Path;
+
+        public void SetPath(string value) => ValidationResult.Path = value;
+
         public bool IsValid() => ValidationResult.IsValid();
 
-        public List<ValidationError> Errors => ValidationResult.Errors();
+        public List<ValidationError> Errors => ValidationResult.Errors;
     }
 }

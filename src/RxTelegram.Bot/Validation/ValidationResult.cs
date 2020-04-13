@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace RxTelegram.Bot.Validation
@@ -7,11 +8,17 @@ namespace RxTelegram.Bot.Validation
     {
         public List<ValidationError> ValidationErrors { get; } = new List<ValidationError>();
 
+        public string Path { get; set; }
+
         public T Value { get; }
 
-        public ValidationResult(T value) => Value = value;
+        public ValidationResult(T value)
+        {
+            Value = value;
+            this.ValidateNested();
+        }
 
-        public List<ValidationError> Errors() => ValidationErrors;
+        public List<ValidationError> Errors => ValidationErrors;
 
         public bool IsValid() => !ValidationErrors.Any();
     }

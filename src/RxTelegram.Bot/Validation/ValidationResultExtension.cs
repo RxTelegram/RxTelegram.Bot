@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -17,7 +18,7 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="property">Property which is involved in the error</param>
         /// <param name="error">Errormessage as String</param>
-        private static void AddNewValidationError<T>(ValidationResult<T> res, string property, string error) =>
+        private static void AddNewValidationError<T>(ValidationResult<T> res, List<string> property, string error) =>
             res.ValidationErrors.Add(new ValidationError(property, error));
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace RxTelegram.Bot.Validation
         /// <param name="res"></param>
         /// <param name="property">Property which is involved in the error</param>
         /// <param name="error">Errormessage as Enum</param>
-        private static void AddNewValidationError<T>(ValidationResult<T> res, string property, ValidationErrors error) =>
+        private static void AddNewValidationError<T>(ValidationResult<T> res, List<string> property, ValidationErrors error) =>
             res.ValidationErrors.Add(new ValidationError(property, error));
 
         /// <summary>
@@ -62,9 +63,10 @@ namespace RxTelegram.Bot.Validation
             ValidationErrors? validationErrors = null,
             string error = null)
         {
-            var memberNames = string.Join(", ", GetMemberNames(condition)
-                                                .Distinct()
-                                                .OrderBy(x => x));
+            var memberNames = GetMemberNames(condition)
+                              .Distinct()
+                              .OrderBy(x => x)
+                              .ToList();
             var conditionFunc = condition.Compile();
             if (conditionFunc(res.Value) == shouldBe)
             {
@@ -124,7 +126,8 @@ namespace RxTelegram.Bot.Validation
             if (value == null ||
                 value == GetDefault(value.GetType(), res.Value))
             {
-                AddNewValidationError(res, string.IsNullOrEmpty(property?.Name) ? "Property name not found!" : property.Name,
+                AddNewValidationError(res,
+                                      new List<string> {string.IsNullOrEmpty(property?.Name) ? "Property name not found!" : property.Name},
                                       ValidationErrors.FieldRequired);
             }
 
@@ -231,11 +234,8 @@ namespace RxTelegram.Bot.Validation
 
         internal static void ValidateNested<T>(this ValidationResult<T> res)
         {
-            foreach (var propertyInfo in res.Value.GetType()
-                                            .GetProperties())
+            foreach (var propertyInfo in res.Value.GetType().GetProperties())
             {
-
-
                 // Check if we need to validate this property
                 if(propertyInfo.PropertyType.IsClass && typeof(BaseValidation).IsAssignableFrom(propertyInfo.PropertyType))
                 {
@@ -244,6 +244,9 @@ namespace RxTelegram.Bot.Validation
                     if (value is BaseValidation baseValidation)
                     {
                         res.ValidationErrors.AddRange(baseValidation.Errors);
+                        baseValidation.SetPath($"{propertyInfo.Name}");
+                        res.Errors
+                           .ForEach(x => x.AddPath(baseValidation.GetPath()));
                     }
                     continue;
                 }
@@ -255,15 +258,21 @@ namespace RxTelegram.Bot.Validation
                 {
                     // Get the value of the Property
                     var value = propertyInfo.GetValue(res.Value, null);
-                    if (value is IEnumerable list)
+                    if (!(value is IEnumerable list))
                     {
-                        foreach (var ag in list)
+                        continue;
+                    }
+
+                    var i = 0;
+                    foreach (var ag in list)
+                    {
+                        if (ag is BaseValidation bv)
                         {
-                            if (ag is BaseValidation bv)
-                            {
-                                res.ValidationErrors.AddRange(bv.Errors);
-                            }
+                            res.ValidationErrors.AddRange(bv.Errors);
+                            bv.SetPath($"{propertyInfo.Name}[{i}]");
+                            res.Errors.ForEach(x => x.AddPath(bv.GetPath()));
                         }
+                        i++;
                     }
 
                 }
