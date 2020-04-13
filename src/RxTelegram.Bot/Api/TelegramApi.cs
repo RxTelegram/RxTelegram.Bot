@@ -4,7 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Games;
@@ -148,5 +150,21 @@ namespace RxTelegram.Bot.Api
 
         public Task<bool> StopMessageLiveLocationInlineMessage(StopMessageLiveLocation stopMessageLiveLocation) =>
             Post<bool>("stopMessageLiveLocation", stopMessageLiveLocation);
+
+        public Task<bool> AnswerCallbackQuery(AnswerCallbackQuery answerCallbackQuery) =>
+            Post<bool>("answerCallbackQuery", answerCallbackQuery);
+
+        public Task<bool> AnswerInlineQuery(AnswerInlineQuery answerInlineQuery) => Post<bool>("answerInlineQuery", answerInlineQuery);
+
+        public Task<IEnumerable<BotCommand>> GetMyCommands() => Get<IEnumerable<BotCommand>>("getMyCommands");
+
+        public Task<bool> SetMyCommands(SetMyCommands setMyCommands) => Post<bool>("setMyCommands", setMyCommands);
+
+        public Task<Message> SendVenue(SendVenue sendVenue) => Post<Message>("sendVenue", sendVenue);
+
+        public Task<Message> EditMessageCaption(EditMessageCaption sendLocation) => Post<Message>("editMessageCaption", sendLocation);
+
+        public Task<Message> EditMessageReplyMarkup(EditMessageReplyMarkup editMessageReplyMarkup) =>
+            Post<Message>("editMessageReplyMarkup", editMessageReplyMarkup);
     }
 }

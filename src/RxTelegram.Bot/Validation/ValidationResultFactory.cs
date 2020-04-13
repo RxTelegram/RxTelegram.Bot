@@ -3,10 +3,14 @@ using System.Linq;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Games.Requests;
+using RxTelegram.Bot.Interface.InlineMode;
+using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Validation
@@ -18,7 +22,7 @@ namespace RxTelegram.Bot.Validation
                                                             .IsTrue(x => x.PngSticker == null && x.TgsSticker == null,
                                                                     ValidationErrors.NonePropertySet)
                                                             .IsTrue(x => x.PngSticker != null && x.TgsSticker != null,
-                                                                    ValidationErrors.OnlyONePropertyCanBeSet)
+                                                                    ValidationErrors.OnlyOnePropertyCanBeSet)
                                                             .ValidateRequired(x => x.UserId)
                                                             .ValidateRequired(x => x.Name)
                                                             .ValidateRequired(x => x.Title)
@@ -96,10 +100,7 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<SendMediaGroup> CreateValidation(this SendMediaGroup value) =>
             new ValidationResult<SendMediaGroup>(value).ValidateRequired(x => x.ChatId)
                                                        .ValidateRequired(x => x.Media)
-                                                       .IsFalse(x => x.Media != null &&
-                                                                     x.Media.All(input =>
-                                                                                     input.GetType() == typeof(InputMediaPhoto)
-                                                                                     || input.GetType() == typeof(InputMediaVideo)),
+                                                       .IsFalse(x => x.Media != null && x.Media.All(input => input.GetType() == typeof(InputMediaPhoto) || input.GetType() == typeof(InputMediaVideo)),
                                                                 ValidationErrors.OnlyInputMediaPhotoOrInputMediaVideo);
 
         public static ValidationResult<KickChatMember> CreateValidation(this KickChatMember value) =>
@@ -123,7 +124,7 @@ namespace RxTelegram.Bot.Validation
                                                         .IsTrue(x => x.PngSticker == null && x.TgsSticker == null,
                                                                 ValidationErrors.NonePropertySet)
                                                         .IsTrue(x => x.PngSticker != null && x.TgsSticker != null,
-                                                                ValidationErrors.OnlyONePropertyCanBeSet);
+                                                                ValidationErrors.OnlyOnePropertyCanBeSet);
 
         public static ValidationResult<DeleteStickerFromSet> CreateValidation(this DeleteStickerFromSet value) =>
             new ValidationResult<DeleteStickerFromSet>(value).ValidateRequired(x => x.Sticker);
@@ -143,21 +144,21 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<SetChatPermissions>(value).ValidateRequired(x => x.ChatId)
                                                            .ValidateRequired(x => x.Permissions);
 
-        public static ValidationResult<SetChatTitle> CreateValidation(this SetChatTitle value) =>
-            new ValidationResult<SetChatTitle>(value).ValidateRequired(x => x.ChatId)
-                                                     .ValidateRequired(x => x.Title);
+        public static ValidationResult<SetChatTitle> CreateValidation(this SetChatTitle value) => new ValidationResult<SetChatTitle>(value)
+                                                                                                  .ValidateRequired(x => x.ChatId)
+                                                                                                  .ValidateRequired(x => x.Title);
 
         public static ValidationResult<SetChatStickerSet> CreateValidation(this SetChatStickerSet value) =>
             new ValidationResult<SetChatStickerSet>(value).ValidateRequired(x => x.ChatId)
                                                           .ValidateRequired(x => x.StickerSetName);
 
-        public static ValidationResult<SendSticker> CreateValidation(this SendSticker value) =>
-            new ValidationResult<SendSticker>(value).ValidateRequired(x => x.ChatId)
-                                                    .ValidateRequired(x => x.Sticker);
+        public static ValidationResult<SendSticker> CreateValidation(this SendSticker value) => new ValidationResult<SendSticker>(value)
+                                                                                                .ValidateRequired(x => x.ChatId)
+                                                                                                .ValidateRequired(x => x.Sticker);
 
-        public static ValidationResult<SetChatPhoto> CreateValidation(this SetChatPhoto value) =>
-            new ValidationResult<SetChatPhoto>(value).ValidateRequired(x => x.ChatId)
-                                                     .ValidateRequired(x => x.Photo);
+        public static ValidationResult<SetChatPhoto> CreateValidation(this SetChatPhoto value) => new ValidationResult<SetChatPhoto>(value)
+                                                                                                  .ValidateRequired(x => x.ChatId)
+                                                                                                  .ValidateRequired(x => x.Photo);
 
         public static ValidationResult<ExportChatInviteLink> CreateValidation(this ExportChatInviteLink value) =>
             new ValidationResult<ExportChatInviteLink>(value).ValidateRequired(x => x.ChatId);
@@ -171,10 +172,10 @@ namespace RxTelegram.Bot.Validation
                                                            .ValidateRequired(x => x.UserId)
                                                            .ValidateRequired(x => x.ChatId);
 
-        public static ValidationResult<SendContact> CreateValidation(this SendContact value) =>
-            new ValidationResult<SendContact>(value).ValidateRequired(x => x.FirstName)
-                                                    .ValidateRequired(x => x.PhoneNumber)
-                                                    .ValidateRequired(x => x.ChatId);
+        public static ValidationResult<SendContact> CreateValidation(this SendContact value) => new ValidationResult<SendContact>(value)
+                                                                                                .ValidateRequired(x => x.FirstName)
+                                                                                                .ValidateRequired(x => x.PhoneNumber)
+                                                                                                .ValidateRequired(x => x.ChatId);
 
         public static ValidationResult<UploadStickerFile> CreateValidation(this UploadStickerFile value) =>
             new ValidationResult<UploadStickerFile>(value).ValidateRequired(x => x.UserId)
@@ -201,15 +202,18 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<SendChatAction>(value).ValidateRequired(x => x.ChatId)
                                                        .ValidateRequired(x => x.Action);
 
-        public static ValidationResult<SendPoll> CreateValidation(this SendPoll value) =>
-            new ValidationResult<SendPoll>(value)
-                .ValidateRequired(x => x.ChatId)
-                .ValidateRequired(x => x.Question)
-                .ValidateRequired(x => x.Options)
-                .IsFalse(x => x.Question.Length > 0 && x.Question.Length < 256, ValidationErrors.QuestionTooLong)
-                .IsFalse(x => x.Options.Count() > 1 && x.Options.Count() <= 10, ValidationErrors.InvalidOptionCount)
-                .IsFalse(x => x.Options.All(y => y.Length > 0 && y.Length <= 100), ValidationErrors.OptionStringTooLong)
-                .IsTrue(x => x.Type == PollType.Quiz && x.CorrectOptionId == null, ValidationErrors.CorrectOptionRequired);
+        public static ValidationResult<SendPoll> CreateValidation(this SendPoll value) => new ValidationResult<SendPoll>(value)
+                                                                                          .ValidateRequired(x => x.ChatId)
+                                                                                          .ValidateRequired(x => x.Question)
+                                                                                          .ValidateRequired(x => x.Options)
+                                                                                          .IsFalse(x => x.Question.Length > 0 && x.Question.Length < 256,
+                                                                                                   ValidationErrors.QuestionTooLong)
+                                                                                          .IsFalse(x => x.Options.Count() > 1 && x.Options.Count() <= 10,
+                                                                                                   ValidationErrors.InvalidOptionCount)
+                                                                                          .IsFalse(x => x.Options.All(y => y.Length > 0 && y.Length <= 100),
+                                                                                                   ValidationErrors.OptionStringTooLong)
+                                                                                          .IsTrue(x => x.Type == PollType.Quiz && x.CorrectOptionId == null,
+                                                                                                  ValidationErrors.CorrectOptionRequired);
 
         public static ValidationResult<StopPoll> CreateValidation(this StopPoll value) =>
             new ValidationResult<StopPoll>(value).ValidateRequired(x => x.MessageId);
@@ -242,5 +246,166 @@ namespace RxTelegram.Bot.Validation
                                                                         ValidationErrors.FieldRequired)
                                                                 .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
                                                                         ValidationErrors.FieldRequired);
+
+        public static ValidationResult<EditMessageCaption> CreateValidation(this EditMessageCaption value) =>
+            new ValidationResult<EditMessageCaption>(value).IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.ChatId == null,
+                                                                   ValidationErrors.FieldRequired)
+                                                           .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
+                                                                   ValidationErrors.FieldRequired);
+
+        public static ValidationResult<EditMessageReplyMarkup> CreateValidation(this EditMessageReplyMarkup value) =>
+            new ValidationResult<EditMessageReplyMarkup>(value).IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.ChatId == null,
+                                                                       ValidationErrors.FieldRequired)
+                                                               .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
+                                                                       ValidationErrors.FieldRequired);
+
+        public static ValidationResult<AnswerCallbackQuery> CreateValidation(this AnswerCallbackQuery value) =>
+            new ValidationResult<AnswerCallbackQuery>(value).ValidateRequired(x => x.CallbackQueryId);
+
+        public static ValidationResult<AnswerInlineQuery> CreateValidation(this AnswerInlineQuery value) =>
+            new ValidationResult<AnswerInlineQuery>(value).ValidateRequired(x => x.Results)
+                                                          .ValidateRequired(x => x.InlineQueryId);
+
+        public static ValidationResult<InlineQueryResultArticle> CreateValidation(this InlineQueryResultArticle value) =>
+            new ValidationResult<InlineQueryResultArticle>(value).ValidateRequired(x => x.Type)
+                                                                 .ValidateRequired(x => x.Id)
+                                                                 .ValidateRequired(x => x.Title)
+                                                                 .ValidateRequired(x => x.InputMessageContent);
+
+        public static ValidationResult<InlineQueryResultPhoto> CreateValidation(this InlineQueryResultPhoto value) =>
+            new ValidationResult<InlineQueryResultPhoto>(value).ValidateRequired(x => x.Type)
+                                                               .ValidateRequired(x => x.Id)
+                                                               .ValidateRequired(x => x.PhotoUrl)
+                                                               .ValidateRequired(x => x.ThumbUrl);
+
+        public static ValidationResult<InlineQueryResultGif> CreateValidation(this InlineQueryResultGif value) =>
+            new ValidationResult<InlineQueryResultGif>(value).ValidateRequired(x => x.Type)
+                                                             .ValidateRequired(x => x.Id)
+                                                             .ValidateRequired(x => x.GifUrl)
+                                                             .ValidateRequired(x => x.ThumbUrl);
+
+        public static ValidationResult<InlineQueryResultMpeg4Gif> CreateValidation(this InlineQueryResultMpeg4Gif value) =>
+            new ValidationResult<InlineQueryResultMpeg4Gif>(value).ValidateRequired(x => x.Type)
+                                                                  .ValidateRequired(x => x.Id)
+                                                                  .ValidateRequired(x => x.Mpeg4Url)
+                                                                  .ValidateRequired(x => x.ThumbUrl);
+
+        public static ValidationResult<InlineQueryResultVideo> CreateValidation(this InlineQueryResultVideo value) =>
+            new ValidationResult<InlineQueryResultVideo>(value).ValidateRequired(x => x.Type)
+                                                               .ValidateRequired(x => x.Id)
+                                                               .ValidateRequired(x => x.VideoUrl)
+                                                               .ValidateRequired(x => x.MimeType)
+                                                               .ValidateRequired(x => x.Title)
+                                                               .ValidateRequired(x => x.ThumbUrl);
+
+        public static ValidationResult<InlineQueryResultAudio> CreateValidation(this InlineQueryResultAudio value) =>
+            new ValidationResult<InlineQueryResultAudio>(value).ValidateRequired(x => x.Type)
+                                                               .ValidateRequired(x => x.Id)
+                                                               .ValidateRequired(x => x.AudioUrl)
+                                                               .ValidateRequired(x => x.Title);
+
+        public static ValidationResult<InlineQueryResultVoice> CreateValidation(this InlineQueryResultVoice value) =>
+            new ValidationResult<InlineQueryResultVoice>(value).ValidateRequired(x => x.Type)
+                                                               .ValidateRequired(x => x.Id)
+                                                               .ValidateRequired(x => x.VoiceUrl)
+                                                               .ValidateRequired(x => x.Title);
+
+        public static ValidationResult<InlineQueryResultDocument> CreateValidation(this InlineQueryResultDocument value) =>
+            new ValidationResult<InlineQueryResultDocument>(value).ValidateRequired(x => x.Type)
+                                                                  .ValidateRequired(x => x.Id)
+                                                                  .ValidateRequired(x => x.DocumentUrl)
+                                                                  .ValidateRequired(x => x.MimeType)
+                                                                  .ValidateRequired(x => x.Title);
+
+        public static ValidationResult<InlineQueryResultLocation> CreateValidation(this InlineQueryResultLocation value) =>
+            new ValidationResult<InlineQueryResultLocation>(value).ValidateRequired(x => x.Type)
+                                                                  .ValidateRequired(x => x.Id)
+                                                                  .ValidateRequired(x => x.Latitude)
+                                                                  .ValidateRequired(x => x.Longitude)
+                                                                  .ValidateRequired(x => x.Title);
+
+        public static ValidationResult<InlineQueryResultVenue> CreateValidation(this InlineQueryResultVenue value) =>
+            new ValidationResult<InlineQueryResultVenue>(value).ValidateRequired(x => x.Type)
+                                                               .ValidateRequired(x => x.Id)
+                                                               .ValidateRequired(x => x.Latitude)
+                                                               .ValidateRequired(x => x.Longitude)
+                                                               .ValidateRequired(x => x.Title)
+                                                               .ValidateRequired(x => x.Address);
+
+        public static ValidationResult<InlineQueryResultContact> CreateValidation(this InlineQueryResultContact value) =>
+            new ValidationResult<InlineQueryResultContact>(value).ValidateRequired(x => x.Type)
+                                                                 .ValidateRequired(x => x.Id)
+                                                                 .ValidateRequired(x => x.PhoneNumber)
+                                                                 .ValidateRequired(x => x.FirstName);
+
+        public static ValidationResult<InlineQueryResultGame> CreateValidation(this InlineQueryResultGame value) =>
+            new ValidationResult<InlineQueryResultGame>(value).ValidateRequired(x => x.Type)
+                                                              .ValidateRequired(x => x.Id)
+                                                              .ValidateRequired(x => x.GameShortName);
+
+        public static ValidationResult<InlineQueryResultCachedPhoto> CreateValidation(this InlineQueryResultCachedPhoto value) =>
+            new ValidationResult<InlineQueryResultCachedPhoto>(value).ValidateRequired(x => x.Type)
+                                                                     .ValidateRequired(x => x.Id)
+                                                                     .ValidateRequired(x => x.PhotoFileId);
+
+        public static ValidationResult<InlineQueryResultCachedGif> CreateValidation(this InlineQueryResultCachedGif value) =>
+            new ValidationResult<InlineQueryResultCachedGif>(value).ValidateRequired(x => x.Type)
+                                                                   .ValidateRequired(x => x.Id)
+                                                                   .ValidateRequired(x => x.GifFileId);
+
+        public static ValidationResult<InlineQueryResultCachedMpeg4Gif> CreateValidation(this InlineQueryResultCachedMpeg4Gif value) =>
+            new ValidationResult<InlineQueryResultCachedMpeg4Gif>(value).ValidateRequired(x => x.Type)
+                                                                        .ValidateRequired(x => x.Id)
+                                                                        .ValidateRequired(x => x.Mpeg4FileId);
+
+        public static ValidationResult<InlineQueryResultCachedSticker> CreateValidation(this InlineQueryResultCachedSticker value) =>
+            new ValidationResult<InlineQueryResultCachedSticker>(value).ValidateRequired(x => x.Type)
+                                                                       .ValidateRequired(x => x.Id)
+                                                                       .ValidateRequired(x => x.StickerFileId);
+
+        public static ValidationResult<InlineQueryResultCachedDocument> CreateValidation(this InlineQueryResultCachedDocument value) =>
+            new ValidationResult<InlineQueryResultCachedDocument>(value).ValidateRequired(x => x.Type)
+                                                                        .ValidateRequired(x => x.Id)
+                                                                        .ValidateRequired(x => x.Title)
+                                                                        .ValidateRequired(x => x.DocumentFileId);
+
+        public static ValidationResult<InlineQueryResultCachedVideo> CreateValidation(this InlineQueryResultCachedVideo value) =>
+            new ValidationResult<InlineQueryResultCachedVideo>(value).ValidateRequired(x => x.Type)
+                                                                     .ValidateRequired(x => x.Id)
+                                                                     .ValidateRequired(x => x.Title)
+                                                                     .ValidateRequired(x => x.VideoFileId);
+
+        public static ValidationResult<InlineQueryResultCachedAudio> CreateValidation(this InlineQueryResultCachedAudio value) =>
+            new ValidationResult<InlineQueryResultCachedAudio>(value).ValidateRequired(x => x.Type)
+                                                                     .ValidateRequired(x => x.Id)
+                                                                     .ValidateRequired(x => x.AudioFileId);
+
+        public static ValidationResult<InputTextMessageContent> CreateValidation(this InputTextMessageContent value) =>
+            new ValidationResult<InputTextMessageContent>(value).ValidateRequired(x => x.MessageText);
+
+        public static ValidationResult<InputLocationMessageContent> CreateValidation(this InputLocationMessageContent value) =>
+            new ValidationResult<InputLocationMessageContent>(value).ValidateRequired(x => x.Latitude)
+                                                                    .ValidateRequired(x => x.Longitude);
+
+        public static ValidationResult<InputVenueMessageContent> CreateValidation(this InputVenueMessageContent value) =>
+            new ValidationResult<InputVenueMessageContent>(value).ValidateRequired(x => x.Latitude)
+                                                                 .ValidateRequired(x => x.Longitude)
+                                                                 .ValidateRequired(x => x.Title)
+                                                                 .ValidateRequired(x => x.Address);
+
+        public static ValidationResult<InputContactMessageContent> CreateValidation(this InputContactMessageContent value) =>
+            new ValidationResult<InputContactMessageContent>(value).ValidateRequired(x => x.PhoneNumber)
+                                                                   .ValidateRequired(x => x.FirstName);
+
+        public static ValidationResult<SetMyCommands> CreateValidation(this SetMyCommands value) =>
+            new ValidationResult<SetMyCommands>(value).ValidateRequired(x => x.Commands)
+                                                      .IsTrue(x => x.Commands.Count() > 100, ValidationErrors.CommandLimit);
+
+        public static ValidationResult<SendVenue> CreateValidation(this SendVenue value) =>
+            new ValidationResult<SendVenue>(value).ValidateRequired(x => x.ChatId)
+                                                  .ValidateRequired(x => x.Latitude)
+                                                  .ValidateRequired(x => x.Title)
+                                                  .ValidateRequired(x => x.Address)
+                                                  .ValidateRequired(x => x.Longitude);
     }
 }

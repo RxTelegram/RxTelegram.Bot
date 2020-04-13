@@ -23,6 +23,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks
         public string Text { get; set; }
 
         /// <summary>
+        /// If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
+        /// </summary>
+        public bool ShowAlert { get; set; }
+
+        /// <summary>
         /// URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify
         /// the URL that opens your game – note that this will only work if the query comes from a callback_game button.
         /// </summary>
@@ -35,6 +40,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks
         /// </summary>
         public int CacheTime { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

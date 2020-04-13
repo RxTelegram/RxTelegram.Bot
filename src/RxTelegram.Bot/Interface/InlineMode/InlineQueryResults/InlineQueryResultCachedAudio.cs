@@ -1,4 +1,6 @@
+using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
@@ -7,8 +9,10 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
     /// Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user.
     /// Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
     /// </summary>
-    public class InlineQueryResultCachedAudio : BaseInlineQueryResultMedia
+    public class InlineQueryResultCachedAudio : BaseInlineQueryResult
     {
+        public string Id { get; set; }
+
         public override string Type { get; } = "audio";
 
         /// <summary>
@@ -27,6 +31,17 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// fixed-width text or inline URLs in the media caption.
         /// </summary>
         public ParseMode ParseMode { get; set; }
+
+        /// <summary>
+        /// Content of the message to be sent
+        /// </summary>
+        public InputMessageContent InputMessageContent { get; set; }
+
+        /// <summary>
+        /// Optional.
+        /// Inline keyboard attached to the message
+        /// </summary>
+        public InlineKeyboardMarkup ReplyMarkup { get; set; }
 
         protected override IValidationResult Validate() => throw new System.NotImplementedException();
     }
