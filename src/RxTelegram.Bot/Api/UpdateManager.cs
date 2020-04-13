@@ -308,7 +308,7 @@ namespace RxTelegram.Bot.Api
             else if (updatesTypes != UpdateTypes.Count())
             {
                 // cancel current requests to update types
-                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource?.Cancel();
             }
 
             return new Unsubscriber(() => Remove(updateType, observer));
