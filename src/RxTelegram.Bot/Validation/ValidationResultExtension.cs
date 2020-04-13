@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Validation
@@ -174,13 +171,12 @@ namespace RxTelegram.Bot.Validation
 
         #endregion
 
-        private static IEnumerable<string> GetMemberNames(Expression expression)
+        private static IEnumerable<string> GetMemberNames<T>(Expression<Func<T, bool>> expression)
         {
             var stack = new Stack<Expression>(new[] {expression});
             while (stack.Count > 0)
             {
-                var asd = stack.Pop();
-                switch (asd)
+                switch (stack.Pop())
                 {
                     case null:
                     case ConstantExpression _:
@@ -220,13 +216,29 @@ namespace RxTelegram.Bot.Validation
                         stack.Push(methodCallExpression.Object);
                         break;
                     case MemberExpression memberExpression:
-                        yield return memberExpression.Member.Name;
+                        stack.Push(memberExpression.Expression);
+                        if (memberExpression.Member.DeclaringType == typeof(T)) {
+                            yield return memberExpression.Member.Name;
+                        }
                         break;
                     case UnaryExpression unaryExpression:
                         stack.Push(unaryExpression.Operand);
                         break;
+                    case NewExpression newExpression:
+                        foreach (var item in newExpression.Arguments)
+                        {
+                            stack.Push(item);
+                        }
+
+                        break;
+                    case NewArrayExpression newArrayExpression:
+                        foreach (var item in newArrayExpression.Expressions)
+                        {
+                            stack.Push(item);
+                        }
+
+                        break;
                     default:
-                        Console.WriteLine(asd);
                         throw new NotImplementedException();
                 }
             }

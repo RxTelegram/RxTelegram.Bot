@@ -22,10 +22,27 @@ namespace RxTelegram.Bot.Api
     {
         public IUpdateManager Updates { get; }
 
+        public TelegramApi(string token) : base(new BotInfo(token))
+        {
+        }
+
         public TelegramApi(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
+
+        #region Updates
 
         public Task<Update[]> GetUpdate(GetUpdate update, CancellationToken cancellationToken = default) =>
             Get<Update[]>("getUpdates", update, cancellationToken);
+
+        public Task<bool> SetWebhook(SetWebhook update, CancellationToken cancellationToken = default) =>
+            Get<bool>("setWebhook", update, cancellationToken);
+
+        public Task<bool> DeleteWebhook(CancellationToken cancellationToken = default) =>
+            Get<bool>("deleteWebhook", default, cancellationToken);
+
+        public Task<WebhookInfo> GetWebhookInfo(CancellationToken cancellationToken = default) =>
+            Get<WebhookInfo>("getWebhookInfo", default, cancellationToken);
+
+        #endregion
 
         public Task<File> GetFile(string fileId) => Get<File>("getFile", new {fileId});
 

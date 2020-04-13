@@ -11,6 +11,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
+using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Validation
@@ -407,5 +408,15 @@ namespace RxTelegram.Bot.Validation
                                                   .ValidateRequired(x => x.Title)
                                                   .ValidateRequired(x => x.Address)
                                                   .ValidateRequired(x => x.Longitude);
+
+        public static ValidationResult<SetWebhook> CreateValidation(this SetWebhook value)
+        {
+            Uri uri = null;
+            return new ValidationResult<SetWebhook>(value).ValidateRequired(x => x.Url)
+                                                          .IsFalse(x => Uri.TryCreate(x.Url, UriKind.Absolute, out uri),
+                                                                   ValidationErrors.UrlInvalid)
+                                                          .IsFalse(x => uri == null || new[] {443, 80, 88, 8443}.Contains(new Uri(x.Url).Port),
+                                                                   ValidationErrors.SupportedPortsWebhook);
+        }
     }
 }

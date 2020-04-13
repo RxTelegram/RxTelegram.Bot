@@ -1,5 +1,3 @@
-using RxTelegram.Bot.Interface.Validation;
-
 namespace RxTelegram.Bot.Validation
 {
     public enum ValidationErrors
@@ -44,6 +42,13 @@ namespace RxTelegram.Bot.Validation
         CorrectOptionRequired,
 
         [ValidationErrorsString("At most 100 commands can be specified.")]
-        CommandLimit
+        CommandLimit,
+
+        [ValidationErrorsString("Url invalid")]
+        UrlInvalid,
+
+        [ValidationErrorsString("Currently supported ports currently for Webhooks: 443, 80, 88, 8443.")]
+        SupportedPortsWebhook
+
     }
 }
