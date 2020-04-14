@@ -47,7 +47,7 @@ namespace RxTelegram.Bot.Validation
         [ValidationErrorsString("Url invalid")]
         UrlInvalid,
 
-        [ValidationErrorsString("Currently supported ports currently for Webhooks: 443, 80, 88, 8443.")]
+        [ValidationErrorsString("Currently supported ports for Webhooks: 443, 80, 88, 8443.")]
         SupportedPortsWebhook
 
     }
