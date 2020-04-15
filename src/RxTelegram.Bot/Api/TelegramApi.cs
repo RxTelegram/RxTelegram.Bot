@@ -11,6 +11,8 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Games.Requests;
+using RxTelegram.Bot.Interface.Passport.Requests;
+using RxTelegram.Bot.Interface.Payments.Requests;
 using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Requests;
@@ -154,6 +156,12 @@ namespace RxTelegram.Bot.Api
         public Task<bool> SetChatStickerSet(SetChatStickerSet setChatStickerSet, CancellationToken cancellationToken = default) =>
             Post<bool>("setChatStickerSet", setChatStickerSet, cancellationToken);
 
+        public Task<bool> DeleteChatStickerSet(DeleteChatStickerSet deleteChatStickerSet, CancellationToken cancellationToken = default) =>
+            Post<bool>("deleteChatStickerSet", deleteChatStickerSet, cancellationToken);
+
+        public Task<bool> SetStickerSetThumb(SetStickerSetThumb setStickerSetThumb, CancellationToken cancellationToken = default) =>
+            Post<bool>("setStickerSetThumb", setStickerSetThumb, cancellationToken);
+
         public Task<Message> SendSticker(SendSticker sendSticker, CancellationToken cancellationToken = default) =>
             Post<Message>("sendSticker", sendSticker, cancellationToken);
 
@@ -247,5 +255,31 @@ namespace RxTelegram.Bot.Api
             EditMessageReplyMarkup editMessageReplyMarkup,
             CancellationToken cancellationToken = default) =>
             Post<Message>("editMessageReplyMarkup", editMessageReplyMarkup, cancellationToken);
+
+        public Task<Message> SendInvoice(SendInvoice sendInvoice, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendInvoice", sendInvoice, cancellationToken);
+
+        public Task<bool> AnswerShippingQuery(AnswerShippingQuery answerShippingQuery, CancellationToken cancellationToken = default) =>
+            Post<bool>("answerShippingQuery", answerShippingQuery, cancellationToken);
+
+        public Task<bool> AnswerPreCheckoutQuery(
+            AnswerPreCheckoutQuery answerPreCheckoutQuery,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("answerPreCheckoutQuery", answerPreCheckoutQuery, cancellationToken);
+
+        public Task<bool> SetPassportDataErrors(
+            SetPassportDataErrors setPassportDataErrors,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("setPassportDataErrors", setPassportDataErrors, cancellationToken);
+
+        public Task<bool> EditMessageMedia(
+            EditMessageMedia editMessageMedia,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("editMessageMedia", editMessageMedia, cancellationToken);
+
+        public Task<Message> SendDice(
+            SendDice sendDice,
+            CancellationToken cancellationToken = default) =>
+            Post<Message>("sendDice", sendDice, cancellationToken);
     }
 }

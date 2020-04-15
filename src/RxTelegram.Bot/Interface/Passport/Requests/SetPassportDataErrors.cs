@@ -27,6 +27,6 @@ namespace RxTelegram.Bot.Interface.Passport.Requests
         /// </summary>
         public PassportElementError Type { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

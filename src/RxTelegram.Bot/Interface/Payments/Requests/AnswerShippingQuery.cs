@@ -22,6 +22,6 @@ namespace RxTelegram.Bot.Interface.Payments.Requests
         /// </summary>
         public IEnumerable<ShippingOption> ShippingOptions { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }
