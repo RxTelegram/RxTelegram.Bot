@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using RxTelegram.Bot.Api;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
@@ -18,17 +19,17 @@ using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 using File = RxTelegram.Bot.Interface.BaseTypes.File;
 
-namespace RxTelegram.Bot.Api
+namespace RxTelegram.Bot
 {
-    public class TelegramApi : BaseTelegramApi
+    public class TelegramBot : BaseTelegramBot
     {
         public IUpdateManager Updates { get; }
 
-        public TelegramApi(string token) : base(new BotInfo(token))
+        public TelegramBot(string token) : base(new BotInfo(token))
         {
         }
 
-        public TelegramApi(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
+        public TelegramBot(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
 
         #region Updates
 

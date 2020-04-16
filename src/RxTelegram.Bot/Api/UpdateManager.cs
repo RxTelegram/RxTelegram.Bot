@@ -55,7 +55,7 @@ namespace RxTelegram.Bot.Api
         private readonly Observable<Message> _editedChannelPost;
         private readonly Observable<ShippingQuery> _shippingQuery;
         private readonly Observable<PreCheckoutQuery> _preCheckoutQuery;
-        private readonly TelegramApi _telegramApi;
+        private readonly TelegramBot _telegramBot;
         private const int NotRunning = 0;
         private const int Running = 1;
         private int _isRunning = NotRunning;
@@ -68,9 +68,9 @@ namespace RxTelegram.Bot.Api
                                                            : _observerDictionary.Where(x => x.Value.Any())
                                                                                 .Select(x => x.Key);
 
-        public UpdateManager(TelegramApi telegramApi)
+        public UpdateManager(TelegramBot telegramBot)
         {
-            _telegramApi = telegramApi;
+            _telegramBot = telegramBot;
             _updateObservers = new List<object>();
             _observerDictionary = Enum.GetValues(typeof(UpdateType))
                                       .Cast<UpdateType>()
@@ -128,7 +128,7 @@ namespace RxTelegram.Bot.Api
                                         Timeout = 60,
                                         AllowedUpdates = UpdateTypes
                                     };
-                    var result = await _telegramApi.GetUpdate(getUpdate, _cancellationTokenSource.Token);
+                    var result = await _telegramBot.GetUpdate(getUpdate, _cancellationTokenSource.Token);
                     if (!result.Any())
                     {
                         await Task.Delay(1000);

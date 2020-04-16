@@ -16,7 +16,7 @@ namespace RxTelegram.Bot.UnitTests
         public void TestGetUpdateTypes()
         {
             var botInfo = new BotInfo("123456:ABC-DEFG1234ghIkl-zyx57W2v1u123ew11");
-            var telegram = new TelegramApi(botInfo);
+            var telegram = new TelegramBot(botInfo);
             var updateManager = new UpdateManager(telegram);
             updateManager.Message.Subscribe();
             updateManager.EditedChannelPost.Subscribe();

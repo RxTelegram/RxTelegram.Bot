@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -9,19 +8,18 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using RxTelegram.Bot.Exceptions;
-using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Utils;
 
 namespace RxTelegram.Bot.Api
 {
-    public abstract class BaseTelegramApi
+    public abstract class BaseTelegramBot
     {
         private readonly HttpClient _client = new HttpClient();
 
         protected readonly HttpClient FileClient = new HttpClient();
 
-        protected BaseTelegramApi(BotInfo botInfo)
+        protected BaseTelegramBot(BotInfo botInfo)
         {
             _client.BaseAddress = new Uri(botInfo.BotUrl);
             FileClient.BaseAddress = new Uri(botInfo.BotFileUrl);
