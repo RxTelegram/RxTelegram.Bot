@@ -7,12 +7,16 @@
         <Authors>RxTelegram.Bot</Authors>
         <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
         <Description>Reactive Telegram Bot API for .NET</Description>
-        <PackageLicenseUrl>https://github.com/RxTelegram/RxTelegram.Bot/blob/master/LICENSE.md</PackageLicenseUrl>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
         <RepositoryUrl>https://github.com/RxTelegram/RxTelegram.Bot</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>Telegram;Bot;Api;Rx;Reactive;Observable</PackageTags>
         <PackageVersion>0.0.2</PackageVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+	</ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
