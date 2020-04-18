@@ -11,7 +11,7 @@
         <RepositoryUrl>https://github.com/RxTelegram/RxTelegram.Bot</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>Telegram;Bot;Api;Rx;Reactive;Observable</PackageTags>
-        <PackageVersion>0.0.3</PackageVersion>
+        <PackageVersion>0.0.4</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
