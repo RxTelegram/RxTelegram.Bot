@@ -121,7 +121,6 @@ namespace RxTelegram.Bot.Api
                         _cancellationTokenSource = new CancellationTokenSource();
                     }
 
-                    Console.WriteLine("requst" + string.Join(",", UpdateTypes));
                     var getUpdate = new GetUpdate
                                     {
                                         Offset = offset,
@@ -146,7 +145,6 @@ namespace RxTelegram.Bot.Api
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine(exception.GetType());
                     // unexpected exception report them to the observers and cancel run update
                     OnException(exception);
                     throw;
