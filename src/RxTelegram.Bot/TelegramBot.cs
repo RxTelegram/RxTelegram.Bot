@@ -25,7 +25,7 @@ namespace RxTelegram.Bot
     {
         public IUpdateManager Updates { get; }
 
-        public TelegramBot(string token) : base(new BotInfo(token))
+        public TelegramBot(string token) : this(new BotInfo(token))
         {
         }
 
