@@ -52,5 +52,26 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
         /// </summary>
         public int? CorrectOptionId { get; set; }
+
+        /// <summary>
+        /// Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll,
+        /// 0-200 characters
+        /// </summary>
+        public string Explanation { get; set; }
+
+        /// <summary>
+        /// Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+        /// </summary>
+        public IEnumerable<MessageEntity> ExplanationEntities { get; set; }
+
+        /// <summary>
+        /// Optional. Amount of time in seconds the poll will be active after creation
+        /// </summary>
+        public int? OpenPeriod { get; set; }
+
+        /// <summary>
+        /// Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+        /// </summary>
+        public int? CloseDate { get; set; }
     }
 }

@@ -217,7 +217,10 @@ namespace RxTelegram.Bot.Validation
                                                                                           .IsFalse(x => x.Options != null && x.Options.All(y => y.Length > 0 && y.Length <= 100),
                                                                                                    ValidationErrors.OptionStringTooLong)
                                                                                           .IsTrue(x => x.Type == PollType.Quiz && x.CorrectOptionId == null,
-                                                                                                  ValidationErrors.CorrectOptionRequired);
+                                                                                                  ValidationErrors.CorrectOptionRequired)
+                                                                                          .IsTrue(x => x.OpenPeriod.HasValue && x.CloseDate.HasValue,
+                                                                                                   ValidationErrors
+                                                                                                       .OnlyOnePropertyCanBeSet);
 
         public static ValidationResult<StopPoll> CreateValidation(this StopPoll value) =>
             new ValidationResult<StopPoll>(value).ValidateRequired(x => x.MessageId);

@@ -9,6 +9,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// <summary>
         /// Value of the dice, 1-6
         /// </summary>
-        public int Value { get; set; }
+        public int? Value { get; set; }
+
+        /// <summary>
+        /// Emoji on which the dice throw animation is based
+        /// </summary>
+        public string Emoji { get; set; }
     }
 }
