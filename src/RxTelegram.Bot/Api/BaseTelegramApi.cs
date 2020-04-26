@@ -46,6 +46,7 @@ namespace RxTelegram.Bot.Api
                               {
                                   new UnixDateTimeConverter(),
                                   new InputFileConverter(),
+                                  new ChatIdConverter(),
                                   new StringEnumConverter(new SnakeCaseNamingStrategy())
                               };
                 return _jsonSerializerSettings = new JsonSerializerSettings

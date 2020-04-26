@@ -13,7 +13,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// Unique identifier for the target chat or username of the
         /// target channel (in the format @channelusername)
         /// </summary>
-        public string FromChatId { get; set; }
+        public ChatId FromChatId { get; set; }
 
         /// <summary>
         /// Optional

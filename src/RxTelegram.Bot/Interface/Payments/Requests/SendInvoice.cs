@@ -15,7 +15,7 @@ namespace RxTelegram.Bot.Interface.Payments.Requests
         /// Required
         /// Unique identifier for the target private chat
         /// </summary>
-        public string ChatId { get; set; }
+        public ChatId ChatId { get; set; }
 
         /// <summary>
         /// Required

@@ -1,4 +1,5 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+﻿using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
@@ -14,7 +15,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// Required
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         /// </summary>
-        public string ChatId { get; set; }
+        public ChatId ChatId { get; set; }
 
         /// <summary>
         /// Required

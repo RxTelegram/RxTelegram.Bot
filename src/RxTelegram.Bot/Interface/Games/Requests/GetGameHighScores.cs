@@ -1,4 +1,5 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+﻿using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
@@ -9,7 +10,7 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// <summary>
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         /// </summary>
-        public string ChatId { get; set; }
+        public ChatId ChatId { get; set; }
 
         /// <summary>
         /// Target user id
