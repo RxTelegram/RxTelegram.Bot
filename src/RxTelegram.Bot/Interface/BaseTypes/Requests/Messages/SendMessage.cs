@@ -36,7 +36,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// Additional interface options. A JSON-serialized object for an inline keyboard,
         /// custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         /// </summary>
-        public IReplyMarkup Type { get; set; }
+        public IReplyMarkup ReplyMarkup { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

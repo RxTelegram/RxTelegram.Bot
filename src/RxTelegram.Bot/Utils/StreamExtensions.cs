@@ -13,7 +13,7 @@ namespace RxTelegram.Bot.Api
             {
                 sr = new StreamReader(stream);
                 var reader = new JsonTextReader(sr);
-                var serializer = JsonSerializer.Create(BaseTelegramApi.JsonSerializerSettings);
+                var serializer = JsonSerializer.Create(BaseTelegramBot.JsonSerializerSettings);
 
                 return serializer.Deserialize<T>(reader);
             }

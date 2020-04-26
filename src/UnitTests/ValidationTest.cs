@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
+using RxTelegram.Bot.Interface.InlineMode;
+using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
@@ -51,6 +56,48 @@ namespace RxTelegram.Bot.UnitTests
                       };
             Assert.That(obj.IsValid());
             Assert.That(obj.Errors.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestNestedValid()
+        {
+            var obj = new AnswerInlineQuery()
+                      {
+                          Results = new []
+                                    {
+                                        new InlineQueryResultArticle
+                                        {
+                                            InputMessageContent = new InputTextMessageContent
+                                                                  {
+                                                                      //MessageText = ""
+                                                                  }
+                                        }
+                                    }
+                      };
+            Assert.IsFalse(obj.IsValid());
+            Assert.That(obj.Errors.Count, Is.EqualTo(4));
+            var errors = obj.Errors.Select(x => x.GetMessage).ToList();
+            CollectionAssert.Contains(errors, "(Results[0].InputMessageContent.MessageText): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Results[0].Id): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Results[0].Title): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(InlineQueryId): \"Field is not set, but required\"");
+        }
+
+        [Test]
+        public void TestFactoryExists()
+        {
+            var objects = new List<BaseValidation>();
+            foreach (Type type in
+                Assembly.GetAssembly(typeof(BaseValidation)).GetTypes()
+                        .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(BaseValidation))))
+            {
+                objects.Add((BaseValidation)Activator.CreateInstance(type, null));
+            }
+
+            foreach (var o in objects)
+            {
+                Assert.DoesNotThrow(() => o.IsValid());
+            }
         }
     }
 }

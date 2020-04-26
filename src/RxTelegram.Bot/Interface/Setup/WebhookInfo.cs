@@ -26,7 +26,7 @@ namespace RxTelegram.Bot.Interface.Setup
         /// <summary>
         /// Unix time for the most recent error that happened when trying to deliver an update via webhook
         /// </summary>
-        public DateTime LastErrorDate { get; set; }
+        public DateTime? LastErrorDate { get; set; }
 
         /// <summary>
         /// Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
@@ -36,7 +36,7 @@ namespace RxTelegram.Bot.Interface.Setup
         /// <summary>
         /// Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
         /// </summary>
-        public int MaxConnections { get; set; }
+        public int? MaxConnections { get; set; }
 
         /// <summary>
         /// A list of update types the bot is subscribed to. Defaults to all update types

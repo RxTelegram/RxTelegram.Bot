@@ -11,6 +11,9 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
+using RxTelegram.Bot.Interface.Passport.Requests;
+using RxTelegram.Bot.Interface.Payments.Requests;
+using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Validation
@@ -191,8 +194,9 @@ namespace RxTelegram.Bot.Validation
                         ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
                 .IsTrue(x => x.ChatId.HasValue && x.MessageId == null && !string.IsNullOrEmpty(x.InlineMessageId),
                         ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
-                // todo ValidationErrorsExtension needs to decide if its a PropertyExpression and TypedParameterExpression because the erroring Property would always be Length instead of Text
-                .IsTrue(x => x.Text.Length > 4096, ValidationErrors.TextTooLong);
+                // todo ValidationErrorsExtension needs to decide if its a PropertyExpression and TypedParameterExpression because
+                // the erroring Property would always be Length instead of Text
+                .IsTrue(x => x.Text != null && x.Text.Length > 4096, ValidationErrors.TextTooLong);
 
         public static ValidationResult<SetStickerPositionInSet> CreateValidation(this SetStickerPositionInSet value) =>
             new ValidationResult<SetStickerPositionInSet>(value).ValidateRequired(x => x.Position)
@@ -206,14 +210,17 @@ namespace RxTelegram.Bot.Validation
                                                                                           .ValidateRequired(x => x.ChatId)
                                                                                           .ValidateRequired(x => x.Question)
                                                                                           .ValidateRequired(x => x.Options)
-                                                                                          .IsFalse(x => x.Question.Length > 0 && x.Question.Length < 256,
+                                                                                          .IsFalse(x => x.Question != null && x.Question.Length > 0 && x.Question.Length < 256,
                                                                                                    ValidationErrors.QuestionTooLong)
-                                                                                          .IsFalse(x => x.Options.Count() > 1 && x.Options.Count() <= 10,
+                                                                                          .IsFalse(x => x.Options != null && x.Options.Count() > 1 && x.Options.Count() <= 10,
                                                                                                    ValidationErrors.InvalidOptionCount)
-                                                                                          .IsFalse(x => x.Options.All(y => y.Length > 0 && y.Length <= 100),
+                                                                                          .IsFalse(x => x.Options != null && x.Options.All(y => y.Length > 0 && y.Length <= 100),
                                                                                                    ValidationErrors.OptionStringTooLong)
                                                                                           .IsTrue(x => x.Type == PollType.Quiz && x.CorrectOptionId == null,
-                                                                                                  ValidationErrors.CorrectOptionRequired);
+                                                                                                  ValidationErrors.CorrectOptionRequired)
+                                                                                          .IsTrue(x => x.OpenPeriod.HasValue && x.CloseDate.HasValue,
+                                                                                                   ValidationErrors
+                                                                                                       .OnlyOnePropertyCanBeSet);
 
         public static ValidationResult<StopPoll> CreateValidation(this StopPoll value) =>
             new ValidationResult<StopPoll>(value).ValidateRequired(x => x.MessageId);
@@ -246,6 +253,18 @@ namespace RxTelegram.Bot.Validation
                                                                         ValidationErrors.FieldRequired)
                                                                 .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
                                                                         ValidationErrors.FieldRequired);
+
+        public static ValidationResult<EditMessageCaption> CreateValidation(this EditMessageCaption value) =>
+            new ValidationResult<EditMessageCaption>(value).IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.ChatId == null,
+                                                                   ValidationErrors.FieldRequired)
+                                                           .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
+                                                                   ValidationErrors.FieldRequired);
+
+        public static ValidationResult<EditMessageReplyMarkup> CreateValidation(this EditMessageReplyMarkup value) =>
+            new ValidationResult<EditMessageReplyMarkup>(value).IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.ChatId == null,
+                                                                       ValidationErrors.FieldRequired)
+                                                               .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
+                                                                       ValidationErrors.FieldRequired);
 
         public static ValidationResult<AnswerCallbackQuery> CreateValidation(this AnswerCallbackQuery value) =>
             new ValidationResult<AnswerCallbackQuery>(value).ValidateRequired(x => x.CallbackQueryId);
@@ -367,6 +386,11 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<InlineQueryResultCachedAudio>(value).ValidateRequired(x => x.Type)
                                                                      .ValidateRequired(x => x.Id)
                                                                      .ValidateRequired(x => x.AudioFileId);
+        public static ValidationResult<InlineQueryResultCachedVoice> CreateValidation(this InlineQueryResultCachedVoice value) =>
+            new ValidationResult<InlineQueryResultCachedVoice>(value).ValidateRequired(x => x.Type)
+                                                                     .ValidateRequired(x => x.Id)
+                                                                     .ValidateRequired(x => x.VoiceFileId);
+
 
         public static ValidationResult<InputTextMessageContent> CreateValidation(this InputTextMessageContent value) =>
             new ValidationResult<InputTextMessageContent>(value).ValidateRequired(x => x.MessageText);
@@ -387,7 +411,8 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<SetMyCommands> CreateValidation(this SetMyCommands value) =>
             new ValidationResult<SetMyCommands>(value).ValidateRequired(x => x.Commands)
-                                                      .IsTrue(x => x.Commands.Count() > 100, ValidationErrors.CommandLimit);
+                                                      .IsTrue(x => x.Commands != null && x.Commands.Count() > 100,
+                                                              ValidationErrors.CommandLimit);
 
         public static ValidationResult<SendVenue> CreateValidation(this SendVenue value) =>
             new ValidationResult<SendVenue>(value).ValidateRequired(x => x.ChatId)
@@ -395,5 +420,54 @@ namespace RxTelegram.Bot.Validation
                                                   .ValidateRequired(x => x.Title)
                                                   .ValidateRequired(x => x.Address)
                                                   .ValidateRequired(x => x.Longitude);
+
+        public static ValidationResult<SetWebhook> CreateValidation(this SetWebhook value)
+        {
+            Uri uri = null;
+            return new ValidationResult<SetWebhook>(value).ValidateRequired(x => x.Url)
+                                                          .IsFalse(x => Uri.TryCreate(x.Url, UriKind.Absolute, out uri),
+                                                                   ValidationErrors.UrlInvalid)
+                                                          .IsFalse(x => uri == null || new[] {443, 80, 88, 8443}.Contains(new Uri(x.Url).Port),
+                                                                   ValidationErrors.SupportedPortsWebhook);
+        }
+
+        public static ValidationResult<DeleteChatStickerSet> CreateValidation(this DeleteChatStickerSet value) =>
+            new ValidationResult<DeleteChatStickerSet>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<SendInvoice> CreateValidation(this SendInvoice value) => new ValidationResult<SendInvoice>(value)
+                                                                                                .ValidateRequired(x => x.ChatId)
+                                                                                                .ValidateRequired(x => x.Title)
+                                                                                                .ValidateRequired(x => x.Payload)
+                                                                                                .ValidateRequired(x => x.ProviderToken)
+                                                                                                .ValidateRequired(x => x.StartParameter)
+                                                                                                .ValidateRequired(x => x.Currency)
+                                                                                                .ValidateRequired(x => x.Prices)
+                                                                                                .ValidateRequired(x => x.Description);
+
+        public static ValidationResult<AnswerShippingQuery> CreateValidation(this AnswerShippingQuery value) =>
+            new ValidationResult<AnswerShippingQuery>(value).ValidateRequired(x => x.ShippingQueryId)
+                                                            .ValidateRequired(x => x.Ok);
+
+        public static ValidationResult<AnswerPreCheckoutQuery> CreateValidation(this AnswerPreCheckoutQuery value) =>
+            new ValidationResult<AnswerPreCheckoutQuery>(value).ValidateRequired(x => x.PreCheckoutQueryId)
+                                                               .ValidateRequired(x => x.Ok);
+
+        public static ValidationResult<SetPassportDataErrors> CreateValidation(this SetPassportDataErrors value) =>
+            new ValidationResult<SetPassportDataErrors>(value).ValidateRequired(x => x.Type)
+                                                              .ValidateRequired(x => x.UserId);
+
+        public static ValidationResult<EditMessageMedia> CreateValidation(this EditMessageMedia value) =>
+            new ValidationResult<EditMessageMedia>(value).ValidateRequired(x => x.Media)
+                                                         .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.ChatId == null,
+                                                                 ValidationErrors.FieldRequired)
+                                                         .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
+                                                                 ValidationErrors.FieldRequired);
+
+        public static ValidationResult<SetStickerSetThumb> CreateValidation(this SetStickerSetThumb value) =>
+            new ValidationResult<SetStickerSetThumb>(value).ValidateRequired(x => x.Name)
+                                                           .ValidateRequired(x => x.UserId);
+
+        public static ValidationResult<SendDice> CreateValidation(this SendDice value) =>
+            new ValidationResult<SendDice>(value).ValidateRequired(x => x.ChatId);
     }
 }

@@ -16,6 +16,6 @@ namespace RxTelegram.Bot.Interface.Payments.Requests
         /// </summary>
         public string PreCheckoutQueryId { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

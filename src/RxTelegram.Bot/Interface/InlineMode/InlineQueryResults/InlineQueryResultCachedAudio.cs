@@ -43,6 +43,6 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace RxTelegram.Bot.Interface.BaseTypes
+﻿using RxTelegram.Bot.Interface.BaseTypes.Enums;
+
+namespace RxTelegram.Bot.Interface.BaseTypes
 {
     /// <summary>
     /// This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
@@ -8,7 +10,7 @@
         /// <summary>
         /// Type of the entity
         /// </summary>
-        public string Type { get; set; }
+        public MessageEntityType Type { get; set; }
 
         /// <summary>
         /// Offset in UTF-16 code units to the start of the entity

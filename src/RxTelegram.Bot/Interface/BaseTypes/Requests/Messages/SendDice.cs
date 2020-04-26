@@ -11,6 +11,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
     public class SendDice : BaseRequest
     {
         /// <summary>
+        /// Emoji on which the dice throw animation is based. Currently, must be one of “🎲” or “🎯”. Defauts to “🎲”
+        /// </summary>
+        public string Emoji { get; set; }
+
+        /// <summary>
         /// Sends the message silently. Users will receive a notification with no sound.
         /// </summary>
         public bool? DisableNotification { get; set; }
@@ -25,6 +30,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// </summary>
         public IReplyMarkup ReplyMarkup { get; set; }
 
-        protected override IValidationResult Validate() => throw new System.NotImplementedException();
+        protected override IValidationResult Validate() => this.CreateValidation();
     }
 }
