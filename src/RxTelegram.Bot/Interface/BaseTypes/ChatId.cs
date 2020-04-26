@@ -17,6 +17,10 @@
                                                                        Identifier = identifier
                                                                    };
 
+        private ChatId()
+        {
+        }
+
         /// <summary>
         /// Unique identifier for the chat
         /// </summary>

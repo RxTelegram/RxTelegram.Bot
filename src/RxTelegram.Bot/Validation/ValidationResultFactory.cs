@@ -186,13 +186,13 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<EditMessageText> CreateValidation(this EditMessageText value) =>
             new ValidationResult<EditMessageText>(value)
-                .IsTrue(x => !x.ChatId.HasValue && x.MessageId == null && string.IsNullOrEmpty(x.InlineMessageId),
+                .IsTrue(x => (x.ChatId == null || !x.ChatId.HasValue) && x.MessageId == null && string.IsNullOrEmpty(x.InlineMessageId),
                         ValidationErrors.InlineMessageIdChatIdMessageIdRequiredOr)
-                .IsTrue(x => x.ChatId.HasValue && x.MessageId != null && !string.IsNullOrEmpty(x.InlineMessageId),
+                .IsTrue(x => x.ChatId != null && x.ChatId.HasValue && x.MessageId != null && !string.IsNullOrEmpty(x.InlineMessageId),
                         ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
-                .IsTrue(x => !x.ChatId.HasValue && x.MessageId != null && !string.IsNullOrEmpty(x.InlineMessageId),
+                .IsTrue(x => (x.ChatId == null || !x.ChatId.HasValue) && x.MessageId != null && !string.IsNullOrEmpty(x.InlineMessageId),
                         ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
-                .IsTrue(x => x.ChatId.HasValue && x.MessageId == null && !string.IsNullOrEmpty(x.InlineMessageId),
+                .IsTrue(x => x.ChatId != null && x.ChatId.HasValue && x.MessageId == null && !string.IsNullOrEmpty(x.InlineMessageId),
                         ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
                 // todo ValidationErrorsExtension needs to decide if its a PropertyExpression and TypedParameterExpression because
                 // the erroring Property would always be Length instead of Text
