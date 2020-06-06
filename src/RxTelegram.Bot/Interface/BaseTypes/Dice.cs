@@ -7,7 +7,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes
     public class Dice
     {
         /// <summary>
-        /// Value of the dice, 1-6
+        /// Value of the dice, 1-6 for “🎲” and “🎯” base emoji, 1-5 for “🏀” base emoji
         /// </summary>
         public int? Value { get; set; }
 

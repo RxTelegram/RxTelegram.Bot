@@ -70,6 +70,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public Message ReplyToMessage { get; set; }
 
         /// <summary>
+        /// Optional. Bot through which the message was sent
+        /// </summary>
+        public User ViaBot { get; set; }
+
+        /// <summary>
         /// Optional. Date the message was last edited in Unix time
         /// </summary>
         public DateTime? EditDate { get; set; }

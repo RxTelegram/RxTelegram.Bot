@@ -41,6 +41,12 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
 
         /// <summary>
         /// Optional.
+        /// MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”
+        /// </summary>
+        public ThumbMimeType ThumbMimeType { get; set; }
+
+        /// <summary>
+        /// Optional.
         /// Caption of the GIF file to be sent, 0-1024 characters after entities parsing
         /// </summary>
         public string Caption { get; set; }

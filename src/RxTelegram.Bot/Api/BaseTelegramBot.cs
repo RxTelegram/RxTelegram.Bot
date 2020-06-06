@@ -82,7 +82,7 @@ namespace RxTelegram.Bot.Api
 
                 StringContent stringContent = null;
                 // use json, if we dont have stream contents (like photos, documents, etc.)
-                if (!writer.StreamContent)
+                if (!writer.StreamContent && writer.Token != null)
                 {
                     stringContent = new StringContent(writer.Token.ToString(Formatting.Indented), Encoding.UTF8, "application/json");
                 }
