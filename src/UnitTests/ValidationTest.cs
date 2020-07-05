@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
@@ -17,14 +16,20 @@ namespace RxTelegram.Bot.UnitTests
     public class ValidationTest
     {
         [Test]
-        public void ValidationErrorStringAttributePresentTest()
+        public void TestFactoryExists()
         {
-            var type = typeof(ValidationErrors);
-            foreach (var value in Enum.GetValues(type))
+            var classesToValidate = Assembly.GetAssembly(typeof(BaseValidation))
+                                            ?.GetTypes()
+                                            .Where(myType => myType.IsClass &&
+                                                             !myType.IsAbstract &&
+                                                             myType.IsSubclassOf(typeof(BaseValidation)));
+            Assert.IsNotNull(classesToValidate);
+            var objects = classesToValidate.Select(type => (BaseValidation) Activator.CreateInstance(type, null))
+                                           .ToList();
+
+            foreach (var o in objects)
             {
-                var memInfo = type.GetMember(value.ToString());
-                var attributes = memInfo[0].GetCustomAttributes(typeof(ValidationErrorsStringAttribute), false);
-                Assert.IsNotNull(attributes.FirstOrDefault());
+                Assert.DoesNotThrow(() => o.IsValid());
             }
         }
 
@@ -34,13 +39,38 @@ namespace RxTelegram.Bot.UnitTests
             var obj = new CreateNewStickerSet();
             Assert.False(obj.IsValid());
             Assert.That(obj.Errors.Count, Is.EqualTo(6));
-            var errors = obj.Errors.Select(x => x.GetMessage).ToList();
+            var errors = obj.Errors.Select(x => x.GetMessage)
+                            .ToList();
             CollectionAssert.Contains(errors, "(PngSticker, TgsSticker): \"One of these properties need to be set\"");
             CollectionAssert.Contains(errors, "(Name): \"Field is not set, but required\"");
             CollectionAssert.Contains(errors, "(UserId): \"ID lower than 1 is not allowed.\"");
             CollectionAssert.Contains(errors, "(Title): \"Field is not set, but required\"");
             CollectionAssert.Contains(errors, "(Emojis): \"Field is not set, but required\"");
             CollectionAssert.Contains(errors, "(Name): \"Stickersets Created by bots need to end with _by_<botname> \"");
+        }
+
+        [Test]
+        public void TestNestedValid()
+        {
+            var obj = new AnswerInlineQuery
+                      {
+                          Results = new[]
+                                    {
+                                        new InlineQueryResultArticle
+                                        {
+                                            InputMessageContent =
+                                                new InputTextMessageContent()
+                                        }
+                                    }
+                      };
+            Assert.IsFalse(obj.IsValid());
+            Assert.That(obj.Errors.Count, Is.EqualTo(4));
+            var errors = obj.Errors.Select(x => x.GetMessage)
+                            .ToList();
+            CollectionAssert.Contains(errors, "(Results[0].InputMessageContent.MessageText): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Results[0].Id): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(Results[0].Title): \"Field is not set, but required\"");
+            CollectionAssert.Contains(errors, "(InlineQueryId): \"Field is not set, but required\"");
         }
 
         [Test]
@@ -59,44 +89,15 @@ namespace RxTelegram.Bot.UnitTests
         }
 
         [Test]
-        public void TestNestedValid()
+        public void ValidationErrorStringAttributePresentTest()
         {
-            var obj = new AnswerInlineQuery()
-                      {
-                          Results = new []
-                                    {
-                                        new InlineQueryResultArticle
-                                        {
-                                            InputMessageContent = new InputTextMessageContent
-                                                                  {
-                                                                      //MessageText = ""
-                                                                  }
-                                        }
-                                    }
-                      };
-            Assert.IsFalse(obj.IsValid());
-            Assert.That(obj.Errors.Count, Is.EqualTo(4));
-            var errors = obj.Errors.Select(x => x.GetMessage).ToList();
-            CollectionAssert.Contains(errors, "(Results[0].InputMessageContent.MessageText): \"Field is not set, but required\"");
-            CollectionAssert.Contains(errors, "(Results[0].Id): \"Field is not set, but required\"");
-            CollectionAssert.Contains(errors, "(Results[0].Title): \"Field is not set, but required\"");
-            CollectionAssert.Contains(errors, "(InlineQueryId): \"Field is not set, but required\"");
-        }
-
-        [Test]
-        public void TestFactoryExists()
-        {
-            var objects = new List<BaseValidation>();
-            foreach (Type type in
-                Assembly.GetAssembly(typeof(BaseValidation)).GetTypes()
-                        .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(BaseValidation))))
+            var type = typeof(ValidationErrors);
+            foreach (var value in Enum.GetValues(type))
             {
-                objects.Add((BaseValidation)Activator.CreateInstance(type, null));
-            }
-
-            foreach (var o in objects)
-            {
-                Assert.DoesNotThrow(() => o.IsValid());
+                var memInfo = type.GetMember(value.ToString());
+                var attributes = memInfo[0]
+                    .GetCustomAttributes(typeof(ValidationErrorsStringAttribute), false);
+                Assert.IsNotNull(attributes.FirstOrDefault());
             }
         }
     }

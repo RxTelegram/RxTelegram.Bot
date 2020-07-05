@@ -5,11 +5,15 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
 {
     public class InputFile
     {
-        public static implicit operator InputFile(Stream stream) => new InputFile(stream);
+        public InputFile(string fileId) => Value = fileId;
 
-        public static implicit operator InputFile(Uri uri) => new InputFile(uri);
+        public InputFile(Uri uri) => Value = uri.AbsoluteUri;
 
-        public static implicit operator InputFile(string fileId) => new InputFile(fileId);
+        public InputFile(Stream stream, string fileName = default)
+        {
+            Stream = stream;
+            FileName = fileName;
+        }
 
         public string Value { get; }
 
@@ -17,20 +21,10 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
 
         public Stream Stream { get; }
 
-        public InputFile(string fileId)
-        {
-            Value = fileId;
-        }
+        public static implicit operator InputFile(Stream stream) => new InputFile(stream);
 
-        public InputFile(Uri uri)
-        {
-            Value = uri.AbsoluteUri;
-        }
+        public static implicit operator InputFile(Uri uri) => new InputFile(uri);
 
-        public InputFile(Stream stream, string fileName = default)
-        {
-            Stream = stream;
-            FileName = fileName;
-        }
+        public static implicit operator InputFile(string fileId) => new InputFile(fileId);
     }
 }

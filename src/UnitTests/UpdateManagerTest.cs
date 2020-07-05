@@ -11,7 +11,6 @@ namespace RxTelegram.Bot.UnitTests
     [TestFixture]
     public class UpdateManagerTest
     {
-
         [Test]
         public void TestGetUpdateTypes()
         {
@@ -27,6 +26,7 @@ namespace RxTelegram.Bot.UnitTests
             }
 
             var getter = prop.GetGetMethod(true);
+            Assert.IsNotNull(getter);
             var objectList = getter.Invoke(updateManager, null);
             if (!(objectList is IEnumerable<UpdateType> updateTypesList))
             {

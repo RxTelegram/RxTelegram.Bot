@@ -9,16 +9,13 @@ namespace RxTelegram.Bot.Utils
     {
         public override void WriteJson(JsonWriter writer, ChatId value, JsonSerializer serializer)
         {
-            if (value is ChatId chatId)
+            if (!string.IsNullOrEmpty(value.Username))
             {
-                if (!string.IsNullOrEmpty(chatId.Username))
-                {
-                    writer.WriteValue(chatId.Username);
-                }
-                else
-                {
-                    writer.WriteValue(chatId.Identifier);
-                }
+                writer.WriteValue(value.Username);
+            }
+            else if (value.Identifier.HasValue)
+            {
+                writer.WriteValue(value.Identifier);
             }
             else
             {
@@ -31,7 +28,18 @@ namespace RxTelegram.Bot.Utils
             Type objectType,
             ChatId existingValue,
             bool hasExistingValue,
-            JsonSerializer serializer) => JToken.ReadFrom(reader)
-                                                .Value<string>();
+            JsonSerializer serializer)
+        {
+            var value = JToken.ReadFrom(reader);
+            switch (value.Type)
+            {
+                case JTokenType.Integer:
+                    return value.Value<long>();
+                case JTokenType.String:
+                    return value.Value<string>();
+                default:
+                    throw new NotImplementedException();
+            }
+        }
     }
 }
