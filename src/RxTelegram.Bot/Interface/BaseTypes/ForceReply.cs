@@ -3,7 +3,7 @@
 namespace RxTelegram.Bot.Interface.BaseTypes
 {
     /// <summary>
-    /// This Object represents a ForeReply Object<see cref="https://core.telegram.org/bots/api#forcereply"/>
+    ///     This Object represents a ForeReply Object https://core.telegram.org/bots/api#forcereply
     /// </summary>
     public class ForceReply : IReplyMarkup
     {
