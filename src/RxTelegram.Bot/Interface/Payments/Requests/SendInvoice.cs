@@ -152,6 +152,11 @@ namespace RxTelegram.Bot.Interface.Payments.Requests
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
 
+        /// <summary>
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        /// </summary>
+        public bool? AllowSendingWithoutReply { get; set; }
+
         protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

@@ -26,6 +26,11 @@
         public string MimeType { get; set; }
 
         /// <summary>
+        /// Original filename as defined by sender
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
         /// Optional. Thumbnail of the album cover to which the music file belongs
         /// </summary>
         public PhotoSize Thumb { get; set; }

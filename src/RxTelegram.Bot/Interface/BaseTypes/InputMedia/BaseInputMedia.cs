@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
@@ -18,6 +20,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         /// <see cref="https://core.telegram.org/bots/api#sending-files"/>»
         /// </summary>
         public InputFile Media { get; }
+
+        /// <summary>
+        /// List of special entities that appear in the caption, which can be specified instead of parse_mode
+        /// </summary>
+        public IEnumerable<MessageEntity> CaptionEntities { get; set; }
 
         public BaseInputMedia(string fileId) => Media = new InputFile(fileId);
 

@@ -24,6 +24,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public string CustomTitle { get; set; }
 
         /// <summary>
+        /// Owner and administrators only. True, if the user's presence in the chat is hidden
+        /// </summary>
+        public bool? IsAnonymous { get; set; }
+
+        /// <summary>
         /// Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, UTC time
         /// </summary>
         public DateTime? UntilDate { get; set; }

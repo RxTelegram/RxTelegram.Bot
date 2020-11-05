@@ -23,8 +23,8 @@ namespace RxTelegram.Bot.Validation
         [ValidationErrorsString("InlineMessageId or ChatId and MessageId required.")]
         InlineMessageIdOrChatIdAndMessageId,
 
-        [ValidationErrorsString("Only InputMediaPhoto or InputMediaVideo allowed")]
-        OnlyInputMediaPhotoOrInputMediaVideo,
+        [ValidationErrorsString("Only InputMediaPhoto, InputMediaDocument, InputMediaAudio or InputMediaVideo allowed")]
+        OnlySomeInputMediaTypesAllowed,
 
         [ValidationErrorsString("Text can only be 4096 chars long")]
         TextTooLong,
@@ -48,7 +48,16 @@ namespace RxTelegram.Bot.Validation
         UrlInvalid,
 
         [ValidationErrorsString("Currently supported ports for Webhooks: 443, 80, 88, 8443.")]
-        SupportedPortsWebhook
+        SupportedPortsWebhook,
+
+        [ValidationErrorsString("Heading must be between 1 and 360 if specified")]
+        HeadingOutOfRange,
+
+        [ValidationErrorsString("Proximity must be between 1 and 100000")]
+        ProximityAlertRadiusOutOfRange,
+
+        [ValidationErrorsString("HorizontalAccuracy must be between 0 and 1500")]
+        HorizontalAccuracyOutOfRange
 
     }
 }

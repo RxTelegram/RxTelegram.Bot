@@ -26,6 +26,11 @@
         public PhotoSize Thumb { get; set; }
 
         /// <summary>
+        /// Original filename as defined by sender
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
         /// Optional. Mime type of a file as defined by sender
         /// </summary>
         public string MimeType { get; set; }

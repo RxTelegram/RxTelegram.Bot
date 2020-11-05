@@ -33,6 +33,12 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         /// </summary>
         public ParseMode ParseMode { get; set; }
 
+        /// <summary>
+        /// Disables automatic server-side content type detection for files uploaded using multipart/form-data.
+        /// Always true, if the document is sent as part of an album.
+        /// </summary>
+        public bool? DisableContentTypeDetection { get; set; }
+
         public InputMediaDocument(string fileId) : base(fileId)
         {
         }

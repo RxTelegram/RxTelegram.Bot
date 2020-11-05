@@ -39,8 +39,8 @@ namespace RxTelegram.Bot
         public Task<bool> SetWebhook(SetWebhook update, CancellationToken cancellationToken = default) =>
             Get<bool>("setWebhook", update, cancellationToken);
 
-        public Task<bool> DeleteWebhook(CancellationToken cancellationToken = default) =>
-            Get<bool>("deleteWebhook", default, cancellationToken);
+        public Task<bool> DeleteWebhook(DeleteWebhook deleteWebhook, CancellationToken cancellationToken = default) =>
+            Get<bool>("deleteWebhook", deleteWebhook, cancellationToken);
 
         public Task<WebhookInfo> GetWebhookInfo(CancellationToken cancellationToken = default) =>
             Get<WebhookInfo>("getWebhookInfo", default, cancellationToken);
@@ -282,5 +282,15 @@ namespace RxTelegram.Bot
             SendDice sendDice,
             CancellationToken cancellationToken = default) =>
             Post<Message>("sendDice", sendDice, cancellationToken);
+
+        public Task<bool> LogOut(CancellationToken cancellationToken = default) =>
+            Get<bool>("logOut", cancellationToken: cancellationToken);
+        public Task<bool> Close(CancellationToken cancellationToken = default) => Get<bool>("close", default, cancellationToken);
+
+        public Task<bool> UnpinAllChatMessages(UnpinAllChatMessages unpinAllChatMessages, CancellationToken cancellationToken = default) =>
+            Post<bool>("unpinAllChatMessages", unpinAllChatMessages, cancellationToken);
+
+        public Task<MessageIdObject> CopyMessage(CopyMessage copyMessage, CancellationToken cancellationToken = default) =>
+            Post<MessageIdObject>("copyMessage", copyMessage, cancellationToken);
     }
 }
