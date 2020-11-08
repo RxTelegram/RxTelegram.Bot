@@ -1,6 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
-using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults

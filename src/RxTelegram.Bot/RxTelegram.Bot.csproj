@@ -12,6 +12,9 @@
         <RepositoryType>git</RepositoryType>
         <PackageTags>Telegram;Bot;Api;Rx;Reactive;Observable</PackageTags>
         <PackageVersion>0.0.6</PackageVersion>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

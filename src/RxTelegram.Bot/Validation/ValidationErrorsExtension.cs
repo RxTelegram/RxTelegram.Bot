@@ -1,5 +1,4 @@
 using System.Linq;
-using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Validation
 {

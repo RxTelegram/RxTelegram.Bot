@@ -3,23 +3,23 @@
 namespace RxTelegram.Bot.Interface.Payments
 {
     /// <summary>
-    /// This object represents one shipping option.
-    /// <see cref="https://core.telegram.org/bots/api#shippingoption"/>
+    ///     This object represents one shipping option.
+    ///     https://core.telegram.org/bots/api#shippingoption
     /// </summary>
     public class ShippingOption
     {
         /// <summary>
-        /// Shipping option identifier
+        ///     Shipping option identifier
         /// </summary>
         public string Id { get; set; }
 
         /// <summary>
-        /// Option title
+        ///     Option title
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// List of price portions
+        ///     List of price portions
         /// </summary>
         public IEnumerable<LabeledPrice> Prices { get; set; }
     }

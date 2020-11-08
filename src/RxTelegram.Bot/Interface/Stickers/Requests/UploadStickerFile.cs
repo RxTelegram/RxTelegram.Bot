@@ -1,5 +1,4 @@
-﻿using System;
-using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
-using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
