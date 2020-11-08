@@ -27,7 +27,7 @@ namespace RxTelegram.Bot.Validation
         NonePropertySet,
 
         /// <summary>
-        /// Indicates that the sticker set name is invalid, because it does not end with "_by_<botname>"
+        /// Indicates that the sticker set name is invalid, because it does not end with "_by_{botname}"
         /// </summary>
         [ValidationErrorsString("Stickersets Created by bots need to end with _by_<botname> ")]
         InvalidStickerName,
