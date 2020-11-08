@@ -23,6 +23,13 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public User From { get; set; }
 
         /// <summary>
+        /// Sender of the message, sent on behalf of a chat. The channel itself for channel messages.
+        /// The supergroup itself for messages from anonymous group administrators.
+        /// The linked channel for messages automatically forwarded to the discussion group
+        /// </summary>
+        public Chat SenderChat { get; set; }
+
+        /// <summary>
         /// Date the message was sent
         /// </summary>
         public DateTime Date { get; set; }
@@ -84,7 +91,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public string MediaGroupId { get; set; }
 
         /// <summary>
-        /// Optional. Signature of the post author for messages in channels
+        /// Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator
         /// </summary>
         public string AuthorSignature { get; set; }
 
@@ -254,6 +261,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Telegram Passport data
         /// </summary>
         public PassportData PassportData { get; set; }
+
+        /// <summary>
+        /// Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
+        /// </summary>
+        public ProximityAlertTriggered ProximityAlertTriggered { get; set; }
 
         /// <summary>
         /// Optional. Inline keyboard attached to the message

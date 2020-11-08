@@ -48,6 +48,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// </summary>
         public IReplyMarkup ReplyMarkup { get; set; }
 
+        /// <summary>
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        /// </summary>
+        public bool? AllowSendingWithoutReply { get; set; }
+
         protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

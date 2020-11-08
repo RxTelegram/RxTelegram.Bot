@@ -797,5 +797,47 @@ namespace RxTelegram.Bot
             Get<WebhookInfo>("getWebhookInfo", default, cancellationToken);
 
         #endregion
+
+        /// <summary>
+        /// Use this method to log out from the cloud Bot API server before launching the bot locally.
+        /// You must log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates.
+        /// After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud
+        /// Bot API server for 10 minutes.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success</returns>
+        public Task<bool> LogOut(CancellationToken cancellationToken = default) =>
+            Get<bool>("logOut", cancellationToken: cancellationToken);
+
+        /// <summary>
+        /// Use this method to close the bot instance before moving it from one local server to another. You need to delete the webhook
+        /// before calling this method to ensure that the bot isn't launched again after server restart.
+        /// The method will return error 429 in the first 10 minutes after the bot is launched.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> Close(CancellationToken cancellationToken = default) => Get<bool>("close", default, cancellationToken);
+
+
+        /// <summary>
+        /// Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an
+        /// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or
+        /// 'can_edit_messages' admin right in a channel.
+        /// </summary>
+        /// <param name="unpinAllChatMessages">Details for the messages to unpin</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> UnpinAllChatMessages(UnpinAllChatMessages unpinAllChatMessages, CancellationToken cancellationToken = default) =>
+            Post<bool>("unpinAllChatMessages", unpinAllChatMessages, cancellationToken);
+
+        /// <summary>
+        /// Use this method to copy messages of any kind.
+        /// The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message.
+        /// </summary>
+        /// <param name="copyMessage">Details for the message to copy</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns the <see cref="MessageIdObject"/> of the sent message on success.</returns>
+        public Task<MessageIdObject> CopyMessage(CopyMessage copyMessage, CancellationToken cancellationToken = default) =>
+            Post<MessageIdObject>("copyMessage", copyMessage, cancellationToken);
     }
 }

@@ -16,6 +16,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         public int UserId { get; set; }
 
         /// <summary>
+        /// Pass True, if the administrator's presence in the chat is hidden
+        /// </summary>
+        public bool? IsAnonymous { get; set; }
+
+        /// <summary>
         /// Optional
         /// Pass True, if the administrator can change chat title, photo and other settings
         /// </summary>

@@ -33,6 +33,21 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         public double Longitude { get; set; }
 
         /// <summary>
+        /// The radius of uncertainty for the location, measured in meters; 0-1500
+        /// </summary>
+        public double? HorizontalAccuracy { get; set; }
+
+        /// <summary>
+        /// Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+        /// </summary>
+        public int? Heading { get; set; }
+
+        /// <summary>
+        /// Maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+        /// </summary>
+        public int? ProximityAlertRadius { get; set; }
+
+        /// <summary>
         /// Optional
         /// A JSON-serialized object for a new inline keyboard.
         /// </summary>

@@ -27,7 +27,7 @@ namespace RxTelegram.Bot.Validation
         NonePropertySet,
 
         /// <summary>
-        /// Indicates that the sticker set name is invalid, because it does not end with "_by_<botname>"
+        /// Indicates that the sticker set name is invalid, because it does not end with "_by_{botname}"
         /// </summary>
         [ValidationErrorsString("Stickersets Created by bots need to end with _by_<botname> ")]
         InvalidStickerName,
@@ -47,8 +47,8 @@ namespace RxTelegram.Bot.Validation
         /// <summary>
         /// Indicates that only InputMediaPhoto or InputMediaVideo are allowed.
         /// </summary>
-        [ValidationErrorsString("Only InputMediaPhoto or InputMediaVideo allowed")]
-        OnlyInputMediaPhotoOrInputMediaVideo,
+        [ValidationErrorsString("Only InputMediaPhoto, InputMediaDocument, InputMediaAudio or InputMediaVideo allowed")]
+        OnlySomeInputMediaTypesAllowed,
 
         /// <summary>
         /// Indicates that the text exceeds the limit of 4096 chars.
@@ -96,7 +96,16 @@ namespace RxTelegram.Bot.Validation
         /// Indicates that the given webhook port is not supported.
         /// </summary>
         [ValidationErrorsString("Currently supported ports for Webhooks: 443, 80, 88, 8443.")]
-        SupportedPortsWebhook
+        SupportedPortsWebhook,
+
+        [ValidationErrorsString("Heading must be between 1 and 360 if specified")]
+        HeadingOutOfRange,
+
+        [ValidationErrorsString("Proximity must be between 1 and 100000")]
+        ProximityAlertRadiusOutOfRange,
+
+        [ValidationErrorsString("HorizontalAccuracy must be between 0 and 1500")]
+        HorizontalAccuracyOutOfRange
 
     }
 }
