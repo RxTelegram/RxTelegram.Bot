@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework;
 using RxTelegram.Bot.Interface.BaseTypes;
 
