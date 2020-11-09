@@ -1,5 +1,4 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
-using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
@@ -15,6 +14,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// Unique identifier of the target user
         /// </summary>
         public int UserId { get; set; }
+
+        /// <summary>
+        /// Pass True, if the administrator's presence in the chat is hidden
+        /// </summary>
+        public bool? IsAnonymous { get; set; }
 
         /// <summary>
         /// Optional

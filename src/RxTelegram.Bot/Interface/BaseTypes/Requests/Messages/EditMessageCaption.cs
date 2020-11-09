@@ -1,4 +1,5 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+﻿using System.Collections.Generic;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
@@ -28,6 +29,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// A JSON-serialized object for an inline keyboard.
         /// </summary>
         public InlineKeyboardMarkup ReplyMarkup { get; set; }
+
+        /// <summary>
+        /// List of special entities that appear in the caption, which can be specified instead of parse_mode
+        /// </summary>
+        public IEnumerable<MessageEntity> CaptionEntities { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

@@ -11,8 +11,8 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
     public class SendDice : BaseRequest
     {
         /// <summary>
-        /// Emoji on which the dice throw animation is based. Currently, must be one of “🎲”, “🎯”, or “🏀”.
-        /// Dice can have values 1-6 for “🎲” and “🎯”, and values 1-5 for “🏀”. Defauts to “🎲”
+        /// Emoji on which the dice throw animation is based. Currently, must be one of “🎲”, “🎯”, “🏀”, “⚽”, or “🎰”.
+        /// Dice can have values 1-6 for “🎲” and “🎯”, values 1-5 for “🏀” and “⚽”, and values 1-64 for “🎰”. Defaults to “🎲”
         /// </summary>
         public string Emoji { get; set; }
 
@@ -30,6 +30,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         /// </summary>
         public IReplyMarkup ReplyMarkup { get; set; }
+
+        /// <summary>
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        /// </summary>
+        public bool? AllowSendingWithoutReply { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

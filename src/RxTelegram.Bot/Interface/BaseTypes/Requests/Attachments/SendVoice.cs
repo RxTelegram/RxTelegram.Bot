@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Validation;
 
@@ -28,6 +29,16 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Duration of the voice message in seconds
         /// </summary>
         public int? Duration { get; set; }
+
+        /// <summary>
+        /// List of special entities that appear in the caption, which can be specified instead of parse_mode
+        /// </summary>
+        public IEnumerable<MessageEntity> CaptionEntities { get; set; }
+
+        /// <summary>
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        /// </summary>
+        public bool? AllowSendingWithoutReply { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

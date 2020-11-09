@@ -1,4 +1,3 @@
-using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.Validation;
 
 namespace RxTelegram.Bot.Interface.Payments.Requests.Base

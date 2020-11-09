@@ -47,6 +47,16 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         public string FoursquareType { get; set; }
 
         /// <summary>
+        /// Google Places identifier of the venue
+        /// </summary>
+        public string GooglePlaceId { get; set; }
+
+        /// <summary>
+        /// Google Places type of the venue.
+        /// </summary>
+        public string GooglePlaceType { get; set; }
+
+        /// <summary>
         /// Optional
         /// Sends the message silently. Users will receive a notification with no sound.
         /// </summary>
@@ -63,6 +73,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         /// </summary>
         public IReplyMarkup ReplyMarkup { get; set; }
+
+        /// <summary>
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        /// </summary>
+        public bool? AllowSendingWithoutReply { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

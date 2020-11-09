@@ -24,6 +24,11 @@ namespace RxTelegram.Bot.Interface.Setup
         public int PendingUpdateCount { get; set; }
 
         /// <summary>
+        /// Currently used webhook IP address
+        /// </summary>
+        public string IpAddress { get; set; }
+
+        /// <summary>
         /// Unix time for the most recent error that happened when trying to deliver an update via webhook
         /// </summary>
         public DateTime? LastErrorDate { get; set; }

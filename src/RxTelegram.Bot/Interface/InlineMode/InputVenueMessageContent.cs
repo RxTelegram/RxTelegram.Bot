@@ -38,6 +38,16 @@ namespace RxTelegram.Bot.Interface.InlineMode
         /// </summary>
         public string FoursquareType { get; set; }
 
+        /// <summary>
+        /// Google Places identifier of the venue
+        /// </summary>
+        public string GooglePlaceId { get; set; }
+
+        /// <summary>
+        /// Google Places type of the venue.
+        /// </summary>
+        public string GooglePlaceType { get; set; }
+
         protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

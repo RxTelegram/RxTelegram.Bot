@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 
 namespace RxTelegram.Bot.Interface.BaseTypes
 {
@@ -50,6 +52,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public ChatPhoto Photo { get; set; }
 
         /// <summary>
+        /// Bio of the other party in a private chat. Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+        /// </summary>
+        public string Bio { get; set; }
+
+        /// <summary>
         /// Optional. Description, for supergroups and channel chats. Returned only in getChat.
         /// </summary>
         public string Description { get; set; }
@@ -84,5 +91,20 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. True, if the bot can change the group sticker set. Returned only in getChat.
         /// </summary>
         public bool? CanSetStickerSet { get; set; }
+
+        /// <summary>
+        /// Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa;
+        /// for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages
+        /// may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer
+        /// or double-precision float type are safe for storing this identifier.
+        /// Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+        /// </summary>
+        public long? LinkedChatId { get; set; }
+
+        /// <summary>
+        /// For supergroups, the location to which the supergroup is connected.
+        /// Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+        /// </summary>
+        public ChatLocation Location { get; set; }
     }
 }

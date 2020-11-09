@@ -34,15 +34,25 @@ namespace RxTelegram.Bot.Validation
                                                                      ValidationErrors.InvalidStickerName);
 
         public static ValidationResult<SendLocation> CreateValidation(this SendLocation value) => new ValidationResult<SendLocation>(value)
-                                                                                                  .ValidateRequired(x => x.ChatId)
-                                                                                                  .ValidateRequired(x => x.Latitude)
-                                                                                                  .ValidateRequired(x => x.Longitude);
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.Latitude)
+            .ValidateRequired(x => x.Longitude)
+            .IsFalse(x => x.Heading != null && x.Heading < 1 && x.Heading > 360, ValidationErrors.HeadingOutOfRange)
+            .IsFalse(x => x.ProximityAlertRadius != null && x.ProximityAlertRadius < 1 && x.ProximityAlertRadius > 100000,
+                     ValidationErrors.ProximityAlertRadiusOutOfRange)
+            .IsFalse(x => x.HorizontalAccuracy != null && x.ProximityAlertRadius < 0 && x.ProximityAlertRadius > 1500,
+                     ValidationErrors.HorizontalAccuracyOutOfRange);
 
         public static ValidationResult<EditMessageLiveLocation> CreateValidation(this EditMessageLiveLocation value) =>
             new ValidationResult<EditMessageLiveLocation>(value).ValidateRequired(x => x.Latitude)
                                                                 .ValidateRequired(x => x.Longitude)
                                                                 .IsTrue(x => x.ChatId == null && x.MessageId == null && x.InlineMessageId == null,
-                                                                        ValidationErrors.InlineMessageIdChatIdMessageIdRequiredOr);
+                                                                        ValidationErrors.InlineMessageIdChatIdMessageIdRequiredOr)
+                                                                .IsFalse(x => x.Heading != null && x.Heading < 1 && x.Heading > 360, ValidationErrors.HeadingOutOfRange)
+                                                                .IsFalse(x => x.ProximityAlertRadius != null && x.ProximityAlertRadius < 1 && x.ProximityAlertRadius > 100000,
+                                                                         ValidationErrors.ProximityAlertRadiusOutOfRange)
+                                                                .IsFalse(x => x.HorizontalAccuracy != null && x.ProximityAlertRadius < 0 && x.ProximityAlertRadius > 1500,
+                                                                         ValidationErrors.HorizontalAccuracyOutOfRange);
 
         public static ValidationResult<GetChat> CreateValidation(this GetChat value) =>
             new ValidationResult<GetChat>(value).ValidateRequired(x => x.ChatId);
@@ -103,8 +113,13 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<SendMediaGroup> CreateValidation(this SendMediaGroup value) =>
             new ValidationResult<SendMediaGroup>(value).ValidateRequired(x => x.ChatId)
                                                        .ValidateRequired(x => x.Media)
-                                                       .IsFalse(x => x.Media != null && x.Media.All(input => input.GetType() == typeof(InputMediaPhoto) || input.GetType() == typeof(InputMediaVideo)),
-                                                                ValidationErrors.OnlyInputMediaPhotoOrInputMediaVideo);
+                                                       .IsFalse(x => x.Media != null
+                                                                     && x.Media.All(input =>
+                                                                                        input.GetType() == typeof(InputMediaPhoto) ||
+                                                                                        input.GetType() == typeof(InputMediaDocument) ||
+                                                                                        input.GetType() == typeof(InputMediaAudio) ||
+                                                                                        input.GetType() == typeof(InputMediaVideo)),
+                                                                ValidationErrors.OnlySomeInputMediaTypesAllowed);
 
         public static ValidationResult<KickChatMember> CreateValidation(this KickChatMember value) =>
             new ValidationResult<KickChatMember>(value).ValidateRequired(x => x.ChatId)
@@ -138,6 +153,9 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<UnpinChatMessage> CreateValidation(this UnpinChatMessage value) =>
             new ValidationResult<UnpinChatMessage>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<UnpinAllChatMessages> CreateValidation(this UnpinAllChatMessages value) =>
+            new ValidationResult<UnpinAllChatMessages>(value).ValidateRequired(x => x.ChatId);
 
         public static ValidationResult<SetChatDescription> CreateValidation(this SetChatDescription value) =>
             new ValidationResult<SetChatDescription>(value).ValidateRequired(x => x.ChatId)
@@ -469,5 +487,10 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<SendDice> CreateValidation(this SendDice value) =>
             new ValidationResult<SendDice>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<CopyMessage> CreateValidation(this CopyMessage value) => new ValidationResult<CopyMessage>(value)
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.FromChatId)
+            .ValidateRequired(x => x.MessageId);
     }
 }

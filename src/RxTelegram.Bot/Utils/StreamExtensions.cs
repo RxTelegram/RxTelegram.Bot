@@ -1,8 +1,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RxTelegram.Bot.Api;
 
-namespace RxTelegram.Bot.Api
+namespace RxTelegram.Bot.Utils
 {
     internal static class StreamExtensions
     {

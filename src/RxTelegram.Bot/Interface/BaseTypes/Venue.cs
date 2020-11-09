@@ -30,5 +30,15 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// "arts_entertainment/aquarium" or "food/icecream".)
         /// </summary>
         public string FoursquareType { get; set; }
+
+        /// <summary>
+        /// Google Places identifier of the venue
+        /// </summary>
+        public string GooglePlaceId { get; set; }
+
+        /// <summary>
+        /// Google Places type of the venue.
+        /// </summary>
+        public string GooglePlaceType { get; set; }
     }
 }

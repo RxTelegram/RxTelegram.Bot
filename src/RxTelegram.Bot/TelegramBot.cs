@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -23,264 +24,820 @@ namespace RxTelegram.Bot
 {
     public class TelegramBot : BaseTelegramBot
     {
-        public IUpdateManager Updates { get; }
-
         public TelegramBot(string token) : this(new BotInfo(token))
         {
         }
 
         public TelegramBot(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
 
-        #region Updates
+        public IUpdateManager Updates { get; }
 
-        public Task<Update[]> GetUpdate(GetUpdate update, CancellationToken cancellationToken = default) =>
-            Get<Update[]>("getUpdates", update, cancellationToken);
-
-        public Task<bool> SetWebhook(SetWebhook update, CancellationToken cancellationToken = default) =>
-            Get<bool>("setWebhook", update, cancellationToken);
-
-        public Task<bool> DeleteWebhook(CancellationToken cancellationToken = default) =>
-            Get<bool>("deleteWebhook", default, cancellationToken);
-
-        public Task<WebhookInfo> GetWebhookInfo(CancellationToken cancellationToken = default) =>
-            Get<WebhookInfo>("getWebhookInfo", default, cancellationToken);
-
-        #endregion
-
+        /// <summary>
+        ///     Use this method to get basic info about a file and prepare it for downloading.
+        ///     For the moment, bots can download files of up to 20MB in size.
+        ///     The file can then be downloaded via the link https://api.telegram.org/file/bot{token}/{file_path}, where {file_path} is taken from the
+        ///     response.
+        ///     It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile
+        ///     again.
+        /// </summary>
+        /// <param name="fileId">FileId of the File.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, a File object is returned.</returns>
         public Task<File> GetFile(string fileId, CancellationToken cancellationToken = default) =>
             Get<File>("getFile", new {fileId}, cancellationToken);
 
+        /// <summary>
+        ///     Provides a stream for a file to download it.
+        /// </summary>
+        /// <param name="filePath">Identifier for the file.</param>
+        /// <returns>A stream for the given file.</returns>
         public Task<Stream> DownloadFileStream(string filePath) => FileClient.GetStreamAsync(filePath);
 
+        /// <summary>
+        ///     Provides a file in string representation.
+        /// </summary>
+        /// <param name="filePath">Identifier for the file.</param>
+        /// <returns>String representation of the given file.</returns>
         public Task<string> DownloadFileString(string filePath) => FileClient.GetStringAsync(filePath);
 
+        /// <summary>
+        ///     Provides a file as a byte array.
+        /// </summary>
+        /// <param name="filePath">Identifier for the file.</param>
+        /// <returns>A byte array of the given file.</returns>
         public Task<byte[]> DownloadFileByteArray(string filePath) => FileClient.GetByteArrayAsync(filePath);
 
+        /// <summary>
+        ///     A simple method for testing your bot's auth token.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns basic information about the bot in form of a <see cref="User" /> object.</returns>
         public Task<User> GetMe(CancellationToken cancellationToken = default) => Get<User>("getMe", cancellationToken: cancellationToken);
 
-        public Task<Message> SendMessage(SendMessage message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendMessage", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send text messages.
+        /// </summary>
+        /// <param name="sendMessage">Details for the message you want to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendMessage(SendMessage sendMessage, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendMessage", sendMessage, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to forward messages of any kind.
+        /// </summary>
+        /// <param name="forwardMessage">Details for the message that should be forwarded to a different Chat.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
         public Task<Message> ForwardMessage(ForwardMessage forwardMessage, CancellationToken cancellationToken = default) =>
             Post<Message>("forwardMessage", forwardMessage, cancellationToken);
 
-        public Task<Message> SendPhoto(SendPhoto message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendPhoto", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send photos
+        /// </summary>
+        /// <param name="sendPhoto">Details for the photo to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendPhoto(SendPhoto sendPhoto, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendPhoto", sendPhoto, cancellationToken);
 
-        public Task<Message> SendAudio(SendAudio message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendAudio", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send audio files, if you want Telegram clients to display them in the music player.
+        ///     Your audio must be in the .MP3 or .M4A format. Bots can currently send audio files of up to 50 MB in size,
+        ///     this limit may be changed in the future.
+        ///     For sending voice messages, use the sendVoice method instead.
+        /// </summary>
+        /// <param name="sendAudio">Details for the audio to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendAudio(SendAudio sendAudio, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendAudio", sendAudio, cancellationToken);
 
-        public Task<Message> SendDocument(SendDocument message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendDocument", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send general files. Bots can currently send files of any type of up to 50 MB in size,
+        ///     this limit may be changed in the future.
+        /// </summary>
+        /// <param name="sendDocument">Details for the document/file to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendDocument(SendDocument sendDocument, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendDocument", sendDocument, cancellationToken);
 
-        public Task<Message> SendVideo(SendVideo message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendVideo", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document).
+        ///     Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
+        /// </summary>
+        /// <param name="sendVideo">Details for the video to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendVideo(SendVideo sendVideo, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendVideo", sendVideo, cancellationToken);
 
-        public Task<Message> SendAnimation(SendAnimation message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendAnimation", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound).
+        ///     Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
+        /// </summary>
+        /// <param name="sendAnimation">Details for the animation to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendAnimation(SendAnimation sendAnimation, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendAnimation", sendAnimation, cancellationToken);
 
-        public Task<Message> SendVoice(SendVoice message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendVoice", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message.
+        ///     For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document).
+        ///     Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+        /// </summary>
+        /// <param name="sendVoice">Details for the voice message to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendVoice(SendVoice sendVoice, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendVoice", sendVoice, cancellationToken);
 
-        public Task<Message> SendVideoNote(SendVideoNote message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendVideoNote", message, cancellationToken);
+        /// <summary>
+        ///     As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages.
+        /// </summary>
+        /// <param name="sendVideoNote">Details for the video note to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendVideoNote(SendVideoNote sendVideoNote, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendVideoNote", sendVideoNote, cancellationToken);
 
-        public Task<Message[]> SendMediaGroup(SendMediaGroup message, CancellationToken cancellationToken = default) =>
-            Post<Message[]>("sendMediaGroup", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send a group of photos or videos as an album.
+        /// </summary>
+        /// <param name="sendMediaGroup">Details for the media group to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message[]> SendMediaGroup(SendMediaGroup sendMediaGroup, CancellationToken cancellationToken = default) =>
+            Post<Message[]>("sendMediaGroup", sendMediaGroup, cancellationToken);
 
-        public Task<Message> SendLocation(SendLocation message, CancellationToken cancellationToken = default) =>
-            Post<Message>("sendLocation", message, cancellationToken);
+        /// <summary>
+        ///     Use this method to send point on the map.
+        /// </summary>
+        /// <param name="sendLocation">Details for the location to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
+        public Task<Message> SendLocation(SendLocation sendLocation, CancellationToken cancellationToken = default) =>
+            Post<Message>("sendLocation", sendLocation, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created.
+        ///     You must use exactly one of the fields png_sticker or tgs_sticker.
+        /// </summary>
+        /// <param name="createNewStickerSet">Details for the sticker set to create.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns true on success, otherwise false.</returns>
         public Task<bool> CreateNewStickerSet(CreateNewStickerSet createNewStickerSet, CancellationToken cancellationToken = default) =>
             Post<bool>("createNewStickerSet", createNewStickerSet, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to edit live location messages.
+        ///     A location can be edited until its live_period expires or editing is explicitly disabled by a call to StopMessageLiveLocation>.
+        /// </summary>
+        /// <param name="editMessageLiveLocation">Details for the live location to edit.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, if the edited message was sent by the bot, the edited <see cref="Message" /> is returned, otherwise True is returned.</returns>
         public Task<Message> EditMessageLiveLocation(
             EditMessageLiveLocation editMessageLiveLocation,
             CancellationToken cancellationToken = default) =>
             Post<Message>("editMessageLiveLocation", editMessageLiveLocation, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to get up to date information about the chat (current name of the user for one-on-one conversations,
+        ///     current username of a user, group or channel, etc.)
+        /// </summary>
+        /// <param name="getChat">ChatId for the request.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns a <see cref="Chat" /> object on success.</returns>
         public Task<Chat> GetChat(GetChat getChat, CancellationToken cancellationToken = default) =>
             Post<Chat>("getChat", getChat, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to get information about a member of a chat.
+        /// </summary>
+        /// <param name="getChatMember">UserId of the chat member.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns a <see cref="ChatMember" /> object on success.</returns>
         public Task<ChatMember> GetChatMember(GetChatMember getChatMember, CancellationToken cancellationToken = default) =>
             Post<ChatMember>("getChatMember", getChatMember, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to get a sticker set.
+        /// </summary>
+        /// <param name="getStickerSet">Name of the sticker set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, a <see cref="StickerSet" /> object is returned.</returns>
         public Task<StickerSet> GetStickerSet(GetStickerSet getStickerSet, CancellationToken cancellationToken = default) =>
             Post<StickerSet>("getStickerSet", getStickerSet, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to get a list of profile pictures for a user.
+        /// </summary>
+        /// <param name="getUserProfilePhotos">Filter for the requested username.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns a <see cref="UserProfilePhotos" /> object.</returns>
         public Task<UserProfilePhotos> GetUserProfilePhotos(
             GetUserProfilePhotos getUserProfilePhotos,
             CancellationToken cancellationToken = default) =>
             Post<UserProfilePhotos>("getUserProfilePhotos", getUserProfilePhotos, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to get a list of administrators in a chat.
+        /// </summary>
+        /// <param name="getChatAdministrators">ChatId for the request.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>
+        ///     On success, returns an Array of <see cref="ChatMember" /> objects that contains information about all chat administrators except other
+        ///     bots.
+        ///     If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
+        /// </returns>
         public Task<IEnumerable<ChatMember>> GetChatAdministrators(
             GetChatAdministrators getChatAdministrators,
             CancellationToken cancellationToken = default) =>
             Post<IEnumerable<ChatMember>>("getChatAdministrators", getChatAdministrators, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to get the number of members in a chat.
+        /// </summary>
+        /// <param name="getChatMembersCount">ChatId for the request.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns Int on success.</returns>
         public Task<int> GetChatMembersCount(GetChatMembersCount getChatMembersCount, CancellationToken cancellationToken = default) =>
             Post<int>("getChatMembersCount", getChatMembersCount, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will
+        ///     not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an
+        ///     administrator in the chat for this to work and must have the appropriate admin rights.
+        /// </summary>
+        /// <param name="kickChatMember">UserId for the user to kick.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> KickChatMember(KickChatMember kickChatMember, CancellationToken cancellationToken = default) =>
             Post<bool>("kickChatMember", kickChatMember, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to delete a message, including service messages, with the following limitations:
+        ///     - A message can only be deleted if it was sent less than 48 hours ago.
+        ///     - A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.
+        ///     - Bots can delete outgoing messages in private chats, groups, and supergroups.
+        ///     - Bots can delete incoming messages in private chats.
+        ///     - Bots granted can_post_messages permissions can delete outgoing messages in channels.
+        ///     - If the bot is an administrator of a group, it can delete any message there.
+        ///     - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
+        /// </summary>
+        /// <param name="deleteMessage">Identifier of the message to delete.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> DeleteMessage(DeleteMessage deleteMessage, CancellationToken cancellationToken = default) =>
             Post<bool>("deleteMessage", deleteMessage, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to delete a chat photo. Photos can't be changed for private chats.
+        ///     The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        /// </summary>
+        /// <param name="deleteChatPhoto">ChatId for the request.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> DeleteChatPhoto(DeleteChatPhoto deleteChatPhoto, CancellationToken cancellationToken = default) =>
             Post<bool>("deleteChatPhoto", deleteChatPhoto, cancellationToken);
 
+        /// <summary>
+        ///     Use this method for your bot to leave a group, supergroup or channel.
+        /// </summary>
+        /// <param name="leaveChat">ChatId for the request.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> LeaveChat(LeaveChat leaveChat, CancellationToken cancellationToken = default) =>
             Post<bool>("leaveChat", leaveChat, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker.
+        ///     Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers.
+        ///     Static sticker sets can have up to 120 stickers.
+        /// </summary>
+        /// <param name="addStickerToSet">Details for adding stickers to a set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> AddStickerToSet(AddStickerToSet addStickerToSet, CancellationToken cancellationToken = default) =>
             Post<bool>("addStickerToSet", addStickerToSet, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to delete a sticker from a set created by the bot.
+        /// </summary>
+        /// <param name="deleteStickerFromSet">Identifier of the sticker set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> DeleteStickerFromSet(DeleteStickerFromSet deleteStickerFromSet, CancellationToken cancellationToken = default) =>
             Post<bool>("deleteStickerFromSet", deleteStickerFromSet, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to pin a message in a group, a supergroup, or a channel.
+        ///     The bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in the supergroup
+        ///     or 'can_edit_messages' admin right in the channel.
+        /// </summary>
+        /// <param name="pinChatMessage">Identifier of the message that should be pinned.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> PinChatMessage(PinChatMessage pinChatMessage, CancellationToken cancellationToken = default) =>
             Post<bool>("pinChatMessage", pinChatMessage, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to unpin a message in a group, a supergroup, or a channel.The bot must be an administrator in the chat for this
+        ///     to work and must have the 'can_pin_messages' admin right in the supergroup or 'can_edit_messages' admin right in the channel.
+        /// </summary>
+        /// <param name="unpinChatMessage">ChatId of the chat whose message should be unpinned.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> UnpinChatMessage(UnpinChatMessage unpinChatMessage, CancellationToken cancellationToken = default) =>
             Post<bool>("unpinChatMessage", unpinChatMessage, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to change the description of a group, a supergroup or a channel.
+        ///     The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        /// </summary>
+        /// <param name="setChatDescription">Details for the Chat whose description should be edited.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetChatDescription(SetChatDescription setChatDescription, CancellationToken cancellationToken = default) =>
             Post<bool>("setChatDescription", setChatDescription, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to set default chat permissions for all members.
+        ///     The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights.
+        /// </summary>
+        /// <param name="setChatPermissions">Permissions that should be set for the given chat.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetChatPermissions(SetChatPermissions setChatPermissions, CancellationToken cancellationToken = default) =>
             Post<bool>("setChatPermissions", setChatPermissions, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to change the title of a chat. Titles can't be changed for private chats.
+        ///     The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        /// </summary>
+        /// <param name="setChatTitle">Title that should be set for the given chat.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetChatTitle(SetChatTitle setChatTitle, CancellationToken cancellationToken = default) =>
             Post<bool>("setChatTitle", setChatTitle, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to set a new group sticker set for a supergroup.
+        ///     The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        ///     Use the field CanSetStickerSet optionally returned in getChat requests to check if the bot can use this method.
+        /// </summary>
+        /// <param name="setChatStickerSet">Sticker set that should be set for the given chat.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns></returns>
         public Task<bool> SetChatStickerSet(SetChatStickerSet setChatStickerSet, CancellationToken cancellationToken = default) =>
             Post<bool>("setChatStickerSet", setChatStickerSet, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to delete a group sticker set from a supergroup.
+        ///     The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        ///     Use the field CanSetStickerSet optionally returned in getChat requests to check if the bot can use this method.
+        /// </summary>
+        /// <param name="deleteChatStickerSet">Deletes the sticker set from a chat.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> DeleteChatStickerSet(DeleteChatStickerSet deleteChatStickerSet, CancellationToken cancellationToken = default) =>
             Post<bool>("deleteChatStickerSet", deleteChatStickerSet, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only.
+        /// </summary>
+        /// <param name="setStickerSetThumb">Sets the thumbnail picture for the sticker set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetStickerSetThumb(SetStickerSetThumb setStickerSetThumb, CancellationToken cancellationToken = default) =>
             Post<bool>("setStickerSetThumb", setStickerSetThumb, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to send static .WEBP or animated .TGS stickers.
+        /// </summary>
+        /// <param name="sendSticker">Details for the sticker to send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent Message is returned.</returns>
         public Task<Message> SendSticker(SendSticker sendSticker, CancellationToken cancellationToken = default) =>
             Post<Message>("sendSticker", sendSticker, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to set a new profile photo for the chat. Photos can't be changed for private chats.
+        ///     The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        /// </summary>
+        /// <param name="setChatPhoto">Sets the photo for a given chat.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetChatPhoto(SetChatPhoto setChatPhoto, CancellationToken cancellationToken = default) =>
             Post<bool>("setChatPhoto", setChatPhoto, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to generate a new invite link for a chat; any previously generated link is revoked.
+        ///     The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        /// </summary>
+        /// <remarks>
+        ///     Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators.
+        ///     If you want your bot to work with invite links, it will need to generate its own link using exportChatInviteLink —
+        ///     after this the link will become available to the bot via the getChat method.
+        ///     If your bot needs to generate a new invite link replacing its previous one, use exportChatInviteLink again.
+        /// </remarks>
+        /// <param name="exportChatInviteLink">ChatId for the request</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns the new invite link on success.</returns>
         public Task<string>
             ExportChatInviteLink(ExportChatInviteLink exportChatInviteLink, CancellationToken cancellationToken = default) =>
             Post<string>("exportChatInviteLink", exportChatInviteLink, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to promote or demote a user in a supergroup or a channel.
+        ///     The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        ///     Pass False for all boolean parameters to demote a user
+        /// </summary>
+        /// <param name="promoteChatMember">Permissions that should be granted to a chat member.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> PromoteChatMember(PromoteChatMember promoteChatMember, CancellationToken cancellationToken = default) =>
             Post<bool>("promoteChatMember", promoteChatMember, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to restrict a user in a supergroup.
+        ///     The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights.
+        ///     Pass True for all permissions to lift restrictions from a user.
+        /// </summary>
+        /// <param name="restrictChatMember">Permissions that should be restricted form a chat member.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> RestrictChatMember(RestrictChatMember restrictChatMember, CancellationToken cancellationToken = default) =>
             Post<bool>("restrictChatMember", restrictChatMember, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to send phone contacts.
+        /// </summary>
+        /// <param name="sendContact">Details for the contact that should be send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
         public Task<Message> SendContact(SendContact sendContact, CancellationToken cancellationToken = default) =>
             Post<Message>("sendContact", sendContact, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used
+        ///     multiple times).
+        /// </summary>
+        /// <param name="uploadStickerFile">Stickerfile that should be uploaded.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns the uploaded <see cref="File" /> on success.</returns>
         public Task<File> UploadStickerFile(UploadStickerFile uploadStickerFile, CancellationToken cancellationToken = default) =>
             Post<File>("uploadStickerFile", uploadStickerFile, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to edit text and game messages.
+        /// </summary>
+        /// <param name="editMessageText">Details for the message that should be edited.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
         public Task<Message> EditMessageText(EditMessageText editMessageText, CancellationToken cancellationToken = default) =>
             Post<Message>("editMessageText", editMessageText, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to move a sticker in a set created by the bot to a specific position.
+        /// </summary>
+        /// <param name="setStickerPositionInSet">Details for the sticker that should be repositioned in the sticker set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetStickerPositionInSet(
             SetStickerPositionInSet setStickerPositionInSet,
             CancellationToken cancellationToken = default) =>
             Post<bool>("setStickerPositionInSet", setStickerPositionInSet, cancellationToken);
 
+        /// <summary>
+        ///     Use this method when you need to tell the user that something is happening on the bot's side.
+        ///     The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
+        /// </summary>
+        /// <param name="sendChatAction">Action that should be send to a chat.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SendChatAction(SendChatAction sendChatAction, CancellationToken cancellationToken = default) =>
             Post<bool>("sendChatAction", sendChatAction, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to send a native poll.
+        /// </summary>
+        /// <param name="sendPoll">Details for the poll that should be send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent Message is returned.</returns>
         public Task<bool> SendPoll(SendPoll sendPoll, CancellationToken cancellationToken = default) =>
             Post<bool>("sendPoll", sendPoll, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to stop a poll which was sent by the bot.
+        /// </summary>
+        /// <param name="stopPoll">MessageId of the poll that should be stoped</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the stopped Poll with the final results is returned.</returns>
         public Task<Poll> StopPoll(StopPoll stopPoll, CancellationToken cancellationToken = default) =>
             Post<Poll>("stopPoll", stopPoll, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
+        /// </summary>
+        /// <param name="setChatAdministratorCustomTitle">Details for the custom title.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetChatAdministratorCustomTitle(
             SetChatAdministratorCustomTitle setChatAdministratorCustomTitle,
             CancellationToken cancellationToken = default) =>
             Post<bool>("setChatAdministratorCustomTitle", setChatAdministratorCustomTitle, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to unban a previously kicked user in a supergroup or channel.
+        ///     The user will not return to the group or channel automatically, but will be able to join via link, etc.
+        ///     The bot must be an administrator for this to work.
+        /// </summary>
+        /// <param name="unbanChatMember">UserId of the chat member that should be unbanned.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> UnbanChatMember(UnbanChatMember unbanChatMember, CancellationToken cancellationToken = default) =>
             Post<bool>("unbanChatMember", unbanChatMember, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to send a game.
+        /// </summary>
+        /// <param name="sendGame">Details for the game that should be send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
         public Task<Message> SendGame(SendGame sendGame, CancellationToken cancellationToken = default) =>
             Post<Message>("sendGame", sendGame, cancellationToken);
 
+        [Obsolete("This request will be removed in a future release. Please use SetGameScore instead.")]
         public Task<bool> SetGameScoreInlineMessage(SetGameScore setGameScore, CancellationToken cancellationToken = default) =>
             Post<bool>("setGameScore", setGameScore, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to set the score of the specified user in a game.
+        /// </summary>
+        /// <param name="setGameScore">Details for the game score that should be set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>
+        ///     On success, if the message was sent by the bot, returns the edited Message, otherwise returns True.
+        ///     Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+        /// </returns>
         public Task<Message> SetGameScore(SetGameScore setGameScore, CancellationToken cancellationToken = default) =>
             Post<Message>("setGameScore", setGameScore, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to get data for high score tables.
+        /// </summary>
+        /// <param name="getGameHighScores">Details for the game highscore Request.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>
+        ///     Will return the score of the specified user and several of their neighbors in a game.
+        ///     On success, returns an Array of GameHighScore objects.
+        /// </returns>
         public Task<IEnumerable<GameHighScore>> GetGameHighScores(
             GetGameHighScores getGameHighScores,
             CancellationToken cancellationToken = default) =>
             Post<IEnumerable<GameHighScore>>("getGameHighScores", getGameHighScores, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to stop updating a live location message before live_period expires.
+        /// </summary>
+        /// <param name="stopMessageLiveLocation">MessageId of the liveLocation that should be stopped.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.</returns>
         public Task<Message> StopMessageLiveLocation(
             StopMessageLiveLocation stopMessageLiveLocation,
             CancellationToken cancellationToken = default) =>
             Post<Message>("stopMessageLiveLocation", stopMessageLiveLocation, cancellationToken);
 
+        [Obsolete("This request will be removed in a future release. Please use StopMessageLiveLocation instead.")]
         public Task<bool> StopMessageLiveLocationInlineMessage(
             StopMessageLiveLocation stopMessageLiveLocation,
             CancellationToken cancellationToken = default) =>
             Post<bool>("stopMessageLiveLocation", stopMessageLiveLocation, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to send answers to callback queries sent from inline keyboards.
+        ///     The answer will be displayed to the user as a notification at the top of the chat screen or as an alert.
+        /// </summary>
+        /// <param name="answerCallbackQuery">Answer details for the callback query.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, True is returned.</returns>
         public Task<bool> AnswerCallbackQuery(AnswerCallbackQuery answerCallbackQuery, CancellationToken cancellationToken = default) =>
             Post<bool>("answerCallbackQuery", answerCallbackQuery, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to send answers to an inline query. No more than 50 results per query are allowed.
+        /// </summary>
+        /// <param name="answerInlineQuery">Answer details for the inline query.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, True is returned.</returns>
         public Task<bool> AnswerInlineQuery(AnswerInlineQuery answerInlineQuery, CancellationToken cancellationToken = default) =>
             Post<bool>("answerInlineQuery", answerInlineQuery, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to get the current list of the bot's commands.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns Array of <see cref="BotCommand" /> on success.</returns>
         public Task<IEnumerable<BotCommand>> GetMyCommands(CancellationToken cancellationToken = default) =>
             Get<IEnumerable<BotCommand>>("getMyCommands", default, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to change the list of the bot's commands. At most 100 commands can be specified.
+        /// </summary>
+        /// <param name="setMyCommands">Bot commands that should be set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetMyCommands(SetMyCommands setMyCommands, CancellationToken cancellationToken = default) =>
             Post<bool>("setMyCommands", setMyCommands, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to send information about a venue.
+        /// </summary>
+        /// <param name="sendVenue">Details of the Venue that should be send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
         public Task<Message> SendVenue(SendVenue sendVenue, CancellationToken cancellationToken = default) =>
             Post<Message>("sendVenue", sendVenue, cancellationToken);
 
-        public Task<Message> EditMessageCaption(EditMessageCaption sendLocation, CancellationToken cancellationToken = default) =>
-            Post<Message>("editMessageCaption", sendLocation, cancellationToken);
+        /// <summary>
+        ///     Use this method to edit captions of messages.
+        /// </summary>
+        /// <param name="editMessageCaption">Details for the message caption that should be edited.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
+        public Task<Message> EditMessageCaption(EditMessageCaption editMessageCaption, CancellationToken cancellationToken = default) =>
+            Post<Message>("editMessageCaption", editMessageCaption, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to edit only the reply markup of messages.
+        /// </summary>
+        /// <param name="editMessageReplyMarkup">New reply markup for the message.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
         public Task<Message> EditMessageReplyMarkup(
             EditMessageReplyMarkup editMessageReplyMarkup,
             CancellationToken cancellationToken = default) =>
             Post<Message>("editMessageReplyMarkup", editMessageReplyMarkup, cancellationToken);
 
+        /// <summary>
+        ///     Use this method to send invoices.
+        /// </summary>
+        /// <param name="sendInvoice">Details for the invoice that should be send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent Message is returned.</returns>
         public Task<Message> SendInvoice(SendInvoice sendInvoice, CancellationToken cancellationToken = default) =>
             Post<Message>("sendInvoice", sendInvoice, cancellationToken);
 
+        /// <summary>
+        ///     If you sent an invoice requesting a shipping address and the parameter is_flexible was specified,
+        ///     the Bot API will send an Update with a shipping_query field to the bot. Use this method to reply to shipping queries.
+        /// </summary>
+        /// <param name="answerShippingQuery">Details for answering a shipping query.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, True is returned.</returns>
         public Task<bool> AnswerShippingQuery(AnswerShippingQuery answerShippingQuery, CancellationToken cancellationToken = default) =>
             Post<bool>("answerShippingQuery", answerShippingQuery, cancellationToken);
 
+        /// <summary>
+        ///     Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an
+        ///     Update with the field pre_checkout_query. Use this method to respond to such pre-checkout queries.
+        /// </summary>
+        /// <remarks>Note: The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.</remarks>
+        /// <param name="answerPreCheckoutQuery">Answer for the preCheckoutQuery</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, True is returned.</returns>
         public Task<bool> AnswerPreCheckoutQuery(
             AnswerPreCheckoutQuery answerPreCheckoutQuery,
             CancellationToken cancellationToken = default) =>
             Post<bool>("answerPreCheckoutQuery", answerPreCheckoutQuery, cancellationToken);
 
+        /// <summary>
+        ///     Informs a user that some of the Telegram Passport elements they provided contains errors.
+        ///     The user will not be able to re-submit their Passport to you until the errors are fixed
+        ///     (the contents of the field for which you returned the error must change).
+        /// </summary>
+        /// <remarks>
+        ///     Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason.
+        ///     For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc.
+        ///     Supply some details in the error message to make sure the user knows how to correct the issues.
+        /// </remarks>
+        /// <param name="setPassportDataErrors">Error that should be set on the passport data.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
         public Task<bool> SetPassportDataErrors(
             SetPassportDataErrors setPassportDataErrors,
-            CancellationToken cancellationToken = default) =>
-            Post<bool>("setPassportDataErrors", setPassportDataErrors, cancellationToken);
+            CancellationToken cancellationToken = default) => Post<bool>("setPassportDataErrors", setPassportDataErrors, cancellationToken);
 
-        public Task<bool> EditMessageMedia(
-            EditMessageMedia editMessageMedia,
-            CancellationToken cancellationToken = default) =>
+        /// <summary>
+        ///     Use this method to edit animation, audio, document, photo, or video messages.
+        ///     If a message is a part of a message album, then it can be edited only to a photo or a video.
+        ///     Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded.
+        ///     Use previously uploaded file via its file_id or specify a URL.
+        /// </summary>
+        /// <param name="editMessageMedia">Details for the changes of the message media.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
+        public Task<bool> EditMessageMedia(EditMessageMedia editMessageMedia, CancellationToken cancellationToken = default) =>
             Post<bool>("editMessageMedia", editMessageMedia, cancellationToken);
 
-        public Task<Message> SendDice(
-            SendDice sendDice,
-            CancellationToken cancellationToken = default) =>
+        /// <summary>
+        ///     Use this method to send an animated emoji that will display a random value.
+        /// </summary>
+        /// <param name="sendDice">Details for the dice that should be send.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, the sent Message is returned.</returns>
+        public Task<Message> SendDice(SendDice sendDice, CancellationToken cancellationToken = default) =>
             Post<Message>("sendDice", sendDice, cancellationToken);
+
+        #region Updates
+
+        /// <summary>
+        ///     Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
+        /// </summary>
+        /// <remarks>
+        ///     1. This method will not work if an outgoing webhook is set up.
+        ///     2. In order to avoid getting duplicate updates, recalculate offset after each server response.
+        /// </remarks>
+        /// <param name="update">Filter for the requested updates.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>A list of all Updates belonging to your bot.</returns>
+        public Task<Update[]> GetUpdate(GetUpdate update, CancellationToken cancellationToken = default) =>
+            Get<Update[]>("getUpdates", update, cancellationToken);
+
+        /// <summary>
+        ///     Use this method to specify a url and receive incoming updates via an outgoing webhook.
+        ///     Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized
+        ///     Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
+        ///     If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL,
+        ///     e.g. https://www.example.com/{token}. Since nobody else knows your bot's token, you can be pretty sure it's us.
+        /// </summary>
+        /// <param name="setWebhook">Details for the webhook to set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>True if the webhook could be set successfully, otherwise false.</returns>
+        public Task<bool> SetWebhook(SetWebhook setWebhook, CancellationToken cancellationToken = default) =>
+            Get<bool>("setWebhook", setWebhook, cancellationToken);
+
+        /// <summary>
+        ///     Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>True if the webhook could be deleted successfully, otherwise false.</returns>
+        public Task<bool> DeleteWebhook(CancellationToken cancellationToken = default) =>
+            Get<bool>("deleteWebhook", default, cancellationToken);
+
+        /// <summary>
+        ///     Use this method to get current webhook status. If the bot is using getUpdates, will return an object with the url field empty.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, returns a WebhookInfo object.</returns>
+        public Task<WebhookInfo> GetWebhookInfo(CancellationToken cancellationToken = default) =>
+            Get<WebhookInfo>("getWebhookInfo", default, cancellationToken);
+
+        #endregion
+
+        /// <summary>
+        /// Use this method to log out from the cloud Bot API server before launching the bot locally.
+        /// You must log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates.
+        /// After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud
+        /// Bot API server for 10 minutes.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success</returns>
+        public Task<bool> LogOut(CancellationToken cancellationToken = default) =>
+            Get<bool>("logOut", cancellationToken: cancellationToken);
+
+        /// <summary>
+        /// Use this method to close the bot instance before moving it from one local server to another. You need to delete the webhook
+        /// before calling this method to ensure that the bot isn't launched again after server restart.
+        /// The method will return error 429 in the first 10 minutes after the bot is launched.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> Close(CancellationToken cancellationToken = default) => Get<bool>("close", default, cancellationToken);
+
+
+        /// <summary>
+        /// Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an
+        /// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or
+        /// 'can_edit_messages' admin right in a channel.
+        /// </summary>
+        /// <param name="unpinAllChatMessages">Details for the messages to unpin</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> UnpinAllChatMessages(UnpinAllChatMessages unpinAllChatMessages, CancellationToken cancellationToken = default) =>
+            Post<bool>("unpinAllChatMessages", unpinAllChatMessages, cancellationToken);
+
+        /// <summary>
+        /// Use this method to copy messages of any kind.
+        /// The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message.
+        /// </summary>
+        /// <param name="copyMessage">Details for the message to copy</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns the <see cref="MessageIdObject"/> of the sent message on success.</returns>
+        public Task<MessageIdObject> CopyMessage(CopyMessage copyMessage, CancellationToken cancellationToken = default) =>
+            Post<MessageIdObject>("copyMessage", copyMessage, cancellationToken);
     }
 }

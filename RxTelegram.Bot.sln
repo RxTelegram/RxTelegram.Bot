@@ -9,6 +9,7 @@ ProjectSection(SolutionItems) = preProject
 	README.md = README.md
 	.editorconfig = .editorconfig
 	.gitignore = .gitignore
+	Directory.Build.props = Directory.Build.props
 EndProjectSection
 EndProject
 Global

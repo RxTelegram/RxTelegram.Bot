@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
 using RxTelegram.Bot.Validation;
@@ -37,6 +38,16 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         /// </summary>
         public IReplyMarkup ReplyMarkup { get; set; }
+
+        /// <summary>
+        /// List of special entities that appear in message text, which can be specified instead of parse_mode
+        /// </summary>
+        public IEnumerable<MessageEntity> Entities { get; set; }
+
+        /// <summary>
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        /// </summary>
+        public bool? AllowSendingWithoutReply { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }
