@@ -63,7 +63,7 @@ namespace RxTelegram.Bot.Api
 
         private bool AnyObserver => _updateObservers.Any() || _observerDictionary.Any(x => x.Value.Any());
 
-        private IEnumerable<UpdateType> UpdateTypes => _updateObservers.Any()
+        internal IEnumerable<UpdateType> UpdateTypes => _updateObservers.Any()
                                                            ? _observerDictionary.Select(x => x.Key)
                                                            : _observerDictionary.Where(x => x.Value.Any())
                                                                                 .Select(x => x.Key);
