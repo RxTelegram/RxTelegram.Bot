@@ -227,6 +227,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public bool? ChannelChatCreated { get; set; }
 
         /// <summary>
+        /// Optional. Service message: auto-delete timer settings changed in the chat
+        /// </summary>
+        public MessageAutoDeleteTimerChanged MessageAutoDeleteTimerChanged { get; set; }
+
+        /// <summary>
         /// Optional. The group has been migrated to a supergroup with the specified identifier
         /// </summary>
         public long? MigrateToChatId { get; set; }
@@ -266,6 +271,21 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
         /// </summary>
         public ProximityAlertTriggered ProximityAlertTriggered { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: voice chat started
+        /// </summary>
+        public VoiceChatStarted VoiceChatStarted { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: voice chat ended
+        /// </summary>
+        public VoiceChatEnded VoiceChatEnded { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: new participants invited to a voice chat
+        /// </summary>
+        public VoiceChatParticipantsInvited VoiceChatParticipantsInvited { get; set; }
 
         /// <summary>
         /// Optional. Inline keyboard attached to the message

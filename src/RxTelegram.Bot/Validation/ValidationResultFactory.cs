@@ -492,5 +492,15 @@ namespace RxTelegram.Bot.Validation
             .ValidateRequired(x => x.ChatId)
             .ValidateRequired(x => x.FromChatId)
             .ValidateRequired(x => x.MessageId);
+
+        public static ValidationResult<CreateChatInviteLink> CreateValidation(this CreateChatInviteLink value) =>
+            new ValidationResult<CreateChatInviteLink>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<EditChatInviteLink> CreateValidation(this EditChatInviteLink value) =>
+            new ValidationResult<EditChatInviteLink>(value).ValidateRequired(x => x.ChatId)
+                                                           .ValidateRequired(x => x.InviteLink);
+
+        public static ValidationResult<RevokeChatInviteLink> CreateValidation(this RevokeChatInviteLink value) =>
+            new ValidationResult<RevokeChatInviteLink>(value).ValidateRequired(x => x.ChatId);
     }
 }

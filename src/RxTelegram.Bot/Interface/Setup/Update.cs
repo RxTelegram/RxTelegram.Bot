@@ -73,5 +73,13 @@ namespace RxTelegram.Bot.Interface.Setup
         /// Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
         /// </summary>
         public PollAnswer PollAnswer { get; set; }
+
+        /// <summary>
+        /// Optional. The bot's chat member status was updated in a chat. For private chats, this update is received only when the bot is
+        /// blocked or unblocked by the user.
+        /// </summary>
+        public ChatMemberUpdated MyChatMember { get; set; }
+
+        public ChatMemberUpdated ChatMember { get; set; }
     }
 }
