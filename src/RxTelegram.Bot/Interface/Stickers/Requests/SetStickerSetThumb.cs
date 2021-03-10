@@ -20,7 +20,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// Required
         /// User identifier of the sticker set owner
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Optional

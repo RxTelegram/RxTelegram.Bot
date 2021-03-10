@@ -8,7 +8,7 @@
         /// <summary>
         /// Unique identifier for this user or bot
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// True, if this user is a bot

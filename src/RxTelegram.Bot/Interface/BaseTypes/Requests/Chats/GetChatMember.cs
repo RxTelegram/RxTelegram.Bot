@@ -8,7 +8,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
     /// </summary>
     public class GetChatMember : BaseRequest
     {
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

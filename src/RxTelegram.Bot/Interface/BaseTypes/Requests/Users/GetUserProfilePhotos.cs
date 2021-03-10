@@ -8,7 +8,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Users
         /// <summary>
         /// Unique identifier of the target user
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Sequential number of the first photo to be returned. By default, all photos are returned.

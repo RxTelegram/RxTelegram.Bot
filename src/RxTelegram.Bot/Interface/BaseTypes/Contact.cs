@@ -23,7 +23,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// <summary>
         /// Optional. Contact's user identifier in Telegram
         /// </summary>
-        public int? UserId { get; set; }
+        public long? UserId { get; set; }
 
         /// <summary>
         /// Optional. Additional data about the contact in the form of a vCard

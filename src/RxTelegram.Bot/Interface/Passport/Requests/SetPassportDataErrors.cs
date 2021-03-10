@@ -18,7 +18,7 @@ namespace RxTelegram.Bot.Interface.Passport.Requests
         /// Required
         /// User identifier
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Required
