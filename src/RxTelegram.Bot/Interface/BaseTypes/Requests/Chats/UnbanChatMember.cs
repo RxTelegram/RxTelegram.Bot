@@ -15,7 +15,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// <summary>
         /// Unique identifier of the target user
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Do nothing if the user is not banned

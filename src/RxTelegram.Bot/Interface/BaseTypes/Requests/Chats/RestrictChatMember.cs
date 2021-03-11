@@ -13,7 +13,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// Required
         /// Unique identifier of the target user
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Required

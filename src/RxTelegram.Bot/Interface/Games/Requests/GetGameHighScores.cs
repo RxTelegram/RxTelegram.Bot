@@ -14,7 +14,7 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// <summary>
         /// Target user id
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Required if inline_message_id is not specified. Identifier of the sent message

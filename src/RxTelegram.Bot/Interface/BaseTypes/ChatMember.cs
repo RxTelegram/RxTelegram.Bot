@@ -34,6 +34,13 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public DateTime? UntilDate { get; set; }
 
         /// <summary>
+        /// Optional. Administrators only. True, if the administrator can access the chat event log, chat statistics,
+        /// message statistics in channels, see channel members, see anonymous administrators in supergroups and ignore slow mode.
+        /// Implied by any other administrator privilege
+        /// </summary>
+        public bool? CanManageChat { get; set; }
+
+        /// <summary>
         /// Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
         /// </summary>
         public bool? CanBeEdited { get; set; }
@@ -110,5 +117,10 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Restricted only. True, if user may add web page previews to his messages, implies <see cref="CanSendMediaMessages"/>
         /// </summary>
         public bool? CanAddWebPagePreviews { get; set; }
+
+        /// <summary>
+        /// Optional. Administrators only. True, if the administrator can manage voice chats
+        /// </summary>
+        public bool? CanManageVoiceChats { get; set; }
     }
 }

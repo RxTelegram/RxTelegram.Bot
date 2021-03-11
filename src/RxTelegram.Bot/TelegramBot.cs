@@ -839,5 +839,43 @@ namespace RxTelegram.Bot
         /// <returns>Returns the <see cref="MessageIdObject"/> of the sent message on success.</returns>
         public Task<MessageIdObject> CopyMessage(CopyMessage copyMessage, CancellationToken cancellationToken = default) =>
             Post<MessageIdObject>("copyMessage", copyMessage, cancellationToken);
+
+        /// <summary>
+        /// Use this method to create an additional invite link for a chat.
+        /// The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        /// The link can be revoked using the method revokeChatInviteLink.
+        /// </summary>
+        /// <param name="createChatInviteLink">Details for the chat invite link to create.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns the new invite link as <see cref="ChatInviteLink"/>.</returns>
+        public Task<ChatInviteLink> CreateChatInviteLink(
+            CreateChatInviteLink createChatInviteLink,
+            CancellationToken cancellationToken = default) =>
+            Post<ChatInviteLink>("createChatInviteLink", createChatInviteLink, cancellationToken);
+
+        /// <summary>
+        /// Use this method to edit a non-primary invite link created by the bot.
+        /// The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        /// </summary>
+        /// <param name="editChatInviteLink">Details for the chat invite link to edit.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns the edited invite link as a <see cref="ChatInviteLink"/>  object.</returns>
+        public Task<ChatInviteLink> EditChatInviteLink(
+            EditChatInviteLink editChatInviteLink,
+            CancellationToken cancellationToken = default) =>
+            Post<ChatInviteLink>("editChatInviteLink", editChatInviteLink, cancellationToken);
+
+        /// <summary>
+        /// Use this method to revoke an invite link created by the bot.
+        /// If the primary link is revoked, a new link is automatically generated.
+        /// The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+        /// </summary>
+        /// <param name="revokeChatInviteLink">Details for the invite link to revoke.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns the revoked invite link as <see cref="ChatInviteLink"/>  object.</returns>
+        public Task<ChatInviteLink> RevokeChatInviteLink(
+            RevokeChatInviteLink revokeChatInviteLink,
+            CancellationToken cancellationToken = default) =>
+            Post<ChatInviteLink>("revokeChatInviteLink", revokeChatInviteLink, cancellationToken);
     }
 }

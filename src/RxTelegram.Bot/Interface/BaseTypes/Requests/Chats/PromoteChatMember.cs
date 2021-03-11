@@ -13,12 +13,20 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// Required
         /// Unique identifier of the target user
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Pass True, if the administrator's presence in the chat is hidden
         /// </summary>
         public bool? IsAnonymous { get; set; }
+
+        /// <summary>
+        /// Optional
+        /// Pass True, if the administrator can access the chat event log, chat statistics, message statistics in channels,
+        /// see channel members, see anonymous administrators in supergroups and ignore slow mode.
+        /// Implied by any other administrator privilege
+        /// </summary>
+        public bool? CanManageChat { get; set; }
 
         /// <summary>
         /// Optional
@@ -68,6 +76,12 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
         /// </summary>
         public bool? CanPromoteMembers { get; set; }
+
+        /// <summary>
+        /// Optional
+        /// Pass True, if the administrator can manage voice chats, supergroups only
+        /// </summary>
+        public bool? CanManageVoiceChats { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

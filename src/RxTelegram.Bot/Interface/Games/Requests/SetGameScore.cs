@@ -14,7 +14,7 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// Required
         /// User identifier
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Required
