@@ -8,6 +8,8 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Enums
 
         Supergroup,
 
-        Channel
+        Channel,
+
+        Sender
     }
 }

@@ -457,7 +457,6 @@ namespace RxTelegram.Bot.Validation
                                                                                                 .ValidateRequired(x => x.Title)
                                                                                                 .ValidateRequired(x => x.Payload)
                                                                                                 .ValidateRequired(x => x.ProviderToken)
-                                                                                                .ValidateRequired(x => x.StartParameter)
                                                                                                 .ValidateRequired(x => x.Currency)
                                                                                                 .ValidateRequired(x => x.Prices)
                                                                                                 .ValidateRequired(x => x.Description);
