@@ -103,8 +103,8 @@ namespace RxTelegram.Bot.Validation
                                                                                             .ValidateRequired(x => x.ChatId)
                                                                                             .ValidateRequired(x => x.Voice);
 
-        public static ValidationResult<GetChatMembersCount> CreateValidation(this GetChatMembersCount value) =>
-            new ValidationResult<GetChatMembersCount>(value).ValidateRequired(x => x.ChatId);
+        public static ValidationResult<GetChatMemberCount> CreateValidation(this GetChatMemberCount value) =>
+            new ValidationResult<GetChatMemberCount>(value).ValidateRequired(x => x.ChatId);
 
         public static ValidationResult<SendVideoNote> CreateValidation(this SendVideoNote value) =>
             new ValidationResult<SendVideoNote>(value).ValidateRequired(x => x.ChatId)
@@ -121,8 +121,8 @@ namespace RxTelegram.Bot.Validation
                                                                                         input.GetType() == typeof(InputMediaVideo)),
                                                                 ValidationErrors.OnlySomeInputMediaTypesAllowed);
 
-        public static ValidationResult<KickChatMember> CreateValidation(this KickChatMember value) =>
-            new ValidationResult<KickChatMember>(value).ValidateRequired(x => x.ChatId)
+        public static ValidationResult<BanChatMember> CreateValidation(this BanChatMember value) =>
+            new ValidationResult<BanChatMember>(value).ValidateRequired(x => x.ChatId)
                                                        .ValidateRequired(x => x.UserId);
 
         public static ValidationResult<DeleteMessage> CreateValidation(this DeleteMessage value) =>
