@@ -273,6 +273,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public ProximityAlertTriggered ProximityAlertTriggered { get; set; }
 
         /// <summary>
+        /// Optional. Service message: voice chat scheduled
+        /// </summary>
+        public VoiceChatScheduled VoiceChatScheduled { get; set; }
+
+        /// <summary>
         /// Optional. Service message: voice chat started
         /// </summary>
         public VoiceChatStarted VoiceChatStarted { get; set; }

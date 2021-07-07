@@ -260,22 +260,22 @@ namespace RxTelegram.Bot
         /// <summary>
         ///     Use this method to get the number of members in a chat.
         /// </summary>
-        /// <param name="getChatMembersCount">ChatId for the request.</param>
+        /// <param name="getChatMemberCount">ChatId for the request.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Returns Int on success.</returns>
-        public Task<int> GetChatMembersCount(GetChatMembersCount getChatMembersCount, CancellationToken cancellationToken = default) =>
-            Post<int>("getChatMembersCount", getChatMembersCount, cancellationToken);
+        public Task<int> GetChatMemberCount(GetChatMemberCount getChatMemberCount, CancellationToken cancellationToken = default) =>
+            Post<int>("getChatMemberCount", getChatMemberCount, cancellationToken);
 
         /// <summary>
         ///     Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will
         ///     not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an
         ///     administrator in the chat for this to work and must have the appropriate admin rights.
         /// </summary>
-        /// <param name="kickChatMember">UserId for the user to kick.</param>
+        /// <param name="banChatMember">UserId for the user to kick.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Returns True on success.</returns>
-        public Task<bool> KickChatMember(KickChatMember kickChatMember, CancellationToken cancellationToken = default) =>
-            Post<bool>("kickChatMember", kickChatMember, cancellationToken);
+        public Task<bool> BanChatMember(BanChatMember banChatMember, CancellationToken cancellationToken = default) =>
+            Post<bool>("banChatMember", banChatMember, cancellationToken);
 
         /// <summary>
         ///     Use this method to delete a message, including service messages, with the following limitations:
@@ -641,7 +641,7 @@ namespace RxTelegram.Bot
         /// </summary>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Returns Array of <see cref="BotCommand" /> on success.</returns>
-        public Task<IEnumerable<BotCommand>> GetMyCommands(CancellationToken cancellationToken = default) =>
+        public Task<IEnumerable<BotCommand>> GetMyCommands(GetMyCommands getMyCommands, CancellationToken cancellationToken = default) =>
             Get<IEnumerable<BotCommand>>("getMyCommands", default, cancellationToken);
 
         /// <summary>
@@ -652,6 +652,9 @@ namespace RxTelegram.Bot
         /// <returns>Returns True on success.</returns>
         public Task<bool> SetMyCommands(SetMyCommands setMyCommands, CancellationToken cancellationToken = default) =>
             Post<bool>("setMyCommands", setMyCommands, cancellationToken);
+
+        public Task<bool> DeleteMyCommands(DeleteMyCommands deleteMyCommands, CancellationToken cancellationToken = default) =>
+            Post<bool>("deleteMyCommands", deleteMyCommands, cancellationToken);
 
         /// <summary>
         ///     Use this method to send information about a venue.
