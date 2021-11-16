@@ -1,5 +1,6 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
+using RxTelegram.Bot.Interface.Stickers.Requests;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Enums
 {
@@ -39,6 +40,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Enums
         /// <see cref="SendDocument"/>
         /// </summary>
         UploadDocument,
+
+        /// <summary>
+        /// <see cref="SendSticker"/>
+        /// </summary>
+        ChooseSticker,
 
         /// <summary>
         /// <see cref="SendLocation"/>

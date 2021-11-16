@@ -15,6 +15,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         public string InviteLink { get; set; }
 
         /// <summary>
+        /// Invite link name; 0-32 characters
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Point in time (Unix timestamp) when the link will expire
         /// </summary>
         public int ExpireDate { get; set; }
@@ -23,6 +28,12 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
         /// </summary>
         public int MemberLimit { get; set; }
+
+        /// <summary>
+        /// True, if users joining the chat via the link need to be approved by chat administrators.
+        /// If True, member_limit can't be specified
+        /// </summary>
+        public bool? CreatesJoinRequest { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }
