@@ -880,5 +880,29 @@ namespace RxTelegram.Bot
             RevokeChatInviteLink revokeChatInviteLink,
             CancellationToken cancellationToken = default) =>
             Post<ChatInviteLink>("revokeChatInviteLink", revokeChatInviteLink, cancellationToken);
+
+        /// <summary>
+        /// Use this method to approve a chat join request.
+        /// The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right.
+        /// </summary>
+        /// <param name="approveChatJoinRequest">Join request to approve</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> ApproveChatJoinRequest(
+            ApproveChatJoinRequest approveChatJoinRequest,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("approveChatJoinRequest", approveChatJoinRequest, cancellationToken);
+
+        /// <summary>
+        /// Use this method to decline a chat join request.
+        /// The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right.
+        /// </summary>
+        /// <param name="declineChatJoinRequest">Join request to decline</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> DeclineChatJoinRequest(
+            DeclineChatJoinRequest declineChatJoinRequest,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("declineChatJoinRequest", declineChatJoinRequest, cancellationToken);
     }
 }
