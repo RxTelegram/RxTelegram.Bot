@@ -12,6 +12,14 @@ ProjectSection(SolutionItems) = preProject
 	Directory.Build.props = Directory.Build.props
 EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{F47E60D1-54DB-48D1-81AC-6F30B4892C94}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{7EC73658-F5B4-457D-8435-7D2542AA2A84}"
+ProjectSection(SolutionItems) = preProject
+	.github\workflows\main.yml = .github\workflows\main.yml
+	.github\workflows\publish.yml = .github\workflows\publish.yml
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,5 +34,8 @@ Global
 		{8E388206-DE80-4CD2-8F45-22CB59775234}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E388206-DE80-4CD2-8F45-22CB59775234}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E388206-DE80-4CD2-8F45-22CB59775234}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7EC73658-F5B4-457D-8435-7D2542AA2A84} = {F47E60D1-54DB-48D1-81AC-6F30B4892C94}
 	EndGlobalSection
 EndGlobal
