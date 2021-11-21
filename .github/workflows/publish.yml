@@ -29,10 +29,6 @@ jobs:
                 with:
                     artifacts: "RxTelegram.Bot.${VERSION}.nupkg"
                     token: ${{ secrets.GITHUB_TOKEN }}
-            -   name: Push nuget to github
-                run: dotnet nuget push RxTelegram.Bot.${VERSION}.nupkg --source https://nuget.pkg.github.com/acraven/index.json --api-key ${GITHUB_TOKEN}
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             -   name: Push nuget to nuget.org
                 uses: brandedoutcast/publish-nuget@v2.5.2
                 with:
