@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -904,5 +905,27 @@ namespace RxTelegram.Bot
             DeclineChatJoinRequest declineChatJoinRequest,
             CancellationToken cancellationToken = default) =>
             Post<bool>("declineChatJoinRequest", declineChatJoinRequest, cancellationToken);
+
+        /// <summary>
+        /// Use this method to ban a channel chat in a supergroup or a channel.
+        /// Until the chat is unbanned, the owner of the banned chat won't be able to send messages on behalf of any of their channels.
+        /// The bot must be an administrator in the supergroup or channel for this to work and must have the appropriate administrator rights.
+        /// </summary>
+        /// <param name="banChatSenderChat">Sender to ban</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> BanChatSenderChat(BanChatSenderChat banChatSenderChat, CancellationToken cancellationToken = default) =>
+            Post<bool>("banChatSenderChat", banChatSenderChat, cancellationToken);
+
+        /// <summary>
+        /// Use this method to ban a channel chat in a supergroup or a channel.
+        /// Until the chat is unbanned, the owner of the banned chat won't be able to send messages on behalf of any of their channels.
+        /// The bot must be an administrator in the supergroup or channel for this to work and must have the appropriate administrator rights.
+        /// </summary>
+        /// <param name="unbanChatSenderChat">Sender to ban</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> UnbanChatSenderChat(UnbanChatSenderChat unbanChatSenderChat, CancellationToken cancellationToken = default) =>
+            Post<bool>("unbanChatSenderChat", unbanChatSenderChat, cancellationToken);
     }
 }

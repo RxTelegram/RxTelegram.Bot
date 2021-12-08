@@ -70,6 +70,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public DateTime? ForwardDate { get; set; }
 
         /// <summary>
+        /// Optional. True, if the message is a channel post that was automatically forwarded to the connected discussion group
+        /// </summary>
+        public bool? IsAutomaticForward { get; set; }
+
+        /// <summary>
         /// Optional. For replies, the original message. Note that the Description object in this field will
         /// not contain further reply_to_message fields even if it itself is a reply.
         /// </summary>
@@ -84,6 +89,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Date the message was last edited in Unix time
         /// </summary>
         public DateTime? EditDate { get; set; }
+
+        /// <summary>
+        /// Optional. True, if the message can't be forwarded
+        /// </summary>
+        public bool? HasProtectedContent { get; set; }
 
         /// <summary>
         /// Optional. The unique identifier of a media message group this message belongs to

@@ -57,6 +57,12 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public string Bio { get; set; }
 
         /// <summary>
+        /// Optional. True, if privacy settings of the other party in the private chat allows to
+        /// use tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
+        /// </summary>
+        public bool? HasPrivateForwards { get; set; }
+
+        /// <summary>
         /// Optional. Description, for supergroups and channel chats. Returned only in getChat.
         /// </summary>
         public string Description { get; set; }
@@ -78,9 +84,21 @@ namespace RxTelegram.Bot.Interface.BaseTypes
 
         /// <summary>
         /// Optional. For supergroups, the minimum allowed delay between consecutive
-        /// messages sent by each unpriviledged user. Returned only in getChat.
+        /// messages sent by each unprivileged user. Returned only in getChat.
         /// </summary>
         public int? SlowModeDelay { get; set; }
+
+        /// <summary>
+        /// Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds.
+        /// Returned only in getChat.
+        /// </summary>
+        public int? MessageAutoDeleteTime { get; set; }
+
+        /// <summary>
+        /// Optional. True, if messages from the chat can't be forwarded to other chats.
+        /// Returned only in getChat.
+        /// </summary>
+        public bool? HasProtectedContent { get; set; }
 
         /// <summary>
         /// Optional. For supergroups, name of group sticker set. Returned only in getChat.
