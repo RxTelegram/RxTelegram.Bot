@@ -640,10 +640,11 @@ namespace RxTelegram.Bot
         /// <summary>
         ///     Use this method to get the current list of the bot's commands.
         /// </summary>
+        /// <param name="getMyCommands">Bot scope and language definition</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Returns Array of <see cref="BotCommand" /> on success.</returns>
         public Task<IEnumerable<BotCommand>> GetMyCommands(GetMyCommands getMyCommands, CancellationToken cancellationToken = default) =>
-            Get<IEnumerable<BotCommand>>("getMyCommands", default, cancellationToken);
+            Get<IEnumerable<BotCommand>>("getMyCommands", getMyCommands, cancellationToken);
 
         /// <summary>
         ///     Use this method to change the list of the bot's commands. At most 100 commands can be specified.

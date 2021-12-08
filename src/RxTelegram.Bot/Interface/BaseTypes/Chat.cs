@@ -58,7 +58,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes
 
         /// <summary>
         /// Optional. True, if privacy settings of the other party in the private chat allows to
-        /// use tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
+        /// use tg://user?id=[user_id] links only in chats with the user. Returned only in getChat.
         /// </summary>
         public bool? HasPrivateForwards { get; set; }
 

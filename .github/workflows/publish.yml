@@ -19,19 +19,10 @@ jobs:
             -   name: Set VERSION variable from tag
                 run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
             -   name: Build
-                run: dotnet build --configuration Release /p:Version=${VERSION}
+                run: dotnet build /warnaserror --configuration Release /p:Version=${VERSION}
             -   name: Test
                 run: dotnet test --configuration Release /p:Version=${VERSION} --no-build
             -   name: Pack
                 run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
-            -   name: Publish artifacts
-                uses: ncipollo/release-action@v1
-                with:
-                    artifacts: "RxTelegram.Bot.${VERSION}.nupkg"
-                    token: ${{ secrets.GITHUB_TOKEN }}
             -   name: Push nuget to nuget.org
-                uses: brandedoutcast/publish-nuget@v2.5.2
-                with:
-                    PROJECT_FILE_PATH: src/RxTelegram.Bot/RxTelegram.Bot.csproj
-                    NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-                    VERSION_REGEX: ^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$
+                run: dotnet nuget push RxTelegram.Bot.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
