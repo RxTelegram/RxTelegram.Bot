@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
 {
-    public class SendDocument : BaseSend
+    public class SendDocument : BaseSend, IProtectContent
     {
         /// <summary>
         /// File to send
@@ -35,6 +36,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Pass True, if the message should be sent even if the specified replied-to message is not found
         /// </summary>
         public bool? AllowSendingWithoutReply { get; set; }
+
+        /// <summary>
+        /// Protects the contents of the sent message from forwarding and saving
+        /// </summary>
+        public bool? ProtectContent { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

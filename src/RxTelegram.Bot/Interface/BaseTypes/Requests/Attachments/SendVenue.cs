@@ -7,7 +7,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     /// <summary>
     /// Use this method to send information about a venue. On success, the sent Message is returned.
     /// </summary>
-    public class SendVenue : BaseRequest
+    public class SendVenue : BaseRequest, IProtectContent
     {
         /// <summary>
         /// Required
@@ -78,6 +78,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Pass True, if the message should be sent even if the specified replied-to message is not found
         /// </summary>
         public bool? AllowSendingWithoutReply { get; set; }
+
+        /// <summary>
+        /// Protects the contents of the sent message from forwarding and saving
+        /// </summary>
+        public bool? ProtectContent { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

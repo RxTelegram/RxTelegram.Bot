@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
@@ -8,7 +9,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     ///     Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned.
     ///     Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
     /// </summary>
-    public class SendAnimation : BaseSend
+    public class SendAnimation : BaseSend, IProtectContent
     {
         /// <summary>
         ///     Required
@@ -54,6 +55,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// List of special entities that appear in the caption, which can be specified instead of parse_mode
         /// </summary>
         public IEnumerable<MessageEntity> CaptionEntities { get; set; }
+
+        /// <summary>
+        /// Protects the contents of the sent message from forwarding and saving
+        /// </summary>
+        public bool? ProtectContent { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

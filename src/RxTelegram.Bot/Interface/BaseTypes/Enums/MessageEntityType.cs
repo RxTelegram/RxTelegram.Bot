@@ -38,6 +38,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Enums
         Italic,
 
         /// <summary>
+        /// Spoiler message
+        /// </summary>
+        Spoiler,
+
+        /// <summary>
         /// Monowidth string
         /// </summary>
         Code,

@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
@@ -7,7 +8,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     ///     As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages.
     ///     On success, the sent Message is returned.
     /// </summary>
-    public class SendVideoNote : BaseSend
+    public class SendVideoNote : BaseSend, IProtectContent
     {
         /// <summary>
         ///     Required
@@ -42,6 +43,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Pass True, if the message should be sent even if the specified replied-to message is not found
         /// </summary>
         public bool? AllowSendingWithoutReply { get; set; }
+
+        /// <summary>
+        /// Protects the contents of the sent message from forwarding and saving
+        /// </summary>
+        public bool? ProtectContent { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

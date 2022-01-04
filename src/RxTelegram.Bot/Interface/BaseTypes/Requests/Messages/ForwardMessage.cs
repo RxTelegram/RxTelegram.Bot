@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
@@ -6,7 +7,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
     /// <summary>
     /// Use this method to forward messages of any kind. On success, the sent Message is returned.
     /// </summary>
-    public class ForwardMessage : BaseRequest
+    public class ForwardMessage : BaseRequest, IProtectContent
     {
         /// <summary>
         /// Required
@@ -26,6 +27,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// Message identifier in the chat specified in from_chat_id
         /// </summary>
         public int MessageId { get; set; }
+
+        /// <summary>
+        /// Protects the contents of the sent message from forwarding and saving
+        /// </summary>
+        public bool? ProtectContent { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

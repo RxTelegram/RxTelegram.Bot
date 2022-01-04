@@ -11,7 +11,7 @@
         <RepositoryUrl>https://github.com/RxTelegram/RxTelegram.Bot</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>Telegram;Bot;Api;Rx;Reactive;Observable</PackageTags>
-        <PackageVersion>5.5.0</PackageVersion>
+        <PackageVersion>5.6.0</PackageVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>

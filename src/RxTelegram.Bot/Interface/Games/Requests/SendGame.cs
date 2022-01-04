@@ -1,5 +1,6 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Base.Interfaces;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Games.Requests
@@ -7,7 +8,7 @@ namespace RxTelegram.Bot.Interface.Games.Requests
     /// <summary>
     /// Use this method to send a game. On success, the sent Message is returned.
     /// </summary>
-    public class SendGame : BaseRequest
+    public class SendGame : BaseRequest, IProtectContent
     {
         /// <summary>
         /// Required
@@ -35,6 +36,11 @@ namespace RxTelegram.Bot.Interface.Games.Requests
         /// Pass True, if the message should be sent even if the specified replied-to message is not found
         /// </summary>
         public bool? AllowSendingWithoutReply { get; set; }
+
+        /// <summary>
+        /// Protects the contents of the sent message from forwarding and saving
+        /// </summary>
+        public bool? ProtectContent { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

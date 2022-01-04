@@ -5,7 +5,7 @@ using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
 {
-    public class SendMessage : BaseTextRequest
+    public class SendMessage : BaseTextRequest, IProtectContent
     {
         /// <summary>
         /// Required
@@ -48,6 +48,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
         /// Pass True, if the message should be sent even if the specified replied-to message is not found
         /// </summary>
         public bool? AllowSendingWithoutReply { get; set; }
+
+        /// <summary>
+        /// Protects the contents of the sent message from forwarding and saving
+        /// </summary>
+        public bool? ProtectContent { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }
