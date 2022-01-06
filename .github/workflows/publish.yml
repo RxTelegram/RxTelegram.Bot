@@ -1,3 +1,4 @@
+name: Publish to nuget.org
 on:
     push:
         tags:
