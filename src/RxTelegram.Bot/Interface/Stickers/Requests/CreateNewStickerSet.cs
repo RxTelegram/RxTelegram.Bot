@@ -46,6 +46,13 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         public InputFile TgsSticker { get; set; }
 
         /// <summary>
+        ///     Optional
+        ///     WEBM video with the sticker, uploaded using multipart/form-data.
+        ///     See https://core.telegram.org/stickers#video-sticker-requirements for technical requirements
+        /// </summary>
+        public InputFile WebmSticker { get; set; }
+
+        /// <summary>
         ///     Required
         ///     One or more emoji corresponding to the sticker
         /// </summary>
