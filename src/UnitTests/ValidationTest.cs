@@ -41,7 +41,7 @@ namespace RxTelegram.Bot.UnitTests
             Assert.That(obj.Errors.Count, Is.EqualTo(6));
             var errors = obj.Errors.Select(x => x.GetMessage)
                             .ToList();
-            CollectionAssert.Contains(errors, "(PngSticker, TgsSticker): \"One of these properties need to be set\"");
+            CollectionAssert.Contains(errors, "(PngSticker, TgsSticker, WebmSticker): \"One of these properties need to be set\"");
             CollectionAssert.Contains(errors, "(Name): \"Field is not set, but required\"");
             CollectionAssert.Contains(errors, "(UserId): \"ID lower than 1 is not allowed.\"");
             CollectionAssert.Contains(errors, "(Title): \"Field is not set, but required\"");
