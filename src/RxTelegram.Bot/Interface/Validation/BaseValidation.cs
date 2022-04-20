@@ -7,7 +7,7 @@ namespace RxTelegram.Bot.Interface.Validation
     {
         private IValidationResult _validationResult;
 
-        private IValidationResult ValidationResult => _validationResult ?? (_validationResult = Validate());
+        private IValidationResult ValidationResult => _validationResult ??= Validate();
 
         protected abstract IValidationResult Validate();
 

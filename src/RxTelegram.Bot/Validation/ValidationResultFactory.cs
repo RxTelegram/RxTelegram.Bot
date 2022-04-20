@@ -48,7 +48,8 @@ namespace RxTelegram.Bot.Validation
                                                                 .ValidateRequired(x => x.Longitude)
                                                                 .IsTrue(x => x.ChatId == null && x.MessageId == null && x.InlineMessageId == null,
                                                                         ValidationErrors.InlineMessageIdChatIdMessageIdRequiredOr)
-                                                                .IsFalse(x => x.Heading != null && x.Heading < 1 && x.Heading > 360, ValidationErrors.HeadingOutOfRange)
+                                                                .IsFalse(x => x.Heading != null && x.Heading < 1 && x.Heading > 360,
+                                                                         ValidationErrors.HeadingOutOfRange)
                                                                 .IsFalse(x => x.ProximityAlertRadius != null && x.ProximityAlertRadius < 1 && x.ProximityAlertRadius > 100000,
                                                                          ValidationErrors.ProximityAlertRadiusOutOfRange)
                                                                 .IsFalse(x => x.HorizontalAccuracy != null && x.ProximityAlertRadius < 0 && x.ProximityAlertRadius > 1500,
@@ -71,8 +72,8 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<GetChatAdministrators>(value).ValidateRequired(x => x.ChatId);
 
         public static ValidationResult<SendMessage> CreateValidation(this SendMessage value) => new ValidationResult<SendMessage>(value)
-                                                                                                .ValidateRequired(x => x.ChatId)
-                                                                                                .ValidateRequired(x => x.Text);
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.Text);
 
         public static ValidationResult<ForwardMessage> CreateValidation(this ForwardMessage value) =>
             new ValidationResult<ForwardMessage>(value).ValidateRequired(x => x.ChatId)
@@ -88,8 +89,8 @@ namespace RxTelegram.Bot.Validation
                                                                                             .ValidateRequired(x => x.Audio);
 
         public static ValidationResult<SendDocument> CreateValidation(this SendDocument value) => new ValidationResult<SendDocument>(value)
-                                                                                                  .ValidateRequired(x => x.ChatId)
-                                                                                                  .ValidateRequired(x => x.Document);
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.Document);
 
         public static ValidationResult<SendVideo> CreateValidation(this SendVideo value) => new ValidationResult<SendVideo>(value)
                                                                                             .ValidateRequired(x => x.ChatId)
@@ -113,17 +114,12 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<SendMediaGroup> CreateValidation(this SendMediaGroup value) =>
             new ValidationResult<SendMediaGroup>(value).ValidateRequired(x => x.ChatId)
                                                        .ValidateRequired(x => x.Media)
-                                                       .IsFalse(x => x.Media != null
-                                                                     && x.Media.All(input =>
-                                                                                        input.GetType() == typeof(InputMediaPhoto) ||
-                                                                                        input.GetType() == typeof(InputMediaDocument) ||
-                                                                                        input.GetType() == typeof(InputMediaAudio) ||
-                                                                                        input.GetType() == typeof(InputMediaVideo)),
+                                                       .IsFalse(x => x.Media != null && x.Media.All(input => input.GetType() == typeof(InputMediaPhoto) || input.GetType() == typeof(InputMediaDocument) || input.GetType() == typeof(InputMediaAudio) || input.GetType() == typeof(InputMediaVideo)),
                                                                 ValidationErrors.OnlySomeInputMediaTypesAllowed);
 
         public static ValidationResult<BanChatMember> CreateValidation(this BanChatMember value) =>
             new ValidationResult<BanChatMember>(value).ValidateRequired(x => x.ChatId)
-                                                       .ValidateRequired(x => x.UserId);
+                                                      .ValidateRequired(x => x.UserId);
 
         public static ValidationResult<DeleteMessage> CreateValidation(this DeleteMessage value) =>
             new ValidationResult<DeleteMessage>(value).ValidateRequired(x => x.ChatId)
@@ -166,20 +162,20 @@ namespace RxTelegram.Bot.Validation
                                                            .ValidateRequired(x => x.Permissions);
 
         public static ValidationResult<SetChatTitle> CreateValidation(this SetChatTitle value) => new ValidationResult<SetChatTitle>(value)
-                                                                                                  .ValidateRequired(x => x.ChatId)
-                                                                                                  .ValidateRequired(x => x.Title);
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.Title);
 
         public static ValidationResult<SetChatStickerSet> CreateValidation(this SetChatStickerSet value) =>
             new ValidationResult<SetChatStickerSet>(value).ValidateRequired(x => x.ChatId)
                                                           .ValidateRequired(x => x.StickerSetName);
 
         public static ValidationResult<SendSticker> CreateValidation(this SendSticker value) => new ValidationResult<SendSticker>(value)
-                                                                                                .ValidateRequired(x => x.ChatId)
-                                                                                                .ValidateRequired(x => x.Sticker);
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.Sticker);
 
         public static ValidationResult<SetChatPhoto> CreateValidation(this SetChatPhoto value) => new ValidationResult<SetChatPhoto>(value)
-                                                                                                  .ValidateRequired(x => x.ChatId)
-                                                                                                  .ValidateRequired(x => x.Photo);
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.Photo);
 
         public static ValidationResult<ExportChatInviteLink> CreateValidation(this ExportChatInviteLink value) =>
             new ValidationResult<ExportChatInviteLink>(value).ValidateRequired(x => x.ChatId);
@@ -194,9 +190,9 @@ namespace RxTelegram.Bot.Validation
                                                            .ValidateRequired(x => x.ChatId);
 
         public static ValidationResult<SendContact> CreateValidation(this SendContact value) => new ValidationResult<SendContact>(value)
-                                                                                                .ValidateRequired(x => x.FirstName)
-                                                                                                .ValidateRequired(x => x.PhoneNumber)
-                                                                                                .ValidateRequired(x => x.ChatId);
+            .ValidateRequired(x => x.FirstName)
+            .ValidateRequired(x => x.PhoneNumber)
+            .ValidateRequired(x => x.ChatId);
 
         public static ValidationResult<UploadStickerFile> CreateValidation(this UploadStickerFile value) =>
             new ValidationResult<UploadStickerFile>(value).ValidateRequired(x => x.UserId)
@@ -229,16 +225,16 @@ namespace RxTelegram.Bot.Validation
                                                                                           .ValidateRequired(x => x.Question)
                                                                                           .ValidateRequired(x => x.Options)
                                                                                           .IsFalse(x => x.Question != null && x.Question.Length > 0 && x.Question.Length < 256,
-                                                                                                   ValidationErrors.QuestionTooLong)
+                                                                                              ValidationErrors.QuestionTooLong)
                                                                                           .IsFalse(x => x.Options != null && x.Options.Count() > 1 && x.Options.Count() <= 10,
-                                                                                                   ValidationErrors.InvalidOptionCount)
+                                                                                              ValidationErrors.InvalidOptionCount)
                                                                                           .IsFalse(x => x.Options != null && x.Options.All(y => y.Length > 0 && y.Length <= 100),
-                                                                                                   ValidationErrors.OptionStringTooLong)
+                                                                                              ValidationErrors.OptionStringTooLong)
                                                                                           .IsTrue(x => x.Type == PollType.Quiz && x.CorrectOptionId == null,
-                                                                                                  ValidationErrors.CorrectOptionRequired)
+                                                                                              ValidationErrors.CorrectOptionRequired)
                                                                                           .IsTrue(x => x.OpenPeriod.HasValue && x.CloseDate.HasValue,
-                                                                                                   ValidationErrors
-                                                                                                       .OnlyOnePropertyCanBeSet);
+                                                                                              ValidationErrors
+                                                                                                  .OnlyOnePropertyCanBeSet);
 
         public static ValidationResult<StopPoll> CreateValidation(this StopPoll value) =>
             new ValidationResult<StopPoll>(value).ValidateRequired(x => x.MessageId);
@@ -256,8 +252,8 @@ namespace RxTelegram.Bot.Validation
                                                                                           .ValidateRequired(x => x.ChatId);
 
         public static ValidationResult<SetGameScore> CreateValidation(this SetGameScore value) => new ValidationResult<SetGameScore>(value)
-                                                                                                  .ValidateRequired(x => x.UserId)
-                                                                                                  .ValidateRequired(x => x.Score);
+            .ValidateRequired(x => x.UserId)
+            .ValidateRequired(x => x.Score);
 
         public static ValidationResult<GetGameHighScores> CreateValidation(this GetGameHighScores value) =>
             new ValidationResult<GetGameHighScores>(value).ValidateRequired(x => x.UserId)
@@ -404,11 +400,11 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<InlineQueryResultCachedAudio>(value).ValidateRequired(x => x.Type)
                                                                      .ValidateRequired(x => x.Id)
                                                                      .ValidateRequired(x => x.AudioFileId);
+
         public static ValidationResult<InlineQueryResultCachedVoice> CreateValidation(this InlineQueryResultCachedVoice value) =>
             new ValidationResult<InlineQueryResultCachedVoice>(value).ValidateRequired(x => x.Type)
                                                                      .ValidateRequired(x => x.Id)
                                                                      .ValidateRequired(x => x.VoiceFileId);
-
 
         public static ValidationResult<InputTextMessageContent> CreateValidation(this InputTextMessageContent value) =>
             new ValidationResult<InputTextMessageContent>(value).ValidateRequired(x => x.MessageText);
@@ -432,12 +428,12 @@ namespace RxTelegram.Bot.Validation
                                                       .IsTrue(x => x.Commands != null && x.Commands.Count() > 100,
                                                               ValidationErrors.CommandLimit);
 
-        public static ValidationResult<SendVenue> CreateValidation(this SendVenue value) =>
-            new ValidationResult<SendVenue>(value).ValidateRequired(x => x.ChatId)
-                                                  .ValidateRequired(x => x.Latitude)
-                                                  .ValidateRequired(x => x.Title)
-                                                  .ValidateRequired(x => x.Address)
-                                                  .ValidateRequired(x => x.Longitude);
+        public static ValidationResult<SendVenue> CreateValidation(this SendVenue value) => new ValidationResult<SendVenue>(value)
+                                                                                            .ValidateRequired(x => x.ChatId)
+                                                                                            .ValidateRequired(x => x.Latitude)
+                                                                                            .ValidateRequired(x => x.Title)
+                                                                                            .ValidateRequired(x => x.Address)
+                                                                                            .ValidateRequired(x => x.Longitude);
 
         public static ValidationResult<SetWebhook> CreateValidation(this SetWebhook value)
         {
@@ -445,7 +441,7 @@ namespace RxTelegram.Bot.Validation
             return new ValidationResult<SetWebhook>(value).ValidateRequired(x => x.Url)
                                                           .IsFalse(x => Uri.TryCreate(x.Url, UriKind.Absolute, out uri),
                                                                    ValidationErrors.UrlInvalid)
-                                                          .IsFalse(x => uri == null || new[] {443, 80, 88, 8443}.Contains(new Uri(x.Url).Port),
+                                                          .IsFalse(x => uri == null || new[] { 443, 80, 88, 8443 }.Contains(new Uri(x.Url).Port),
                                                                    ValidationErrors.SupportedPortsWebhook);
         }
 
@@ -453,13 +449,13 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<DeleteChatStickerSet>(value).ValidateRequired(x => x.ChatId);
 
         public static ValidationResult<SendInvoice> CreateValidation(this SendInvoice value) => new ValidationResult<SendInvoice>(value)
-                                                                                                .ValidateRequired(x => x.ChatId)
-                                                                                                .ValidateRequired(x => x.Title)
-                                                                                                .ValidateRequired(x => x.Payload)
-                                                                                                .ValidateRequired(x => x.ProviderToken)
-                                                                                                .ValidateRequired(x => x.Currency)
-                                                                                                .ValidateRequired(x => x.Prices)
-                                                                                                .ValidateRequired(x => x.Description);
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.Title)
+            .ValidateRequired(x => x.Payload)
+            .ValidateRequired(x => x.ProviderToken)
+            .ValidateRequired(x => x.Currency)
+            .ValidateRequired(x => x.Prices)
+            .ValidateRequired(x => x.Description);
 
         public static ValidationResult<AnswerShippingQuery> CreateValidation(this AnswerShippingQuery value) =>
             new ValidationResult<AnswerShippingQuery>(value).ValidateRequired(x => x.ShippingQueryId)
@@ -512,10 +508,20 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<BanChatSenderChat> CreateValidation(this BanChatSenderChat value) =>
             new ValidationResult<BanChatSenderChat>(value).ValidateRequired(x => x.ChatId)
-                                                     .ValidateRequired(x => x.SenderChatId);
+                                                          .ValidateRequired(x => x.SenderChatId);
 
         public static ValidationResult<UnbanChatSenderChat> CreateValidation(this UnbanChatSenderChat value) =>
             new ValidationResult<UnbanChatSenderChat>(value).ValidateRequired(x => x.ChatId)
                                                             .ValidateRequired(x => x.SenderChatId);
+
+        public static ValidationResult<GetChatMenuButton> CreateValidation(this GetChatMenuButton value) => new(value);
+
+        public static ValidationResult<SetChatMenuButton> CreateValidation(this SetChatMenuButton value) => new(value);
+
+        public static ValidationResult<GetMyDefaultAdministratorRights> CreateValidation(this GetMyDefaultAdministratorRights value) =>
+            new(value);
+
+        public static ValidationResult<SetMyDefaultAdministratorRights> CreateValidation(this SetMyDefaultAdministratorRights value) =>
+            new(value);
     }
 }

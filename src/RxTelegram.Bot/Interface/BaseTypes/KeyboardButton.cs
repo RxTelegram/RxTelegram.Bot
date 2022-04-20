@@ -22,5 +22,11 @@
         /// to the bot when the button is pressed. Available in private chats only
         /// </summary>
         public KeyboardButtonPollType RequestPoll { get; set; }
+
+        /// <summary>
+        /// Optional. If specified, the described Web App will be launched when the button is pressed.
+        /// The Web App will be able to send a “web_app_data” service message. Available in private chats only.
+        /// </summary>
+        public WebAppInfo WebApp { get; set; }
     }
 }

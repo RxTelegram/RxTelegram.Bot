@@ -34,9 +34,16 @@ namespace RxTelegram.Bot.Interface.Setup
         public DateTime? LastErrorDate { get; set; }
 
         /// <summary>
-        /// Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
+        /// Error message in human-readable format for the most recent error that happened when trying to
+        /// deliver an update via webhook
         /// </summary>
         public string LastErrorMessage { get; set; }
+
+        /// <summary>
+        /// Unix time of the most recent error that happened when trying to synchronize available updates
+        /// with Telegram datacenters
+        /// </summary>
+        public int? LastSynchronizationErrorDate { get; set; }
 
         /// <summary>
         /// Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery

@@ -20,6 +20,8 @@ namespace RxTelegram.Bot.Utils.Keyboard.Interfaces
 
         public IInlineKeyboardRow AddPay(string text, bool pay);
 
+        public IInlineKeyboardRow AddWebApp(string text, string url);
+
         public IInlineKeyboardBuilder EndRow();
     }
 }

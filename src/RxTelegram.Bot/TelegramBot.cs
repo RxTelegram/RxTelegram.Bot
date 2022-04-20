@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +13,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Games.Requests;
+using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Passport.Requests;
 using RxTelegram.Bot.Interface.Payments.Requests;
 using RxTelegram.Bot.Interface.Setup;
@@ -638,6 +638,17 @@ namespace RxTelegram.Bot
             Post<bool>("answerInlineQuery", answerInlineQuery, cancellationToken);
 
         /// <summary>
+        ///     Use this method to set the result of an interaction with a Web App and send a corresponding message
+        ///     on behalf of the user to the chat from which the query originated.
+        /// </summary>
+        /// <param name="answerWebAppQuery">Answer details for web app query.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>On success, a SentWebAppMessage object is returned.</returns>
+        public Task<SentWebAppMessage>
+            AnswerWebAppQuery(AnswerWebAppQuery answerWebAppQuery, CancellationToken cancellationToken = default) =>
+            Post<SentWebAppMessage>("answerWebAppQuery", answerWebAppQuery, cancellationToken);
+
+        /// <summary>
         ///     Use this method to get the current list of the bot's commands.
         /// </summary>
         /// <param name="getMyCommands">Bot scope and language definition</param>
@@ -928,5 +939,47 @@ namespace RxTelegram.Bot
         /// <returns>Returns True on success.</returns>
         public Task<bool> UnbanChatSenderChat(UnbanChatSenderChat unbanChatSenderChat, CancellationToken cancellationToken = default) =>
             Post<bool>("unbanChatSenderChat", unbanChatSenderChat, cancellationToken);
+
+        /// <summary>
+        /// Use this method to change the bot's menu button in a private chat, or the default menu button.
+        /// </summary>
+        /// <param name="setChatMenuButton">Definition for chat menu button.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> SetChatMenuButton(SetChatMenuButton setChatMenuButton, CancellationToken cancellationToken = default) =>
+            Post<bool>("setChatMenuButton", setChatMenuButton, cancellationToken);
+
+        /// <summary>
+        /// Use this method to get the current value of the bot's menu button in a private chat, or the default menu button.
+        /// </summary>
+        /// <param name="getChatMenuButton">Chat id for the chat.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns MenuButton on success.</returns>
+        public Task<MenuButton> GetChatMenuButton(GetChatMenuButton getChatMenuButton, CancellationToken cancellationToken = default) =>
+            Post<MenuButton>("getChatMenuButton", getChatMenuButton, cancellationToken);
+
+        /// <summary>
+        /// Use this method to change the default administrator rights requested by the bot when it's added as an
+        /// administrator to groups or channels. These rights will be suggested to users, but they are are free to
+        /// modify the list before adding the bot.
+        /// </summary>
+        /// <param name="setMyDefaultAdministratorRights">Permissions that should be set.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> SetMyDefaultAdministratorRights(
+            SetMyDefaultAdministratorRights setMyDefaultAdministratorRights,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("setMyDefaultAdministratorRights", setMyDefaultAdministratorRights, cancellationToken);
+
+        /// <summary>
+        /// Use this method to get the current default administrator rights of the bot.
+        /// </summary>
+        /// <param name="getMyDefaultAdministratorRights">Determine which default rights should be returned.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns ChatAdministratorRights on success.</returns>
+        public Task<ChatAdministratorRights> GetMyDefaultAdministratorRights(
+            GetMyDefaultAdministratorRights getMyDefaultAdministratorRights,
+            CancellationToken cancellationToken = default) =>
+            Post<ChatAdministratorRights>("getMyDefaultAdministratorRights", getMyDefaultAdministratorRights, cancellationToken);
     }
 }

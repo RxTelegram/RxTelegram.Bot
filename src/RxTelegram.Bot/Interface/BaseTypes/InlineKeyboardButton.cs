@@ -25,6 +25,13 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public string CallbackData { get; set; }
 
         /// <summary>
+        /// Optional. Description of the Web App that will be launched when the user presses the button.
+        /// The Web App will be able to send an arbitrary message on behalf of the user using the method answerWebAppQuery.
+        /// Available only in private chats between a user and the bot.
+        /// </summary>
+        public WebAppInfo WebApp { get; set; }
+
+        /// <summary>
         /// Optional. If set, pressing the button will prompt the user to select one of their chats,
         /// open that chat and insert the bot‘s username and the specified inline query in the input field.
         /// Can be empty, in which case just the bot’s username will be inserted.

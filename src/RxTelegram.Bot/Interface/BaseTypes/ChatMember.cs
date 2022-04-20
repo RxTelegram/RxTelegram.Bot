@@ -5,6 +5,13 @@ namespace RxTelegram.Bot.Interface.BaseTypes
 {
     /// <summary>
     /// This object contains information about one member of the chat.
+    /// Contains all fields of the following telegram api types:
+    ///     ChatMemberOwner,
+    ///     ChatMemberAdministrator,
+    ///     ChatMemberMember,
+    ///     ChatMemberRestricted,
+    ///     ChatMemberLeft,
+    ///     ChatMemberBanned
     /// </summary>
     public class ChatMember
     {
@@ -121,6 +128,6 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// <summary>
         /// Optional. Administrators only. True, if the administrator can manage voice chats
         /// </summary>
-        public bool? CanManageVoiceChats { get; set; }
+        public bool? CanManageVideoChats { get; set; }
     }
 }
