@@ -22,9 +22,9 @@ namespace RxTelegram.Bot.Validation
     {
         public static ValidationResult<CreateNewStickerSet> CreateValidation(this CreateNewStickerSet value) =>
             new ValidationResult<CreateNewStickerSet>(value).IsTrue(x => x.UserId < 1, ValidationErrors.IdLowerThanOne)
-                                                            .IsTrue(x => x.PngSticker == null && x.TgsSticker == null,
+                                                            .IsTrue(x => x.PngSticker == null && x.TgsSticker == null && x.WebmSticker == null,
                                                                     ValidationErrors.NonePropertySet)
-                                                            .IsTrue(x => x.PngSticker != null && x.TgsSticker != null,
+                                                            .IsTrue(x => x.PngSticker != null && x.TgsSticker != null || x.PngSticker != null && x.WebmSticker != null || x.TgsSticker != null && x.WebmSticker != null,
                                                                     ValidationErrors.OnlyOnePropertyCanBeSet)
                                                             .ValidateRequired(x => x.UserId)
                                                             .ValidateRequired(x => x.Name)
@@ -135,9 +135,9 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<AddStickerToSet>(value).ValidateRequired(x => x.UserId)
                                                         .ValidateRequired(x => x.Name)
                                                         .ValidateRequired(x => x.Emojis)
-                                                        .IsTrue(x => x.PngSticker == null && x.TgsSticker == null,
+                                                        .IsTrue(x => x.PngSticker == null && x.TgsSticker == null && x.WebmSticker == null,
                                                                 ValidationErrors.NonePropertySet)
-                                                        .IsTrue(x => x.PngSticker != null && x.TgsSticker != null,
+                                                        .IsTrue(x => x.PngSticker != null && x.TgsSticker != null || x.PngSticker != null && x.WebmSticker != null || x.TgsSticker != null && x.WebmSticker != null,
                                                                 ValidationErrors.OnlyOnePropertyCanBeSet);
 
         public static ValidationResult<DeleteStickerFromSet> CreateValidation(this DeleteStickerFromSet value) =>

@@ -24,6 +24,11 @@ namespace RxTelegram.Bot.Interface.Stickers
         public bool IsAnimated { get; set; }
 
         /// <summary>
+        /// True, if the sticker is a video sticker
+        /// </summary>
+        public bool IsVideo { get; set; }
+
+        /// <summary>
         /// Sticker thumbnail in .webp or .jpg format
         /// </summary>
         public PhotoSize Thumb { get; set; }
