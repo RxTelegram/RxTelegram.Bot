@@ -283,24 +283,29 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public ProximityAlertTriggered ProximityAlertTriggered { get; set; }
 
         /// <summary>
-        /// Optional. Service message: voice chat scheduled
+        /// Optional. Service message: video chat scheduled
         /// </summary>
-        public VoiceChatScheduled VoiceChatScheduled { get; set; }
+        public VideoChatScheduled VideoChatScheduled { get; set; }
 
         /// <summary>
-        /// Optional. Service message: voice chat started
+        /// Optional. Service message: video chat started
         /// </summary>
-        public VoiceChatStarted VoiceChatStarted { get; set; }
+        public VideoChatStarted VideoChatStarted { get; set; }
 
         /// <summary>
-        /// Optional. Service message: voice chat ended
+        /// Optional. Service message: video chat ended
         /// </summary>
-        public VoiceChatEnded VoiceChatEnded { get; set; }
+        public VideoChatEnded VideoChatEnded { get; set; }
 
         /// <summary>
-        /// Optional. Service message: new participants invited to a voice chat
+        /// Optional. Service message: new participants invited to a video chat
         /// </summary>
-        public VoiceChatParticipantsInvited VoiceChatParticipantsInvited { get; set; }
+        public VideoChatParticipantsInvited VideoChatParticipantsInvited { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: data sent by a Web App
+        /// </summary>
+        public WebAppData WebAppData { get; set; }
 
         /// <summary>
         /// Optional. Inline keyboard attached to the message

@@ -81,7 +81,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// Optional
         /// Pass True, if the administrator can manage voice chats, supergroups only
         /// </summary>
-        public bool? CanManageVoiceChats { get; set; }
+        public bool? CanManageVideoChats { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

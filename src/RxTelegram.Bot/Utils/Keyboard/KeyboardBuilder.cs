@@ -172,6 +172,19 @@ namespace RxTelegram.Bot.Utils.Keyboard
             return this;
         }
 
+        public IInlineKeyboardRow AddWebApp(string text, string url)
+        {
+            _inlineRow.Add(new InlineKeyboardButton
+                           {
+                               Text = text,
+                               WebApp = new WebAppInfo
+                                        {
+                                            Url = url
+                                        }
+                           });
+            return this;
+        }
+
         #endregion
 
         #endregion
