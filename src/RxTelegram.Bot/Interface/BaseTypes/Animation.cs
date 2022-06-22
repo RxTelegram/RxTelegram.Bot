@@ -5,18 +5,8 @@ namespace RxTelegram.Bot.Interface.BaseTypes
     /// <summary>
     /// This object represents an animation file to be displayed in the message containing a <see cref="Game"/>.
     /// </summary>
-    public class Animation
+    public class Animation : FileBase
     {
-        /// <summary>
-        /// Identifier for this file, which can be used to download or reuse the file
-        /// </summary>
-        public string FileId { get; set; }
-
-        /// <summary>
-        /// Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
-        /// </summary>
-        public string FileUniqueId { get; set; }
-
         /// <summary>
         /// Video width as defined by sender
         /// </summary>
@@ -46,10 +36,5 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// MIME type of the file as defined by sender.
         /// </summary>
         public string MimeType { get; set; }
-
-        /// <summary>
-        /// File size.
-        /// </summary>
-        public int FileSize { get; set; }
     }
 }

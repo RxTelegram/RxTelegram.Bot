@@ -11,7 +11,8 @@
         <RepositoryUrl>https://github.com/RxTelegram/RxTelegram.Bot</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>Telegram;Bot;Api;Rx;Reactive;Observable</PackageTags>
-        <PackageVersion>6.0.0</PackageVersion>
+        <PackageVersion>6.1.0</PackageVersion>
+        <PackageIconUrl>icon.png</PackageIconUrl>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
@@ -19,6 +20,7 @@
 
     <ItemGroup>
 		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)" />
+        <None Include="..\..\icon.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 
     <ItemGroup>

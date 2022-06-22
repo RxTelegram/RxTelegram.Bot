@@ -36,6 +36,16 @@
         public string LanguageCode { get; set; }
 
         /// <summary>
+        /// Optional. True, if this user is a Telegram Premium user
+        /// </summary>
+        public bool? IsPremium { get; set; }
+
+        /// <summary>
+        /// Optional. True, if this user added the bot to the attachment menu
+        /// </summary>
+        public bool? AddedToAttachmentMenu { get; set; }
+
+        /// <summary>
         /// Optional. True, if the bot can be invited to groups. Returned only in getMe
         /// </summary>
         public bool? CanJoinGroups { get; set; }

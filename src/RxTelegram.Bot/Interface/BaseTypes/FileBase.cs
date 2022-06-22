@@ -21,6 +21,6 @@
         /// <summary>
         ///     Optional. File size, if known
         /// </summary>
-        public int? FileSize { get; set; }
+        public long? FileSize { get; set; }
     }
 }

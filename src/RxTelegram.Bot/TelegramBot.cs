@@ -981,5 +981,14 @@ namespace RxTelegram.Bot
             GetMyDefaultAdministratorRights getMyDefaultAdministratorRights,
             CancellationToken cancellationToken = default) =>
             Post<ChatAdministratorRights>("getMyDefaultAdministratorRights", getMyDefaultAdministratorRights, cancellationToken);
+
+        /// <summary>
+        /// Use this method to create a link for an invoice.
+        /// </summary>
+        /// <param name="createInvoiceLink">Metadata for the invoice</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns the created invoice link as String on success.</returns>
+        public Task<string> CreateInvoiceLink(CreateInvoiceLink createInvoiceLink, CancellationToken cancellationToken = default) =>
+            Post<string>("createInvoiceLink", createInvoiceLink, cancellationToken);
     }
 }

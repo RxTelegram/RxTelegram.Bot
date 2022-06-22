@@ -44,6 +44,11 @@ namespace RxTelegram.Bot.Interface.Stickers
         public string SetName { get; set; }
 
         /// <summary>
+        /// Optional. Premium animation for the sticker, if the sticker is premium
+        /// </summary>
+        public File PremiumAnimation { get; set; }
+
+        /// <summary>
         /// Optional. For mask stickers, the position where the mask should be placed
         /// </summary>
         public MaskPosition MaskPosition { get; set; }
