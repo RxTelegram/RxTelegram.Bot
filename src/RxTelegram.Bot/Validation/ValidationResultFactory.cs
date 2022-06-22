@@ -526,9 +526,13 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<CreateInvoiceLink> CreateValidation(this CreateInvoiceLink value) =>
             new ValidationResult<CreateInvoiceLink>(value).ValidateRequired(x => x.Title)
-                                                          .IsTrue(x => x.Title.Length >= 1 && x.Title.Length <= 32)
+                                                          .IsTrue(x => !string.IsNullOrEmpty(x.Title) &&
+                                                                       x.Title.Length >= 1 &&
+                                                                       x.Title.Length <= 32)
                                                           .ValidateRequired(x => x.Description)
-                                                          .IsTrue(x => x.Description.Length >= 1 && x.Description.Length <= 255)
+                                                          .IsTrue(x => !string.IsNullOrEmpty(x.Description) &&
+                                                                       x.Description.Length >= 1 &&
+                                                                       x.Description.Length <= 255)
                                                           .ValidateRequired(x => x.Payload)
                                                           .ValidateRequired(x => x.ProviderToken)
                                                           .ValidateRequired(x => x.Currency)
