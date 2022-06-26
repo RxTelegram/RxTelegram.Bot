@@ -63,6 +63,18 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public bool? HasPrivateForwards { get; set; }
 
         /// <summary>
+        /// Optional. True, if users need to join the supergroup before they can send messages.
+        /// Returned only in getChat.
+        /// </summary>
+        public bool? JoinToSendMessages { get; set; }
+
+        /// <summary>
+        /// Optional. True, if all users directly joining the supergroup need to be approved by supergroup administrators.
+        /// Returned only in getChat.
+        /// </summary>
+        public bool? JoinByRequest { get; set; }
+
+        /// <summary>
         /// Optional. Description, for supergroups and channel chats. Returned only in getChat.
         /// </summary>
         public string Description { get; set; }
