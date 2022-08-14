@@ -1,4 +1,5 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.Stickers.Enums;
 
 namespace RxTelegram.Bot.Interface.Stickers
 {
@@ -8,6 +9,13 @@ namespace RxTelegram.Bot.Interface.Stickers
     /// </summary>
     public class Sticker : FileBase
     {
+        /// <summary>
+        /// Type of the sticker, currently one of “regular”, “mask”, “custom_emoji”.
+        /// The type of the sticker is independent from its format,
+        /// which is determined by the fields is_animated and is_video.
+        /// </summary>
+        public StickerType Type { get; set; }
+
         /// <summary>
         /// Sticker width
         /// </summary>
@@ -52,5 +60,10 @@ namespace RxTelegram.Bot.Interface.Stickers
         /// Optional. For mask stickers, the position where the mask should be placed
         /// </summary>
         public MaskPosition MaskPosition { get; set; }
+
+        /// <summary>
+        /// Optional. For custom emoji stickers, unique identifier of the custom emoji
+        /// </summary>
+        public string CustomEmojiId { get; set; }
     }
 }

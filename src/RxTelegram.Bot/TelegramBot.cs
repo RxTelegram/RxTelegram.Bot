@@ -990,5 +990,16 @@ namespace RxTelegram.Bot
         /// <returns>Returns the created invoice link as String on success.</returns>
         public Task<string> CreateInvoiceLink(CreateInvoiceLink createInvoiceLink, CancellationToken cancellationToken = default) =>
             Post<string>("createInvoiceLink", createInvoiceLink, cancellationToken);
+
+        /// <summary>
+        /// Use this method to get information about custom emoji stickers by their identifiers.
+        /// </summary>
+        /// <param name="getCustomEmojiStickers">Sticker ids to get</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns an Array of Sticker objects.</returns>
+        public Task<Sticker[]> GetCustomEmojiStickers(
+            GetCustomEmojiStickers getCustomEmojiStickers,
+            CancellationToken cancellationToken = default) =>
+            Post<Sticker[]>("getCustomEmojiStickers", getCustomEmojiStickers, cancellationToken);
     }
 }

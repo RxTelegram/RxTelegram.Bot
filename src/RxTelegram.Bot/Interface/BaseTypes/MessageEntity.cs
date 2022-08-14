@@ -36,5 +36,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. For “pre” only, the programming language of the entity text
         /// </summary>
         public string Language { get; set; }
+
+        /// <summary>
+        /// Optional. For “custom_emoji” only, unique identifier of the custom emoji.
+        /// Use getCustomEmojiStickers to get full information about the sticker
+        /// </summary>
+        public string CustomEmojiId { get; set; }
     }
 }

@@ -537,5 +537,7 @@ namespace RxTelegram.Bot.Validation
                                                           .ValidateRequired(x => x.ProviderToken)
                                                           .ValidateRequired(x => x.Currency)
                                                           .ValidateRequired(x => x.Prices);
+
+        public static ValidationResult<GetCustomEmojiStickers> CreateValidation(this GetCustomEmojiStickers value) => new(value);
     }
 }

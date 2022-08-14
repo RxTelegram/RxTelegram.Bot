@@ -63,6 +63,12 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public bool? HasPrivateForwards { get; set; }
 
         /// <summary>
+        /// Optional. True, if the privacy settings of the other party restrict sending voice and
+        /// video note messages in the private chat. Returned only in getChat.
+        /// </summary>
+        public bool? HasRestrictedVoiceAndVideoMessages { get; set; }
+
+        /// <summary>
         /// Optional. True, if users need to join the supergroup before they can send messages.
         /// Returned only in getChat.
         /// </summary>

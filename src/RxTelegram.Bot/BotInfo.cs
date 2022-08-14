@@ -62,7 +62,7 @@ namespace RxTelegram.Bot
                 throw new ArgumentNullException(nameof(token));
             }
 
-            const string pattern = "[0-19]{6,19}:[a-zA-Z0-9_-]{34,35}";
+            const string pattern = "[0-9]{6,19}:[a-zA-Z0-9_-]{34,35}";
             var m = Regex.Match(token, pattern, RegexOptions.IgnoreCase);
             if (!m.Success)
             {

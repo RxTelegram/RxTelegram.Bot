@@ -1,4 +1,6 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+﻿using System;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.Stickers.Enums;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
@@ -53,6 +55,13 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         public InputFile WebmSticker { get; set; }
 
         /// <summary>
+        /// Type of stickers in the set, pass “regular” or “mask”.
+        /// Custom emoji sticker sets can't be created via the Bot API at the moment.
+        /// By default, a regular sticker set is created.
+        /// </summary>
+        public StickerType StickerType { get; set; }
+
+        /// <summary>
         ///     Required
         ///     One or more emoji corresponding to the sticker
         /// </summary>
@@ -62,6 +71,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         ///     Optional
         ///     Pass True, if a set of mask stickers should be created
         /// </summary>
+        [Obsolete]
         public bool ContainsMasks { get; set; }
 
         /// <summary>

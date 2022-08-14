@@ -2,6 +2,8 @@
 using NUnit.Framework;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.Passport.Enum;
+using RxTelegram.Bot.Interface.Stickers;
+using RxTelegram.Bot.Interface.Stickers.Enums;
 
 namespace RxTelegram.Bot.UnitTests.JsonConverters
 {
@@ -32,6 +34,18 @@ namespace RxTelegram.Bot.UnitTests.JsonConverters
             var json = JsonConvert.SerializeObject(objectToSerialize);
             Assert.NotNull(json);
             Assert.True(json.Contains("markdown"));
+        }
+
+        [Test]
+        public void SerializeStickerType()
+        {
+            var sicker = new Sticker
+                         {
+                             Type = StickerType.CustomEmoji
+                         };
+            var json = JsonConvert.SerializeObject(sicker);
+            Assert.NotNull(json);
+            Assert.True(json.Contains("custom_emoji"));
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.Stickers.Enums;
 
 namespace RxTelegram.Bot.Interface.Stickers
 {
@@ -20,6 +22,11 @@ namespace RxTelegram.Bot.Interface.Stickers
         public string Title { get; set; }
 
         /// <summary>
+        /// Type of stickers in the set, currently one of “regular”, “mask”, “custom_emoji”
+        /// </summary>
+        public StickerType StickerType { get; set; }
+
+        /// <summary>
         /// True, if the sticker set contains animated stickers
         /// </summary>
         public bool IsAnimated { get; set; }
@@ -32,6 +39,7 @@ namespace RxTelegram.Bot.Interface.Stickers
         /// <summary>
         /// True, if the sticker set contains masks
         /// </summary>
+        [Obsolete]
         public bool ContainsMasks { get; set; }
 
         /// <summary>

@@ -86,5 +86,10 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Enums
         /// Strikethrough text
         /// </summary>
         Strikethrough,
+
+        /// <summary>
+        /// Inline custom emoji stickers
+        /// </summary>
+        CustomEmoji,
     }
 }
