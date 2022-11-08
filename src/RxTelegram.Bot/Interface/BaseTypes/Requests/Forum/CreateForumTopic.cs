@@ -23,7 +23,7 @@ public class CreateForumTopic : BaseRequest
 
     /// <summary>
     /// Unique identifier of the custom emoji shown as the topic icon.
-    /// Use <see cref="GetForumTopicIconStickers"/> to get all allowed custom emoji identifiers.
+    /// Use getForumTopicIconStickers to get all allowed custom emoji identifiers.
     /// </summary>
     public string IconCustomEmojiId { get; set; }
 
