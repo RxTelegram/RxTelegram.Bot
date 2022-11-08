@@ -2,6 +2,7 @@
 using System.Reflection;
 using NUnit.Framework;
 using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 
 namespace RxTelegram.Bot.UnitTests
 {

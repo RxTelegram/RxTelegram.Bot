@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Authentication.ExtendedProtection;
 using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Passport;
 using RxTelegram.Bot.Interface.Payments;
@@ -16,6 +17,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Unique message identifier
         /// </summary>
         public int MessageId { get; set; }
+
+        /// <summary>
+        /// Optional. Unique identifier of a message thread to which the message belongs; for supergroups only
+        /// </summary>
+        public int? MessageThreadId { get; set; }
 
         /// <summary>
         /// Sender
@@ -68,6 +74,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. For forwarded messages, date the original message was sent in Unix time
         /// </summary>
         public DateTime? ForwardDate { get; set; }
+
+        /// <summary>
+        /// Optional. True, if the message is sent to a forum topic
+        /// </summary>
+        public bool? IsTopicMessage { get; set; }
 
         /// <summary>
         /// Optional. True, if the message is a channel post that was automatically forwarded to the connected discussion group
@@ -281,6 +292,21 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
         /// </summary>
         public ProximityAlertTriggered ProximityAlertTriggered { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: forum topic created
+        /// </summary>
+        public ForumTopicCreated ForumTopicCreated { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: forum topic closed
+        /// </summary>
+        public ForumTopicClosed ForumTopicClosed { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: forum topic reopened
+        /// </summary>
+        public ForumTopicReopened ForumTopicReopened { get; set; }
 
         /// <summary>
         /// Optional. Service message: video chat scheduled

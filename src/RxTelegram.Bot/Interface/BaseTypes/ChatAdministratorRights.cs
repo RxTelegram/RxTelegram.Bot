@@ -63,5 +63,10 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. True, if the user is allowed to pin messages; groups and supergroups only
         /// </summary>
         public bool? CanPinMessages { get; set; }
+
+        /// <summary>
+        /// Optional. True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups only
+        /// </summary>
+        public bool? CanManageTopics { get; set; }
     }
 }

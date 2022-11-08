@@ -12,6 +12,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     public class SendPoll : BaseRequest, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         /// Required
         /// Poll question, 1-255 characters
         /// </summary>

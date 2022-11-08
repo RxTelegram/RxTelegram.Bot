@@ -12,6 +12,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     public class SendVideo : BaseSend, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         ///     Required
         ///     Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a
         ///     String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. More info on Sending Files »

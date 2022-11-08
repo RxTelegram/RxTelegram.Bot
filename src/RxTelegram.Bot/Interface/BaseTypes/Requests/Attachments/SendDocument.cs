@@ -8,6 +8,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     public class SendDocument : BaseSend, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         /// File to send
         /// </summary>
         public InputFile Document { get; set; }

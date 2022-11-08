@@ -7,6 +7,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     public class SendLocation : BaseRequest, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         /// Required
         /// Latitude of the location
         /// </summary>

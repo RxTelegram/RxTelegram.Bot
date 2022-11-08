@@ -9,6 +9,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     public class SendMediaGroup : BaseRequest, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         /// A JSON-serialized array describing photos and videos to be sent, must include 2–10 items
         /// </summary>
         public IEnumerable<BaseInputMedia> Media { get; set; }

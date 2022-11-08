@@ -8,6 +8,7 @@ using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Forum;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
@@ -1001,5 +1002,79 @@ namespace RxTelegram.Bot
             GetCustomEmojiStickers getCustomEmojiStickers,
             CancellationToken cancellationToken = default) =>
             Post<Sticker[]>("getCustomEmojiStickers", getCustomEmojiStickers, cancellationToken);
+
+        /// <summary>
+        /// Use this method to create a topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+        /// </summary>
+        /// <param name="createForumTopic">Information of the topic to create</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns information about the created topic as a <see cref="ForumTopic"/> object.</returns>
+        public Task<ForumTopic> CreateForumTopic(CreateForumTopic createForumTopic, CancellationToken cancellationToken = default) =>
+            Post<ForumTopic>("createForumTopic", createForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to create a topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+        /// </summary>
+        /// <param name="editForumTopic">Information of the topic to edit</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns information about the created topic as a <see cref="ForumTopic"/> object.</returns>
+        public Task<ForumTopic> EditForumTopic(EditForumTopic editForumTopic, CancellationToken cancellationToken = default) =>
+            Post<ForumTopic>("editForumTopic", editForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to close an open topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights,
+        /// unless it is the creator of the topic.
+        /// </summary>
+        /// <param name="closeForumTopic">Forum topic to close</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> CloseForumTopic(CloseForumTopic closeForumTopic, CancellationToken cancellationToken = default) =>
+            Post<bool>("closeForumTopic", closeForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to reopen a closed topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights,
+        /// unless it is the creator of the topic.
+        /// </summary>
+        /// <param name="reopenForumTopic">Forum topic to reopen</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> ReopenForumTopic(ReopenForumTopic reopenForumTopic, CancellationToken cancellationToken = default) =>
+            Post<bool>("reopenForumTopic", reopenForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to delete a forum topic along with all its messages in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_delete_messages administrator rights.
+        /// </summary>
+        /// <param name="deleteForumTopic">Forum topic to delete</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> DeleteForumTopic(DeleteForumTopic deleteForumTopic, CancellationToken cancellationToken = default) =>
+            Post<bool>("deleteForumTopic", deleteForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to clear the list of pinned messages in a forum topic.
+        /// The bot must be an administrator in the chat for this to work and must have the can_pin_messages administrator right in
+        /// the supergroup.
+        /// </summary>
+        /// <param name="unpinAllForumTopicMessages">MessageThreadId to unpin all messages</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> UnpinAllForumTopicMessages(
+            UnpinAllForumTopicMessages unpinAllForumTopicMessages,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("unpinAllForumTopicMessages", unpinAllForumTopicMessages, cancellationToken);
+
+        /// <summary>
+        /// Use this method to get custom emoji stickers, which can be used as a forum topic icon by any user. Requires no parameters.
+        /// </summary>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns an Array of Sticker objects.</returns>
+        public Task<Sticker[]> GetForumTopicIconStickers(
+            CancellationToken cancellationToken = default) =>
+            Get<Sticker[]>("getForumTopicIconStickers", cancellationToken: cancellationToken);
     }
 }

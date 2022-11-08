@@ -12,6 +12,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     public class SendAnimation : BaseSend, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         ///     Required
         ///     Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an
         ///     HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data.

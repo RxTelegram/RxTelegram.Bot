@@ -5,6 +5,7 @@ using RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Forum;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
@@ -539,5 +540,34 @@ namespace RxTelegram.Bot.Validation
                                                           .ValidateRequired(x => x.Prices);
 
         public static ValidationResult<GetCustomEmojiStickers> CreateValidation(this GetCustomEmojiStickers value) => new(value);
+
+        public static ValidationResult<CreateForumTopic> CreateValidation(this CreateForumTopic value) =>
+            new ValidationResult<CreateForumTopic>(value).ValidateRequired(x => x.ChatId)
+                                                         .ValidateRequired(x => x.Name)
+                                                         .IsTrue(x => !string.IsNullOrEmpty(x.Name) &&
+                                                                      x.Name.Length > 0 &&
+                                                                      x.Name.Length <= 128);
+
+        public static ValidationResult<EditForumTopic> CreateValidation(this EditForumTopic value) =>
+            new ValidationResult<EditForumTopic>(value).ValidateRequired(x => x.ChatId)
+                                                       .ValidateRequired(x => x.MessageThreadId)
+                                                       .ValidateRequired(x => x.Name)
+                                                       .ValidateRequired(x => x.IconCustomEmojiId)
+                                                       .IsTrue(x => !string.IsNullOrEmpty(x.Name) &&
+                                                                    x.Name.Length > 0 &&
+                                                                    x.Name.Length <= 128);
+
+        public static ValidationResult<CloseForumTopic> CreateValidation(this CloseForumTopic value) =>
+            new ValidationResult<CloseForumTopic>(value).ValidateRequired(x => x.ChatId).ValidateRequired(x => x.MessageThreadId);
+
+        public static ValidationResult<ReopenForumTopic> CreateValidation(this ReopenForumTopic value) =>
+            new ValidationResult<ReopenForumTopic>(value).ValidateRequired(x => x.ChatId).ValidateRequired(x => x.MessageThreadId);
+
+        public static ValidationResult<DeleteForumTopic> CreateValidation(this DeleteForumTopic value) =>
+            new ValidationResult<DeleteForumTopic>(value).ValidateRequired(x => x.ChatId).ValidateRequired(x => x.MessageThreadId);
+
+        public static ValidationResult<UnpinAllForumTopicMessages> CreateValidation(this UnpinAllForumTopicMessages value) =>
+            new ValidationResult<UnpinAllForumTopicMessages>(value).ValidateRequired(x => x.ChatId)
+                                                                   .ValidateRequired(x => x.MessageThreadId);
     }
 }

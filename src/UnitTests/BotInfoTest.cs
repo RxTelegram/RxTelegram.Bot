@@ -18,10 +18,9 @@ namespace RxTelegram.Bot.UnitTests
         }
 
         [Test]
-        public void InvalidToken() =>
-            Assert.Throws<InvalidTokenException>(() => { new BotInfo("a123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"); });
-
-        [Test]
-        public void InvalidToken2() => Assert.Throws<InvalidTokenException>(() => { new BotInfo("123456:?????"); });
+        [TestCase("a123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11")]
+        [TestCase("123456:?????")]
+        public void InvalidToken(string token) =>
+            Assert.Throws<InvalidTokenException>(() => { new BotInfo(token); });
     }
 }

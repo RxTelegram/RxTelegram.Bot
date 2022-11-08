@@ -11,6 +11,11 @@ namespace RxTelegram.Bot.Interface.Games.Requests
     public class SendGame : BaseRequest, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         /// Required
         /// Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
         /// </summary>

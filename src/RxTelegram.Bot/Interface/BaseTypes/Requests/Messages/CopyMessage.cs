@@ -12,6 +12,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
     public class CopyMessage : BaseSend, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         /// Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)
         /// </summary>
         public ChatId FromChatId { get; set; }

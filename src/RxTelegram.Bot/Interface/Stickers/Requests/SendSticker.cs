@@ -12,6 +12,11 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
     public class SendSticker : BaseValidation, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         /// Required
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         /// </summary>

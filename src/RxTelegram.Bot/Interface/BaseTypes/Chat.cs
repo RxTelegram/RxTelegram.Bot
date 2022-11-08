@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
@@ -41,6 +42,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public string LastName { get; set; }
 
         /// <summary>
+        /// Optional. True, if the supergroup chat is a forum (has topics enabled)
+        /// </summary>
+        public bool? IsForum { get; set; }
+
+        /// <summary>
         /// Optional. True if a group has 'All Members Are Admins' enabled.
         /// </summary>
         [Obsolete("Use Permissions field instead")]
@@ -50,6 +56,18 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Chat photo. Returned only in getChat.
         /// </summary>
         public ChatPhoto Photo { get; set; }
+
+        /// <summary>
+        /// Optional. If non-empty, the list of all active chat usernames; for private chats, supergroups and channels.
+        /// Returned only in <see cref="GetChat"/>.
+        /// </summary>
+        public List<string> ActiveUsernames { get; set; }
+
+        /// <summary>
+        /// Optional. Custom emoji identifier of emoji status of the other party in a private chat.
+        /// Returned only in <see cref="GetChat"/>.
+        /// </summary>
+        public string EmojiStatusCustomEmojiId { get; set; }
 
         /// <summary>
         /// Bio of the other party in a private chat. Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.

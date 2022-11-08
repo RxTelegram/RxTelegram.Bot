@@ -11,6 +11,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
     public class SendVideoNote : BaseSend, IProtectContent
     {
         /// <summary>
+        /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+        /// </summary>
+        public int MessageThreadId { get; set; }
+
+        /// <summary>
         ///     Required
         ///     Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or
         ///     upload a new video using multipart/form-data.

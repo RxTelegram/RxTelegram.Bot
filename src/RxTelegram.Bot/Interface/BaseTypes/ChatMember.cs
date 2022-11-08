@@ -88,6 +88,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public bool? CanPinMessages { get; set; }
 
         /// <summary>
+        /// Optional. True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups only
+        /// </summary>
+        public bool? CanManageTopics { get; set; }
+
+        /// <summary>
         /// Optional. Administrators only. True, if the administrator can add new administrators with a
         /// subset of his own privileges or demote administrators that he has promoted, directly or
         /// indirectly (promoted by administrators that were appointed by the user)

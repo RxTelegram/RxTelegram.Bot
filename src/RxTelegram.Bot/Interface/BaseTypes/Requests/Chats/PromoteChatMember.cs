@@ -83,6 +83,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// </summary>
         public bool? CanManageVideoChats { get; set; }
 
+        /// <summary>
+        /// Pass True if the user is allowed to create, rename, close, and reopen forum topics, supergroups only
+        /// </summary>
+        public bool? CanManageTopics { get; set; }
+
         protected override IValidationResult Validate() => this.CreateValidation();
     }
 }
