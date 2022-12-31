@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
@@ -46,6 +47,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         public ParseMode ParseMode { get; set; }
 
         /// <summary>
+        /// List of special entities that appear in the caption, which can be specified instead of parse_mode
+        /// </summary>
+        public IEnumerable<MessageEntity> CaptionEntities { get; set; }
+
+        /// <summary>
         ///     Optional. Video width
         /// </summary>
         public int Width { get; set; }
@@ -64,5 +70,10 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         ///     Optional. Pass True, if the uploaded video is suitable for streaming
         /// </summary>
         public bool SupportsStreaming { get; set; }
+
+        /// <summary>
+        /// Optional. Pass True if the photo needs to be covered with a spoiler animation
+        /// </summary>
+        public bool? HasSpoiler { get; set; }
     }
 }

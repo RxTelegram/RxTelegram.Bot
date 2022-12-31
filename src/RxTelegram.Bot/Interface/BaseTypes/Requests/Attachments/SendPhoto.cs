@@ -11,7 +11,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
         /// </summary>
         public int MessageThreadId { get; set; }
-        
+
         /// <summary>
         /// Photo to send
         /// </summary>
@@ -26,6 +26,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         /// List of special entities that appear in the caption, which can be specified instead of parse_mode
         /// </summary>
         public IEnumerable<MessageEntity> CaptionEntities { get; set; }
+
+        /// <summary>
+        /// Pass True if the photo needs to be covered with a spoiler animation
+        /// </summary>
+        public bool? HasSpoiler { get; set; }
 
         /// <summary>
         /// Pass True, if the message should be sent even if the specified replied-to message is not found

@@ -131,6 +131,19 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public int? MessageAutoDeleteTime { get; set; }
 
         /// <summary>
+        /// Optional. True, if aggressive anti-spam checks are enabled in the supergroup.
+        /// The field is only available to chat administrators.
+        /// Returned only in getChat.
+        /// </summary>
+        public bool? HasAggressiveAntiSpamEnabled { get; set; }
+
+        /// <summary>
+        /// Optional. True, if non-administrators can only get the list of bots and administrators in the chat.
+        /// Returned only in getChat.
+        /// </summary>
+        public bool? HasHiddenMembers { get; set; }
+
+        /// <summary>
         /// Optional. True, if messages from the chat can't be forwarded to other chats.
         /// Returned only in getChat.
         /// </summary>

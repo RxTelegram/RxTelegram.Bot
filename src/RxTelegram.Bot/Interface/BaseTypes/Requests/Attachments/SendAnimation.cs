@@ -62,6 +62,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         public IEnumerable<MessageEntity> CaptionEntities { get; set; }
 
         /// <summary>
+        /// Pass True if the photo needs to be covered with a spoiler animation
+        /// </summary>
+        public bool? HasSpoiler { get; set; }
+
+        /// <summary>
         /// Protects the contents of the sent message from forwarding and saving
         /// </summary>
         public bool? ProtectContent { get; set; }

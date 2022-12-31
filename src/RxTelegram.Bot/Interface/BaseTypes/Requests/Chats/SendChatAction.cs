@@ -14,6 +14,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats
         /// </summary>
         public ChatActions Action { get; set; }
 
+        /// <summary>
+        /// Unique identifier for the target message thread; supergroups only
+        /// </summary>
+        public long MessageThreadId { get; set; }
+
         protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

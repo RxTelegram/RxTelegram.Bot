@@ -6,6 +6,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Forum;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.GeneralForum;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
@@ -551,8 +552,6 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<EditForumTopic> CreateValidation(this EditForumTopic value) =>
             new ValidationResult<EditForumTopic>(value).ValidateRequired(x => x.ChatId)
                                                        .ValidateRequired(x => x.MessageThreadId)
-                                                       .ValidateRequired(x => x.Name)
-                                                       .ValidateRequired(x => x.IconCustomEmojiId)
                                                        .IsTrue(x => !string.IsNullOrEmpty(x.Name) &&
                                                                     x.Name.Length > 0 &&
                                                                     x.Name.Length <= 128);
@@ -569,5 +568,24 @@ namespace RxTelegram.Bot.Validation
         public static ValidationResult<UnpinAllForumTopicMessages> CreateValidation(this UnpinAllForumTopicMessages value) =>
             new ValidationResult<UnpinAllForumTopicMessages>(value).ValidateRequired(x => x.ChatId)
                                                                    .ValidateRequired(x => x.MessageThreadId);
+
+        public static ValidationResult<EditGeneralForumTopic> CreateValidation(this EditGeneralForumTopic value) =>
+            new ValidationResult<EditGeneralForumTopic>(value).ValidateRequired(x => x.ChatId)
+                                                              .ValidateRequired(x => x.Name)
+                                                              .IsTrue(x => !string.IsNullOrEmpty(x.Name) &&
+                                                                           x.Name.Length > 0 &&
+                                                                           x.Name.Length <= 128);
+
+        public static ValidationResult<CloseGeneralForumTopic> CreateValidation(this CloseGeneralForumTopic value) =>
+            new ValidationResult<CloseGeneralForumTopic>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<ReopenGeneralForumTopic> CreateValidation(this ReopenGeneralForumTopic value) =>
+            new ValidationResult<ReopenGeneralForumTopic>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<HideGeneralForumTopic> CreateValidation(this HideGeneralForumTopic value) =>
+            new ValidationResult<HideGeneralForumTopic>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<UnhideGeneralForumTopic> CreateValidation(this UnhideGeneralForumTopic value) =>
+            new ValidationResult<UnhideGeneralForumTopic>(value).ValidateRequired(x => x.ChatId);
     }
 }

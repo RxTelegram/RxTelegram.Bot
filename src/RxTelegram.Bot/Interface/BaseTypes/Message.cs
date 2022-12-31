@@ -178,9 +178,14 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public VideoNote VideoNote { get; set; }
 
         /// <summary>
-        /// Caption for the photo or video
+        /// Optional. Caption for the animation, audio, document, photo, video or voice
         /// </summary>
         public string Caption { get; set; }
+
+        /// <summary>
+        /// Optional. True, if the message media is covered by a spoiler animation
+        /// </summary>
+        public bool? HasMediaSpoiler { get; set; }
 
         /// <summary>
         /// Optional. Description is a shared contact, information about the contact
@@ -284,6 +289,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public string ConnectedWebsite { get; set; }
 
         /// <summary>
+        /// Optional. Service message: the user allowed the bot added to the attachment menu to write messages
+        /// </summary>
+        public WriteAccessAllowed WriteAccessAllowed { get; set; }
+
+        /// <summary>
         /// Optional. Telegram Passport data
         /// </summary>
         public PassportData PassportData { get; set; }
@@ -299,6 +309,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public ForumTopicCreated ForumTopicCreated { get; set; }
 
         /// <summary>
+        /// Optional. Service message: forum topic edited
+        /// </summary>
+        public ForumTopicEdited ForumTopicEdited { get; set; }
+
+        /// <summary>
         /// Optional. Service message: forum topic closed
         /// </summary>
         public ForumTopicClosed ForumTopicClosed { get; set; }
@@ -307,6 +322,16 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Service message: forum topic reopened
         /// </summary>
         public ForumTopicReopened ForumTopicReopened { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: the 'General' forum topic hidden
+        /// </summary>
+        public GeneralForumTopicHidden GeneralForumTopicHidden { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: the 'General' forum topic unhidden
+        /// </summary>
+        public GeneralForumTopicUnhidden GeneralForumTopicUnhidden { get; set; }
 
         /// <summary>
         /// Optional. Service message: video chat scheduled

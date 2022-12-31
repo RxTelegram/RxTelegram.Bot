@@ -9,6 +9,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Forum;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.GeneralForum;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
@@ -46,7 +47,7 @@ namespace RxTelegram.Bot
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>On success, a File object is returned.</returns>
         public Task<File> GetFile(string fileId, CancellationToken cancellationToken = default) =>
-            Get<File>("getFile", new {fileId}, cancellationToken);
+            Get<File>("getFile", new { fileId }, cancellationToken);
 
         /// <summary>
         ///     Provides a stream for a file to download it.
@@ -835,7 +836,6 @@ namespace RxTelegram.Bot
         /// <returns>Returns True on success.</returns>
         public Task<bool> Close(CancellationToken cancellationToken = default) => Get<bool>("close", default, cancellationToken);
 
-
         /// <summary>
         /// Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an
         /// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or
@@ -1073,8 +1073,66 @@ namespace RxTelegram.Bot
         /// </summary>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Returns an Array of Sticker objects.</returns>
-        public Task<Sticker[]> GetForumTopicIconStickers(
-            CancellationToken cancellationToken = default) =>
+        public Task<Sticker[]> GetForumTopicIconStickers(CancellationToken cancellationToken = default) =>
             Get<Sticker[]>("getForumTopicIconStickers", cancellationToken: cancellationToken);
+
+        /// <summary>
+        /// Use this method to edit the name of the 'General' topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have can_manage_topics administrator rights.
+        /// </summary>
+        /// <param name="editGeneralForumTopic">Data to edit the general forum topic</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool>
+            EditGeneralForumTopic(EditGeneralForumTopic editGeneralForumTopic, CancellationToken cancellationToken = default) =>
+            Post<bool>("editGeneralForumTopic", editGeneralForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to close an open 'General' topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+        /// </summary>
+        /// <param name="closeGeneralForumTopic">General Forum Topic to close</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> CloseGeneralForumTopic(
+            CloseGeneralForumTopic closeGeneralForumTopic,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("closeGeneralForumTopic", closeGeneralForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to reopen a closed 'General' topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+        /// The topic will be automatically unhidden if it was hidden.
+        /// </summary>
+        /// <param name="reopenGeneralForumTopic">General forum topic to reopen</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> ReopenGeneralForumTopic(
+            ReopenGeneralForumTopic reopenGeneralForumTopic,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("reopenGeneralForumTopic", reopenGeneralForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to hide the 'General' topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+        /// The topic will be automatically closed if it was open.
+        /// </summary>
+        /// <param name="hideGeneralForumTopic">General Forum topic to hide</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool>
+            HideGeneralForumTopic(HideGeneralForumTopic hideGeneralForumTopic, CancellationToken cancellationToken = default) =>
+            Post<bool>("hideGeneralForumTopic", hideGeneralForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to unhide the 'General' topic in a forum supergroup chat.
+        /// The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+        /// </summary>
+        /// <param name="unhideGeneralForumTopic">General Forum topic to unhide</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool>
+            UnhideGeneralForumTopic(UnhideGeneralForumTopic unhideGeneralForumTopic, CancellationToken cancellationToken = default) =>
+            Post<bool>("unhideGeneralForumTopic", unhideGeneralForumTopic, cancellationToken);
     }
 }
