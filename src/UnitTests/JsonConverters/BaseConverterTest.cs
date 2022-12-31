@@ -6,7 +6,9 @@ namespace RxTelegram.Bot.UnitTests.JsonConverters
 {
     public class BaseConverterTest
     {
+        protected JsonSerializerSettings JsonSerializerSettings;
+
         [OneTimeSetUp]
-        public void Setup() => JsonConvert.DefaultSettings = () => BaseTelegramBot.JsonSerializerSettings;
+        public void Setup() => JsonSerializerSettings = BaseTelegramBot.JsonSerializerSettings;
     }
 }

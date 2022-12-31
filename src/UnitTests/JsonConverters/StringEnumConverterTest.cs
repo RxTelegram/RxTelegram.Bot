@@ -18,7 +18,7 @@ namespace RxTelegram.Bot.UnitTests.JsonConverters
                                         elementType = ElementType.BankStatement
                                     };
 
-            var json = JsonConvert.SerializeObject(objectToSerialize);
+            var json = JsonConvert.SerializeObject(objectToSerialize, JsonSerializerSettings);
             Assert.NotNull(json);
             Assert.True(json.Contains("bank_statement"));
         }
@@ -31,7 +31,7 @@ namespace RxTelegram.Bot.UnitTests.JsonConverters
                                         parse = ParseMode.Markdown
                                     };
 
-            var json = JsonConvert.SerializeObject(objectToSerialize);
+            var json = JsonConvert.SerializeObject(objectToSerialize, JsonSerializerSettings);
             Assert.NotNull(json);
             Assert.True(json.Contains("markdown"));
         }
@@ -43,7 +43,7 @@ namespace RxTelegram.Bot.UnitTests.JsonConverters
                          {
                              Type = StickerType.CustomEmoji
                          };
-            var json = JsonConvert.SerializeObject(sicker);
+            var json = JsonConvert.SerializeObject(sicker, JsonSerializerSettings);
             Assert.NotNull(json);
             Assert.True(json.Contains("custom_emoji"));
         }

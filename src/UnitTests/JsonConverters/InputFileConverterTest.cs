@@ -13,7 +13,7 @@ namespace RxTelegram.Bot.UnitTests.JsonConverters
         {
             using var stream = new MemoryStream();
             var inputFile = new InputFile(stream);
-            var json = JsonConvert.SerializeObject(inputFile);
+            var json = JsonConvert.SerializeObject(inputFile, JsonSerializerSettings);
             Assert.That(json, Is.EqualTo("null"));
         }
     }
