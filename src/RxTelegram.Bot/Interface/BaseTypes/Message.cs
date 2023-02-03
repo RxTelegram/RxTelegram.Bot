@@ -284,6 +284,16 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public SuccessfulPayment SuccessfulPayment { get; set; }
 
         /// <summary>
+        /// Optional. Service message: a user was shared with the bot
+        /// </summary>
+        public UserShared UserShared { get; set; }
+
+        /// <summary>
+        /// Optional. Service message: a chat was shared with the bot
+        /// </summary>
+        public ChatShared ChatShared { get; set; }
+
+        /// <summary>
         /// Optional. The domain name of the website on which the user has logged in
         /// </summary>
         public string ConnectedWebsite { get; set; }

@@ -11,10 +11,34 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public bool? CanSendMessages { get; set; }
 
         /// <summary>
-        /// Optional. True, if the user is allowed to send audios, documents,
-        /// photos, videos, video notes and voice notes, implies <see cref="CanSendMessages"/>
+        /// True, if the user is allowed to send audios
         /// </summary>
-        public bool? CanSendMediaMessages { get; set; }
+        public bool? CanSendAudios { get; set; }
+
+        /// <summary>
+        /// True, if the user is allowed to send documents
+        /// </summary>
+        public bool? CanSendDocuments { get; set; }
+
+        /// <summary>
+        /// True, if the user is allowed to send photos
+        /// </summary>
+        public bool? CanSendPhotos { get; set; }
+
+        /// <summary>
+        /// True, if the user is allowed to send videos
+        /// </summary>
+        public bool? CanSendVideos { get; set; }
+
+        /// <summary>
+        /// True, if the user is allowed to send video notes
+        /// </summary>
+        public bool? CanSendVideoNotes { get; set; }
+
+        /// <summary>
+        /// True, if the user is allowed to send voice notes
+        /// </summary>
+        public bool? CanSendVoiceNotes { get; set; }
 
         /// <summary>
         /// Optional. True, if the user is allowed to send polls, implies <see cref="CanSendMessages"/>
