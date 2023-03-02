@@ -46,13 +46,12 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public bool? CanSendPolls { get; set; }
 
         /// <summary>
-        /// Optional. True, if the user is allowed to send animations,
-        /// games, stickers and use inline bots, implies <see cref="CanSendMediaMessages"/>
+        /// Optional. True, if the user is allowed to send animations, games, stickers and use inline bots
         /// </summary>
         public bool? CanSendOtherMessages { get; set; }
 
         /// <summary>
-        /// Optional. True, if the user is allowed to add web page previews to their messages, implies <see cref="CanSendMediaMessages"/>
+        /// Optional. True, if the user is allowed to add web page previews to their messages
         /// </summary>
         public bool? CanAddWebPagePreviews { get; set; }
 
