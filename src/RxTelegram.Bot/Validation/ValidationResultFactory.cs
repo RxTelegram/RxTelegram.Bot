@@ -621,6 +621,7 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<SetStickerMaskPosition>(value).ValidateRequired(x => x.Sticker);
 
         public static ValidationResult<SetMyName> CreateValidation(this SetMyName value) =>
-            new ValidationResult<SetMyName>(value).IsTrue(x => x.Name.Length <= 64 || string.IsNullOrEmpty(x.Name));
+            new ValidationResult<SetMyName>(value).IsTrue(x => string.IsNullOrEmpty(x.Name) && x.Name != null && x.Name.Length <= 64,
+                                                          ValidationErrors.TextTooLong);
     }
 }
