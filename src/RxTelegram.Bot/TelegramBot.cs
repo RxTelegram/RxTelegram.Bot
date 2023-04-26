@@ -1241,5 +1241,23 @@ namespace RxTelegram.Bot
             SetStickerMaskPosition setStickerMaskPosition,
             CancellationToken cancellationToken = default) =>
             Post<bool>("setStickerMaskPosition", setStickerMaskPosition, cancellationToken);
+
+        /// <summary>
+        /// Use this method to change the bot's name.
+        /// </summary>
+        /// <param name="setMyName">Botname to set</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>True on success.</returns>
+        public Task<bool> SetMyName(SetMyName setMyName, CancellationToken cancellationToken = default) =>
+            Post<bool>("setMyName", setMyName, cancellationToken);
+
+        /// <summary>
+        /// Use this method to get the current bot name for the given user language.
+        /// </summary>
+        /// <param name="getMyName">Botname to get</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns <see cref="BotName"/> on success.</returns>
+        public Task<BotName> GetMyName(GetMyName getMyName, CancellationToken cancellationToken = default) =>
+            Post<BotName>("getMyName", getMyName, cancellationToken);
     }
 }

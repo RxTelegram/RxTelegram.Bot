@@ -34,5 +34,10 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.
         /// </summary>
         public ChatInviteLink InviteLink { get; set; }
+
+        /// <summary>
+        /// Optional. True, if the user joined the chat via a chat folder invite link
+        /// </summary>
+        public bool ViaChatFolderInviteLink { get; set; }
     }
 }

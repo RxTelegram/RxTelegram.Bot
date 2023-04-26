@@ -6,5 +6,8 @@ namespace RxTelegram.Bot.Interface.BaseTypes;
 /// </summary>
 public class WriteAccessAllowed
 {
-
+    /// <summary>
+    /// Optional. Name of the Web App which was launched from a link
+    /// </summary>
+    public string WebAppName { get; set; }
 }

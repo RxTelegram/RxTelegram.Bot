@@ -20,6 +20,12 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         public LoginUrl LoginUrl { get; set; }
 
         /// <summary>
+        /// Optional. If set, pressing the button will prompt the user to select one of their chats of the specified type,
+        /// open that chat and insert the bot's username and the specified inline query in the input field
+        /// </summary>
+        public SwitchInlineQueryChosenChat SwitchInlineQueryChosenChat { get; set; }
+
+        /// <summary>
         /// Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
         /// </summary>
         public string CallbackData { get; set; }
