@@ -23,7 +23,7 @@
         /// <summary>
         /// Video thumbnail
         /// </summary>
-        public PhotoSize Thumb { get; set; }
+        public PhotoSize Thumbnail { get; set; }
 
         /// <summary>
         /// Original filename as defined by sender

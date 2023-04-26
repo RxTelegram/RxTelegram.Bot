@@ -3,6 +3,7 @@ using System.Linq;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Bot;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Forum;
@@ -24,14 +25,11 @@ namespace RxTelegram.Bot.Validation
     {
         public static ValidationResult<CreateNewStickerSet> CreateValidation(this CreateNewStickerSet value) =>
             new ValidationResult<CreateNewStickerSet>(value).IsTrue(x => x.UserId < 1, ValidationErrors.IdLowerThanOne)
-                                                            .IsTrue(x => x.PngSticker == null && x.TgsSticker == null && x.WebmSticker == null,
-                                                                    ValidationErrors.NonePropertySet)
-                                                            .IsTrue(x => x.PngSticker != null && x.TgsSticker != null || x.PngSticker != null && x.WebmSticker != null || x.TgsSticker != null && x.WebmSticker != null,
-                                                                    ValidationErrors.OnlyOnePropertyCanBeSet)
                                                             .ValidateRequired(x => x.UserId)
                                                             .ValidateRequired(x => x.Name)
                                                             .ValidateRequired(x => x.Title)
-                                                            .ValidateRequired(x => x.Emojis)
+                                                            .ValidateRequired(x => x.StickerFormat)
+                                                            .ValidateRequired(x => x.Stickers)
                                                             .IsFalse(x => x.Name != null && x.Name.Contains("_by_"),
                                                                      ValidationErrors.InvalidStickerName);
 
@@ -135,12 +133,7 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<AddStickerToSet> CreateValidation(this AddStickerToSet value) =>
             new ValidationResult<AddStickerToSet>(value).ValidateRequired(x => x.UserId)
-                                                        .ValidateRequired(x => x.Name)
-                                                        .ValidateRequired(x => x.Emojis)
-                                                        .IsTrue(x => x.PngSticker == null && x.TgsSticker == null && x.WebmSticker == null,
-                                                                ValidationErrors.NonePropertySet)
-                                                        .IsTrue(x => x.PngSticker != null && x.TgsSticker != null || x.PngSticker != null && x.WebmSticker != null || x.TgsSticker != null && x.WebmSticker != null,
-                                                                ValidationErrors.OnlyOnePropertyCanBeSet);
+                                                        .ValidateRequired(x => x.Name);
 
         public static ValidationResult<DeleteStickerFromSet> CreateValidation(this DeleteStickerFromSet value) =>
             new ValidationResult<DeleteStickerFromSet>(value).ValidateRequired(x => x.Sticker);
@@ -198,7 +191,8 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<UploadStickerFile> CreateValidation(this UploadStickerFile value) =>
             new ValidationResult<UploadStickerFile>(value).ValidateRequired(x => x.UserId)
-                                                          .ValidateRequired(x => x.PngSticker);
+                                                          .ValidateRequired(x => x.Sticker)
+                                                          .ValidateRequired(x => x.StickerFormat);
 
         public static ValidationResult<EditMessageText> CreateValidation(this EditMessageText value) =>
             new ValidationResult<EditMessageText>(value)
@@ -299,19 +293,19 @@ namespace RxTelegram.Bot.Validation
             new ValidationResult<InlineQueryResultPhoto>(value).ValidateRequired(x => x.Type)
                                                                .ValidateRequired(x => x.Id)
                                                                .ValidateRequired(x => x.PhotoUrl)
-                                                               .ValidateRequired(x => x.ThumbUrl);
+                                                               .ValidateRequired(x => x.ThumbnailUrl);
 
         public static ValidationResult<InlineQueryResultGif> CreateValidation(this InlineQueryResultGif value) =>
             new ValidationResult<InlineQueryResultGif>(value).ValidateRequired(x => x.Type)
                                                              .ValidateRequired(x => x.Id)
                                                              .ValidateRequired(x => x.GifUrl)
-                                                             .ValidateRequired(x => x.ThumbUrl);
+                                                             .ValidateRequired(x => x.ThumbnailUrl);
 
         public static ValidationResult<InlineQueryResultMpeg4Gif> CreateValidation(this InlineQueryResultMpeg4Gif value) =>
             new ValidationResult<InlineQueryResultMpeg4Gif>(value).ValidateRequired(x => x.Type)
                                                                   .ValidateRequired(x => x.Id)
                                                                   .ValidateRequired(x => x.Mpeg4Url)
-                                                                  .ValidateRequired(x => x.ThumbUrl);
+                                                                  .ValidateRequired(x => x.ThumbnailUrl);
 
         public static ValidationResult<InlineQueryResultVideo> CreateValidation(this InlineQueryResultVideo value) =>
             new ValidationResult<InlineQueryResultVideo>(value).ValidateRequired(x => x.Type)
@@ -319,7 +313,7 @@ namespace RxTelegram.Bot.Validation
                                                                .ValidateRequired(x => x.VideoUrl)
                                                                .ValidateRequired(x => x.MimeType)
                                                                .ValidateRequired(x => x.Title)
-                                                               .ValidateRequired(x => x.ThumbUrl);
+                                                               .ValidateRequired(x => x.ThumbnailUrl);
 
         public static ValidationResult<InlineQueryResultAudio> CreateValidation(this InlineQueryResultAudio value) =>
             new ValidationResult<InlineQueryResultAudio>(value).ValidateRequired(x => x.Type)
@@ -478,9 +472,9 @@ namespace RxTelegram.Bot.Validation
                                                          .IsTrue(x => string.IsNullOrEmpty(x.InlineMessageId) && x.MessageId == null,
                                                                  ValidationErrors.FieldRequired);
 
-        public static ValidationResult<SetStickerSetThumb> CreateValidation(this SetStickerSetThumb value) =>
-            new ValidationResult<SetStickerSetThumb>(value).ValidateRequired(x => x.Name)
-                                                           .ValidateRequired(x => x.UserId);
+        public static ValidationResult<SetStickerSetThumbnail> CreateValidation(this SetStickerSetThumbnail value) =>
+            new ValidationResult<SetStickerSetThumbnail>(value).ValidateRequired(x => x.Name)
+                                                               .ValidateRequired(x => x.UserId);
 
         public static ValidationResult<SendDice> CreateValidation(this SendDice value) =>
             new ValidationResult<SendDice>(value).ValidateRequired(x => x.ChatId);
@@ -557,13 +551,16 @@ namespace RxTelegram.Bot.Validation
                                                                     x.Name.Length <= 128);
 
         public static ValidationResult<CloseForumTopic> CreateValidation(this CloseForumTopic value) =>
-            new ValidationResult<CloseForumTopic>(value).ValidateRequired(x => x.ChatId).ValidateRequired(x => x.MessageThreadId);
+            new ValidationResult<CloseForumTopic>(value).ValidateRequired(x => x.ChatId)
+                                                        .ValidateRequired(x => x.MessageThreadId);
 
         public static ValidationResult<ReopenForumTopic> CreateValidation(this ReopenForumTopic value) =>
-            new ValidationResult<ReopenForumTopic>(value).ValidateRequired(x => x.ChatId).ValidateRequired(x => x.MessageThreadId);
+            new ValidationResult<ReopenForumTopic>(value).ValidateRequired(x => x.ChatId)
+                                                         .ValidateRequired(x => x.MessageThreadId);
 
         public static ValidationResult<DeleteForumTopic> CreateValidation(this DeleteForumTopic value) =>
-            new ValidationResult<DeleteForumTopic>(value).ValidateRequired(x => x.ChatId).ValidateRequired(x => x.MessageThreadId);
+            new ValidationResult<DeleteForumTopic>(value).ValidateRequired(x => x.ChatId)
+                                                         .ValidateRequired(x => x.MessageThreadId);
 
         public static ValidationResult<UnpinAllForumTopicMessages> CreateValidation(this UnpinAllForumTopicMessages value) =>
             new ValidationResult<UnpinAllForumTopicMessages>(value).ValidateRequired(x => x.ChatId)
@@ -587,5 +584,40 @@ namespace RxTelegram.Bot.Validation
 
         public static ValidationResult<UnhideGeneralForumTopic> CreateValidation(this UnhideGeneralForumTopic value) =>
             new ValidationResult<UnhideGeneralForumTopic>(value).ValidateRequired(x => x.ChatId);
+
+        public static ValidationResult<SetMyDescription> CreateValidation(this SetMyDescription value) =>
+            new ValidationResult<SetMyDescription>(value).IsTrue(x => string.IsNullOrEmpty(x.Description) &&
+                                                                      x.Description != null &&
+                                                                      x.Description.Length < 513);
+
+        public static ValidationResult<GetMyDescription> CreateValidation(this GetMyDescription value) => new(value);
+
+        public static ValidationResult<SetMyShortDescription> CreateValidation(this SetMyShortDescription value) =>
+            new ValidationResult<SetMyShortDescription>(value).IsTrue(x => string.IsNullOrEmpty(x.ShortDescription) &&
+                                                                           x.ShortDescription != null &&
+                                                                           x.ShortDescription.Length < 121);
+
+        public static ValidationResult<SetCustomEmojiStickerSetThumbnail> CreateValidation(this SetCustomEmojiStickerSetThumbnail value) =>
+            new ValidationResult<SetCustomEmojiStickerSetThumbnail>(value).ValidateRequired(x => x.Name);
+
+        public static ValidationResult<SetStickerSetTitle> CreateValidation(this SetStickerSetTitle value) =>
+            new ValidationResult<SetStickerSetTitle>(value).ValidateRequired(x => x.Name)
+                                                           .ValidateRequired(x => x.Title)
+                                                           .IsTrue(x => !string.IsNullOrEmpty(x.Title) &&
+                                                                        x.Title.Length > 0 &&
+                                                                        x.Title.Length < 65);
+
+        public static ValidationResult<DeleteStickerSet> CreateValidation(this DeleteStickerSet value) =>
+            new ValidationResult<DeleteStickerSet>(value).ValidateRequired(x => x.Name);
+
+        public static ValidationResult<SetStickerEmojiList> CreateValidation(this SetStickerEmojiList value) =>
+            new ValidationResult<SetStickerEmojiList>(value).ValidateRequired(x => x.Sticker)
+                                                            .ValidateRequired(x => x.EmojiList);
+
+        public static ValidationResult<SetStickerKeywords> CreateValidation(this SetStickerKeywords value) =>
+            new ValidationResult<SetStickerKeywords>(value).ValidateRequired(x => x.Sticker);
+
+        public static ValidationResult<SetStickerMaskPosition> CreateValidation(this SetStickerMaskPosition value) =>
+            new ValidationResult<SetStickerMaskPosition>(value).ValidateRequired(x => x.Sticker);
     }
 }

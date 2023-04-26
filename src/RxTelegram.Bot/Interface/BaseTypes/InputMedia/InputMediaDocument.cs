@@ -20,7 +20,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia
         ///     the thumbnail was uploaded using multipart/form-data under {file_attach_name}.
         ///     https://core.telegram.org/bots/api#sending-files
         /// </summary>
-        public InputFile Thumb { get; set; }
+        public InputFile Thumbnail { get; set; }
 
         /// <summary>
         ///     Optional. Caption of the document to be sent, 0-1024 characters after entities parsing

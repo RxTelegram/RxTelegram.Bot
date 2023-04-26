@@ -31,19 +31,19 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// Optional.
         /// Url of the thumbnail for the result
         /// </summary>
-        public string ThumbUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
 
         /// <summary>
         /// Optional.
         /// Thumbnail width
         /// </summary>
-        public int? ThumbWidth { get; set; }
+        public int? ThumbnailWidth { get; set; }
 
         /// <summary>
         /// Optional.
         /// Thumbnail height
         /// </summary>
-        public int? ThumbHeight { get; set; }
+        public int? ThumbnailHeight { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

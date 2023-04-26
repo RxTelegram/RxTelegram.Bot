@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
@@ -6,6 +7,8 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
+using RxTelegram.Bot.Interface.Stickers;
+using RxTelegram.Bot.Interface.Stickers.Enums;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
@@ -29,7 +32,7 @@ namespace RxTelegram.Bot.UnitTests
 
             foreach (var o in objects)
             {
-                Assert.DoesNotThrow(() => o.IsValid());
+                Assert.DoesNotThrow(() => o.IsValid(), $"Type was: {o.GetType()}");
             }
         }
 
@@ -38,15 +41,14 @@ namespace RxTelegram.Bot.UnitTests
         {
             var obj = new CreateNewStickerSet();
             Assert.False(obj.IsValid());
-            Assert.That(obj.Errors.Count, Is.EqualTo(6));
+            Assert.That(obj.Errors.Count, Is.EqualTo(5));
             var errors = obj.Errors.Select(x => x.GetMessage)
                             .ToList();
-            CollectionAssert.Contains(errors, "(PngSticker, TgsSticker, WebmSticker): \"One of these properties need to be set\"");
             CollectionAssert.Contains(errors, "(Name): \"Field is not set, but required\"");
             CollectionAssert.Contains(errors, "(UserId): \"ID lower than 1 is not allowed.\"");
             CollectionAssert.Contains(errors, "(Title): \"Field is not set, but required\"");
-            CollectionAssert.Contains(errors, "(Emojis): \"Field is not set, but required\"");
             CollectionAssert.Contains(errors, "(Name): \"Stickersets Created by bots need to end with _by_<botname> \"");
+            CollectionAssert.Contains(errors, "(Stickers): \"Field is not set, but required\"");
         }
 
         [Test]
@@ -79,10 +81,10 @@ namespace RxTelegram.Bot.UnitTests
             var obj = new CreateNewStickerSet
                       {
                           UserId = 2,
-                          Emojis = "❤",
                           Name = "StickerSet_by_BlaBot",
                           Title = "Title",
-                          PngSticker = new InputFile("Path")
+                          StickerFormat = StickerFormat.Animated,
+                          Stickers = new List<InputSticker>()
                       };
             Assert.That(obj.IsValid());
             Assert.That(obj.Errors.Count, Is.EqualTo(0));

@@ -28,7 +28,7 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// <summary>
         /// URL of the thumbnail (jpeg only) for the video
         /// </summary>
-        public string ThumbUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
 
         /// <summary>
         /// Optional.

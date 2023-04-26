@@ -30,6 +30,11 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         public InputFile Sticker { get; set; }
 
         /// <summary>
+        /// Emoji associated with the sticker; only for just uploaded stickers
+        /// </summary>
+        public string Emoji { get; set; }
+
+        /// <summary>
         /// Optional
         /// Sends the message silently. Users will receive a notification with no sound.
         /// </summary>

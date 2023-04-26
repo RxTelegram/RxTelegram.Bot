@@ -50,6 +50,6 @@ namespace RxTelegram.Bot.Interface.Stickers
         /// <summary>
         /// Optional. Sticker set thumbnail in the .WEBP or .TGS format
         /// </summary>
-        public PhotoSize Thumb { get; set; }
+        public PhotoSize Thumbnail { get; set; }
     }
 }

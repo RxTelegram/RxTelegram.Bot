@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.Stickers.Enums;
 using RxTelegram.Bot.Interface.Validation;
@@ -13,72 +14,48 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
     public class CreateNewStickerSet : BaseValidation
     {
         /// <summary>
-        ///     Required
-        ///     User identifier of created sticker set owner
+        /// Required
+        /// User identifier of created sticker set owner
         /// </summary>
         public long UserId { get; set; }
 
         /// <summary>
-        ///     Required
-        ///     Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only english letters, digits and
-        ///     underscores. Must begin with a letter, can't contain consecutive underscores and must end in “_by_{bot username}”.
-        ///     {bot_username} is case insensitive. 1-64 characters.
+        /// Required
+        /// Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only english letters, digits and
+        /// underscores. Must begin with a letter, can't contain consecutive underscores and must end in “_by_{bot username}”.
+        /// {bot_username} is case insensitive. 1-64 characters.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     Required
-        ///     Sticker set title, 1-64 characters
+        /// Required
+        /// Sticker set title, 1-64 characters
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        ///     Required
-        ///     Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height
-        ///     must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL
-        ///     as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
+        /// A JSON-serialized list of 1-50 initial stickers to be added to the sticker set
         /// </summary>
-        public InputFile PngSticker { get; set; }
+        public List<InputSticker> Stickers { get; set; }
 
         /// <summary>
-        ///     Optional
-        ///     TGS animation with the sticker, uploaded using multipart/form-data.
-        ///     See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        /// Format of stickers in the set, must be one of “static”, “animated”, “video”
         /// </summary>
-        public InputFile TgsSticker { get; set; }
-
-        /// <summary>
-        ///     Optional
-        ///     WEBM video with the sticker, uploaded using multipart/form-data.
-        ///     See https://core.telegram.org/stickers#video-sticker-requirements for technical requirements
-        /// </summary>
-        public InputFile WebmSticker { get; set; }
+        public StickerFormat StickerFormat { get; set; }
 
         /// <summary>
         /// Type of stickers in the set, pass “regular” or “mask”.
         /// Custom emoji sticker sets can't be created via the Bot API at the moment.
         /// By default, a regular sticker set is created.
         /// </summary>
-        public StickerType StickerType { get; set; }
+        public StickerType? StickerType { get; set; }
 
         /// <summary>
-        ///     Required
-        ///     One or more emoji corresponding to the sticker
+        /// Pass True if stickers in the sticker set must be repainted to the color of text when used in messages,
+        /// the accent color if used as emoji status, white on chat photos, or another appropriate color based on context;
+        /// for custom emoji sticker sets only
         /// </summary>
-        public string Emojis { get; set; }
-
-        /// <summary>
-        ///     Optional
-        ///     Pass True, if a set of mask stickers should be created
-        /// </summary>
-        [Obsolete]
-        public bool ContainsMasks { get; set; }
-
-        /// <summary>
-        ///     Optional
-        ///     A JSON-serialized object for position where the mask should be placed on faces
-        /// </summary>
-        public MaskPosition MaskPosition { get; set; }
+        public bool? NeedsRepainting { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

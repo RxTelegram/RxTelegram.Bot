@@ -39,7 +39,7 @@ namespace RxTelegram.Bot.Interface.Stickers
         /// <summary>
         /// Sticker thumbnail in .webp or .jpg format
         /// </summary>
-        public PhotoSize Thumb { get; set; }
+        public PhotoSize Thumbnail { get; set; }
 
         /// <summary>
         /// Emoji associated with the sticker
@@ -65,5 +65,11 @@ namespace RxTelegram.Bot.Interface.Stickers
         /// Optional. For custom emoji stickers, unique identifier of the custom emoji
         /// </summary>
         public string CustomEmojiId { get; set; }
+
+        /// <summary>
+        /// Optional. True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium
+        /// badge in emoji status, white color on chat photos, or another appropriate color in other places
+        /// </summary>
+        public bool? NeedsRepainting { get; set; }
     }
 }

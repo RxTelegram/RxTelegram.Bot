@@ -1,4 +1,5 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.Stickers.Enums;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
@@ -13,14 +14,15 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         public long UserId { get; set; }
 
         /// <summary>
-        /// Required
-        /// Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height
-        /// must be exactly 512px. More info on Sending Files »
+        /// A file with the sticker in .WEBP, .PNG, .TGS, or .WEBM format. See https://core.telegram.org/stickers for technical requirements.
         /// </summary>
-        public InputFile PngSticker { get; set; }
+        public InputFile Sticker { get; set; }
 
-        //ValidateCondition(UserId < 1, Bot.Validation.ValidationErrors.IdLowerThanOne, nameof(UserId));
-        //ValidateRequired<UploadStickerFile>(x => x.UserId, x => x.PngSticker);
+        /// <summary>
+        /// Format of the sticker, must be one of “static”, “animated”, “video”
+        /// </summary>
+        public StickerFormat StickerFormat { get; set; }
+
         protected override IValidationResult Validate() => this.CreateValidation();
     }
 }

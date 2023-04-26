@@ -47,7 +47,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments
         ///     not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can
         ///     pass “attach://{file_attach_name}” if the thumbnail was uploaded using multipart/form-data under {file_attach_name}.
         /// </summary>
-        public InputFile Thumb { get; set; }
+        public InputFile Thumbnail { get; set; }
 
         /// <summary>
         ///     Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing

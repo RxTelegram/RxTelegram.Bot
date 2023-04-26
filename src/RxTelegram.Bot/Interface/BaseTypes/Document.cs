@@ -8,7 +8,7 @@
         /// <summary>
         /// Document thumbnail as defined by sender
         /// </summary>
-        public PhotoSize Thumb { get; set; }
+        public PhotoSize Thumbnail { get; set; }
 
         /// <summary>
         /// Optional. Original filename as defined by sender

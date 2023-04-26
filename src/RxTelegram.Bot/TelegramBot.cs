@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RxTelegram.Bot.Api;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.BaseTypes.Requests.Bot;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Forum;
@@ -316,9 +317,11 @@ namespace RxTelegram.Bot
             Post<bool>("leaveChat", leaveChat, cancellationToken);
 
         /// <summary>
-        ///     Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker.
-        ///     Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers.
-        ///     Static sticker sets can have up to 120 stickers.
+        /// Use this method to add a new sticker to a set created by the bot.
+        /// The format of the added sticker must match the format of the other stickers in the set.
+        /// Emoji sticker sets can have up to 200 stickers.
+        /// Animated and video sticker sets can have up to 50 stickers.
+        /// Static sticker sets can have up to 120 stickers.
         /// </summary>
         /// <param name="addStickerToSet">Details for adding stickers to a set.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
@@ -411,11 +414,13 @@ namespace RxTelegram.Bot
         /// <summary>
         ///     Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only.
         /// </summary>
-        /// <param name="setStickerSetThumb">Sets the thumbnail picture for the sticker set.</param>
+        /// <param name="setStickerSetThumbnail">Sets the thumbnail picture for the sticker set.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Returns True on success.</returns>
-        public Task<bool> SetStickerSetThumb(SetStickerSetThumb setStickerSetThumb, CancellationToken cancellationToken = default) =>
-            Post<bool>("setStickerSetThumb", setStickerSetThumb, cancellationToken);
+        public Task<bool> SetStickerSetThumbnail(
+            SetStickerSetThumbnail setStickerSetThumbnail,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("setStickerSetThumbnail", setStickerSetThumbnail, cancellationToken);
 
         /// <summary>
         ///     Use this method to send static .WEBP or animated .TGS stickers.
@@ -1131,8 +1136,110 @@ namespace RxTelegram.Bot
         /// <param name="unhideGeneralForumTopic">General Forum topic to unhide</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Returns True on success.</returns>
-        public Task<bool>
-            UnhideGeneralForumTopic(UnhideGeneralForumTopic unhideGeneralForumTopic, CancellationToken cancellationToken = default) =>
+        public Task<bool> UnhideGeneralForumTopic(
+            UnhideGeneralForumTopic unhideGeneralForumTopic,
+            CancellationToken cancellationToken = default) =>
             Post<bool>("unhideGeneralForumTopic", unhideGeneralForumTopic, cancellationToken);
+
+        /// <summary>
+        /// Use this method to change the bot's description, which is shown in the chat with the bot if the chat is empty.
+        /// </summary>
+        /// <param name="setMyDescription">Description to be set</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> SetMyDescription(SetMyDescription setMyDescription, CancellationToken cancellationToken = default) =>
+            Post<bool>("setMyDescription", setMyDescription, cancellationToken);
+
+        /// <summary>
+        /// Use this method to get the current bot description for the given user language.
+        /// </summary>
+        /// <param name="getMyDescription">Language to get the bot description for</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns BotDescription on success.</returns>
+        public Task<BotDescription> GetMyDescription(GetMyDescription getMyDescription, CancellationToken cancellationToken = default) =>
+            Post<BotDescription>("getMyDescription", getMyDescription, cancellationToken);
+
+        /// <summary>
+        /// Use this method to change the bot's short description, which is shown on the bot's profile page and is sent together
+        /// with the link when users share the bot.
+        /// </summary>
+        /// <param name="setMyShortDescription">Language to set the short bot description for</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool>
+            SetMyShortDescription(SetMyShortDescription setMyShortDescription, CancellationToken cancellationToken = default) =>
+            Post<bool>("setMyShortDescription", setMyShortDescription, cancellationToken);
+
+        /// <summary>
+        /// Use this method to get the current bot short description for the given user language.
+        /// </summary>
+        /// <param name="getMyShortDescription">Language to get the short bot description for</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns <see cref="BotShortDescription"/> on success.</returns>
+        public Task<BotShortDescription> GetMyShortDescription(
+            GetMyShortDescription getMyShortDescription,
+            CancellationToken cancellationToken = default) =>
+            Post<BotShortDescription>("getMyShortDescription", getMyShortDescription, cancellationToken);
+
+        /// <summary>
+        /// Use this method to set the thumbnail of a custom emoji sticker set.
+        /// </summary>
+        /// <param name="setCustomEmojiStickerSetThumbnail">Update info for the sticker set</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> SetCustomEmojiStickerSetThumbnail(
+            SetCustomEmojiStickerSetThumbnail setCustomEmojiStickerSetThumbnail,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("setCustomEmojiStickerSetThumbnail", setCustomEmojiStickerSetThumbnail, cancellationToken);
+
+        /// <summary>
+        /// Use this method to set the title of a created sticker set.
+        /// </summary>
+        /// <param name="setStickerSetTitle">Update info for the sticker set</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> SetStickerSetTitle(SetStickerSetTitle setStickerSetTitle, CancellationToken cancellationToken = default) =>
+            Post<bool>("setStickerSetTitle", setStickerSetTitle, cancellationToken);
+
+        /// <summary>
+        /// Use this method to delete a sticker set that was created by the bot.
+        /// </summary>
+        /// <param name="deleteStickerSet">Name of the sticker set to be deleted</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> DeleteStickerSet(DeleteStickerSet deleteStickerSet, CancellationToken cancellationToken = default) =>
+            Post<bool>("deleteStickerSet", deleteStickerSet, cancellationToken);
+
+        /// <summary>
+        /// Use this method to change the list of emoji assigned to a regular or custom emoji sticker.
+        /// The sticker must belong to a sticker set created by the bot.
+        /// </summary>
+        /// <param name="setStickerEmojiList">Emojis to set for a sticker</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> SetStickerEmojiList(SetStickerEmojiList setStickerEmojiList, CancellationToken cancellationToken = default) =>
+            Post<bool>("setStickerEmojiList", setStickerEmojiList, cancellationToken);
+
+        /// <summary>
+        /// Use this method to change search keywords assigned to a regular or custom emoji sticker.
+        /// The sticker must belong to a sticker set created by the bot.
+        /// </summary>
+        /// <param name="setStickerKeywords">Keywords to set for a sticker</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> SetStickerKeywords(SetStickerKeywords setStickerKeywords, CancellationToken cancellationToken = default) =>
+            Post<bool>("setStickerKeywords", setStickerKeywords, cancellationToken);
+
+        /// <summary>
+        /// Use this method to change the mask position of a mask sticker.
+        /// The sticker must belong to a sticker set that was created by the bot.
+        /// </summary>
+        /// <param name="setStickerMaskPosition">Mask position to set for a sticker</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns>Returns True on success.</returns>
+        public Task<bool> SetStickerMaskPosition(
+            SetStickerMaskPosition setStickerMaskPosition,
+            CancellationToken cancellationToken = default) =>
+            Post<bool>("setStickerMaskPosition", setStickerMaskPosition, cancellationToken);
     }
 }

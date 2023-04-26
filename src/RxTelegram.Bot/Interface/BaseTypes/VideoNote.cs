@@ -18,6 +18,6 @@
         /// <summary>
         /// Optional. Video thumbnail
         /// </summary>
-        public PhotoSize Thumb { get; set; }
+        public PhotoSize Thumbnail { get; set; }
     }
 }

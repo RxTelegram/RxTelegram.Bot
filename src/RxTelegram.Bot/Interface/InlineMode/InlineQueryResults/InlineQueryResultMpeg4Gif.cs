@@ -35,7 +35,7 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// <summary>
         /// URL of the static thumbnail (jpeg or gif) for the result
         /// </summary>
-        public string ThumbUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
 
         /// <summary>
         /// Optional.

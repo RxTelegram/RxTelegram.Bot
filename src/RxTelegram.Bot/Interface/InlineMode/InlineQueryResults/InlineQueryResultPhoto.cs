@@ -19,7 +19,7 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// <summary>
         /// URL of the thumbnail for the photo
         /// </summary>
-        public string ThumbUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
 
         /// <summary>
         /// Optional.

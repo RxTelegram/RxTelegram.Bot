@@ -33,6 +33,6 @@
         /// <summary>
         /// Optional. Thumbnail of the album cover to which the music file belongs
         /// </summary>
-        public PhotoSize Thumb { get; set; }
+        public PhotoSize Thumbnail { get; set; }
     }
 }

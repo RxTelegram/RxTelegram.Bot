@@ -25,7 +25,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes
         /// <summary>
         /// Animation thumbnail as defined by sender.
         /// </summary>
-        public PhotoSize Thumb { get; set; }
+        public PhotoSize Thumbnail { get; set; }
 
         /// <summary>
         /// Original animation filename as defined by sender.

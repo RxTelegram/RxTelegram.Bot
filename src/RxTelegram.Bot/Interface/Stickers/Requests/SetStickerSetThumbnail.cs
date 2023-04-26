@@ -8,7 +8,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
     /// Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only.
     /// Returns True on success.
     /// </summary>
-    public class SetStickerSetThumb : BaseValidation
+    public class SetStickerSetThumbnail : BaseValidation
     {
         /// <summary>
         /// Required
@@ -30,7 +30,7 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests
         /// pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
         /// More info on Sending Files ». Animated sticker set thumbnail can't be uploaded via HTTP URL.
         /// </summary>
-        public InputFile Thumb { get; set; }
+        public InputFile Thumbnail { get; set; }
 
         protected override IValidationResult Validate() => this.CreateValidation();
     }

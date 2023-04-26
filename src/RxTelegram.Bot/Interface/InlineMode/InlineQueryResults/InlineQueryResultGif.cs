@@ -37,13 +37,13 @@ namespace RxTelegram.Bot.Interface.InlineMode.InlineQueryResults
         /// <summary>
         /// URL of the static thumbnail for the result (jpeg or gif)
         /// </summary>
-        public string ThumbUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
 
         /// <summary>
         /// Optional.
         /// MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”
         /// </summary>
-        public ThumbMimeType ThumbMimeType { get; set; }
+        public ThumbMimeType ThumbnailMimeType { get; set; }
 
         /// <summary>
         /// Optional.
