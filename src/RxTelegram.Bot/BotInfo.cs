@@ -60,7 +60,7 @@ public class BotInfo
         }
 
         const string pattern = "[0-9]{6,19}:[a-zA-Z0-9_-]{34,35}";
-        if (!Regex.IsMatch(token, pattern, RegexOptions.IgnoreCase))
+        if (!Regex.IsMatch(token, pattern, RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
         {
             throw new InvalidTokenException(token);
         }
