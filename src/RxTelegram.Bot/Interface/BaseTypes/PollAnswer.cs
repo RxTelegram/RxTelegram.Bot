@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using RxTelegram.Bot.Interface.BaseTypes;
+
+namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
 /// This object represents an answer of a user in a non-anonymous poll.
