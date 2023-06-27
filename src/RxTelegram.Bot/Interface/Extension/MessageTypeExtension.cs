@@ -5,144 +5,38 @@ namespace RxTelegram.Bot.Interface.Extension;
 
 public static class MessageTypeExtension
 {
-    public static MessageType GetType(this Message message)
-    {
-        var type = MessageType.Unknown;
-        if (message.Audio != null)
-        {
-            type = MessageType.Audio;
-        }
-
-        if (message.Document != null)
-        {
-            type = MessageType.Document;
-        }
-
-        if (message.Game != null)
-        {
-            type = MessageType.Game;
-        }
-
-        if (message.Photo != null)
-        {
-            type = MessageType.Photo;
-        }
-
-        if (message.Sticker != null)
-        {
-            type = MessageType.Sticker;
-        }
-
-        if (message.Video != null)
-        {
-            type = MessageType.Video;
-        }
-
-        if (message.Voice != null)
-        {
-            type = MessageType.Voice;
-        }
-
-        if (message.Contact != null)
-        {
-            type = MessageType.Contact;
-        }
-
-        if (message.Venue != null)
-        {
-            type = MessageType.Venue;
-        }
-
-        if (message.Location != null)
-        {
-            type = MessageType.Location;
-        }
-
-        if (message.Text != null)
-        {
-            type = MessageType.Text;
-        }
-
-        if (message.Invoice != null)
-        {
-            type = MessageType.Invoice;
-        }
-
-        if (message.SuccessfulPayment != null)
-        {
-            type = MessageType.SuccessfulPayment;
-        }
-
-        if (message.VideoNote != null)
-        {
-            type = MessageType.VideoNote;
-        }
-
-        if (message.ConnectedWebsite != null)
-        {
-            type = MessageType.WebsiteConnected;
-        }
-
-        if (message.NewChatMembers?.Any() == true)
-        {
-            type = MessageType.ChatMembersAdded;
-        }
-
-        if (message.LeftChatMember != null)
-        {
-            type = MessageType.ChatMemberLeft;
-        }
-
-        if (message.NewChatTitle != null)
-        {
-            type = MessageType.ChatTitleChanged;
-        }
-
-        if (message.NewChatPhoto != null)
-        {
-            type = MessageType.ChatPhotoChanged;
-        }
-
-        if (message.PinnedMessage != null)
-        {
-            type = MessageType.MessagePinned;
-        }
-
-        if (message.DeleteChatPhoto == true)
-        {
-            type = MessageType.ChatPhotoDeleted;
-        }
-
-        if (message.GroupChatCreated == true)
-        {
-            type = MessageType.GroupCreated;
-        }
-
-        if (message.SupergroupChatCreated == true)
-        {
-            type = MessageType.SupergroupCreated;
-        }
-
-        if (message.ChannelChatCreated == true)
-        {
-            type = MessageType.ChannelCreated;
-        }
-
-        if (message.MigrateFromChatId != default)
-        {
-            type = MessageType.MigratedFromGroup;
-        }
-
-        if (message.MigrateToChatId != default)
-        {
-            type = MessageType.MigratedToSupergroup;
-        }
-
-        if (message.Poll != null)
-        {
-            type = MessageType.Poll;
-        }
-
-        return type;
-    }
+    public static MessageType GetType(this Message message) => message switch
+                                                               {
+                                                                   { Audio: not null } => MessageType.Audio,
+                                                                   { Document: not null } => MessageType.Document,
+                                                                   { Game: not null } => MessageType.Game,
+                                                                   { Photo: not null } => MessageType.Photo,
+                                                                   { Sticker: not null } => MessageType.Sticker,
+                                                                   { Video: not null } => MessageType.Video,
+                                                                   { Voice: not null } => MessageType.Voice,
+                                                                   { Contact: not null } => MessageType.Contact,
+                                                                   { Venue: not null } => MessageType.Venue,
+                                                                   { Location: not null } => MessageType.Location,
+                                                                   { Text: not null } => MessageType.Text,
+                                                                   { Invoice: not null } => MessageType.Invoice,
+                                                                   { SuccessfulPayment: not null } => MessageType.SuccessfulPayment,
+                                                                   { VideoNote: not null } => MessageType.VideoNote,
+                                                                   { ConnectedWebsite: not null } => MessageType.WebsiteConnected,
+                                                                   { NewChatMembers: not null } when message.NewChatMembers.Any() =>
+                                                                       MessageType.ChatMembersAdded,
+                                                                   { LeftChatMember: not null } => MessageType.ChatMemberLeft,
+                                                                   { NewChatTitle: not null } => MessageType.ChatTitleChanged,
+                                                                   { NewChatPhoto: not null } => MessageType.ChatPhotoChanged,
+                                                                   { PinnedMessage: not null } => MessageType.MessagePinned,
+                                                                   { DeleteChatPhoto: true } => MessageType.ChatPhotoDeleted,
+                                                                   { GroupChatCreated: true } => MessageType.GroupCreated,
+                                                                   { SupergroupChatCreated: true } => MessageType.SupergroupCreated,
+                                                                   { ChannelChatCreated: true } => MessageType.ChannelCreated,
+                                                                   { MigrateFromChatId: not null } when message.MigrateFromChatId != 0 =>
+                                                                       MessageType.MigratedFromGroup,
+                                                                   { MigrateToChatId: not null } when message.MigrateToChatId != 0 =>
+                                                                       MessageType.MigratedToSupergroup,
+                                                                   { Poll: not null } => MessageType.Poll,
+                                                                   _ => MessageType.Unknown
+                                                               };
 }

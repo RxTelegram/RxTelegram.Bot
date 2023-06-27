@@ -47,7 +47,7 @@ public class ChatIdTest
         var myType = typeof(ChatId);
         // Get the public instance constructor that takes an integer parameter.
         var constructorInfoObj = myType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, CallingConventions.HasThis,
-                                                       new Type[] { }, null);
+                                                       Array.Empty<Type>(), null);
         Assert.IsNotNull(constructorInfoObj);
         Assert.That(constructorInfoObj.IsPrivate);
     }

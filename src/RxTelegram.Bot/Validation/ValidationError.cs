@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace RxTelegram.Bot.Validation;
 
@@ -79,7 +80,7 @@ public class ValidationError
     private string BuildMessage()
     {
         var path = string.Join(".", Path);
-        var properties = string.Empty;
+        var properties = new StringBuilder();
 
         for (var index = 0; index < PropertyNames.Count; index++)
         {
@@ -88,10 +89,10 @@ public class ValidationError
             {
                 path += ".";
             }
-            properties += path + propertyName;
+            properties.Append(path + propertyName);
             if (index < PropertyNames.Count-1)
             {
-                properties += ", ";
+                properties.Append(", ");
             }
         }
 

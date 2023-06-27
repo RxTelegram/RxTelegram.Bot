@@ -67,12 +67,9 @@ public abstract class BaseTelegramBot
         HttpContent httpContent = null;
         if (payload != null)
         {
-            if (payload is BaseValidation castedPayload)
+            if (payload is BaseValidation castedPayload && !castedPayload.IsValid())
             {
-                if (!castedPayload.IsValid())
-                {
-                    throw new RequestValidationException(castedPayload.Errors);
-                }
+                throw new RequestValidationException(castedPayload.Errors);
             }
 
             var serializer = JsonSerializer.Create(JsonSerializerSettings);

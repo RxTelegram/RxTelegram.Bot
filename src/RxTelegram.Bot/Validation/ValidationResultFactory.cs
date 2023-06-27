@@ -204,7 +204,7 @@ public static class ValidationResultFactory
                     ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
             .IsTrue(x => x.ChatId != null && x.ChatId.HasValue && x.MessageId == null && !string.IsNullOrEmpty(x.InlineMessageId),
                     ValidationErrors.InlineMessageIdOrChatIdAndMessageId)
-            // todo ValidationErrorsExtension needs to decide if its a PropertyExpression and TypedParameterExpression because
+            // ValidationErrorsExtension needs to decide if its a PropertyExpression and TypedParameterExpression because
             // the erroring Property would always be Length instead of Text
             .IsTrue(x => x.Text != null && x.Text.Length > 4096, ValidationErrors.TextTooLong);
 

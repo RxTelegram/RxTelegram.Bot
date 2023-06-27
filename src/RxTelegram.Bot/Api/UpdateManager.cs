@@ -295,14 +295,13 @@ public class UpdateManager : IUpdateManager
             observers.Remove(observer);
         }
 
-        if (AnyObserver == false &&
-            Volatile.Read(ref _isRunning) == Running)
+        if (!AnyObserver && Volatile.Read(ref _isRunning) == Running)
         {
             _cancellationTokenSource?.Cancel();
         }
     }
 
-    private class Observable<T> : IObservable<T>
+    private sealed class Observable<T> : IObservable<T>
     {
         private readonly UpdateManager _updateManager;
         private readonly UpdateType? _updateType;
@@ -316,7 +315,7 @@ public class UpdateManager : IUpdateManager
         public IDisposable Subscribe(IObserver<T> observer) => _updateManager.Subscribe(_updateType, observer);
     }
 
-    private class Unsubscriber : IDisposable
+    private sealed class Unsubscriber : IDisposable
     {
         private readonly Action _dispose;
 

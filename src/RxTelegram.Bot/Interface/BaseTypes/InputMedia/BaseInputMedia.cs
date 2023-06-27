@@ -6,11 +6,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 
 public abstract class BaseInputMedia
 {
-    public BaseInputMedia(string fileId) => Media = new InputFile(fileId);
+    protected BaseInputMedia(string fileId) => Media = new InputFile(fileId);
 
-    public BaseInputMedia(Uri uri) => Media = new InputFile(uri);
+    protected BaseInputMedia(Uri uri) => Media = new InputFile(uri);
 
-    public BaseInputMedia(Stream stream, string fileName = default) => Media = new InputFile(stream, fileName);
+    protected BaseInputMedia(Stream stream, string fileName = default) => Media = new InputFile(stream, fileName);
 
     /// <summary>
     ///     Type of the result

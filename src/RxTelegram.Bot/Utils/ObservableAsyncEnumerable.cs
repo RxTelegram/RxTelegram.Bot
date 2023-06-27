@@ -19,7 +19,7 @@ namespace RxTelegram.Bot.Utils
             return new ObservableAsyncEnumerable<T>(observable);
         }
 
-        private class ObservableAsyncEnumerable<T> : IObserver<T>, IAsyncEnumerable<T>, IAsyncEnumerator<T> where T : class
+        private sealed class ObservableAsyncEnumerable<T> : IObserver<T>, IAsyncEnumerable<T>, IAsyncEnumerator<T> where T : class
         {
             private readonly int _threadId;
             private AsyncIteratorState _state = AsyncIteratorState.New;
@@ -69,7 +69,7 @@ namespace RxTelegram.Bot.Utils
 
             #region IAsyncEnumerable
 
-            public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken)
+            public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -94,7 +94,7 @@ namespace RxTelegram.Bot.Utils
                 _current = default;
                 _state = AsyncIteratorState.Disposed;
 
-                Dispose();
+                InternalDispose();
 
                 return default;
             }
@@ -155,7 +155,7 @@ namespace RxTelegram.Bot.Utils
 
             private void DisposeSubscription() => Interlocked.Exchange(ref _subscription, null)?.Dispose();
 
-            private void Dispose()
+            private void InternalDispose()
             {
                 DisposeSubscription();
 

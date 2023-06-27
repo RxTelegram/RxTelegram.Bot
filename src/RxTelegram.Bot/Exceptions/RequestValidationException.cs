@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Exceptions;
 
+[Serializable]
 public class RequestValidationException : Exception
 {
     private static readonly string DefaultMessage =
@@ -12,6 +14,10 @@ public class RequestValidationException : Exception
 
     public List<ValidationError> ValidationErrors { get; }
 
-    public RequestValidationException(List<ValidationError> validationErrors) : base(DefaultMessage) =>
-        ValidationErrors = validationErrors;
+    public RequestValidationException(List<ValidationError> validationErrors) : base(DefaultMessage) => ValidationErrors = validationErrors;
+
+    protected RequestValidationException(SerializationInfo serializationInfo, StreamingContext streamingContext) :
+        base(serializationInfo, streamingContext)
+    {
+    }
 }
