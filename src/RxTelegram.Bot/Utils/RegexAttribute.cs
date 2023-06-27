@@ -10,5 +10,6 @@ internal class RegexAttribute : Attribute
 
     public RegexAttribute(params string[] regex) => _regex = regex;
 
-    public bool Match(string description) => _regex?.Any(x => Regex.IsMatch(description, x)) == true;
+    public bool Match(string description) =>
+        _regex?.Any(x => Regex.IsMatch(description, x, RegexOptions.None, TimeSpan.FromMilliseconds(100))) == true;
 }
