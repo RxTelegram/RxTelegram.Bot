@@ -159,62 +159,32 @@ public class UpdateManager : IUpdateManager
             return;
         }
 
+        var updateStrategies = new Dictionary<Func<Update, object>, UpdateType>
+                               {
+                                   { update => update.PreCheckoutQuery, UpdateType.PreCheckoutQuery },
+                                   { update => update.ShippingQuery, UpdateType.ShippingQuery },
+                                   { update => update.EditedChannelPost, UpdateType.EditedChannelPost },
+                                   { update => update.ChannelPost, UpdateType.ChannelPost },
+                                   { update => update.CallbackQuery, UpdateType.CallbackQuery },
+                                   { update => update.Poll, UpdateType.Poll },
+                                   { update => update.PollAnswer, UpdateType.PollAnswer },
+                                   { update => update.ChosenInlineResult, UpdateType.ChosenInlineResult },
+                                   { update => update.InlineQuery, UpdateType.InlineQuery },
+                                   { update => update.EditedMessage, UpdateType.EditedMessage },
+                                   { update => update.Message, UpdateType.Message },
+                               };
+
         foreach (var update in updates)
         {
             OnNext(null, update);
-            if (update.PreCheckoutQuery != null)
-            {
-                OnNext(UpdateType.PreCheckoutQuery, update.PreCheckoutQuery);
-            }
 
-            if (update.ShippingQuery != null)
+            foreach (var pair in updateStrategies)
             {
-                OnNext(UpdateType.ShippingQuery, update.ShippingQuery);
-            }
-
-            if (update.EditedChannelPost != null)
-            {
-                OnNext(UpdateType.EditedChannelPost, update.EditedChannelPost);
-            }
-
-            if (update.ChannelPost != null)
-            {
-                OnNext(UpdateType.ChannelPost, update.ChannelPost);
-            }
-
-            if (update.CallbackQuery != null)
-            {
-                OnNext(UpdateType.CallbackQuery, update.CallbackQuery);
-            }
-
-            if (update.Poll != null)
-            {
-                OnNext(UpdateType.Poll, update.Poll);
-            }
-
-            if (update.PollAnswer != null)
-            {
-                OnNext(UpdateType.PollAnswer, update.PollAnswer);
-            }
-
-            if (update.ChosenInlineResult != null)
-            {
-                OnNext(UpdateType.ChosenInlineResult, update.ChosenInlineResult);
-            }
-
-            if (update.InlineQuery != null)
-            {
-                OnNext(UpdateType.InlineQuery, update.InlineQuery);
-            }
-
-            if (update.EditedMessage != null)
-            {
-                OnNext(UpdateType.EditedMessage, update.EditedMessage);
-            }
-
-            if (update.Message != null)
-            {
-                OnNext(UpdateType.Message, update.Message);
+                var updateObject = pair.Key(update);
+                if (updateObject != null)
+                {
+                    OnNext(pair.Value, updateObject);
+                }
             }
         }
     }
