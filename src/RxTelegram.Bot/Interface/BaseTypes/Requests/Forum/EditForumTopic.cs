@@ -22,7 +22,7 @@ public class EditForumTopic : BaseRequest
 
     /// <summary>
     /// New unique identifier of the custom emoji shown as the topic icon.
-    /// Use <see cref="TelegramBot.GetForumTopicIconStickers"/> to get all allowed custom emoji identifiers.
+    /// Use <see cref="ITelegramBot.GetForumTopicIconStickers"/> to get all allowed custom emoji identifiers.
     /// </summary>
     public string IconCustomEmojiId { get; set; }
 

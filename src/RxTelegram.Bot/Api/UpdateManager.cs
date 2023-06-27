@@ -55,7 +55,7 @@ public class UpdateManager : IUpdateManager
     private readonly Observable<Message> _editedChannelPost;
     private readonly Observable<ShippingQuery> _shippingQuery;
     private readonly Observable<PreCheckoutQuery> _preCheckoutQuery;
-    private readonly TelegramBot _telegramBot;
+    private readonly ITelegramBot _telegramBot;
     private const int NotRunning = 0;
     private const int Running = 1;
     private int _isRunning = NotRunning;
@@ -68,7 +68,7 @@ public class UpdateManager : IUpdateManager
                                                         : _observerDictionary.Where(x => x.Value.Any())
                                                                              .Select(x => x.Key);
 
-    public UpdateManager(TelegramBot telegramBot)
+    public UpdateManager(ITelegramBot telegramBot)
     {
         _telegramBot = telegramBot;
         _updateObservers = new List<object>();

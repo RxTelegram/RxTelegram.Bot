@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -26,15 +25,9 @@ using File = RxTelegram.Bot.Interface.BaseTypes.File;
 
 namespace RxTelegram.Bot;
 
-public class TelegramBot : BaseTelegramBot, ITelegramBot
+public interface ITelegramBot
 {
-    public TelegramBot(string token) : this(new BotInfo(token))
-    {
-    }
-
-    public TelegramBot(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
-
-    public IUpdateManager Updates { get; }
+    IUpdateManager Updates { get; }
 
     /// <summary>
     ///     Use this method to get basic info about a file and prepare it for downloading.
@@ -47,36 +40,35 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="fileId">FileId of the File.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, a File object is returned.</returns>
-    public Task<File> GetFile(string fileId, CancellationToken cancellationToken = default) =>
-        Get<File>("getFile", new { fileId }, cancellationToken);
+    Task<File> GetFile(string fileId, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Provides a stream for a file to download it.
     /// </summary>
     /// <param name="filePath">Identifier for the file.</param>
     /// <returns>A stream for the given file.</returns>
-    public Task<Stream> DownloadFileStream(string filePath) => FileClient.GetStreamAsync(filePath);
+    Task<Stream> DownloadFileStream(string filePath);
 
     /// <summary>
     ///     Provides a file in string representation.
     /// </summary>
     /// <param name="filePath">Identifier for the file.</param>
     /// <returns>String representation of the given file.</returns>
-    public Task<string> DownloadFileString(string filePath) => FileClient.GetStringAsync(filePath);
+    Task<string> DownloadFileString(string filePath);
 
     /// <summary>
     ///     Provides a file as a byte array.
     /// </summary>
     /// <param name="filePath">Identifier for the file.</param>
     /// <returns>A byte array of the given file.</returns>
-    public Task<byte[]> DownloadFileByteArray(string filePath) => FileClient.GetByteArrayAsync(filePath);
+    Task<byte[]> DownloadFileByteArray(string filePath);
 
     /// <summary>
     ///     A simple method for testing your bot's auth token.
     /// </summary>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns basic information about the bot in form of a <see cref="User" /> object.</returns>
-    public Task<User> GetMe(CancellationToken cancellationToken = default) => Get<User>("getMe", cancellationToken: cancellationToken);
+    Task<User> GetMe(CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send text messages.
@@ -84,8 +76,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendMessage">Details for the message you want to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendMessage(SendMessage sendMessage, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendMessage", sendMessage, cancellationToken);
+    Task<Message> SendMessage(SendMessage sendMessage, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to forward messages of any kind.
@@ -93,8 +84,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="forwardMessage">Details for the message that should be forwarded to a different Chat.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> ForwardMessage(ForwardMessage forwardMessage, CancellationToken cancellationToken = default) =>
-        Post<Message>("forwardMessage", forwardMessage, cancellationToken);
+    Task<Message> ForwardMessage(ForwardMessage forwardMessage, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send photos
@@ -102,8 +92,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendPhoto">Details for the photo to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendPhoto(SendPhoto sendPhoto, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendPhoto", sendPhoto, cancellationToken);
+    Task<Message> SendPhoto(SendPhoto sendPhoto, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send audio files, if you want Telegram clients to display them in the music player.
@@ -114,8 +103,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendAudio">Details for the audio to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendAudio(SendAudio sendAudio, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendAudio", sendAudio, cancellationToken);
+    Task<Message> SendAudio(SendAudio sendAudio, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send general files. Bots can currently send files of any type of up to 50 MB in size,
@@ -124,8 +112,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendDocument">Details for the document/file to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendDocument(SendDocument sendDocument, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendDocument", sendDocument, cancellationToken);
+    Task<Message> SendDocument(SendDocument sendDocument, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document).
@@ -134,8 +121,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendVideo">Details for the video to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendVideo(SendVideo sendVideo, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendVideo", sendVideo, cancellationToken);
+    Task<Message> SendVideo(SendVideo sendVideo, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound).
@@ -144,8 +130,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendAnimation">Details for the animation to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendAnimation(SendAnimation sendAnimation, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendAnimation", sendAnimation, cancellationToken);
+    Task<Message> SendAnimation(SendAnimation sendAnimation, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message.
@@ -155,8 +140,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendVoice">Details for the voice message to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendVoice(SendVoice sendVoice, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendVoice", sendVoice, cancellationToken);
+    Task<Message> SendVoice(SendVoice sendVoice, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages.
@@ -164,8 +148,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendVideoNote">Details for the video note to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendVideoNote(SendVideoNote sendVideoNote, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendVideoNote", sendVideoNote, cancellationToken);
+    Task<Message> SendVideoNote(SendVideoNote sendVideoNote, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send a group of photos or videos as an album.
@@ -173,8 +156,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendMediaGroup">Details for the media group to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message[]> SendMediaGroup(SendMediaGroup sendMediaGroup, CancellationToken cancellationToken = default) =>
-        Post<Message[]>("sendMediaGroup", sendMediaGroup, cancellationToken);
+    Task<Message[]> SendMediaGroup(SendMediaGroup sendMediaGroup, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send point on the map.
@@ -182,8 +164,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendLocation">Details for the location to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendLocation(SendLocation sendLocation, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendLocation", sendLocation, cancellationToken);
+    Task<Message> SendLocation(SendLocation sendLocation, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created.
@@ -192,8 +173,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="createNewStickerSet">Details for the sticker set to create.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns true on success, otherwise false.</returns>
-    public Task<bool> CreateNewStickerSet(CreateNewStickerSet createNewStickerSet, CancellationToken cancellationToken = default) =>
-        Post<bool>("createNewStickerSet", createNewStickerSet, cancellationToken);
+    Task<bool> CreateNewStickerSet(CreateNewStickerSet createNewStickerSet, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to edit live location messages.
@@ -202,10 +182,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="editMessageLiveLocation">Details for the live location to edit.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if the edited message was sent by the bot, the edited <see cref="Message" /> is returned, otherwise True is returned.</returns>
-    public Task<Message> EditMessageLiveLocation(
+    Task<Message> EditMessageLiveLocation(
         EditMessageLiveLocation editMessageLiveLocation,
-        CancellationToken cancellationToken = default) =>
-        Post<Message>("editMessageLiveLocation", editMessageLiveLocation, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get up to date information about the chat (current name of the user for one-on-one conversations,
@@ -214,8 +193,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getChat">ChatId for the request.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns a <see cref="Chat" /> object on success.</returns>
-    public Task<Chat> GetChat(GetChat getChat, CancellationToken cancellationToken = default) =>
-        Post<Chat>("getChat", getChat, cancellationToken);
+    Task<Chat> GetChat(GetChat getChat, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get information about a member of a chat.
@@ -223,8 +201,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getChatMember">UserId of the chat member.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns a <see cref="ChatMember" /> object on success.</returns>
-    public Task<ChatMember> GetChatMember(GetChatMember getChatMember, CancellationToken cancellationToken = default) =>
-        Post<ChatMember>("getChatMember", getChatMember, cancellationToken);
+    Task<ChatMember> GetChatMember(GetChatMember getChatMember, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get a sticker set.
@@ -232,8 +209,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getStickerSet">Name of the sticker set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, a <see cref="StickerSet" /> object is returned.</returns>
-    public Task<StickerSet> GetStickerSet(GetStickerSet getStickerSet, CancellationToken cancellationToken = default) =>
-        Post<StickerSet>("getStickerSet", getStickerSet, cancellationToken);
+    Task<StickerSet> GetStickerSet(GetStickerSet getStickerSet, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get a list of profile pictures for a user.
@@ -241,10 +217,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getUserProfilePhotos">Filter for the requested username.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns a <see cref="UserProfilePhotos" /> object.</returns>
-    public Task<UserProfilePhotos> GetUserProfilePhotos(
+    Task<UserProfilePhotos> GetUserProfilePhotos(
         GetUserProfilePhotos getUserProfilePhotos,
-        CancellationToken cancellationToken = default) =>
-        Post<UserProfilePhotos>("getUserProfilePhotos", getUserProfilePhotos, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get a list of administrators in a chat.
@@ -256,10 +231,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     ///     bots.
     ///     If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
     /// </returns>
-    public Task<IEnumerable<ChatMember>> GetChatAdministrators(
+    Task<IEnumerable<ChatMember>> GetChatAdministrators(
         GetChatAdministrators getChatAdministrators,
-        CancellationToken cancellationToken = default) =>
-        Post<IEnumerable<ChatMember>>("getChatAdministrators", getChatAdministrators, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get the number of members in a chat.
@@ -267,8 +241,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getChatMemberCount">ChatId for the request.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns Int on success.</returns>
-    public Task<int> GetChatMemberCount(GetChatMemberCount getChatMemberCount, CancellationToken cancellationToken = default) =>
-        Post<int>("getChatMemberCount", getChatMemberCount, cancellationToken);
+    Task<int> GetChatMemberCount(GetChatMemberCount getChatMemberCount, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will
@@ -278,8 +251,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="banChatMember">UserId for the user to kick.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> BanChatMember(BanChatMember banChatMember, CancellationToken cancellationToken = default) =>
-        Post<bool>("banChatMember", banChatMember, cancellationToken);
+    Task<bool> BanChatMember(BanChatMember banChatMember, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to delete a message, including service messages, with the following limitations:
@@ -294,8 +266,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="deleteMessage">Identifier of the message to delete.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> DeleteMessage(DeleteMessage deleteMessage, CancellationToken cancellationToken = default) =>
-        Post<bool>("deleteMessage", deleteMessage, cancellationToken);
+    Task<bool> DeleteMessage(DeleteMessage deleteMessage, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to delete a chat photo. Photos can't be changed for private chats.
@@ -304,8 +275,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="deleteChatPhoto">ChatId for the request.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> DeleteChatPhoto(DeleteChatPhoto deleteChatPhoto, CancellationToken cancellationToken = default) =>
-        Post<bool>("deleteChatPhoto", deleteChatPhoto, cancellationToken);
+    Task<bool> DeleteChatPhoto(DeleteChatPhoto deleteChatPhoto, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method for your bot to leave a group, supergroup or channel.
@@ -313,8 +283,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="leaveChat">ChatId for the request.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> LeaveChat(LeaveChat leaveChat, CancellationToken cancellationToken = default) =>
-        Post<bool>("leaveChat", leaveChat, cancellationToken);
+    Task<bool> LeaveChat(LeaveChat leaveChat, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to add a new sticker to a set created by the bot.
@@ -326,8 +295,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="addStickerToSet">Details for adding stickers to a set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> AddStickerToSet(AddStickerToSet addStickerToSet, CancellationToken cancellationToken = default) =>
-        Post<bool>("addStickerToSet", addStickerToSet, cancellationToken);
+    Task<bool> AddStickerToSet(AddStickerToSet addStickerToSet, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to delete a sticker from a set created by the bot.
@@ -335,8 +303,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="deleteStickerFromSet">Identifier of the sticker set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> DeleteStickerFromSet(DeleteStickerFromSet deleteStickerFromSet, CancellationToken cancellationToken = default) =>
-        Post<bool>("deleteStickerFromSet", deleteStickerFromSet, cancellationToken);
+    Task<bool> DeleteStickerFromSet(DeleteStickerFromSet deleteStickerFromSet, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to pin a message in a group, a supergroup, or a channel.
@@ -346,8 +313,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="pinChatMessage">Identifier of the message that should be pinned.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> PinChatMessage(PinChatMessage pinChatMessage, CancellationToken cancellationToken = default) =>
-        Post<bool>("pinChatMessage", pinChatMessage, cancellationToken);
+    Task<bool> PinChatMessage(PinChatMessage pinChatMessage, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to unpin a message in a group, a supergroup, or a channel.The bot must be an administrator in the chat for this
@@ -356,8 +322,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="unpinChatMessage">ChatId of the chat whose message should be unpinned.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> UnpinChatMessage(UnpinChatMessage unpinChatMessage, CancellationToken cancellationToken = default) =>
-        Post<bool>("unpinChatMessage", unpinChatMessage, cancellationToken);
+    Task<bool> UnpinChatMessage(UnpinChatMessage unpinChatMessage, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to change the description of a group, a supergroup or a channel.
@@ -366,8 +331,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setChatDescription">Details for the Chat whose description should be edited.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetChatDescription(SetChatDescription setChatDescription, CancellationToken cancellationToken = default) =>
-        Post<bool>("setChatDescription", setChatDescription, cancellationToken);
+    Task<bool> SetChatDescription(SetChatDescription setChatDescription, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to set default chat permissions for all members.
@@ -376,8 +340,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setChatPermissions">Permissions that should be set for the given chat.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetChatPermissions(SetChatPermissions setChatPermissions, CancellationToken cancellationToken = default) =>
-        Post<bool>("setChatPermissions", setChatPermissions, cancellationToken);
+    Task<bool> SetChatPermissions(SetChatPermissions setChatPermissions, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to change the title of a chat. Titles can't be changed for private chats.
@@ -386,8 +349,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setChatTitle">Title that should be set for the given chat.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetChatTitle(SetChatTitle setChatTitle, CancellationToken cancellationToken = default) =>
-        Post<bool>("setChatTitle", setChatTitle, cancellationToken);
+    Task<bool> SetChatTitle(SetChatTitle setChatTitle, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to set a new group sticker set for a supergroup.
@@ -397,8 +359,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setChatStickerSet">Sticker set that should be set for the given chat.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns></returns>
-    public Task<bool> SetChatStickerSet(SetChatStickerSet setChatStickerSet, CancellationToken cancellationToken = default) =>
-        Post<bool>("setChatStickerSet", setChatStickerSet, cancellationToken);
+    Task<bool> SetChatStickerSet(SetChatStickerSet setChatStickerSet, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to delete a group sticker set from a supergroup.
@@ -408,8 +369,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="deleteChatStickerSet">Deletes the sticker set from a chat.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> DeleteChatStickerSet(DeleteChatStickerSet deleteChatStickerSet, CancellationToken cancellationToken = default) =>
-        Post<bool>("deleteChatStickerSet", deleteChatStickerSet, cancellationToken);
+    Task<bool> DeleteChatStickerSet(DeleteChatStickerSet deleteChatStickerSet, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only.
@@ -417,10 +377,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setStickerSetThumbnail">Sets the thumbnail picture for the sticker set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetStickerSetThumbnail(
+    Task<bool> SetStickerSetThumbnail(
         SetStickerSetThumbnail setStickerSetThumbnail,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("setStickerSetThumbnail", setStickerSetThumbnail, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send static .WEBP or animated .TGS stickers.
@@ -428,8 +387,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendSticker">Details for the sticker to send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent Message is returned.</returns>
-    public Task<Message> SendSticker(SendSticker sendSticker, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendSticker", sendSticker, cancellationToken);
+    Task<Message> SendSticker(SendSticker sendSticker, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to set a new profile photo for the chat. Photos can't be changed for private chats.
@@ -438,8 +396,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setChatPhoto">Sets the photo for a given chat.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetChatPhoto(SetChatPhoto setChatPhoto, CancellationToken cancellationToken = default) =>
-        Post<bool>("setChatPhoto", setChatPhoto, cancellationToken);
+    Task<bool> SetChatPhoto(SetChatPhoto setChatPhoto, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to generate a new invite link for a chat; any previously generated link is revoked.
@@ -454,9 +411,8 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="exportChatInviteLink">ChatId for the request</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the new invite link on success.</returns>
-    public Task<string>
-        ExportChatInviteLink(ExportChatInviteLink exportChatInviteLink, CancellationToken cancellationToken = default) =>
-        Post<string>("exportChatInviteLink", exportChatInviteLink, cancellationToken);
+    Task<string>
+        ExportChatInviteLink(ExportChatInviteLink exportChatInviteLink, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to promote or demote a user in a supergroup or a channel.
@@ -466,8 +422,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="promoteChatMember">Permissions that should be granted to a chat member.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> PromoteChatMember(PromoteChatMember promoteChatMember, CancellationToken cancellationToken = default) =>
-        Post<bool>("promoteChatMember", promoteChatMember, cancellationToken);
+    Task<bool> PromoteChatMember(PromoteChatMember promoteChatMember, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to restrict a user in a supergroup.
@@ -477,8 +432,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="restrictChatMember">Permissions that should be restricted form a chat member.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> RestrictChatMember(RestrictChatMember restrictChatMember, CancellationToken cancellationToken = default) =>
-        Post<bool>("restrictChatMember", restrictChatMember, cancellationToken);
+    Task<bool> RestrictChatMember(RestrictChatMember restrictChatMember, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send phone contacts.
@@ -486,8 +440,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendContact">Details for the contact that should be send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendContact(SendContact sendContact, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendContact", sendContact, cancellationToken);
+    Task<Message> SendContact(SendContact sendContact, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used
@@ -496,8 +449,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="uploadStickerFile">Stickerfile that should be uploaded.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the uploaded <see cref="File" /> on success.</returns>
-    public Task<File> UploadStickerFile(UploadStickerFile uploadStickerFile, CancellationToken cancellationToken = default) =>
-        Post<File>("uploadStickerFile", uploadStickerFile, cancellationToken);
+    Task<File> UploadStickerFile(UploadStickerFile uploadStickerFile, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to edit text and game messages.
@@ -505,8 +457,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="editMessageText">Details for the message that should be edited.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
-    public Task<Message> EditMessageText(EditMessageText editMessageText, CancellationToken cancellationToken = default) =>
-        Post<Message>("editMessageText", editMessageText, cancellationToken);
+    Task<Message> EditMessageText(EditMessageText editMessageText, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to move a sticker in a set created by the bot to a specific position.
@@ -514,10 +465,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setStickerPositionInSet">Details for the sticker that should be repositioned in the sticker set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetStickerPositionInSet(
+    Task<bool> SetStickerPositionInSet(
         SetStickerPositionInSet setStickerPositionInSet,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("setStickerPositionInSet", setStickerPositionInSet, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method when you need to tell the user that something is happening on the bot's side.
@@ -526,8 +476,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendChatAction">Action that should be send to a chat.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SendChatAction(SendChatAction sendChatAction, CancellationToken cancellationToken = default) =>
-        Post<bool>("sendChatAction", sendChatAction, cancellationToken);
+    Task<bool> SendChatAction(SendChatAction sendChatAction, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send a native poll.
@@ -535,8 +484,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendPoll">Details for the poll that should be send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent Message is returned.</returns>
-    public Task<bool> SendPoll(SendPoll sendPoll, CancellationToken cancellationToken = default) =>
-        Post<bool>("sendPoll", sendPoll, cancellationToken);
+    Task<bool> SendPoll(SendPoll sendPoll, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to stop a poll which was sent by the bot.
@@ -544,8 +492,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="stopPoll">MessageId of the poll that should be stoped</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the stopped Poll with the final results is returned.</returns>
-    public Task<Poll> StopPoll(StopPoll stopPoll, CancellationToken cancellationToken = default) =>
-        Post<Poll>("stopPoll", stopPoll, cancellationToken);
+    Task<Poll> StopPoll(StopPoll stopPoll, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
@@ -553,10 +500,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setChatAdministratorCustomTitle">Details for the custom title.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetChatAdministratorCustomTitle(
+    Task<bool> SetChatAdministratorCustomTitle(
         SetChatAdministratorCustomTitle setChatAdministratorCustomTitle,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("setChatAdministratorCustomTitle", setChatAdministratorCustomTitle, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to unban a previously kicked user in a supergroup or channel.
@@ -566,8 +512,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="unbanChatMember">UserId of the chat member that should be unbanned.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> UnbanChatMember(UnbanChatMember unbanChatMember, CancellationToken cancellationToken = default) =>
-        Post<bool>("unbanChatMember", unbanChatMember, cancellationToken);
+    Task<bool> UnbanChatMember(UnbanChatMember unbanChatMember, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send a game.
@@ -575,12 +520,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendGame">Details for the game that should be send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendGame(SendGame sendGame, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendGame", sendGame, cancellationToken);
+    Task<Message> SendGame(SendGame sendGame, CancellationToken cancellationToken = default);
 
-    [Obsolete("This request will be removed in a future release. Please use SetGameScore instead.")]
-    public Task<bool> SetGameScoreInlineMessage(SetGameScore setGameScore, CancellationToken cancellationToken = default) =>
-        Post<bool>("setGameScore", setGameScore, cancellationToken);
+    Task<bool> SetGameScoreInlineMessage(SetGameScore setGameScore, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to set the score of the specified user in a game.
@@ -591,8 +533,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     ///     On success, if the message was sent by the bot, returns the edited Message, otherwise returns True.
     ///     Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
     /// </returns>
-    public Task<Message> SetGameScore(SetGameScore setGameScore, CancellationToken cancellationToken = default) =>
-        Post<Message>("setGameScore", setGameScore, cancellationToken);
+    Task<Message> SetGameScore(SetGameScore setGameScore, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get data for high score tables.
@@ -603,10 +544,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     ///     Will return the score of the specified user and several of their neighbors in a game.
     ///     On success, returns an Array of GameHighScore objects.
     /// </returns>
-    public Task<IEnumerable<GameHighScore>> GetGameHighScores(
+    Task<IEnumerable<GameHighScore>> GetGameHighScores(
         GetGameHighScores getGameHighScores,
-        CancellationToken cancellationToken = default) =>
-        Post<IEnumerable<GameHighScore>>("getGameHighScores", getGameHighScores, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to stop updating a live location message before live_period expires.
@@ -614,16 +554,13 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="stopMessageLiveLocation">MessageId of the liveLocation that should be stopped.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.</returns>
-    public Task<Message> StopMessageLiveLocation(
+    Task<Message> StopMessageLiveLocation(
         StopMessageLiveLocation stopMessageLiveLocation,
-        CancellationToken cancellationToken = default) =>
-        Post<Message>("stopMessageLiveLocation", stopMessageLiveLocation, cancellationToken);
+        CancellationToken cancellationToken = default);
 
-    [Obsolete("This request will be removed in a future release. Please use StopMessageLiveLocation instead.")]
-    public Task<bool> StopMessageLiveLocationInlineMessage(
+    Task<bool> StopMessageLiveLocationInlineMessage(
         StopMessageLiveLocation stopMessageLiveLocation,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("stopMessageLiveLocation", stopMessageLiveLocation, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send answers to callback queries sent from inline keyboards.
@@ -632,8 +569,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="answerCallbackQuery">Answer details for the callback query.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, True is returned.</returns>
-    public Task<bool> AnswerCallbackQuery(AnswerCallbackQuery answerCallbackQuery, CancellationToken cancellationToken = default) =>
-        Post<bool>("answerCallbackQuery", answerCallbackQuery, cancellationToken);
+    Task<bool> AnswerCallbackQuery(AnswerCallbackQuery answerCallbackQuery, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send answers to an inline query. No more than 50 results per query are allowed.
@@ -641,8 +577,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="answerInlineQuery">Answer details for the inline query.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, True is returned.</returns>
-    public Task<bool> AnswerInlineQuery(AnswerInlineQuery answerInlineQuery, CancellationToken cancellationToken = default) =>
-        Post<bool>("answerInlineQuery", answerInlineQuery, cancellationToken);
+    Task<bool> AnswerInlineQuery(AnswerInlineQuery answerInlineQuery, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to set the result of an interaction with a Web App and send a corresponding message
@@ -651,9 +586,8 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="answerWebAppQuery">Answer details for web app query.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, a SentWebAppMessage object is returned.</returns>
-    public Task<SentWebAppMessage>
-        AnswerWebAppQuery(AnswerWebAppQuery answerWebAppQuery, CancellationToken cancellationToken = default) =>
-        Post<SentWebAppMessage>("answerWebAppQuery", answerWebAppQuery, cancellationToken);
+    Task<SentWebAppMessage>
+        AnswerWebAppQuery(AnswerWebAppQuery answerWebAppQuery, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get the current list of the bot's commands.
@@ -661,8 +595,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getMyCommands">Bot scope and language definition</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns Array of <see cref="BotCommand" /> on success.</returns>
-    public Task<IEnumerable<BotCommand>> GetMyCommands(GetMyCommands getMyCommands, CancellationToken cancellationToken = default) =>
-        Get<IEnumerable<BotCommand>>("getMyCommands", getMyCommands, cancellationToken);
+    Task<IEnumerable<BotCommand>> GetMyCommands(GetMyCommands getMyCommands, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to change the list of the bot's commands. At most 100 commands can be specified.
@@ -670,11 +603,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setMyCommands">Bot commands that should be set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetMyCommands(SetMyCommands setMyCommands, CancellationToken cancellationToken = default) =>
-        Post<bool>("setMyCommands", setMyCommands, cancellationToken);
+    Task<bool> SetMyCommands(SetMyCommands setMyCommands, CancellationToken cancellationToken = default);
 
-    public Task<bool> DeleteMyCommands(DeleteMyCommands deleteMyCommands, CancellationToken cancellationToken = default) =>
-        Post<bool>("deleteMyCommands", deleteMyCommands, cancellationToken);
+    Task<bool> DeleteMyCommands(DeleteMyCommands deleteMyCommands, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send information about a venue.
@@ -682,8 +613,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendVenue">Details of the Venue that should be send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent <see cref="Message" /> is returned.</returns>
-    public Task<Message> SendVenue(SendVenue sendVenue, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendVenue", sendVenue, cancellationToken);
+    Task<Message> SendVenue(SendVenue sendVenue, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to edit captions of messages.
@@ -691,8 +621,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="editMessageCaption">Details for the message caption that should be edited.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
-    public Task<Message> EditMessageCaption(EditMessageCaption editMessageCaption, CancellationToken cancellationToken = default) =>
-        Post<Message>("editMessageCaption", editMessageCaption, cancellationToken);
+    Task<Message> EditMessageCaption(EditMessageCaption editMessageCaption, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to edit only the reply markup of messages.
@@ -700,10 +629,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="editMessageReplyMarkup">New reply markup for the message.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
-    public Task<Message> EditMessageReplyMarkup(
+    Task<Message> EditMessageReplyMarkup(
         EditMessageReplyMarkup editMessageReplyMarkup,
-        CancellationToken cancellationToken = default) =>
-        Post<Message>("editMessageReplyMarkup", editMessageReplyMarkup, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send invoices.
@@ -711,8 +639,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendInvoice">Details for the invoice that should be send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent Message is returned.</returns>
-    public Task<Message> SendInvoice(SendInvoice sendInvoice, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendInvoice", sendInvoice, cancellationToken);
+    Task<Message> SendInvoice(SendInvoice sendInvoice, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     If you sent an invoice requesting a shipping address and the parameter is_flexible was specified,
@@ -721,8 +648,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="answerShippingQuery">Details for answering a shipping query.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, True is returned.</returns>
-    public Task<bool> AnswerShippingQuery(AnswerShippingQuery answerShippingQuery, CancellationToken cancellationToken = default) =>
-        Post<bool>("answerShippingQuery", answerShippingQuery, cancellationToken);
+    Task<bool> AnswerShippingQuery(AnswerShippingQuery answerShippingQuery, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an
@@ -732,10 +658,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="answerPreCheckoutQuery">Answer for the preCheckoutQuery</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, True is returned.</returns>
-    public Task<bool> AnswerPreCheckoutQuery(
+    Task<bool> AnswerPreCheckoutQuery(
         AnswerPreCheckoutQuery answerPreCheckoutQuery,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("answerPreCheckoutQuery", answerPreCheckoutQuery, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Informs a user that some of the Telegram Passport elements they provided contains errors.
@@ -750,9 +675,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setPassportDataErrors">Error that should be set on the passport data.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetPassportDataErrors(
+    Task<bool> SetPassportDataErrors(
         SetPassportDataErrors setPassportDataErrors,
-        CancellationToken cancellationToken = default) => Post<bool>("setPassportDataErrors", setPassportDataErrors, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to edit animation, audio, document, photo, or video messages.
@@ -763,8 +688,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="editMessageMedia">Details for the changes of the message media.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
-    public Task<bool> EditMessageMedia(EditMessageMedia editMessageMedia, CancellationToken cancellationToken = default) =>
-        Post<bool>("editMessageMedia", editMessageMedia, cancellationToken);
+    Task<bool> EditMessageMedia(EditMessageMedia editMessageMedia, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send an animated emoji that will display a random value.
@@ -772,10 +696,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="sendDice">Details for the dice that should be send.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, the sent Message is returned.</returns>
-    public Task<Message> SendDice(SendDice sendDice, CancellationToken cancellationToken = default) =>
-        Post<Message>("sendDice", sendDice, cancellationToken);
-
-    #region Updates
+    Task<Message> SendDice(SendDice sendDice, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
@@ -787,8 +708,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="update">Filter for the requested updates.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>A list of all Updates belonging to your bot.</returns>
-    public Task<Update[]> GetUpdate(GetUpdate update, CancellationToken cancellationToken = default) =>
-        Get<Update[]>("getUpdates", update, cancellationToken);
+    Task<Update[]> GetUpdate(GetUpdate update, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to specify a url and receive incoming updates via an outgoing webhook.
@@ -800,26 +720,21 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setWebhook">Details for the webhook to set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>True if the webhook could be set successfully, otherwise false.</returns>
-    public Task<bool> SetWebhook(SetWebhook setWebhook, CancellationToken cancellationToken = default) =>
-        Get<bool>("setWebhook", setWebhook, cancellationToken);
+    Task<bool> SetWebhook(SetWebhook setWebhook, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.
     /// </summary>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>True if the webhook could be deleted successfully, otherwise false.</returns>
-    public Task<bool> DeleteWebhook(CancellationToken cancellationToken = default) =>
-        Get<bool>("deleteWebhook", default, cancellationToken);
+    Task<bool> DeleteWebhook(CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get current webhook status. If the bot is using getUpdates, will return an object with the url field empty.
     /// </summary>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, returns a WebhookInfo object.</returns>
-    public Task<WebhookInfo> GetWebhookInfo(CancellationToken cancellationToken = default) =>
-        Get<WebhookInfo>("getWebhookInfo", default, cancellationToken);
-
-    #endregion
+    Task<WebhookInfo> GetWebhookInfo(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to log out from the cloud Bot API server before launching the bot locally.
@@ -829,8 +744,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// </summary>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success</returns>
-    public Task<bool> LogOut(CancellationToken cancellationToken = default) =>
-        Get<bool>("logOut", cancellationToken: cancellationToken);
+    Task<bool> LogOut(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to close the bot instance before moving it from one local server to another. You need to delete the webhook
@@ -839,7 +753,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// </summary>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> Close(CancellationToken cancellationToken = default) => Get<bool>("close", default, cancellationToken);
+    Task<bool> Close(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an
@@ -849,8 +763,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="unpinAllChatMessages">Details for the messages to unpin</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> UnpinAllChatMessages(UnpinAllChatMessages unpinAllChatMessages, CancellationToken cancellationToken = default) =>
-        Post<bool>("unpinAllChatMessages", unpinAllChatMessages, cancellationToken);
+    Task<bool> UnpinAllChatMessages(UnpinAllChatMessages unpinAllChatMessages, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to copy messages of any kind.
@@ -859,8 +772,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="copyMessage">Details for the message to copy</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the <see cref="MessageIdObject"/> of the sent message on success.</returns>
-    public Task<MessageIdObject> CopyMessage(CopyMessage copyMessage, CancellationToken cancellationToken = default) =>
-        Post<MessageIdObject>("copyMessage", copyMessage, cancellationToken);
+    Task<MessageIdObject> CopyMessage(CopyMessage copyMessage, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to create an additional invite link for a chat.
@@ -870,10 +782,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="createChatInviteLink">Details for the chat invite link to create.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the new invite link as <see cref="ChatInviteLink"/>.</returns>
-    public Task<ChatInviteLink> CreateChatInviteLink(
+    Task<ChatInviteLink> CreateChatInviteLink(
         CreateChatInviteLink createChatInviteLink,
-        CancellationToken cancellationToken = default) =>
-        Post<ChatInviteLink>("createChatInviteLink", createChatInviteLink, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to edit a non-primary invite link created by the bot.
@@ -882,10 +793,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="editChatInviteLink">Details for the chat invite link to edit.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the edited invite link as a <see cref="ChatInviteLink"/>  object.</returns>
-    public Task<ChatInviteLink> EditChatInviteLink(
+    Task<ChatInviteLink> EditChatInviteLink(
         EditChatInviteLink editChatInviteLink,
-        CancellationToken cancellationToken = default) =>
-        Post<ChatInviteLink>("editChatInviteLink", editChatInviteLink, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to revoke an invite link created by the bot.
@@ -895,10 +805,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="revokeChatInviteLink">Details for the invite link to revoke.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the revoked invite link as <see cref="ChatInviteLink"/>  object.</returns>
-    public Task<ChatInviteLink> RevokeChatInviteLink(
+    Task<ChatInviteLink> RevokeChatInviteLink(
         RevokeChatInviteLink revokeChatInviteLink,
-        CancellationToken cancellationToken = default) =>
-        Post<ChatInviteLink>("revokeChatInviteLink", revokeChatInviteLink, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to approve a chat join request.
@@ -907,10 +816,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="approveChatJoinRequest">Join request to approve</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> ApproveChatJoinRequest(
+    Task<bool> ApproveChatJoinRequest(
         ApproveChatJoinRequest approveChatJoinRequest,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("approveChatJoinRequest", approveChatJoinRequest, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to decline a chat join request.
@@ -919,10 +827,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="declineChatJoinRequest">Join request to decline</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> DeclineChatJoinRequest(
+    Task<bool> DeclineChatJoinRequest(
         DeclineChatJoinRequest declineChatJoinRequest,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("declineChatJoinRequest", declineChatJoinRequest, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to ban a channel chat in a supergroup or a channel.
@@ -932,8 +839,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="banChatSenderChat">Sender to ban</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> BanChatSenderChat(BanChatSenderChat banChatSenderChat, CancellationToken cancellationToken = default) =>
-        Post<bool>("banChatSenderChat", banChatSenderChat, cancellationToken);
+    Task<bool> BanChatSenderChat(BanChatSenderChat banChatSenderChat, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to ban a channel chat in a supergroup or a channel.
@@ -943,8 +849,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="unbanChatSenderChat">Sender to ban</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> UnbanChatSenderChat(UnbanChatSenderChat unbanChatSenderChat, CancellationToken cancellationToken = default) =>
-        Post<bool>("unbanChatSenderChat", unbanChatSenderChat, cancellationToken);
+    Task<bool> UnbanChatSenderChat(UnbanChatSenderChat unbanChatSenderChat, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the bot's menu button in a private chat, or the default menu button.
@@ -952,8 +857,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setChatMenuButton">Definition for chat menu button.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetChatMenuButton(SetChatMenuButton setChatMenuButton, CancellationToken cancellationToken = default) =>
-        Post<bool>("setChatMenuButton", setChatMenuButton, cancellationToken);
+    Task<bool> SetChatMenuButton(SetChatMenuButton setChatMenuButton, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get the current value of the bot's menu button in a private chat, or the default menu button.
@@ -961,8 +865,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getChatMenuButton">Chat id for the chat.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns MenuButton on success.</returns>
-    public Task<MenuButton> GetChatMenuButton(GetChatMenuButton getChatMenuButton, CancellationToken cancellationToken = default) =>
-        Post<MenuButton>("getChatMenuButton", getChatMenuButton, cancellationToken);
+    Task<MenuButton> GetChatMenuButton(GetChatMenuButton getChatMenuButton, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the default administrator rights requested by the bot when it's added as an
@@ -972,10 +875,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setMyDefaultAdministratorRights">Permissions that should be set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetMyDefaultAdministratorRights(
+    Task<bool> SetMyDefaultAdministratorRights(
         SetMyDefaultAdministratorRights setMyDefaultAdministratorRights,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("setMyDefaultAdministratorRights", setMyDefaultAdministratorRights, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get the current default administrator rights of the bot.
@@ -983,10 +885,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getMyDefaultAdministratorRights">Determine which default rights should be returned.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns ChatAdministratorRights on success.</returns>
-    public Task<ChatAdministratorRights> GetMyDefaultAdministratorRights(
+    Task<ChatAdministratorRights> GetMyDefaultAdministratorRights(
         GetMyDefaultAdministratorRights getMyDefaultAdministratorRights,
-        CancellationToken cancellationToken = default) =>
-        Post<ChatAdministratorRights>("getMyDefaultAdministratorRights", getMyDefaultAdministratorRights, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to create a link for an invoice.
@@ -994,8 +895,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="createInvoiceLink">Metadata for the invoice</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the created invoice link as String on success.</returns>
-    public Task<string> CreateInvoiceLink(CreateInvoiceLink createInvoiceLink, CancellationToken cancellationToken = default) =>
-        Post<string>("createInvoiceLink", createInvoiceLink, cancellationToken);
+    Task<string> CreateInvoiceLink(CreateInvoiceLink createInvoiceLink, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get information about custom emoji stickers by their identifiers.
@@ -1003,10 +903,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getCustomEmojiStickers">Sticker ids to get</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns an Array of Sticker objects.</returns>
-    public Task<Sticker[]> GetCustomEmojiStickers(
+    Task<Sticker[]> GetCustomEmojiStickers(
         GetCustomEmojiStickers getCustomEmojiStickers,
-        CancellationToken cancellationToken = default) =>
-        Post<Sticker[]>("getCustomEmojiStickers", getCustomEmojiStickers, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to create a topic in a forum supergroup chat.
@@ -1015,8 +914,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="createForumTopic">Information of the topic to create</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns information about the created topic as a <see cref="ForumTopic"/> object.</returns>
-    public Task<ForumTopic> CreateForumTopic(CreateForumTopic createForumTopic, CancellationToken cancellationToken = default) =>
-        Post<ForumTopic>("createForumTopic", createForumTopic, cancellationToken);
+    Task<ForumTopic> CreateForumTopic(CreateForumTopic createForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to create a topic in a forum supergroup chat.
@@ -1025,8 +923,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="editForumTopic">Information of the topic to edit</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns information about the created topic as a <see cref="ForumTopic"/> object.</returns>
-    public Task<ForumTopic> EditForumTopic(EditForumTopic editForumTopic, CancellationToken cancellationToken = default) =>
-        Post<ForumTopic>("editForumTopic", editForumTopic, cancellationToken);
+    Task<ForumTopic> EditForumTopic(EditForumTopic editForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to close an open topic in a forum supergroup chat.
@@ -1036,8 +933,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="closeForumTopic">Forum topic to close</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> CloseForumTopic(CloseForumTopic closeForumTopic, CancellationToken cancellationToken = default) =>
-        Post<bool>("closeForumTopic", closeForumTopic, cancellationToken);
+    Task<bool> CloseForumTopic(CloseForumTopic closeForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to reopen a closed topic in a forum supergroup chat.
@@ -1047,8 +943,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="reopenForumTopic">Forum topic to reopen</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> ReopenForumTopic(ReopenForumTopic reopenForumTopic, CancellationToken cancellationToken = default) =>
-        Post<bool>("reopenForumTopic", reopenForumTopic, cancellationToken);
+    Task<bool> ReopenForumTopic(ReopenForumTopic reopenForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to delete a forum topic along with all its messages in a forum supergroup chat.
@@ -1057,8 +952,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="deleteForumTopic">Forum topic to delete</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> DeleteForumTopic(DeleteForumTopic deleteForumTopic, CancellationToken cancellationToken = default) =>
-        Post<bool>("deleteForumTopic", deleteForumTopic, cancellationToken);
+    Task<bool> DeleteForumTopic(DeleteForumTopic deleteForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to clear the list of pinned messages in a forum topic.
@@ -1068,18 +962,16 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="unpinAllForumTopicMessages">MessageThreadId to unpin all messages</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> UnpinAllForumTopicMessages(
+    Task<bool> UnpinAllForumTopicMessages(
         UnpinAllForumTopicMessages unpinAllForumTopicMessages,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("unpinAllForumTopicMessages", unpinAllForumTopicMessages, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get custom emoji stickers, which can be used as a forum topic icon by any user. Requires no parameters.
     /// </summary>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns an Array of Sticker objects.</returns>
-    public Task<Sticker[]> GetForumTopicIconStickers(CancellationToken cancellationToken = default) =>
-        Get<Sticker[]>("getForumTopicIconStickers", cancellationToken: cancellationToken);
+    Task<Sticker[]> GetForumTopicIconStickers(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to edit the name of the 'General' topic in a forum supergroup chat.
@@ -1088,9 +980,8 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="editGeneralForumTopic">Data to edit the general forum topic</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool>
-        EditGeneralForumTopic(EditGeneralForumTopic editGeneralForumTopic, CancellationToken cancellationToken = default) =>
-        Post<bool>("editGeneralForumTopic", editGeneralForumTopic, cancellationToken);
+    Task<bool>
+        EditGeneralForumTopic(EditGeneralForumTopic editGeneralForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to close an open 'General' topic in a forum supergroup chat.
@@ -1099,10 +990,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="closeGeneralForumTopic">General Forum Topic to close</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> CloseGeneralForumTopic(
+    Task<bool> CloseGeneralForumTopic(
         CloseGeneralForumTopic closeGeneralForumTopic,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("closeGeneralForumTopic", closeGeneralForumTopic, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to reopen a closed 'General' topic in a forum supergroup chat.
@@ -1112,10 +1002,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="reopenGeneralForumTopic">General forum topic to reopen</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> ReopenGeneralForumTopic(
+    Task<bool> ReopenGeneralForumTopic(
         ReopenGeneralForumTopic reopenGeneralForumTopic,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("reopenGeneralForumTopic", reopenGeneralForumTopic, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to hide the 'General' topic in a forum supergroup chat.
@@ -1125,9 +1014,8 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="hideGeneralForumTopic">General Forum topic to hide</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool>
-        HideGeneralForumTopic(HideGeneralForumTopic hideGeneralForumTopic, CancellationToken cancellationToken = default) =>
-        Post<bool>("hideGeneralForumTopic", hideGeneralForumTopic, cancellationToken);
+    Task<bool>
+        HideGeneralForumTopic(HideGeneralForumTopic hideGeneralForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to unhide the 'General' topic in a forum supergroup chat.
@@ -1136,10 +1024,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="unhideGeneralForumTopic">General Forum topic to unhide</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> UnhideGeneralForumTopic(
+    Task<bool> UnhideGeneralForumTopic(
         UnhideGeneralForumTopic unhideGeneralForumTopic,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("unhideGeneralForumTopic", unhideGeneralForumTopic, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the bot's description, which is shown in the chat with the bot if the chat is empty.
@@ -1147,8 +1034,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setMyDescription">Description to be set</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetMyDescription(SetMyDescription setMyDescription, CancellationToken cancellationToken = default) =>
-        Post<bool>("setMyDescription", setMyDescription, cancellationToken);
+    Task<bool> SetMyDescription(SetMyDescription setMyDescription, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get the current bot description for the given user language.
@@ -1156,8 +1042,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getMyDescription">Language to get the bot description for</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns BotDescription on success.</returns>
-    public Task<BotDescription> GetMyDescription(GetMyDescription getMyDescription, CancellationToken cancellationToken = default) =>
-        Post<BotDescription>("getMyDescription", getMyDescription, cancellationToken);
+    Task<BotDescription> GetMyDescription(GetMyDescription getMyDescription, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the bot's short description, which is shown on the bot's profile page and is sent together
@@ -1166,9 +1051,8 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setMyShortDescription">Language to set the short bot description for</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool>
-        SetMyShortDescription(SetMyShortDescription setMyShortDescription, CancellationToken cancellationToken = default) =>
-        Post<bool>("setMyShortDescription", setMyShortDescription, cancellationToken);
+    Task<bool>
+        SetMyShortDescription(SetMyShortDescription setMyShortDescription, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get the current bot short description for the given user language.
@@ -1176,10 +1060,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getMyShortDescription">Language to get the short bot description for</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns <see cref="BotShortDescription"/> on success.</returns>
-    public Task<BotShortDescription> GetMyShortDescription(
+    Task<BotShortDescription> GetMyShortDescription(
         GetMyShortDescription getMyShortDescription,
-        CancellationToken cancellationToken = default) =>
-        Post<BotShortDescription>("getMyShortDescription", getMyShortDescription, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to set the thumbnail of a custom emoji sticker set.
@@ -1187,10 +1070,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setCustomEmojiStickerSetThumbnail">Update info for the sticker set</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetCustomEmojiStickerSetThumbnail(
+    Task<bool> SetCustomEmojiStickerSetThumbnail(
         SetCustomEmojiStickerSetThumbnail setCustomEmojiStickerSetThumbnail,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("setCustomEmojiStickerSetThumbnail", setCustomEmojiStickerSetThumbnail, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to set the title of a created sticker set.
@@ -1198,8 +1080,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setStickerSetTitle">Update info for the sticker set</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetStickerSetTitle(SetStickerSetTitle setStickerSetTitle, CancellationToken cancellationToken = default) =>
-        Post<bool>("setStickerSetTitle", setStickerSetTitle, cancellationToken);
+    Task<bool> SetStickerSetTitle(SetStickerSetTitle setStickerSetTitle, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to delete a sticker set that was created by the bot.
@@ -1207,8 +1088,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="deleteStickerSet">Name of the sticker set to be deleted</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> DeleteStickerSet(DeleteStickerSet deleteStickerSet, CancellationToken cancellationToken = default) =>
-        Post<bool>("deleteStickerSet", deleteStickerSet, cancellationToken);
+    Task<bool> DeleteStickerSet(DeleteStickerSet deleteStickerSet, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the list of emoji assigned to a regular or custom emoji sticker.
@@ -1217,8 +1097,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setStickerEmojiList">Emojis to set for a sticker</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetStickerEmojiList(SetStickerEmojiList setStickerEmojiList, CancellationToken cancellationToken = default) =>
-        Post<bool>("setStickerEmojiList", setStickerEmojiList, cancellationToken);
+    Task<bool> SetStickerEmojiList(SetStickerEmojiList setStickerEmojiList, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change search keywords assigned to a regular or custom emoji sticker.
@@ -1227,8 +1106,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setStickerKeywords">Keywords to set for a sticker</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetStickerKeywords(SetStickerKeywords setStickerKeywords, CancellationToken cancellationToken = default) =>
-        Post<bool>("setStickerKeywords", setStickerKeywords, cancellationToken);
+    Task<bool> SetStickerKeywords(SetStickerKeywords setStickerKeywords, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the mask position of a mask sticker.
@@ -1237,10 +1115,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setStickerMaskPosition">Mask position to set for a sticker</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> SetStickerMaskPosition(
+    Task<bool> SetStickerMaskPosition(
         SetStickerMaskPosition setStickerMaskPosition,
-        CancellationToken cancellationToken = default) =>
-        Post<bool>("setStickerMaskPosition", setStickerMaskPosition, cancellationToken);
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the bot's name.
@@ -1248,8 +1125,7 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="setMyName">Botname to set</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>True on success.</returns>
-    public Task<bool> SetMyName(SetMyName setMyName, CancellationToken cancellationToken = default) =>
-        Post<bool>("setMyName", setMyName, cancellationToken);
+    Task<bool> SetMyName(SetMyName setMyName, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get the current bot name for the given user language.
@@ -1257,6 +1133,5 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getMyName">Botname to get</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns <see cref="BotName"/> on success.</returns>
-    public Task<BotName> GetMyName(GetMyName getMyName, CancellationToken cancellationToken = default) =>
-        Post<BotName>("getMyName", getMyName, cancellationToken);
+    Task<BotName> GetMyName(GetMyName getMyName, CancellationToken cancellationToken = default);
 }

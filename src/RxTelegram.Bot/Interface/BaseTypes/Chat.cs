@@ -70,7 +70,7 @@ public class Chat
     public string EmojiStatusCustomEmojiId { get; set; }
 
     /// <summary>
-    /// Bio of the other party in a private chat. Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// Bio of the other party in a private chat. Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
     /// </summary>
     public string Bio { get; set; }
 
@@ -164,13 +164,13 @@ public class Chat
     /// for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages
     /// may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer
     /// or double-precision float type are safe for storing this identifier.
-    /// Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
     /// </summary>
     public long? LinkedChatId { get; set; }
 
     /// <summary>
     /// For supergroups, the location to which the supergroup is connected.
-    /// Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
     /// </summary>
     public ChatLocation Location { get; set; }
 }
