@@ -89,7 +89,7 @@ public class UpdateManager : IUpdateManager
         _update = new Observable<Update>(null, this);
     }
 
-    private async Task RunUpdateSafe()
+    internal async Task RunUpdateSafe()
     {
         try
         {
@@ -107,7 +107,7 @@ public class UpdateManager : IUpdateManager
         }
     }
 
-    private async Task RunUpdate()
+    internal async Task RunUpdate()
     {
         int? offset = null;
 
@@ -152,7 +152,7 @@ public class UpdateManager : IUpdateManager
         }
     }
 
-    private void DistributeUpdates(Update[] updates)
+    internal void DistributeUpdates(Update[] updates)
     {
         if (updates?.Any() != true)
         {
@@ -219,7 +219,7 @@ public class UpdateManager : IUpdateManager
         }
     }
 
-    private void OnNext<T>(UpdateType? updateType, T updateMessage)
+    internal void OnNext<T>(UpdateType? updateType, T updateMessage)
     {
         var observers = GetObservers(updateType);
         if (!observers.Any())
@@ -245,7 +245,7 @@ public class UpdateManager : IUpdateManager
         }
     }
 
-    private void OnException(Exception exception)
+    internal void OnException(Exception exception)
     {
         if (!AnyObserver)
         {
@@ -281,10 +281,10 @@ public class UpdateManager : IUpdateManager
         }
     }
 
-    private List<object> GetObservers(UpdateType? updateType) =>
+    internal List<object> GetObservers(UpdateType? updateType) =>
         !updateType.HasValue ? _updateObservers : _observerDictionary[updateType.Value];
 
-    private IDisposable Subscribe<T>(UpdateType? updateType, IObserver<T> observer)
+    internal IDisposable Subscribe<T>(UpdateType? updateType, IObserver<T> observer)
     {
         var observers = GetObservers(updateType);
 
@@ -312,7 +312,7 @@ public class UpdateManager : IUpdateManager
         return new Unsubscriber(() => Remove(updateType, observer));
     }
 
-    private void Remove<T>(UpdateType? updateType, IObserver<T> observer)
+    internal void Remove<T>(UpdateType? updateType, IObserver<T> observer)
     {
         var observers = GetObservers(updateType);
         if (!observers.Contains(observer))
@@ -328,7 +328,7 @@ public class UpdateManager : IUpdateManager
         if (AnyObserver == false &&
             Volatile.Read(ref _isRunning) == Running)
         {
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource?.Cancel();
         }
     }
 
