@@ -1,9 +1,8 @@
-namespace RxTelegram.Bot.Interface.Games
+namespace RxTelegram.Bot.Interface.Games;
+
+/// <summary>
+/// A placeholder, currently holds no information.
+/// </summary>
+public class CallbackGame
 {
-    /// <summary>
-    /// A placeholder, currently holds no information.
-    /// </summary>
-    public class CallbackGame
-    {
-    }
 }

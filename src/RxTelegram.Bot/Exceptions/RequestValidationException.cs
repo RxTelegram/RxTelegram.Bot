@@ -2,17 +2,16 @@ using System;
 using System.Collections.Generic;
 using RxTelegram.Bot.Validation;
 
-namespace RxTelegram.Bot.Exceptions
+namespace RxTelegram.Bot.Exceptions;
+
+public class RequestValidationException : Exception
 {
-    public class RequestValidationException : Exception
-    {
-        private static readonly string DefaultMessage =
-            $"Validation of the request faild. Please have a look at the {nameof(ValidationErrors)} property to see," +
-            " which properties have invalid values";
+    private static readonly string DefaultMessage =
+        $"Validation of the request faild. Please have a look at the {nameof(ValidationErrors)} property to see," +
+        " which properties have invalid values";
 
-        public List<ValidationError> ValidationErrors { get; }
+    public List<ValidationError> ValidationErrors { get; }
 
-        public RequestValidationException(List<ValidationError> validationErrors) : base(DefaultMessage) =>
-            ValidationErrors = validationErrors;
-    }
+    public RequestValidationException(List<ValidationError> validationErrors) : base(DefaultMessage) =>
+        ValidationErrors = validationErrors;
 }

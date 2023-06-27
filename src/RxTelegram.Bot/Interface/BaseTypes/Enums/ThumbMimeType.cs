@@ -1,16 +1,15 @@
 ﻿using System.Runtime.Serialization;
 
-namespace RxTelegram.Bot.Interface.BaseTypes.Enums
+namespace RxTelegram.Bot.Interface.BaseTypes.Enums;
+
+public enum ThumbMimeType
 {
-    public enum ThumbMimeType
-    {
-        [EnumMember(Value = "image/jpeg")]
-        Jpeg,
+    [EnumMember(Value = "image/jpeg")]
+    Jpeg,
 
-        [EnumMember(Value = "image/gif")]
-        Gif,
+    [EnumMember(Value = "image/gif")]
+    Gif,
 
-        [EnumMember(Value = "video/mp4")]
-        Mp4
-    }
+    [EnumMember(Value = "video/mp4")]
+    Mp4
 }

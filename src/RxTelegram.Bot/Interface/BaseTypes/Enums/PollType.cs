@@ -1,9 +1,8 @@
-namespace RxTelegram.Bot.Interface.BaseTypes.Enums
-{
-    public enum PollType
-    {
-        Quiz,
+namespace RxTelegram.Bot.Interface.BaseTypes.Enums;
 
-        Regular
-    }
+public enum PollType
+{
+    Quiz,
+
+    Regular
 }

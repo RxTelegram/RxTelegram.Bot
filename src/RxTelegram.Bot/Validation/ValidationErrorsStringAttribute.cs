@@ -1,12 +1,11 @@
 using System;
 
-namespace RxTelegram.Bot.Validation
-{
-    [AttributeUsage(AttributeTargets.Field)]
-    public class ValidationErrorsStringAttribute : Attribute
-    {
-        public string Reason { get; }
+namespace RxTelegram.Bot.Validation;
 
-        public ValidationErrorsStringAttribute(string reason) => Reason = reason;
-    }
+[AttributeUsage(AttributeTargets.Field)]
+public class ValidationErrorsStringAttribute : Attribute
+{
+    public string Reason { get; }
+
+    public ValidationErrorsStringAttribute(string reason) => Reason = reason;
 }

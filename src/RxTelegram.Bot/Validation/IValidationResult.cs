@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 
-namespace RxTelegram.Bot.Validation
+namespace RxTelegram.Bot.Validation;
+
+public interface IValidationResult
 {
-    public interface IValidationResult
-    {
-        List<ValidationError> Errors { get; }
+    List<ValidationError> Errors { get; }
 
-        bool IsValid();
+    bool IsValid();
 
-        string Path { get; set; }
-    }
+    string Path { get; set; }
 }

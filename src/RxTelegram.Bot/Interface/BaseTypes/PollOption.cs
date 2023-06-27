@@ -1,18 +1,17 @@
-namespace RxTelegram.Bot.Interface.BaseTypes
+namespace RxTelegram.Bot.Interface.BaseTypes;
+
+/// <summary>
+/// This object contains information about one answer option in a poll.
+/// </summary>
+public class PollOption
 {
     /// <summary>
-    /// This object contains information about one answer option in a poll.
+    /// Option text, 1-100 characters
     /// </summary>
-    public class PollOption
-    {
-        /// <summary>
-        /// Option text, 1-100 characters
-        /// </summary>
-        public string Text { get; set; }
+    public string Text { get; set; }
 
-        /// <summary>
-        /// Number of users that voted for this option
-        /// </summary>
-        public int VoterCount { get; set; }
-    }
+    /// <summary>
+    /// Number of users that voted for this option
+    /// </summary>
+    public int VoterCount { get; set; }
 }

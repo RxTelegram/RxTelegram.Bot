@@ -1,31 +1,30 @@
-namespace RxTelegram.Bot.Interface.Passport.Enum
+namespace RxTelegram.Bot.Interface.Passport.Enum;
+
+public enum ElementType
 {
-    public enum ElementType
-    {
-        PersonalDetails,
+    PersonalDetails,
 
-        Passport,
+    Passport,
 
-        DriverLicense,
+    DriverLicense,
 
-        IdentityCard,
+    IdentityCard,
 
-        InternalPassport,
+    InternalPassport,
 
-        Address,
+    Address,
 
-        UtilityBill,
+    UtilityBill,
 
-        BankStatement,
+    BankStatement,
 
-        RentalAgreement,
+    RentalAgreement,
 
-        PassportRegistration,
+    PassportRegistration,
 
-        TemporaryRegistration,
+    TemporaryRegistration,
 
-        PhoneNumber,
+    PhoneNumber,
 
-        Email
-    }
+    Email
 }

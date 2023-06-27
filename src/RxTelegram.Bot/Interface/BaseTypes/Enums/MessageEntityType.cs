@@ -1,95 +1,94 @@
-namespace RxTelegram.Bot.Interface.BaseTypes.Enums
+namespace RxTelegram.Bot.Interface.BaseTypes.Enums;
+
+public enum MessageEntityType
 {
-    public enum MessageEntityType
-    {
-        /// <summary>
-        /// A mentioned <see cref="User"/>
-        /// </summary>
-        Mention,
+    /// <summary>
+    /// A mentioned <see cref="User"/>
+    /// </summary>
+    Mention,
 
-        /// <summary>
-        /// A searchable Hashtag
-        /// </summary>
-        Hashtag,
+    /// <summary>
+    /// A searchable Hashtag
+    /// </summary>
+    Hashtag,
 
-        /// <summary>
-        /// A Bot command
-        /// </summary>
-        BotCommand,
+    /// <summary>
+    /// A Bot command
+    /// </summary>
+    BotCommand,
 
-        /// <summary>
-        /// An url
-        /// </summary>
-        Url,
+    /// <summary>
+    /// An url
+    /// </summary>
+    Url,
 
-        /// <summary>
-        /// An email
-        /// </summary>
-        Email,
+    /// <summary>
+    /// An email
+    /// </summary>
+    Email,
 
-        /// <summary>
-        /// Bold text
-        /// </summary>
-        Bold,
+    /// <summary>
+    /// Bold text
+    /// </summary>
+    Bold,
 
-        /// <summary>
-        /// Italic text
-        /// </summary>
-        Italic,
+    /// <summary>
+    /// Italic text
+    /// </summary>
+    Italic,
 
-        /// <summary>
-        /// Spoiler message
-        /// </summary>
-        Spoiler,
+    /// <summary>
+    /// Spoiler message
+    /// </summary>
+    Spoiler,
 
-        /// <summary>
-        /// Monowidth string
-        /// </summary>
-        Code,
+    /// <summary>
+    /// Monowidth string
+    /// </summary>
+    Code,
 
-        /// <summary>
-        /// Monowidth block
-        /// </summary>
-        Pre,
+    /// <summary>
+    /// Monowidth block
+    /// </summary>
+    Pre,
 
-        /// <summary>
-        /// Clickable text urls
-        /// </summary>
-        TextLink,
+    /// <summary>
+    /// Clickable text urls
+    /// </summary>
+    TextLink,
 
-        /// <summary>
-        /// Mentions for a <see cref="User"/> without <see cref="User.Username"/>
-        /// </summary>
-        TextMention,
+    /// <summary>
+    /// Mentions for a <see cref="User"/> without <see cref="User.Username"/>
+    /// </summary>
+    TextMention,
 
-        /// <summary>
-        /// Phone number
-        /// </summary>
-        PhoneNumber,
+    /// <summary>
+    /// Phone number
+    /// </summary>
+    PhoneNumber,
 
-        /// <summary>
-        /// A cashtag (e.g. $EUR, $USD) - $ followed by the short currency code
-        /// </summary>
-        Cashtag,
+    /// <summary>
+    /// A cashtag (e.g. $EUR, $USD) - $ followed by the short currency code
+    /// </summary>
+    Cashtag,
 
-        /// <summary>
-        /// Unknown entity type
-        /// </summary>
-        Unknown,
+    /// <summary>
+    /// Unknown entity type
+    /// </summary>
+    Unknown,
 
-        /// <summary>
-        /// Underlined text
-        /// </summary>
-        Underline,
+    /// <summary>
+    /// Underlined text
+    /// </summary>
+    Underline,
 
-        /// <summary>
-        /// Strikethrough text
-        /// </summary>
-        Strikethrough,
+    /// <summary>
+    /// Strikethrough text
+    /// </summary>
+    Strikethrough,
 
-        /// <summary>
-        /// Inline custom emoji stickers
-        /// </summary>
-        CustomEmoji,
-    }
+    /// <summary>
+    /// Inline custom emoji stickers
+    /// </summary>
+    CustomEmoji,
 }

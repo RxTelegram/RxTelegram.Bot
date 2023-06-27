@@ -2,14 +2,13 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace RxTelegram.Bot.Utils
+namespace RxTelegram.Bot.Utils;
+
+internal class RegexAttribute : Attribute
 {
-    internal class RegexAttribute : Attribute
-    {
-        private readonly string[] _regex;
+    private readonly string[] _regex;
 
-        public RegexAttribute(params string[] regex) => _regex = regex;
+    public RegexAttribute(params string[] regex) => _regex = regex;
 
-        public bool Match(string description) => _regex?.Any(x => Regex.IsMatch(description, x)) == true;
-    }
+    public bool Match(string description) => _regex?.Any(x => Regex.IsMatch(description, x)) == true;
 }

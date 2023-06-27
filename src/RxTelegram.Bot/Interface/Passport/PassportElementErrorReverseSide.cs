@@ -1,7 +1,6 @@
-﻿namespace RxTelegram.Bot.Interface.Passport
+﻿namespace RxTelegram.Bot.Interface.Passport;
+
+public class PassportElementErrorReverseSide : PassportElementError
 {
-    public class PassportElementErrorReverseSide : PassportElementError
-    {
-        public override string Source { get; } = "reverse_side";
-    }
+    public override string Source { get; } = "reverse_side";
 }

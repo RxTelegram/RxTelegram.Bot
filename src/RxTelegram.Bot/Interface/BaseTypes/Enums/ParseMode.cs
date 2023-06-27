@@ -1,9 +1,8 @@
-namespace RxTelegram.Bot.Interface.BaseTypes.Enums
-{
-    public enum ParseMode
-    {
-        Markdown,
+namespace RxTelegram.Bot.Interface.BaseTypes.Enums;
 
-        HTML
-    }
+public enum ParseMode
+{
+    Markdown,
+
+    HTML
 }

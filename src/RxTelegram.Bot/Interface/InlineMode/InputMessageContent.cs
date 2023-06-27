@@ -1,12 +1,11 @@
 ﻿using RxTelegram.Bot.Interface.Validation;
 
-namespace RxTelegram.Bot.Interface.InlineMode
+namespace RxTelegram.Bot.Interface.InlineMode;
+
+/// <summary>
+///     Represents the Base for these 20 types
+///     https://core.telegram.org/bots/api#inputmessagecontent
+/// </summary>
+public abstract class InputMessageContent : BaseValidation
 {
-    /// <summary>
-    ///     Represents the Base for these 20 types
-    ///     https://core.telegram.org/bots/api#inputmessagecontent
-    /// </summary>
-    public abstract class InputMessageContent : BaseValidation
-    {
-    }
 }

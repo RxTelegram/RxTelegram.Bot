@@ -1,10 +1,9 @@
-﻿namespace RxTelegram.Bot.Interface.BotCommandScope
+﻿namespace RxTelegram.Bot.Interface.BotCommandScope;
+
+public abstract class BotCommandScopeBase
 {
-    public abstract class BotCommandScopeBase
-    {
-        /// <summary>
-        /// Scope type
-        /// </summary>
-        public abstract string Type { get; }
-    }
+    /// <summary>
+    /// Scope type
+    /// </summary>
+    public abstract string Type { get; }
 }

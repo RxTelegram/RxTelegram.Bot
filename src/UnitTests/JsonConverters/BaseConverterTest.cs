@@ -2,13 +2,12 @@
 using NUnit.Framework;
 using RxTelegram.Bot.Api;
 
-namespace RxTelegram.Bot.UnitTests.JsonConverters
-{
-    public class BaseConverterTest
-    {
-        protected JsonSerializerSettings JsonSerializerSettings;
+namespace RxTelegram.Bot.UnitTests.JsonConverters;
 
-        [OneTimeSetUp]
-        public void Setup() => JsonSerializerSettings = BaseTelegramBot.JsonSerializerSettings;
-    }
+public class BaseConverterTest
+{
+    protected JsonSerializerSettings JsonSerializerSettings;
+
+    [OneTimeSetUp]
+    public void Setup() => JsonSerializerSettings = BaseTelegramBot.JsonSerializerSettings;
 }

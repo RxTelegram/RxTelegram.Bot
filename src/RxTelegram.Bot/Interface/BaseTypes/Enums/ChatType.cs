@@ -1,15 +1,14 @@
-namespace RxTelegram.Bot.Interface.BaseTypes.Enums
+namespace RxTelegram.Bot.Interface.BaseTypes.Enums;
+
+public enum ChatType
 {
-    public enum ChatType
-    {
-        Private,
+    Private,
 
-        Group,
+    Group,
 
-        Supergroup,
+    Supergroup,
 
-        Channel,
+    Channel,
 
-        Sender
-    }
+    Sender
 }

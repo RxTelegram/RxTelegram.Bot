@@ -1,27 +1,26 @@
-namespace RxTelegram.Bot.Interface.BaseTypes.Enums
+namespace RxTelegram.Bot.Interface.BaseTypes.Enums;
+
+public enum UpdateType
 {
-    public enum UpdateType
-    {
-        Message,
+    Message,
 
-        InlineQuery,
+    InlineQuery,
 
-        ChosenInlineResult,
+    ChosenInlineResult,
 
-        CallbackQuery,
+    CallbackQuery,
 
-        EditedMessage,
+    EditedMessage,
 
-        ChannelPost,
+    ChannelPost,
 
-        EditedChannelPost,
+    EditedChannelPost,
 
-        ShippingQuery,
+    ShippingQuery,
 
-        PreCheckoutQuery,
+    PreCheckoutQuery,
 
-        Poll,
+    Poll,
 
-        PollAnswer,
-    }
+    PollAnswer,
 }

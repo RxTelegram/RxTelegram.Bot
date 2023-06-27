@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes;
 
-namespace RxTelegram.Bot.Utils.Keyboard.Interfaces
-{
-    public interface IInlineKeyboardBuilder
-    {
-        public IInlineKeyboardRow BeginRow();
+namespace RxTelegram.Bot.Utils.Keyboard.Interfaces;
 
-        public IEnumerable<IEnumerable<InlineKeyboardButton>> Build();
-    }
+public interface IInlineKeyboardBuilder
+{
+    public IInlineKeyboardRow BeginRow();
+
+    public IEnumerable<IEnumerable<InlineKeyboardButton>> Build();
 }

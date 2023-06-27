@@ -2,63 +2,62 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
-namespace RxTelegram.Bot.Interface.BaseTypes.Enums
+namespace RxTelegram.Bot.Interface.BaseTypes.Enums;
+
+public enum ChatActions
 {
-    public enum ChatActions
-    {
-        /// <summary>
-        /// <see cref="SendMessage"/>
-        /// </summary>
-        Typing,
+    /// <summary>
+    /// <see cref="SendMessage"/>
+    /// </summary>
+    Typing,
 
-        /// <summary>
-        /// <see cref="SendPhoto"/>
-        /// </summary>
-        UploadPhoto,
+    /// <summary>
+    /// <see cref="SendPhoto"/>
+    /// </summary>
+    UploadPhoto,
 
-        /// <summary>
-        /// <see cref="SendVideo"/>
-        /// </summary>
-        RecordVideo,
+    /// <summary>
+    /// <see cref="SendVideo"/>
+    /// </summary>
+    RecordVideo,
 
-        /// <summary>
-        /// <see cref="SendVideo"/>
-        /// </summary>
-        UploadVideo,
+    /// <summary>
+    /// <see cref="SendVideo"/>
+    /// </summary>
+    UploadVideo,
 
-        /// <summary>
-        /// <see cref="SendAudio"/>
-        /// </summary>
-        RecordAudio,
+    /// <summary>
+    /// <see cref="SendAudio"/>
+    /// </summary>
+    RecordAudio,
 
-        /// <summary>
-        /// <see cref="SendAudio"/>
-        /// </summary>
-        UploadAudio,
+    /// <summary>
+    /// <see cref="SendAudio"/>
+    /// </summary>
+    UploadAudio,
 
-        /// <summary>
-        /// <see cref="SendDocument"/>
-        /// </summary>
-        UploadDocument,
+    /// <summary>
+    /// <see cref="SendDocument"/>
+    /// </summary>
+    UploadDocument,
 
-        /// <summary>
-        /// <see cref="SendSticker"/>
-        /// </summary>
-        ChooseSticker,
+    /// <summary>
+    /// <see cref="SendSticker"/>
+    /// </summary>
+    ChooseSticker,
 
-        /// <summary>
-        /// <see cref="SendLocation"/>
-        /// </summary>
-        FindLocation,
+    /// <summary>
+    /// <see cref="SendLocation"/>
+    /// </summary>
+    FindLocation,
 
-        /// <summary>
-        /// <see cref="SendVideo"/>
-        /// </summary>
-        RecordVideoNote,
+    /// <summary>
+    /// <see cref="SendVideo"/>
+    /// </summary>
+    RecordVideoNote,
 
-        /// <summary>
-        /// <see cref="SendVideo"/>
-        /// </summary>
-        UploadVideoNote
-    }
+    /// <summary>
+    /// <see cref="SendVideo"/>
+    /// </summary>
+    UploadVideoNote
 }

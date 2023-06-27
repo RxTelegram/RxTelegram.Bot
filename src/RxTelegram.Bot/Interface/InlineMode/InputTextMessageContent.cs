@@ -4,14 +4,14 @@ using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Validation;
 
-namespace RxTelegram.Bot.Interface.InlineMode
-{
-    /// <summary>
-    /// Represents the content of a text message to be sent as the result of an inline query.
-    /// </summary>
-    public class InputTextMessageContent: InputMessageContent
+namespace RxTelegram.Bot.Interface.InlineMode;
 
-    {
+/// <summary>
+/// Represents the content of a text message to be sent as the result of an inline query.
+/// </summary>
+public class InputTextMessageContent: InputMessageContent
+
+{
     /// <summary>
     /// Text of the message to be sent, 1-4096 characters
     /// </summary>
@@ -34,5 +34,4 @@ namespace RxTelegram.Bot.Interface.InlineMode
     public bool DisableWebPagePreview { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
-    }
 }

@@ -1,17 +1,16 @@
-namespace RxTelegram.Bot.Interface.BaseTypes.Enums
+namespace RxTelegram.Bot.Interface.BaseTypes.Enums;
+
+public enum ChatMemberStatus
 {
-    public enum ChatMemberStatus
-    {
-        Creator,
+    Creator,
 
-        Administrator,
+    Administrator,
 
-        Member,
+    Member,
 
-        Restricted,
+    Restricted,
 
-        Left,
+    Left,
 
-        Kicked
-    }
+    Kicked
 }

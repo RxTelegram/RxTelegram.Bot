@@ -1,25 +1,24 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Validation;
 
-namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages
+namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
+
+/// <summary>
+/// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+/// </summary>
+public class StopPoll : BaseRequest
 {
     /// <summary>
-    /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+    /// Required
+    /// Identifier of the original message with the poll
     /// </summary>
-    public class StopPoll : BaseRequest
-    {
-        /// <summary>
-        /// Required
-        /// Identifier of the original message with the poll
-        /// </summary>
-        public int MessageId { get; set; }
+    public int MessageId { get; set; }
 
-        /// <summary>
-        /// Optional
-        /// A JSON-serialized object for a new message inline keyboard.
-        /// </summary>
-        public InlineKeyboardMarkup ReplyMarkup { get; set; }
+    /// <summary>
+    /// Optional
+    /// A JSON-serialized object for a new message inline keyboard.
+    /// </summary>
+    public InlineKeyboardMarkup ReplyMarkup { get; set; }
 
-        protected override IValidationResult Validate() => this.CreateValidation();
-    }
+    protected override IValidationResult Validate() => this.CreateValidation();
 }

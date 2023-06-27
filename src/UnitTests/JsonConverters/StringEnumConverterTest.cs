@@ -5,47 +5,46 @@ using RxTelegram.Bot.Interface.Passport.Enum;
 using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Enums;
 
-namespace RxTelegram.Bot.UnitTests.JsonConverters
+namespace RxTelegram.Bot.UnitTests.JsonConverters;
+
+[TestFixture]
+public class StringEnumConverterTest : BaseConverterTest
 {
-    [TestFixture]
-    public class StringEnumConverterTest : BaseConverterTest
+    [Test]
+    public void SerializeElementType()
     {
-        [Test]
-        public void SerializeElementType()
-        {
-            var objectToSerialize = new
-                                    {
-                                        elementType = ElementType.BankStatement
-                                    };
+        var objectToSerialize = new
+                                {
+                                    elementType = ElementType.BankStatement
+                                };
 
-            var json = JsonConvert.SerializeObject(objectToSerialize, JsonSerializerSettings);
-            Assert.NotNull(json);
-            Assert.True(json.Contains("bank_statement"));
-        }
+        var json = JsonConvert.SerializeObject(objectToSerialize, JsonSerializerSettings);
+        Assert.NotNull(json);
+        Assert.True(json.Contains("bank_statement"));
+    }
 
-        [Test]
-        public void SerializeParseMode()
-        {
-            var objectToSerialize = new
-                                    {
-                                        parse = ParseMode.Markdown
-                                    };
+    [Test]
+    public void SerializeParseMode()
+    {
+        var objectToSerialize = new
+                                {
+                                    parse = ParseMode.Markdown
+                                };
 
-            var json = JsonConvert.SerializeObject(objectToSerialize, JsonSerializerSettings);
-            Assert.NotNull(json);
-            Assert.True(json.Contains("markdown"));
-        }
+        var json = JsonConvert.SerializeObject(objectToSerialize, JsonSerializerSettings);
+        Assert.NotNull(json);
+        Assert.True(json.Contains("markdown"));
+    }
 
-        [Test]
-        public void SerializeStickerType()
-        {
-            var sicker = new Sticker
-                         {
-                             Type = StickerType.CustomEmoji
-                         };
-            var json = JsonConvert.SerializeObject(sicker, JsonSerializerSettings);
-            Assert.NotNull(json);
-            Assert.True(json.Contains("custom_emoji"));
-        }
+    [Test]
+    public void SerializeStickerType()
+    {
+        var sicker = new Sticker
+                     {
+                         Type = StickerType.CustomEmoji
+                     };
+        var json = JsonConvert.SerializeObject(sicker, JsonSerializerSettings);
+        Assert.NotNull(json);
+        Assert.True(json.Contains("custom_emoji"));
     }
 }

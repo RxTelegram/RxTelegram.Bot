@@ -1,23 +1,22 @@
-﻿namespace RxTelegram.Bot.Interface.BaseTypes
+﻿namespace RxTelegram.Bot.Interface.BaseTypes;
+
+/// <summary>
+/// This object represents a video message (available in Telegram apps as of v.4.0).
+/// </summary>
+public class VideoNote : FileBase
 {
     /// <summary>
-    /// This object represents a video message (available in Telegram apps as of v.4.0).
+    /// Video width and height as defined by sender
     /// </summary>
-    public class VideoNote : FileBase
-    {
-        /// <summary>
-        /// Video width and height as defined by sender
-        /// </summary>
-        public int Length { get; set; }
+    public int Length { get; set; }
 
-        /// <summary>
-        /// Duration of the video in seconds as defined by sender
-        /// </summary>
-        public int Duration { get; set; }
+    /// <summary>
+    /// Duration of the video in seconds as defined by sender
+    /// </summary>
+    public int Duration { get; set; }
 
-        /// <summary>
-        /// Optional. Video thumbnail
-        /// </summary>
-        public PhotoSize Thumbnail { get; set; }
-    }
+    /// <summary>
+    /// Optional. Video thumbnail
+    /// </summary>
+    public PhotoSize Thumbnail { get; set; }
 }
