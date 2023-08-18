@@ -11,6 +11,7 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	Directory.Build.props = Directory.Build.props
 	icon.png = icon.png
+	CodeCoverage.runsettings = CodeCoverage.runsettings
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{F47E60D1-54DB-48D1-81AC-6F30B4892C94}"
