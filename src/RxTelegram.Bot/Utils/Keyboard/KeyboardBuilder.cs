@@ -25,11 +25,6 @@ public class KeyboardBuilder : IReplyKeyboardRow, IReplyKeyboardBuilder, IInline
 
     public IReplyKeyboardRow BeginRow()
     {
-        if (_row is { Count: > 1 })
-        {
-            _keyboard.Add(_row);
-        }
-
         _row = new List<KeyboardButton>();
         return this;
     }
@@ -78,11 +73,6 @@ public class KeyboardBuilder : IReplyKeyboardRow, IReplyKeyboardBuilder, IInline
 
     IInlineKeyboardRow IInlineKeyboardBuilder.BeginRow()
     {
-        if (_inlineRow is { Count: > 1 })
-        {
-            _inlineKeyboard.Add(_inlineRow);
-        }
-
         _inlineRow = new List<InlineKeyboardButton>();
         return this;
     }
@@ -120,6 +110,7 @@ public class KeyboardBuilder : IReplyKeyboardRow, IReplyKeyboardBuilder, IInline
     {
         _inlineRow.Add(new InlineKeyboardButton
                        {
+                           Text = text,
                            LoginUrl = new LoginUrl
                                       {
                                           Url = loginUrl

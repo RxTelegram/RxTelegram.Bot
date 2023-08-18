@@ -65,7 +65,7 @@ public static class TelegramApiExtensions
     /// </summary>
     /// <param name="telegramBot">Extended object</param>
     /// <param name="fileId">Identifier of the file.</param>
-    /// <returns>Tupel of a file and the byte array that represents the file.</returns>
+    /// <returns>Tuple of a file and the byte array that represents the file.</returns>
     public static async Task<(File file, byte[] content)> GetFileAndDownloadByteArray(this ITelegramBot telegramBot, string fileId)
     {
         var file = await telegramBot.GetFile(fileId);
