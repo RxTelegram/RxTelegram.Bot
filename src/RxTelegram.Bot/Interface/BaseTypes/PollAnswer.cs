@@ -13,8 +13,16 @@ public class PollAnswer
     public string PollId { get; set; }
 
     /// <summary>
+    /// Optional. The chat that changed the answer to the poll, if the voter is anonymous
+    /// </summary>
+    public Chat VoterChat { get; set; }
+
+    /// <summary>
     /// The user, who changed the answer to the poll
     /// </summary>
+    /// <remarks>
+    /// For backward compatibility, the field user contain the user 136817688 (@Channel_Bot) when VoterChat is set
+    /// </remarks>
     public User User { get; set; }
 
     /// <summary>

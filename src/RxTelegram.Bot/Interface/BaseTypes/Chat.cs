@@ -70,6 +70,12 @@ public class Chat
     public string EmojiStatusCustomEmojiId { get; set; }
 
     /// <summary>
+    /// Optional. Expiration date of the emoji status of the other party in a private chat, if any.
+    /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public long EmojiStatusExpirationDate { get; set; }
+
+    /// <summary>
     /// Bio of the other party in a private chat. Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
     /// </summary>
     public string Bio { get; set; }

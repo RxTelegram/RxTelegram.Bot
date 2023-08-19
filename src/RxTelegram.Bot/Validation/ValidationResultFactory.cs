@@ -58,9 +58,9 @@ public static class ValidationResultFactory
     public static ValidationResult<GetChat> CreateValidation(this GetChat value) =>
         new ValidationResult<GetChat>(value).ValidateRequired(x => x.ChatId);
 
-    public static ValidationResult<GetChatMember> CreateValidation(this GetChatMember value) =>
-        new ValidationResult<GetChatMember>(value).ValidateRequired(x => x.ChatId)
-                                                  .ValidateRequired(x => x.UserId);
+    public static ValidationResult<GetChatMember> CreateValidation(this GetChatMember value) => new ValidationResult<GetChatMember>(value)
+        .ValidateRequired(x => x.ChatId)
+        .ValidateRequired(x => x.UserId);
 
     public static ValidationResult<GetStickerSet> CreateValidation(this GetStickerSet value) =>
         new ValidationResult<GetStickerSet>(value).ValidateRequired(x => x.Name);
@@ -96,9 +96,9 @@ public static class ValidationResultFactory
                                                                                         .ValidateRequired(x => x.ChatId)
                                                                                         .ValidateRequired(x => x.Video);
 
-    public static ValidationResult<SendAnimation> CreateValidation(this SendAnimation value) =>
-        new ValidationResult<SendAnimation>(value).ValidateRequired(x => x.ChatId)
-                                                  .ValidateRequired(x => x.Animation);
+    public static ValidationResult<SendAnimation> CreateValidation(this SendAnimation value) => new ValidationResult<SendAnimation>(value)
+        .ValidateRequired(x => x.ChatId)
+        .ValidateRequired(x => x.Animation);
 
     public static ValidationResult<SendVoice> CreateValidation(this SendVoice value) => new ValidationResult<SendVoice>(value)
                                                                                         .ValidateRequired(x => x.ChatId)
@@ -107,9 +107,9 @@ public static class ValidationResultFactory
     public static ValidationResult<GetChatMemberCount> CreateValidation(this GetChatMemberCount value) =>
         new ValidationResult<GetChatMemberCount>(value).ValidateRequired(x => x.ChatId);
 
-    public static ValidationResult<SendVideoNote> CreateValidation(this SendVideoNote value) =>
-        new ValidationResult<SendVideoNote>(value).ValidateRequired(x => x.ChatId)
-                                                  .ValidateRequired(x => x.VideoNote);
+    public static ValidationResult<SendVideoNote> CreateValidation(this SendVideoNote value) => new ValidationResult<SendVideoNote>(value)
+        .ValidateRequired(x => x.ChatId)
+        .ValidateRequired(x => x.VideoNote);
 
     public static ValidationResult<SendMediaGroup> CreateValidation(this SendMediaGroup value) =>
         new ValidationResult<SendMediaGroup>(value).ValidateRequired(x => x.ChatId)
@@ -117,13 +117,13 @@ public static class ValidationResultFactory
                                                    .IsFalse(x => x.Media != null && x.Media.All(input => input.GetType() == typeof(InputMediaPhoto) || input.GetType() == typeof(InputMediaDocument) || input.GetType() == typeof(InputMediaAudio) || input.GetType() == typeof(InputMediaVideo)),
                                                             ValidationErrors.OnlySomeInputMediaTypesAllowed);
 
-    public static ValidationResult<BanChatMember> CreateValidation(this BanChatMember value) =>
-        new ValidationResult<BanChatMember>(value).ValidateRequired(x => x.ChatId)
-                                                  .ValidateRequired(x => x.UserId);
+    public static ValidationResult<BanChatMember> CreateValidation(this BanChatMember value) => new ValidationResult<BanChatMember>(value)
+        .ValidateRequired(x => x.ChatId)
+        .ValidateRequired(x => x.UserId);
 
-    public static ValidationResult<DeleteMessage> CreateValidation(this DeleteMessage value) =>
-        new ValidationResult<DeleteMessage>(value).ValidateRequired(x => x.ChatId)
-                                                  .ValidateRequired(x => x.MessageId);
+    public static ValidationResult<DeleteMessage> CreateValidation(this DeleteMessage value) => new ValidationResult<DeleteMessage>(value)
+        .ValidateRequired(x => x.ChatId)
+        .ValidateRequired(x => x.MessageId);
 
     public static ValidationResult<DeleteChatPhoto> CreateValidation(this DeleteChatPhoto value) =>
         new ValidationResult<DeleteChatPhoto>(value).ValidateRequired(x => x.ChatId);
@@ -229,8 +229,7 @@ public static class ValidationResultFactory
                                                                                       .IsTrue(x => x.Type == PollType.Quiz && x.CorrectOptionId == null,
                                                                                           ValidationErrors.CorrectOptionRequired)
                                                                                       .IsTrue(x => x.OpenPeriod.HasValue && x.CloseDate.HasValue,
-                                                                                          ValidationErrors
-                                                                                              .OnlyOnePropertyCanBeSet);
+                                                                                          ValidationErrors.OnlyOnePropertyCanBeSet);
 
     public static ValidationResult<StopPoll> CreateValidation(this StopPoll value) =>
         new ValidationResult<StopPoll>(value).ValidateRequired(x => x.MessageId);
@@ -419,10 +418,9 @@ public static class ValidationResultFactory
         new ValidationResult<InputContactMessageContent>(value).ValidateRequired(x => x.PhoneNumber)
                                                                .ValidateRequired(x => x.FirstName);
 
-    public static ValidationResult<SetMyCommands> CreateValidation(this SetMyCommands value) =>
-        new ValidationResult<SetMyCommands>(value).ValidateRequired(x => x.Commands)
-                                                  .IsTrue(x => x.Commands != null && x.Commands.Count() > 100,
-                                                          ValidationErrors.CommandLimit);
+    public static ValidationResult<SetMyCommands> CreateValidation(this SetMyCommands value) => new ValidationResult<SetMyCommands>(value)
+        .ValidateRequired(x => x.Commands)
+        .IsTrue(x => x.Commands != null && x.Commands.Count() > 100, ValidationErrors.CommandLimit);
 
     public static ValidationResult<SendVenue> CreateValidation(this SendVenue value) => new ValidationResult<SendVenue>(value)
                                                                                         .ValidateRequired(x => x.ChatId)
@@ -546,9 +544,7 @@ public static class ValidationResultFactory
     public static ValidationResult<EditForumTopic> CreateValidation(this EditForumTopic value) =>
         new ValidationResult<EditForumTopic>(value).ValidateRequired(x => x.ChatId)
                                                    .ValidateRequired(x => x.MessageThreadId)
-                                                   .IsTrue(x => !string.IsNullOrEmpty(x.Name) &&
-                                                                x.Name.Length > 0 &&
-                                                                x.Name.Length <= 128);
+                                                   .IsTrue(x => !string.IsNullOrEmpty(x.Name) && x.Name.Length > 0 && x.Name.Length <= 128);
 
     public static ValidationResult<CloseForumTopic> CreateValidation(this CloseForumTopic value) =>
         new ValidationResult<CloseForumTopic>(value).ValidateRequired(x => x.ChatId)
@@ -623,4 +619,7 @@ public static class ValidationResultFactory
     public static ValidationResult<SetMyName> CreateValidation(this SetMyName value) =>
         new ValidationResult<SetMyName>(value).IsTrue(x => string.IsNullOrEmpty(x.Name) && x.Name != null && x.Name.Length <= 64,
                                                       ValidationErrors.TextTooLong);
+
+    public static ValidationResult<UnpinAllGeneralForumTopicMessages> CreateValidation(this UnpinAllGeneralForumTopicMessages value) =>
+        new ValidationResult<UnpinAllGeneralForumTopicMessages>(value).ValidateRequired(x => x.ChatId);
 }

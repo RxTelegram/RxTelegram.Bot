@@ -1259,4 +1259,16 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns <see cref="BotName"/> on success.</returns>
     public Task<BotName> GetMyName(GetMyName getMyName, CancellationToken cancellationToken = default) =>
         Post<BotName>("getMyName", getMyName, cancellationToken);
+
+    /// <summary>
+    /// Use this method to clear the list of pinned messages in a General forum topic.
+    /// The bot must be an administrator in the chat for this to work and must have the can_pin_messages administrator right in the supergroup.
+    /// </summary>
+    /// <param name="unpinAllGeneralForumTopicMessages">ChatId to unpin all general forum topic messages in </param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> UnpinAllGeneralForumTopicMessages(
+        UnpinAllGeneralForumTopicMessages unpinAllGeneralForumTopicMessages,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("unpinAllGeneralForumTopicMessages", unpinAllGeneralForumTopicMessages, cancellationToken);
 }

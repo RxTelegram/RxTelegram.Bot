@@ -163,6 +163,11 @@ public class Message
     public Sticker Sticker { get; set; }
 
     /// <summary>
+    /// Optional. Message is a forwarded story
+    /// </summary>
+    public Story Story { get; set; }
+
+    /// <summary>
     /// Optional. Description is a video, information about the video
     /// </summary>
     public Video Video { get; set; }
