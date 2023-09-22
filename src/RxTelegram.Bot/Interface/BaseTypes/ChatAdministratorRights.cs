@@ -68,4 +68,19 @@ public class ChatAdministratorRights
     /// Optional. True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups only
     /// </summary>
     public bool? CanManageTopics { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the administrator can post stories in the channel; channels only
+    /// </summary>
+    public bool? CanPostStories { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the administrator can edit stories posted by other users; channels only
+    /// </summary>
+    public bool? CanEditStories { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the administrator can delete stories posted by other users; channels only
+    /// </summary>
+    public bool? CanDeleteStories { get; set; }
 }

@@ -9,8 +9,8 @@
         <Description>Reactive Telegram Bot API for .NET</Description>
         <RepositoryUrl>https://github.com/RxTelegram/RxTelegram.Bot</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>Telegram;Bot;Api;Rx;Reactive;Observable</PackageTags>
-        <PackageVersion>6.8.0</PackageVersion>
+        <PackageTags>Telegram;Bot;Api;Rx;Reactive;Observable;RxTelegram;RxTelegram.Bot</PackageTags>
+        <PackageVersion>6.9.0</PackageVersion>
         <PackageIcon>icon.png</PackageIcon>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>

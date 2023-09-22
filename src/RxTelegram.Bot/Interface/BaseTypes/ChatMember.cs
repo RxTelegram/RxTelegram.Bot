@@ -164,4 +164,19 @@ public class ChatMember
     /// Optional. Administrators only. True, if the administrator can manage voice chats
     /// </summary>
     public bool? CanManageVideoChats { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the administrator can post stories in the channel; channels only
+    /// </summary>
+    public bool? CanPostStories { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the administrator can edit stories posted by other users; channels only
+    /// </summary>
+    public bool? CanEditStories { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the administrator can delete stories posted by other users; channels only
+    /// </summary>
+    public bool? CanDeleteStories { get; set; }
 }
