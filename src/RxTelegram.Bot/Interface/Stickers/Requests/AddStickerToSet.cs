@@ -1,5 +1,4 @@
-﻿using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
-using RxTelegram.Bot.Interface.Validation;
+﻿using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
 namespace RxTelegram.Bot.Interface.Stickers.Requests;

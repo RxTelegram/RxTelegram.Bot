@@ -23,4 +23,10 @@ public enum UpdateType
     Poll,
 
     PollAnswer,
+
+    MyChatMember,
+
+    ChatMember,
+
+    ChatJoinRequest
 }

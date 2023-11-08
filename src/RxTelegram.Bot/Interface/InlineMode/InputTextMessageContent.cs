@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Validation;

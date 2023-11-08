@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
@@ -93,10 +92,9 @@ public class ValidationTest
     [Test]
     public void ValidationErrorStringAttributePresentTest()
     {
-        var type = typeof(ValidationErrors);
-        foreach (var value in Enum.GetValues(type))
+        foreach (var value in Enum.GetValues<ValidationErrors>())
         {
-            var memInfo = type.GetMember(value.ToString());
+            var memInfo = value.GetType().GetMember(value.ToString());
             var attributes = memInfo[0]
                 .GetCustomAttributes(typeof(ValidationErrorsStringAttribute), false);
             Assert.IsNotNull(attributes.FirstOrDefault());

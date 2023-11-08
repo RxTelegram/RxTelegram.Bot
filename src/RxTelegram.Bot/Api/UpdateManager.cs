@@ -40,8 +40,13 @@ public class UpdateManager : IUpdateManager
 
     public IObservable<PollAnswer> PollAnswer => _pollAnswer;
 
-    private readonly IDictionary<UpdateType, List<object>> _observerDictionary;
-    private readonly List<object> _updateObservers;
+    public IObservable<ChatMemberUpdated> MyChatMember => _myChatMember;
+
+    public IObservable<ChatMemberUpdated> ChatMember => _chatMember;
+
+    public IObservable<ChatJoinRequest> ChatJoinRequest => _chatJoinRequest;
+
+    private readonly IDictionary<UpdateTypeWrapper<UpdateType?>, List<object>> _observerDictionary;
     private readonly Observable<Update> _update;
     private readonly Observable<Message> _message;
     private readonly Observable<Message> _editedMessage;
@@ -54,26 +59,33 @@ public class UpdateManager : IUpdateManager
     private readonly Observable<Message> _editedChannelPost;
     private readonly Observable<ShippingQuery> _shippingQuery;
     private readonly Observable<PreCheckoutQuery> _preCheckoutQuery;
+    private readonly Observable<ChatMemberUpdated> _myChatMember;
+    private readonly Observable<ChatMemberUpdated> _chatMember;
+    private readonly Observable<ChatJoinRequest> _chatJoinRequest;
+
     private readonly ITelegramBot _telegramBot;
     private const int NotRunning = 0;
     private const int Running = 1;
     private int _isRunning = NotRunning;
     private CancellationTokenSource _cancellationTokenSource;
 
-    private bool AnyObserver => _updateObservers.Any() || _observerDictionary.Any(x => x.Value.Any());
+    private bool AnyObserver => _observerDictionary.Any(x => x.Value.Any());
 
-    internal IEnumerable<UpdateType> UpdateTypes => _updateObservers.Any()
-                                                        ? _observerDictionary.Select(x => x.Key)
-                                                        : _observerDictionary.Where(x => x.Value.Any())
-                                                                             .Select(x => x.Key);
+    internal IEnumerable<UpdateType?> UpdateTypes => _observerDictionary.Where(x => x.Value.Any())
+                                                                        .Select(x => x.Key.Value);
 
     public UpdateManager(ITelegramBot telegramBot)
     {
         _telegramBot = telegramBot;
-        _updateObservers = new List<object>();
         _observerDictionary = Enum.GetValues(typeof(UpdateType))
                                   .Cast<UpdateType>()
-                                  .ToDictionary(updateType => updateType, updateType => new List<object>());
+                                  .Select(x => new UpdateTypeWrapper<UpdateType?>(x))
+                                  // add any update type
+                                  .Append(UpdateTypeWrapper<UpdateType?>.Any())
+                                  .ToDictionary(updateType => new UpdateTypeWrapper<UpdateType?>(updateType), _ => new List<object>());
+        _chatJoinRequest = new Observable<ChatJoinRequest>(UpdateType.ChatJoinRequest, this);
+        _chatMember = new Observable<ChatMemberUpdated>(UpdateType.ChatMember, this);
+        _myChatMember = new Observable<ChatMemberUpdated>(UpdateType.MyChatMember, this);
         _preCheckoutQuery = new Observable<PreCheckoutQuery>(UpdateType.PreCheckoutQuery, this);
         _shippingQuery = new Observable<ShippingQuery>(UpdateType.ShippingQuery, this);
         _editedChannelPost = new Observable<Message>(UpdateType.EditedChannelPost, this);
@@ -124,7 +136,12 @@ public class UpdateManager : IUpdateManager
                                 {
                                     Offset = offset,
                                     Timeout = 60,
-                                    AllowedUpdates = UpdateTypes
+
+                                    // if there is a null value in the list, it means that all updates are allowed
+                                    AllowedUpdates = UpdateTypes.Contains(null!)
+                                                         ? null
+                                                         : UpdateTypes.Where(x => x.HasValue)
+                                                                      .Select(x => x.Value)
                                 };
                 var result = await _telegramBot.GetUpdate(getUpdate, _cancellationTokenSource.Token);
                 if (!result.Any())
@@ -222,10 +239,8 @@ public class UpdateManager : IUpdateManager
             return;
         }
 
-        var observers = _observerDictionary.Values.SelectMany(x => x).ToList();
-        observers.AddRange(_updateObservers);
-
-        foreach (var observer in observers)
+        foreach (var observer in _observerDictionary.Values.SelectMany(x => x)
+                                                    .ToList())
         {
             var observerType = observer.GetType();
             if (!observerType.GetInterfaces()
@@ -244,7 +259,7 @@ public class UpdateManager : IUpdateManager
 
             try
             {
-                methodInfo.Invoke(observer, new object[] {exception});
+                methodInfo.Invoke(observer, new object[] { exception });
             }
             catch (Exception)
             {
@@ -253,8 +268,21 @@ public class UpdateManager : IUpdateManager
         }
     }
 
-    internal List<object> GetObservers(UpdateType? updateType) =>
-        !updateType.HasValue ? _updateObservers : _observerDictionary[updateType.Value];
+    internal List<object> GetObservers(UpdateType? updateType)
+    {
+        UpdateTypeWrapper<UpdateType?> c;
+        if (updateType == null)
+        {
+            c = UpdateTypeWrapper<UpdateType?>.Any();
+        }
+        else
+        {
+            c = updateType;
+        }
+
+        _observerDictionary.TryGetValue(c, out var list);
+        return list;
+    }
 
     internal IDisposable Subscribe<T>(UpdateType? updateType, IObserver<T> observer)
     {
@@ -297,7 +325,8 @@ public class UpdateManager : IUpdateManager
             observers.Remove(observer);
         }
 
-        if (!AnyObserver && Volatile.Read(ref _isRunning) == Running)
+        if (!AnyObserver &&
+            Volatile.Read(ref _isRunning) == Running)
         {
             _cancellationTokenSource?.Cancel();
         }
@@ -350,5 +379,79 @@ public class UpdateManager : IUpdateManager
     public IAsyncEnumerable<Poll> PollEnumerable() => _poll.ToAsyncEnumerable();
 
     public IAsyncEnumerable<PollAnswer> PollAnswerEnumerable() => _pollAnswer.ToAsyncEnumerable();
+
+    public IAsyncEnumerable<ChatMemberUpdated> MyChatMemberEnumerable() => _myChatMember.ToAsyncEnumerable();
+
+    public IAsyncEnumerable<ChatMemberUpdated> ChatMemberEnumerable() => _chatMember.ToAsyncEnumerable();
+
+    public IAsyncEnumerable<ChatJoinRequest> ChatJoinRequestEnumerable() => _chatJoinRequest.ToAsyncEnumerable();
 #endif
+
+    private struct UpdateTypeWrapper<T>
+    {
+        private readonly bool _anyType = true;
+
+        private UpdateTypeWrapper(T value, bool anyType) : this()
+        {
+            _anyType = anyType;
+            Value = value;
+        }
+
+        public UpdateTypeWrapper(T value) : this(value, value == null)
+        {
+        }
+
+        private UpdateTypeWrapper(bool anyType) : this(default, anyType)
+        {
+        }
+
+        public static UpdateTypeWrapper<T> Any() => new(true);
+
+        public T Value { get; }
+
+        public bool IsAny() => _anyType;
+
+        public static implicit operator T(UpdateTypeWrapper<T> updateTypeWrapper) => updateTypeWrapper.Value;
+
+        public static implicit operator UpdateTypeWrapper<T>(T item) => new(item);
+
+        public override string ToString() => Value != null ? Value.ToString() : "Any";
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return IsAny();
+            }
+
+            if (obj is not UpdateTypeWrapper<T> no)
+            {
+                return false;
+            }
+
+            if (IsAny())
+            {
+                return no.IsAny();
+            }
+
+            return !no.IsAny() && Value.Equals(no.Value);
+        }
+
+        public override int GetHashCode()
+        {
+            if (_anyType)
+            {
+                return 0;
+            }
+
+            var result = Value.GetHashCode();
+
+            if (result >= 0)
+            {
+                result++;
+            }
+
+            return result;
+        }
+    }
 }

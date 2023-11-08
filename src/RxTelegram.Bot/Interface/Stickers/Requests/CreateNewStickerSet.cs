@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+﻿using System.Collections.Generic;
 using RxTelegram.Bot.Interface.Stickers.Enums;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;

@@ -73,6 +73,23 @@ public interface IUpdateManager
     /// </summary>
     IObservable<PollAnswer> PollAnswer { get; }
 
+    /// <summary>
+    /// The bot's chat member status was updated in a chat. For private chats,
+    /// this update is received only when the bot is blocked or unblocked by the user.
+    /// </summary>
+    IObservable<ChatMemberUpdated> MyChatMember { get; }
+
+    /// <summary>
+    /// A chat member's status was updated in a chat.
+    /// The bot must be an administrator in the chat and must explicitly specify "chat_member" in the list of allowed_updates to receive these updates.
+    /// </summary>
+    IObservable<ChatMemberUpdated> ChatMember { get; }
+
+    /// <summary>
+    /// A request to join the chat has been sent. The bot must have the can_invite_users administrator right in the chat to receive these updates.
+    /// </summary>
+    IObservable<ChatJoinRequest> ChatJoinRequest { get; }
+
 #if NETSTANDARD2_1
     /// <summary>
     /// Updates of all Types.
@@ -134,5 +151,22 @@ public interface IUpdateManager
     /// A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
     /// </summary>
     IAsyncEnumerable<PollAnswer> PollAnswerEnumerable();
+
+    /// <summary>
+    /// The bot's chat member status was updated in a chat. For private chats,
+    /// this update is received only when the bot is blocked or unblocked by the user.
+    /// </summary>
+    IAsyncEnumerable<ChatMemberUpdated> MyChatMemberEnumerable();
+
+    /// <summary>
+    /// A chat member's status was updated in a chat.
+    /// The bot must be an administrator in the chat and must explicitly specify "chat_member" in the list of allowed_updates to receive these updates.
+    /// </summary>
+    IAsyncEnumerable<ChatMemberUpdated> ChatMemberEnumerable();
+
+    /// <summary>
+    /// A request to join the chat has been sent. The bot must have the can_invite_users administrator right in the chat to receive these updates.
+    /// </summary>
+    IAsyncEnumerable<ChatJoinRequest> ChatJoinRequestEnumerable();
 #endif
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Authentication.ExtendedProtection;
 using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Passport;
 using RxTelegram.Bot.Interface.Payments;
