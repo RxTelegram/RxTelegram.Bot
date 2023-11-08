@@ -222,8 +222,10 @@ public class UpdateManager : IUpdateManager
             return;
         }
 
-        foreach (var observer in _observerDictionary.Values.SelectMany(x => x)
-                                                    .ToList())
+        var observers = _observerDictionary.Values.SelectMany(x => x).ToList();
+        observers.AddRange(_updateObservers);
+
+        foreach (var observer in observers)
         {
             var observerType = observer.GetType();
             if (!observerType.GetInterfaces()
