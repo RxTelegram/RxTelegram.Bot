@@ -120,16 +120,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<Update>>();
+        var observer = Substitute.For<IObserver<Update>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.Update.Subscribe(observerAll);
+        var disposableAll = updateManager.Update.Subscribe(observer);
         var updates = new[] { new Update { Message = new Message() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single());
         disposableAll.Dispose();
     }
@@ -172,16 +172,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_MessageObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<Message>>();
+        var observer = Substitute.For<IObserver<Message>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.Message.Subscribe(observerAll);
+        var disposableAll = updateManager.Message.Subscribe(observer);
         var updates = new[] { new Update { Message = new Message() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .Message);
         disposableAll.Dispose();
@@ -191,16 +191,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_EditedMessageObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<Message>>();
+        var observer = Substitute.For<IObserver<Message>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.EditedMessage.Subscribe(observerAll);
+        var disposableAll = updateManager.EditedMessage.Subscribe(observer);
         var updates = new[] { new Update { EditedMessage = new Message() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .EditedMessage);
         disposableAll.Dispose();
@@ -210,16 +210,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_InlineQueryObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<InlineQuery>>();
+        var observer = Substitute.For<IObserver<InlineQuery>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.InlineQuery.Subscribe(observerAll);
+        var disposableAll = updateManager.InlineQuery.Subscribe(observer);
         var updates = new[] { new Update { InlineQuery = new InlineQuery() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .InlineQuery);
         disposableAll.Dispose();
@@ -229,16 +229,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ChosenInlineResultObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<ChosenInlineResult>>();
+        var observer = Substitute.For<IObserver<ChosenInlineResult>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.ChosenInlineResult.Subscribe(observerAll);
+        var disposableAll = updateManager.ChosenInlineResult.Subscribe(observer);
         var updates = new[] { new Update { ChosenInlineResult = new ChosenInlineResult() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .ChosenInlineResult);
         disposableAll.Dispose();
@@ -248,16 +248,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_CallbackQueryObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<CallbackQuery>>();
+        var observer = Substitute.For<IObserver<CallbackQuery>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.CallbackQuery.Subscribe(observerAll);
+        var disposableAll = updateManager.CallbackQuery.Subscribe(observer);
         var updates = new[] { new Update { CallbackQuery = new CallbackQuery() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .CallbackQuery);
         disposableAll.Dispose();
@@ -267,16 +267,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ChannelPostObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<Message>>();
+        var observer = Substitute.For<IObserver<Message>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.ChannelPost.Subscribe(observerAll);
+        var disposableAll = updateManager.ChannelPost.Subscribe(observer);
         var updates = new[] { new Update { ChannelPost = new Message() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .ChannelPost);
         disposableAll.Dispose();
@@ -286,16 +286,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_EditedChannelPostObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<Message>>();
+        var observer = Substitute.For<IObserver<Message>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.EditedChannelPost.Subscribe(observerAll);
+        var disposableAll = updateManager.EditedChannelPost.Subscribe(observer);
         var updates = new[] { new Update { EditedChannelPost = new Message() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .EditedChannelPost);
         disposableAll.Dispose();
@@ -305,16 +305,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ShippingQueryObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<ShippingQuery>>();
+        var observer = Substitute.For<IObserver<ShippingQuery>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.ShippingQuery.Subscribe(observerAll);
+        var disposableAll = updateManager.ShippingQuery.Subscribe(observer);
         var updates = new[] { new Update { ShippingQuery = new ShippingQuery() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .ShippingQuery);
         disposableAll.Dispose();
@@ -324,16 +324,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_PreCheckoutQueryObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<PreCheckoutQuery>>();
+        var observer = Substitute.For<IObserver<PreCheckoutQuery>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.PreCheckoutQuery.Subscribe(observerAll);
+        var disposableAll = updateManager.PreCheckoutQuery.Subscribe(observer);
         var updates = new[] { new Update { PreCheckoutQuery = new PreCheckoutQuery() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .PreCheckoutQuery);
         disposableAll.Dispose();
@@ -343,16 +343,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_PollObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<Poll>>();
+        var observer = Substitute.For<IObserver<Poll>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.Poll.Subscribe(observerAll);
+        var disposableAll = updateManager.Poll.Subscribe(observer);
         var updates = new[] { new Update { Poll = new Poll() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .Poll);
         disposableAll.Dispose();
@@ -362,16 +362,16 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_PollAnswerObservers()
     {
         // Arrange
-        var observerAll = Substitute.For<IObserver<PollAnswer>>();
+        var observer = Substitute.For<IObserver<PollAnswer>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposableAll = updateManager.PollAnswer.Subscribe(observerAll);
+        var disposableAll = updateManager.PollAnswer.Subscribe(observer);
         var updates = new[] { new Update { PollAnswer = new PollAnswer() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observerAll.Received()
+        observer.Received()
                    .OnNext(updates.Single()
                                   .PollAnswer);
         disposableAll.Dispose();
