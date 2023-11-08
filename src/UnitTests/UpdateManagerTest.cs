@@ -7,6 +7,8 @@ using NUnit.Framework;
 using RxTelegram.Bot.Api;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.InlineMode;
+using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Setup;
 
 namespace RxTelegram.Bot.UnitTests;
@@ -16,11 +18,10 @@ public class UpdateManagerTest
 {
     private ITelegramBot _telegramBotMock = Substitute.For<ITelegramBot>();
 
+    public static Array GetUpdateTypes() => Enum.GetValues(typeof(UpdateType));
+
     [SetUp]
-    public void TestInitialize()
-    {
-        _telegramBotMock = Substitute.For<ITelegramBot>();
-    }
+    public void TestInitialize() => _telegramBotMock = Substitute.For<ITelegramBot>();
 
     [Test]
     public void TestGetUpdateTypes()
@@ -94,7 +95,7 @@ public class UpdateManagerTest
     public void Given_TelegramBotException_On_RunUpdateSafe_Should_Handle_Exception()
     {
         // Arrange
-        _telegramBotMock.GetUpdate(default, default)
+        _telegramBotMock.GetUpdate(default)
                         .ThrowsForAnyArgs(new Exception());
 
         // Assert
@@ -121,15 +122,16 @@ public class UpdateManagerTest
         // Arrange
         var observer = Substitute.For<IObserver<Update>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposable = updateManager.Update.Subscribe(observer);
+        var disposableAll = updateManager.Update.Subscribe(observer);
         var updates = new[] { new Update { Message = new Message() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observer.Received().OnNext(updates.Single());
-        disposable.Dispose();
+        observer.Received()
+                   .OnNext(updates.Single());
+        disposableAll.Dispose();
     }
 
     [Test]
@@ -158,9 +160,222 @@ public class UpdateManagerTest
         }
 
         // Assert
-        observer1Mock.Received().OnError(exception);
-        observer2Mock.Received().OnError(exception);
+        observer1Mock.Received()
+                     .OnError(exception);
+        observer2Mock.Received()
+                     .OnError(exception);
     }
 
-    public static Array GetUpdateTypes() => Enum.GetValues(typeof(UpdateType));
+    #region UpdateTypes
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_MessageObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<Message>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.Message.Subscribe(observer);
+        var updates = new[] { new Update { Message = new Message() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .Message);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_EditedMessageObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<Message>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.EditedMessage.Subscribe(observer);
+        var updates = new[] { new Update { EditedMessage = new Message() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .EditedMessage);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_InlineQueryObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<InlineQuery>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.InlineQuery.Subscribe(observer);
+        var updates = new[] { new Update { InlineQuery = new InlineQuery() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .InlineQuery);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ChosenInlineResultObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<ChosenInlineResult>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.ChosenInlineResult.Subscribe(observer);
+        var updates = new[] { new Update { ChosenInlineResult = new ChosenInlineResult() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .ChosenInlineResult);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_CallbackQueryObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<CallbackQuery>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.CallbackQuery.Subscribe(observer);
+        var updates = new[] { new Update { CallbackQuery = new CallbackQuery() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .CallbackQuery);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ChannelPostObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<Message>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.ChannelPost.Subscribe(observer);
+        var updates = new[] { new Update { ChannelPost = new Message() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .ChannelPost);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_EditedChannelPostObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<Message>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.EditedChannelPost.Subscribe(observer);
+        var updates = new[] { new Update { EditedChannelPost = new Message() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .EditedChannelPost);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ShippingQueryObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<ShippingQuery>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.ShippingQuery.Subscribe(observer);
+        var updates = new[] { new Update { ShippingQuery = new ShippingQuery() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .ShippingQuery);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_PreCheckoutQueryObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<PreCheckoutQuery>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.PreCheckoutQuery.Subscribe(observer);
+        var updates = new[] { new Update { PreCheckoutQuery = new PreCheckoutQuery() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .PreCheckoutQuery);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_PollObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<Poll>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.Poll.Subscribe(observer);
+        var updates = new[] { new Update { Poll = new Poll() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .Poll);
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_PollAnswerObservers()
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<PollAnswer>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = updateManager.PollAnswer.Subscribe(observer);
+        var updates = new[] { new Update { PollAnswer = new PollAnswer() } };
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(updates.Single()
+                                  .PollAnswer);
+        disposableAll.Dispose();
+    }
+
+    #endregion
 }

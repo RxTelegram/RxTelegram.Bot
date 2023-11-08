@@ -8,7 +8,6 @@ using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Setup;
-
 #if NETSTANDARD2_1
 using RxTelegram.Bot.Utils;
 #endif
@@ -159,38 +158,39 @@ public class UpdateManager : IUpdateManager
             return;
         }
 
-        var updateStrategies = new Dictionary<Func<Update, object>, UpdateType>
+        var updateStrategies = new List<Action<Update>>
                                {
-                                   { update => update.PreCheckoutQuery, UpdateType.PreCheckoutQuery },
-                                   { update => update.ShippingQuery, UpdateType.ShippingQuery },
-                                   { update => update.EditedChannelPost, UpdateType.EditedChannelPost },
-                                   { update => update.ChannelPost, UpdateType.ChannelPost },
-                                   { update => update.CallbackQuery, UpdateType.CallbackQuery },
-                                   { update => update.Poll, UpdateType.Poll },
-                                   { update => update.PollAnswer, UpdateType.PollAnswer },
-                                   { update => update.ChosenInlineResult, UpdateType.ChosenInlineResult },
-                                   { update => update.InlineQuery, UpdateType.InlineQuery },
-                                   { update => update.EditedMessage, UpdateType.EditedMessage },
-                                   { update => update.Message, UpdateType.Message },
+                                   update => OnNext(UpdateType.PreCheckoutQuery, update.PreCheckoutQuery),
+                                   update => OnNext(UpdateType.ShippingQuery, update.ShippingQuery),
+                                   update => OnNext(UpdateType.EditedChannelPost, update.EditedChannelPost),
+                                   update => OnNext(UpdateType.ChannelPost, update.ChannelPost),
+                                   update => OnNext(UpdateType.CallbackQuery, update.CallbackQuery),
+                                   update => OnNext(UpdateType.Poll, update.Poll),
+                                   update => OnNext(UpdateType.PollAnswer, update.PollAnswer),
+                                   update => OnNext(UpdateType.ChosenInlineResult, update.ChosenInlineResult),
+                                   update => OnNext(UpdateType.InlineQuery, update.InlineQuery),
+                                   update => OnNext(UpdateType.EditedMessage, update.EditedMessage),
+                                   update => OnNext(UpdateType.Message, update.Message),
                                };
 
         foreach (var update in updates)
         {
             OnNext(null, update);
 
-            foreach (var pair in updateStrategies)
+            foreach (var func in updateStrategies)
             {
-                var updateObject = pair.Key(update);
-                if (updateObject != null)
-                {
-                    OnNext(pair.Value, updateObject);
-                }
+                func(update);
             }
         }
     }
 
     internal void OnNext<T>(UpdateType? updateType, T updateMessage)
     {
+        if (updateMessage == null)
+        {
+            return;
+        }
+
         var observers = GetObservers(updateType);
         if (!observers.Any())
         {
@@ -199,7 +199,7 @@ public class UpdateManager : IUpdateManager
 
         foreach (var observerObject in observers)
         {
-            if (!(observerObject is IObserver<T> observer))
+            if (observerObject is not IObserver<T> observer)
             {
                 continue;
             }
@@ -222,8 +222,10 @@ public class UpdateManager : IUpdateManager
             return;
         }
 
-        foreach (var observer in _observerDictionary.Values.SelectMany(x => x)
-                                                    .ToList())
+        var observers = _observerDictionary.Values.SelectMany(x => x).ToList();
+        observers.AddRange(_updateObservers);
+
+        foreach (var observer in observers)
         {
             var observerType = observer.GetType();
             if (!observerType.GetInterfaces()
