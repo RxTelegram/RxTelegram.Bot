@@ -119,18 +119,23 @@ public class UpdateManagerTest
     public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers()
     {
         // Arrange
-        var observer = Substitute.For<IObserver<Update>>();
+        var observerAll = Substitute.For<IObserver<Update>>();
+        var observerMessage = Substitute.For<IObserver<Message>>();
         var updateManager = new UpdateManager(_telegramBotMock);
-        var disposable = updateManager.Update.Subscribe(observer);
+        var disposableAll = updateManager.Update.Subscribe(observerAll);
+        var disposableMessage = updateManager.Message.Subscribe(observerMessage);
         var updates = new[] { new Update { Message = new Message() } };
 
         // Act
         updateManager.DistributeUpdates(updates);
 
         // Assert
-        observer.Received().OnNext(updates.Single());
-        disposable.Dispose();
+        observerAll.Received().OnNext(updates.Single());
+        observerMessage.Received().OnNext(updates.Single().Message);
+        disposableAll.Dispose();
+        disposableMessage.Dispose();
     }
+
 
     [Test]
     [TestCaseSource(nameof(GetUpdateTypes))]
