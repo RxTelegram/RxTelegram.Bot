@@ -12,7 +12,7 @@ jobs:
         timeout-minutes: 3
         steps:
             -   name: Checkout
-                uses: actions/checkout@v2
+                uses: actions/checkout@v4
             -   name: Build
                 run: dotnet build --configuration Release
             -   name: Test
