@@ -8,6 +8,18 @@ public class KeyboardButton
     public string Text { get; set; }
 
     /// <summary>
+    /// Optional. If specified, pressing the button will open a list of suitable users.
+    /// Identifiers of selected users will be sent to the bot in a “users_shared” service message. Available in private chats only.
+    /// </summary>
+    public KeyboardButtonRequestUsers RequestUsers { get; set; }
+
+    /// <summary>
+    /// Optional. If specified, pressing the button will open a list of suitable chats.
+    /// Tapping on a chat will send its identifier to the bot in a “chat_shared” service message. Available in private chats only.
+    /// </summary>
+    public KeyboardButtonRequestChat RequestChat { get; set; }
+
+    /// <summary>
     /// Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
     /// </summary>
     public bool? RequestContact { get; set; }

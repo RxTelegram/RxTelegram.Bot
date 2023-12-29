@@ -10,9 +10,9 @@ public abstract class BaseSend : BaseTextRequest
     public bool? DisableNotification { get; set; }
 
     /// <summary>
-    /// If the message is a reply, ID of the original message
+    /// Description of the message to reply to
     /// </summary>
-    public int? ReplyToMessageId { get; set; }
+    public ReplyParameters ReplyParameters { get; set; }
 
     /// <summary>
     /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.

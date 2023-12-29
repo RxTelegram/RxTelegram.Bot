@@ -99,10 +99,11 @@ public class UpdateManagerTest
                         .ThrowsForAnyArgs(new Exception());
 
         // Assert
-        Assert.DoesNotThrowAsync(async () =>
+        Assert.DoesNotThrowAsync(() =>
                                  {
                                      var updateManager = new UpdateManager(_telegramBotMock);
-                                     await updateManager.RunUpdateSafe();
+                                     updateManager.RunUpdateSafe().GetAwaiter().GetResult();
+                                     return Task.CompletedTask;
                                  });
     }
 
@@ -113,7 +114,11 @@ public class UpdateManagerTest
         var updateManager = new UpdateManager(_telegramBotMock);
 
         // Assert
-        Assert.DoesNotThrowAsync(async () => { await updateManager.RunUpdate(); });
+        Assert.DoesNotThrowAsync(() =>
+        {
+            updateManager.RunUpdate().GetAwaiter().GetResult();
+            return Task.CompletedTask;
+        });
     }
 
     [Test]

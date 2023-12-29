@@ -86,9 +86,9 @@ public class SendPoll : BaseRequest, IProtectContent
     public bool? DisableNotification { get; set; }
 
     /// <summary>
-    /// If the message is a reply, ID of the original message
+    /// Description of the message to reply to
     /// </summary>
-    public int? ReplyToMessageId { get; set; }
+    public ReplyParameters ReplyParameters { get; set; }
 
     /// <summary>
     /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove
@@ -100,11 +100,6 @@ public class SendPoll : BaseRequest, IProtectContent
     /// List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
     /// </summary>
     public IEnumerable<MessageEntity> ExplanationEntities { get; set; }
-
-    /// <summary>
-    /// Pass True, if the message should be sent even if the specified replied-to message is not found
-    /// </summary>
-    public bool? AllowSendingWithoutReply { get; set; }
 
     /// <summary>
     /// Protects the contents of the sent message from forwarding and saving

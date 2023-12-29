@@ -29,10 +29,9 @@ public class EditMessageText : BaseTextRequest
     public string Text { get; set; }
 
     /// <summary>
-    /// Optional
-    /// Disables link previews for links in this message
+    /// Link preview generation options for the message
     /// </summary>
-    public bool? DisableWebPagePreview { get; set; }
+    public LinkPreviewOptions LinkPreviewOptions { get; set; }
 
     /// <summary>
     /// Optional

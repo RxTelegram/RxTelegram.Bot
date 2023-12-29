@@ -19,11 +19,9 @@ public class SendMessage : BaseTextRequest, IProtectContent
     public string Text { get; set; }
 
     /// <summary>
-    /// Optional
-    /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width
-    /// text or inline URLs in your bot's message.
+    /// Link preview generation options for the message
     /// </summary>
-    public bool? DisableWebPagePreview { get; set; }
+    public LinkPreviewOptions LinkPreviewOptions { get; set; }
 
     /// <summary>
     /// Optional
@@ -32,10 +30,9 @@ public class SendMessage : BaseTextRequest, IProtectContent
     public bool? DisableNotification { get; set; }
 
     /// <summary>
-    /// Optional
-    /// If the message is a reply, ID of the original message
+    /// Description of the message to reply to
     /// </summary>
-    public int? ReplyToMessageId { get; set; }
+    public ReplyParameters ReplyParameters { get; set; }
 
     /// <summary>
     /// Optional
@@ -48,11 +45,6 @@ public class SendMessage : BaseTextRequest, IProtectContent
     /// List of special entities that appear in message text, which can be specified instead of parse_mode
     /// </summary>
     public IEnumerable<MessageEntity> Entities { get; set; }
-
-    /// <summary>
-    /// Pass True, if the message should be sent even if the specified replied-to message is not found
-    /// </summary>
-    public bool? AllowSendingWithoutReply { get; set; }
 
     /// <summary>
     /// Protects the contents of the sent message from forwarding and saving

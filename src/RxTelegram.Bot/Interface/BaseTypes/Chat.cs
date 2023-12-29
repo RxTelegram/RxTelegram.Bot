@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
+using RxTelegram.Bot.Interface.Reaction;
 
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
@@ -62,6 +63,37 @@ public class Chat
     /// Returned only in <see cref="GetChat"/>.
     /// </summary>
     public List<string> ActiveUsernames { get; set; }
+
+    /// <summary>
+    /// Optional. List of available reactions allowed in the chat. If omitted, then all emoji reactions are allowed.
+    /// Returned only in <see cref="GetChat"/>.
+    /// </summary>
+    public List<ReactionType> AvailableReactions { get; set; }
+
+    /// <summary>
+    /// Optional. Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview.
+    /// See accent colors for more details. Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// Always returned in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public long? AccentColorId { get; set; }
+
+    /// <summary>
+    /// Optional. Custom emoji identifier of emoji chosen by the chat for the reply header and link preview background.
+    /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public string BackgroundCustomEmojiId { get; set; }
+
+    /// <summary>
+    /// Optional. Identifier of the accent color for the chat's profile background. See profile accent colors for more details.
+    /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public long? ProfileAccentColorId { get; set; }
+
+    /// <summary>
+    /// Optional. Custom emoji identifier of the emoji chosen by the chat for its profile background.
+    /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public string ProfileBackgroundCustomEmojiId { get; set;}
 
     /// <summary>
     /// Optional. Custom emoji identifier of emoji status of the other party in a private chat.
@@ -154,6 +186,12 @@ public class Chat
     /// Returned only in getChat.
     /// </summary>
     public bool? HasProtectedContent { get; set; }
+
+    /// <summary>
+    /// Optional. True, if new chat members will have access to old messages; available only to chat administrators.
+    /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public bool? HasVisibleHistory { get; set; }
 
     /// <summary>
     /// Optional. For supergroups, name of group sticker set. Returned only in getChat.

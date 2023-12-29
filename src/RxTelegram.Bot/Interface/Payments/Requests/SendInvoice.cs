@@ -162,9 +162,9 @@ public class SendInvoice : BaseValidation, IProtectContent
 
     /// <summary>
     /// Optional
-    /// If the message is a reply, ID of the original message
+    /// Description of the message to reply to
     /// </summary>
-    public int? ReplyToMessageId { get; set; }
+    public ReplyParameters ReplyParameters { get; set; }
 
     /// <summary>
     /// Optional
@@ -172,11 +172,6 @@ public class SendInvoice : BaseValidation, IProtectContent
     /// If not empty, the first button must be a Pay button.
     /// </summary>
     public InlineKeyboardMarkup ReplyMarkup { get; set; }
-
-    /// <summary>
-    /// Pass True, if the message should be sent even if the specified replied-to message is not found
-    /// </summary>
-    public bool? AllowSendingWithoutReply { get; set; }
 
     /// <summary>
     /// Protects the contents of the sent message from forwarding and saving

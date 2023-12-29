@@ -4,7 +4,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes;
 /// This object defines the criteria used to request a suitable user.
 /// The identifier of the selected user will be shared with the bot when the corresponding button is pressed.
 /// </summary>
-public class KeyboardButtonRequestUser
+public class KeyboardButtonRequestUsers
 {
     /// <summary>
     /// Signed 32-bit identifier of the request
@@ -22,4 +22,9 @@ public class KeyboardButtonRequestUser
     /// If not specified, no additional restrictions are applied.
     /// </summary>
     public bool UserIsPremium { get; set; }
+
+    /// <summary>
+    /// Optional. The maximum number of users to be selected; 1-10. Defaults to 1.
+    /// </summary>
+    public int MaxQuantity { get; set; }
 }
