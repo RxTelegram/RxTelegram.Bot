@@ -45,6 +45,7 @@ public abstract class BaseTelegramBot
                               new UnixDateTimeConverter(),
                               new InputFileConverter(),
                               new ChatIdConverter(),
+                              new ChatBoostSourceConverter(),
                               new StringEnumConverter(new SnakeCaseNamingStrategy())
                           };
             return _jsonSerializerSettings = new JsonSerializerSettings
