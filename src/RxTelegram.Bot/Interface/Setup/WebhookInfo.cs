@@ -43,7 +43,7 @@ public class WebhookInfo
     /// Unix time of the most recent error that happened when trying to synchronize available updates
     /// with Telegram datacenters
     /// </summary>
-    public int? LastSynchronizationErrorDate { get; set; }
+    public DateTime? LastSynchronizationErrorDate { get; set; }
 
     /// <summary>
     /// Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery

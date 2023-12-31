@@ -1,3 +1,5 @@
+using System;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
 public class MessageOriginHiddenUser : MessageOrigin
@@ -5,7 +7,7 @@ public class MessageOriginHiddenUser : MessageOrigin
     /// <summary>
     /// Date the message was sent originally in Unix time
     /// </summary>
-    public int Date { get; set; }
+    public DateTime Date { get; set; }
 
     /// <summary>
     /// Name of the user that sent the message originally

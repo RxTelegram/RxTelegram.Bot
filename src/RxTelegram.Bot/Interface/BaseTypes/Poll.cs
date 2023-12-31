@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace RxTelegram.Bot.Interface.BaseTypes;
@@ -72,5 +73,5 @@ public class Poll
     /// <summary>
     /// Optional. Point in time (Unix timestamp) when the poll will be automatically closed
     /// </summary>
-    public int? CloseDate { get; set; }
+    public DateTime? CloseDate { get; set; }
 }

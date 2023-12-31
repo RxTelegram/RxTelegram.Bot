@@ -1,3 +1,5 @@
+using System;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
@@ -29,7 +31,7 @@ public class ChatInviteLink
     /// <summary>
     /// Optional. Point in time (Unix timestamp) when the link will expire or has been expired
     /// </summary>
-    public int ExpireDate { get; set; }
+    public DateTime ExpireDate { get; set; }
 
     /// <summary>
     /// Optional. Maximum number of users that can be members of the chat simultaneously after

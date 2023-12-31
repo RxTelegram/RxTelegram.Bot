@@ -1,3 +1,5 @@
+using System;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
@@ -18,7 +20,7 @@ public class ChatMemberUpdated
     /// <summary>
     /// Date the change was done in Unix time
     /// </summary>
-    public int Date { get; set; }
+    public DateTime Date { get; set; }
 
     /// <summary>
     /// Previous information about the chat member

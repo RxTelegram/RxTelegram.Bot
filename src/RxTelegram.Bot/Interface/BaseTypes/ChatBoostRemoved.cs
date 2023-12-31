@@ -1,3 +1,5 @@
+using System;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
@@ -18,7 +20,7 @@ public class ChatBoostRemoved
     /// <summary>
     /// Point in time (Unix timestamp) when the boost was removed
     /// </summary>
-    public int RemoveDate { get; set; }
+    public DateTime RemoveDate { get; set; }
 
     /// <summary>
     /// Source of the removed boost

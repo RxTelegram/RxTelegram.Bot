@@ -1,3 +1,5 @@
+using System;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
@@ -13,12 +15,12 @@ public class ChatBoost
     /// <summary>
     /// Point in time (Unix timestamp) when the chat was boosted
     /// </summary>
-    public int AddDate { get; set; }
+    public DateTime AddDate { get; set; }
 
     /// <summary>
     /// Point in time (Unix timestamp) when the boost will automatically expire, unless the booster's Telegram Premium subscription is prolonged
     /// </summary>
-    public int ExpirationDate { get; set; }
+    public DateTime ExpirationDate { get; set; }
 
     /// <summary>
     /// Source of the added boost

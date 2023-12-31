@@ -1,3 +1,4 @@
+using System;
 using RxTelegram.Bot.Interface.BaseTypes;
 
 namespace RxTelegram.Bot.Interface.Reaction;
@@ -30,7 +31,7 @@ public class MessageReactionUpdated
     /// <summary>
     /// Date of the change in Unix timestamp format
     /// </summary>
-    public long Date { get; set; }
+    public DateTime Date { get; set; }
 
     /// <summary>
     /// Previous list of reaction types that were set by the user

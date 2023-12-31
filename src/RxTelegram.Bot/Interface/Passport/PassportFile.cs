@@ -1,4 +1,6 @@
-﻿namespace RxTelegram.Bot.Interface.Passport;
+﻿using System;
+
+namespace RxTelegram.Bot.Interface.Passport;
 
 /// <summary>
 ///     This object represents a file uploaded to Telegram Passport.
@@ -26,5 +28,5 @@ public class PassportFile
     /// <summary>
     ///     Unix time when the file was uploaded
     /// </summary>
-    public int FileDate { get; set; }
+    public DateTime FileDate { get; set; }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes;
 
@@ -16,7 +17,7 @@ public class Giveaway
     /// <summary>
     /// Point in time (Unix timestamp) when winners of the giveaway will be selected
     /// </summary>
-    public int WinnersSelectionDate { get; set; }
+    public DateTime WinnersSelectionDate { get; set; }
 
     /// <summary>
     /// The number of users which are supposed to be selected as winners of the giveaway

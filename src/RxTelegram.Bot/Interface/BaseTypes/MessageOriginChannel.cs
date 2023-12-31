@@ -1,3 +1,5 @@
+using System;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
@@ -8,7 +10,7 @@ public class MessageOriginChannel : MessageOrigin
     /// <summary>
     /// Date the message was sent originally in Unix time
     /// </summary>
-    public int Date { get; set; }
+    public DateTime Date { get; set; }
 
     /// <summary>
     /// Channel chat to which the message was originally sent
