@@ -10,6 +10,7 @@ using Newtonsoft.Json.Serialization;
 using RxTelegram.Bot.Exceptions;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Utils;
+using RxTelegram.Bot.Utils.Converter;
 
 namespace RxTelegram.Bot.Api;
 
@@ -46,7 +47,7 @@ public abstract class BaseTelegramBot
                               new InputFileConverter(),
                               new ChatIdConverter(),
                               new ChatBoostSourceConverter(),
-                              new StringEnumConverter(new SnakeCaseNamingStrategy())
+                              new UnknownStringEnumConverter(new SnakeCaseNamingStrategy())
                           };
             return _jsonSerializerSettings = new JsonSerializerSettings
                                              {
