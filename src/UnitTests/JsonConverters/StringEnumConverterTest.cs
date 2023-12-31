@@ -19,8 +19,8 @@ public class StringEnumConverterTest : BaseConverterTest
                                 };
 
         var json = JsonConvert.SerializeObject(objectToSerialize, JsonSerializerSettings);
-        Assert.NotNull(json);
-        Assert.True(json.Contains("bank_statement"));
+        Assert.That(json, Is.Not.Null);
+        Assert.That(json.Contains("bank_statement"), Is.True);
     }
 
     [Test]
@@ -32,8 +32,8 @@ public class StringEnumConverterTest : BaseConverterTest
                                 };
 
         var json = JsonConvert.SerializeObject(objectToSerialize, JsonSerializerSettings);
-        Assert.NotNull(json);
-        Assert.True(json.Contains("markdown"));
+        Assert.That(json, Is.Not.Null);
+        Assert.That(json.Contains("markdown"), Is.True);
     }
 
     [Test]
@@ -44,7 +44,7 @@ public class StringEnumConverterTest : BaseConverterTest
                          Type = StickerType.CustomEmoji
                      };
         var json = JsonConvert.SerializeObject(sicker, JsonSerializerSettings);
-        Assert.NotNull(json);
-        Assert.True(json.Contains("custom_emoji"));
+        Assert.That(json, Is.Not.Null);
+        Assert.That(json.Contains("custom_emoji"), Is.True);
     }
 }

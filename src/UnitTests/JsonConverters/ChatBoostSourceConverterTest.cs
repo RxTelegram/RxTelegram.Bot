@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -26,8 +27,8 @@ public class ChatBoostSourceConverterTest : BaseConverterTest
         Assert.That(userChatBoosts, Is.Not.Null);
         Assert.That(userChatBoosts.Boosts, Has.Count.EqualTo(1));
         Assert.That(userChatBoosts.Boosts[0].BoostId, Is.EqualTo("abc"));
-        Assert.That(userChatBoosts.Boosts[0].AddDate, Is.EqualTo(123));
-        Assert.That(userChatBoosts.Boosts[0].ExpirationDate, Is.EqualTo(321));
+        Assert.That(userChatBoosts.Boosts[0].AddDate, Is.EqualTo(DateTime.Parse("1970-01-01 00:02:03")));
+        Assert.That(userChatBoosts.Boosts[0].ExpirationDate, Is.EqualTo(DateTime.Parse("1970-01-01 00:05:21")));
         Assert.That(userChatBoosts.Boosts[0].Source.Source, Is.EqualTo(ChatBoostSourceType.Premium));
         Assert.That(userChatBoosts.Boosts[0].Source, Is.TypeOf<ChatBoostSourcePremium>());
     }
@@ -37,7 +38,7 @@ public class ChatBoostSourceConverterTest : BaseConverterTest
     {
         const string json = "{\"boost_id\":\"abc\",\"add_date\":123,\"expiration_date\":321, \"source\": {\"source\":\"premium\", \"user\": " + User + "}}";
         var deserializedJson = JsonConvert.DeserializeObject<ChatBoost>(json, JsonSerializerSettings);
-        Assert.NotNull(deserializedJson);
+        Assert.That(deserializedJson, Is.Not.Null);
         Assert.That(deserializedJson.Source.Source, Is.EqualTo(ChatBoostSourceType.Premium));
         Assert.That(deserializedJson.Source, Is.TypeOf<ChatBoostSourcePremium>());
     }
@@ -50,7 +51,7 @@ public class ChatBoostSourceConverterTest : BaseConverterTest
             User +
             "}}";
         var deserializedJson = JsonConvert.DeserializeObject<ChatBoost>(json, JsonSerializerSettings);
-        Assert.NotNull(deserializedJson);
+        Assert.That(deserializedJson, Is.Not.Null);
         Assert.That(deserializedJson.Source.Source, Is.EqualTo(ChatBoostSourceType.GiftCode));
         Assert.That(deserializedJson.Source, Is.TypeOf<ChatBoostSourceGiftCode>());
     }
@@ -60,7 +61,7 @@ public class ChatBoostSourceConverterTest : BaseConverterTest
     {
         const string json = "{\"boost_id\":\"abc\",\"add_date\":123,\"expiration_date\":321, \"source\": {\"source\":\"giveaway\", \"giveaway_message_id\": 123}}";
         var deserializedJson = JsonConvert.DeserializeObject<ChatBoost>(json, JsonSerializerSettings);
-        Assert.NotNull(deserializedJson);
+        Assert.That(deserializedJson, Is.Not.Null);
         Assert.That(deserializedJson.Source.Source, Is.EqualTo(ChatBoostSourceType.Giveaway));
         Assert.That(deserializedJson.Source, Is.TypeOf<ChatBoostSourceGiveaway>());
     }

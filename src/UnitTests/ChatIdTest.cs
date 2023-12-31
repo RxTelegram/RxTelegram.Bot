@@ -13,7 +13,7 @@ public class ChatIdTest
     {
         ChatId chatId = "test";
         Assert.That(chatId.Username, Is.EqualTo("test"));
-        Assert.Null(chatId.Identifier);
+        Assert.That(chatId.Identifier, Is.Null);
     }
 
     [Test]
@@ -21,7 +21,7 @@ public class ChatIdTest
     {
         ChatId chatId = "-10000";
         Assert.That(chatId.Username, Is.EqualTo("-10000"));
-        Assert.Null(chatId.Identifier);
+        Assert.That(chatId.Identifier, Is.Null);
     }
 
     [Test]
@@ -29,7 +29,7 @@ public class ChatIdTest
     {
         ChatId chatId = -1000000000000;
         Assert.That(chatId.Identifier, Is.EqualTo(-1000000000000));
-        Assert.Null(chatId.Username);
+        Assert.That(chatId.Username, Is.Null);
     }
 
     [Test]
@@ -37,7 +37,7 @@ public class ChatIdTest
     {
         ChatId chatId = -1;
         Assert.That(chatId.Identifier, Is.EqualTo(-1));
-        Assert.Null(chatId.Username);
+        Assert.That(chatId.Username, Is.Null);
     }
 
     [Test]
@@ -47,7 +47,7 @@ public class ChatIdTest
         // Get the public instance constructor that takes an integer parameter.
         var constructorInfoObj = myType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, CallingConventions.HasThis,
                                                        Array.Empty<Type>(), null);
-        Assert.IsNotNull(constructorInfoObj);
+        Assert.That(constructorInfoObj, Is.Not.Null);
         Assert.That(constructorInfoObj.IsPrivate);
     }
 }

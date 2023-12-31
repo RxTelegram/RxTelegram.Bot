@@ -22,7 +22,7 @@ public class KeyboardBuilderTest
                                       .EndRow()
                                       .Build();
         var keyboardList = GetKeyboardList(keyboard);
-        Assert.AreEqual("test", keyboardList[0][0].Text);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo("test"));
     }
 
     [Test]
@@ -37,8 +37,8 @@ public class KeyboardBuilderTest
                                       .EndRow()
                                       .Build();
         var keyboardList = GetKeyboardList(keyboard);
-        Assert.AreEqual("test", keyboardList[0][0].Text);
-        Assert.AreEqual("test2", keyboardList[1][0].Text);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo("test"));
+        Assert.That(keyboardList[1][0].Text, Is.EqualTo("test2"));
     }
 
     [Test]
@@ -55,9 +55,9 @@ public class KeyboardBuilderTest
                                       .Build();
         var keyboardList = GetKeyboardList(keyboard);
 
-        Assert.AreEqual(linkText, keyboardList[0][0].Text);
-        Assert.AreEqual(url, keyboardList[0][0].Url);
-        Assert.AreEqual(payText, keyboardList[0][1].Text);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(linkText));
+        Assert.That(keyboardList[0][0].Url, Is.EqualTo(url));
+        Assert.That(keyboardList[0][1].Text, Is.EqualTo(payText));
     }
 
     [Test]
@@ -78,12 +78,12 @@ public class KeyboardBuilderTest
                                       .Build();
         var keyboardList = keyboard.Select(x => x.ToList())
                                    .ToList();
-        Assert.AreEqual(linkText, keyboardList[0][0].Text);
-        Assert.AreEqual(url, keyboardList[0][0].Url);
-        Assert.AreEqual(payText, keyboardList[0][1].Text);
-        Assert.AreEqual(linkText + "2", keyboardList[1][0].Text);
-        Assert.AreEqual(url + "2", keyboardList[1][0].Url);
-        Assert.AreEqual(payText + "2", keyboardList[1][1].Text);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(linkText));
+        Assert.That(keyboardList[0][0].Url, Is.EqualTo(url));
+        Assert.That(keyboardList[0][1].Text, Is.EqualTo(payText));
+        Assert.That(keyboardList[1][0].Text, Is.EqualTo(linkText + "2"));
+        Assert.That(keyboardList[1][0].Url, Is.EqualTo(url + "2"));
+        Assert.That(keyboardList[1][1].Text, Is.EqualTo(payText + "2"));
     }
 
     [Test]
@@ -94,9 +94,9 @@ public class KeyboardBuilderTest
                                       .EndRow()
                                       .Build()
                                       .AsReplyKeyboardMarkup();
-        Assert.AreEqual(1, keyboard.Keyboard.Count());
-        Assert.AreEqual(0, keyboard.Keyboard.First()
-                                   .Count());
+        Assert.That(keyboard.Keyboard.Count(), Is.EqualTo(1));
+        Assert.That(keyboard.Keyboard.First()
+                                   .Count(), Is.EqualTo(0));
     }
 
     [Test]
@@ -107,9 +107,9 @@ public class KeyboardBuilderTest
                                       .EndRow()
                                       .Build()
                                       .AsInlineKeyboardMarkup();
-        Assert.AreEqual(1, keyboard.InlineKeyboard.Count());
-        Assert.AreEqual(0, keyboard.InlineKeyboard.First()
-                                   .Count());
+        Assert.That(keyboard.InlineKeyboard.Count(), Is.EqualTo(1));
+        Assert.That(keyboard.InlineKeyboard.First()
+                                   .Count(), Is.EqualTo(0));
     }
 
     [Test]
@@ -127,7 +127,7 @@ public class KeyboardBuilderTest
 
         // Assert
         var keyboardList = GetKeyboardList(keyboard);
-        Assert.AreEqual(requestLocation, keyboardList[0][0].Text);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(requestLocation));
     }
 
     [Test]
@@ -145,8 +145,8 @@ public class KeyboardBuilderTest
 
         // Assert
         var keyboardList = GetKeyboardList(keyboard);
-        Assert.AreEqual(requestPoll, keyboardList[0][0].Text);
-        Assert.AreEqual(PollType.Quiz, keyboardList[0][0].RequestPoll.Type);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(requestPoll));
+        Assert.That(keyboardList[0][0].RequestPoll.Type, Is.EqualTo(PollType.Quiz));
     }
 
     [Test]
@@ -160,7 +160,7 @@ public class KeyboardBuilderTest
                                                   .EndRow()
                                                   .Build();
         var keyboardList = GetKeyboardList(replyKeyboardBuilder);
-        Assert.AreEqual(buttonTitle, keyboardList[0][0].Text);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(buttonTitle));
     }
 
     [Test]
@@ -175,8 +175,8 @@ public class KeyboardBuilderTest
                                                   .Build();
         var keyboardList = GetKeyboardList(replyKeyboardBuilder);
 
-        Assert.IsTrue(keyboardList[0][0].RequestContact);
-        Assert.AreEqual(buttonTitle, keyboardList[0][0].Text);
+        Assert.That(keyboardList[0][0].RequestContact, Is.True);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(buttonTitle));
     }
 
     [Test]
@@ -194,8 +194,8 @@ public class KeyboardBuilderTest
         var keyboardList = GetKeyboardList(inlineKeyboardBuilder);
 
 
-        Assert.AreEqual(buttonTitle, keyboardList[0][0].Text);
-        Assert.AreEqual(url, keyboardList[0][0].Url);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(buttonTitle));
+        Assert.That(keyboardList[0][0].Url, Is.EqualTo(url));
     }
 
     [Test]
@@ -212,7 +212,7 @@ public class KeyboardBuilderTest
         var keyboardList = GetKeyboardList(inlineKeyboardBuilder);
 
 
-        Assert.AreEqual(callbackData, keyboardList[0][0].Text);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(callbackData));
     }
 
     [Test]
@@ -231,8 +231,8 @@ public class KeyboardBuilderTest
         var keyboardList = GetKeyboardList(inlineKeyboardBuilder);
 
 
-        Assert.AreEqual(text, keyboardList[0][0].Text);
-        Assert.AreEqual(switchInlineQuery, keyboardList[0][0].SwitchInlineQuery);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(text));
+        Assert.That(keyboardList[0][0].SwitchInlineQuery, Is.EqualTo(switchInlineQuery));
     }
 
     [Test]
@@ -251,8 +251,8 @@ public class KeyboardBuilderTest
         var keyboardList = GetKeyboardList(inlineKeyboardBuilder);
 
 
-        Assert.AreEqual(text, keyboardList[0][0].Text);
-        Assert.AreEqual(switchInlineQueryCurrentChat, keyboardList[0][0].SwitchInlineQueryCurrentChat);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(text));
+        Assert.That(keyboardList[0][0].SwitchInlineQueryCurrentChat, Is.EqualTo(switchInlineQueryCurrentChat));
     }
 
     [Test]
@@ -271,8 +271,8 @@ public class KeyboardBuilderTest
         var keyboardList = GetKeyboardList(inlineKeyboardBuilder);
 
 
-        Assert.AreEqual(text, keyboardList[0][0].Text);
-        Assert.AreEqual(url, keyboardList[0][0].WebApp.Url);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(text));
+        Assert.That(keyboardList[0][0].WebApp.Url, Is.EqualTo(url));
     }
 
     [Test]
@@ -290,8 +290,8 @@ public class KeyboardBuilderTest
         var keyboardList = GetKeyboardList(inlineKeyboardBuilder);
 
 
-        Assert.AreEqual(buttonTitle, keyboardList[0][0].Text);
-        Assert.AreEqual(url, keyboardList[0][0].LoginUrl.Url);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(buttonTitle));
+        Assert.That(keyboardList[0][0].LoginUrl.Url, Is.EqualTo(url));
     }
 
     [Test]
@@ -315,11 +315,11 @@ public class KeyboardBuilderTest
         var keyboardList = GetKeyboardList(inlineKeyboardBuilder);
 
 
-        Assert.AreEqual(buttonTitle, keyboardList[0][0].Text);
-        Assert.AreEqual(loginUrl.Url, keyboardList[0][0].LoginUrl.Url);
-        Assert.AreEqual(loginUrl.BotUsername, keyboardList[0][0].LoginUrl.BotUsername);
-        Assert.AreEqual(loginUrl.ForwardText, keyboardList[0][0].LoginUrl.ForwardText);
-        Assert.AreEqual(loginUrl.RequestWriteAccess, keyboardList[0][0].LoginUrl.RequestWriteAccess);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(buttonTitle));
+        Assert.That(keyboardList[0][0].LoginUrl.Url, Is.EqualTo(loginUrl.Url));
+        Assert.That(keyboardList[0][0].LoginUrl.BotUsername, Is.EqualTo(loginUrl.BotUsername));
+        Assert.That(keyboardList[0][0].LoginUrl.ForwardText, Is.EqualTo(loginUrl.ForwardText));
+        Assert.That(keyboardList[0][0].LoginUrl.RequestWriteAccess, Is.EqualTo(loginUrl.RequestWriteAccess));
     }
 
     [Test]
@@ -335,7 +335,7 @@ public class KeyboardBuilderTest
                                             .Build();
 
         var keyboardList = GetKeyboardList(inlineKeyboard);
-        Assert.AreEqual(buttonTitle, keyboardList[0][0].Text);
-        Assert.AreEqual(payload, keyboardList[0][0].CallbackData);
+        Assert.That(keyboardList[0][0].Text, Is.EqualTo(buttonTitle));
+        Assert.That(keyboardList[0][0].CallbackData, Is.EqualTo(payload));
     }
 }

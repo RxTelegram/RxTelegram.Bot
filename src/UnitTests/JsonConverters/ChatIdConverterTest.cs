@@ -13,8 +13,8 @@ public class ChatIdConverterTest : BaseConverterTest
     {
         const string json = "{ \"chat_id\":2147483647}";
         var deserializedJson = JsonConvert.DeserializeObject<ForwardMessage>(json, JsonSerializerSettings);
-        Assert.NotNull(deserializedJson);
-        Assert.True(deserializedJson.ChatId.Identifier == int.MaxValue);
+        Assert.That(deserializedJson, Is.Not.Null);
+        Assert.That(deserializedJson.ChatId.Identifier == int.MaxValue, Is.True);
     }
 
     [Test]
@@ -22,8 +22,8 @@ public class ChatIdConverterTest : BaseConverterTest
     {
         const string json = "{ \"chat_id\":9223372036854775807}";
         var deserializedJson = JsonConvert.DeserializeObject<ForwardMessage>(json, JsonSerializerSettings);
-        Assert.NotNull(deserializedJson);
-        Assert.True(deserializedJson.ChatId.Identifier == long.MaxValue);
+        Assert.That(deserializedJson, Is.Not.Null);
+        Assert.That(deserializedJson.ChatId.Identifier == long.MaxValue, Is.True);
     }
 
     [Test]
@@ -31,8 +31,8 @@ public class ChatIdConverterTest : BaseConverterTest
     {
         const string json = "{ \"chat_id\":\"@chatId\"}";
         var deserializedJson = JsonConvert.DeserializeObject<ForwardMessage>(json, JsonSerializerSettings);
-        Assert.NotNull(deserializedJson);
-        Assert.True(deserializedJson.ChatId.Username.Equals("@chatId"));
+        Assert.That(deserializedJson, Is.Not.Null);
+        Assert.That(deserializedJson.ChatId.Username.Equals("@chatId"), Is.True);
     }
 
     [Test]
@@ -40,8 +40,8 @@ public class ChatIdConverterTest : BaseConverterTest
     {
         ChatId chatId = int.MaxValue;
         var json = JsonConvert.SerializeObject(chatId, JsonSerializerSettings);
-        Assert.NotNull(json);
-        Assert.True(json.Contains($"{int.MaxValue}"));
+        Assert.That(json, Is.Not.Null);
+        Assert.That(json.Contains($"{int.MaxValue}"), Is.True);
     }
 
     [Test]
@@ -49,8 +49,8 @@ public class ChatIdConverterTest : BaseConverterTest
     {
         ChatId chatId = long.MaxValue;
         var json = JsonConvert.SerializeObject(chatId, JsonSerializerSettings);
-        Assert.NotNull(json);
-        Assert.True(json.Contains($"{long.MaxValue}"));
+        Assert.That(json, Is.Not.Null);
+        Assert.That(json.Contains($"{long.MaxValue}"), Is.True);
     }
 
     [Test]
@@ -58,7 +58,7 @@ public class ChatIdConverterTest : BaseConverterTest
     {
         ChatId chatId = "@chatId";
         var json = JsonConvert.SerializeObject(chatId, JsonSerializerSettings);
-        Assert.NotNull(json);
-        Assert.True(json.Contains("\"@chatId\""));
+        Assert.That(json, Is.Not.Null);
+        Assert.That(json.Contains("\"@chatId\""), Is.True);
     }
 }

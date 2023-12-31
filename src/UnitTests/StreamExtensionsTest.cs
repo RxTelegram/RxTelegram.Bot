@@ -35,8 +35,8 @@ public class StreamExtensionsTests
                                                                    .Deserialize<TestObject>());
 
         // Assert
-        Assert.NotNull(ex);
-        Assert.AreEqual("Error parsing Infinity value. Path '', line 1, position 2.", ex.Message);
+        Assert.That(ex, Is.Not.Null);
+        Assert.That(ex.Message, Is.EqualTo("Error parsing Infinity value. Path '', line 1, position 2."));
     }
 
     [Test]
@@ -58,8 +58,8 @@ public class StreamExtensionsTests
                                                                      .Deserialize<TestObject>());
 
         // Assert
-        Assert.NotNull(ex);
-        Assert.AreEqual("Value cannot be null. (Parameter 'stream')", ex.Message);
+        Assert.That(ex, Is.Not.Null);
+        Assert.That(ex.Message, Is.EqualTo("Value cannot be null. (Parameter 'stream')"));
     }
 
     [Test]
@@ -73,7 +73,7 @@ public class StreamExtensionsTests
                                                                           .Deserialize<Stream>());
 
         // Assert
-        Assert.NotNull(ex);
+        Assert.That(ex, Is.Not.Null);
         Assert.That(ex.Message,
                     Does.StartWith("Could not create an instance of type System.IO.Stream. Type is an interface or abstract class and cannot be instantiated."));
     }

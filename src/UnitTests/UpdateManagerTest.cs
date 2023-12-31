@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using RxTelegram.Bot.Api;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
@@ -45,18 +46,18 @@ public class UpdateManagerTest
         var updateManager = new UpdateManager(_telegramBotMock);
 
         // Assert
-        Assert.IsNotNull(updateManager.Update);
-        Assert.IsNotNull(updateManager.Message);
-        Assert.IsNotNull(updateManager.EditedMessage);
-        Assert.IsNotNull(updateManager.InlineQuery);
-        Assert.IsNotNull(updateManager.ChosenInlineResult);
-        Assert.IsNotNull(updateManager.CallbackQuery);
-        Assert.IsNotNull(updateManager.ChannelPost);
-        Assert.IsNotNull(updateManager.EditedChannelPost);
-        Assert.IsNotNull(updateManager.ShippingQuery);
-        Assert.IsNotNull(updateManager.PreCheckoutQuery);
-        Assert.IsNotNull(updateManager.Poll);
-        Assert.IsNotNull(updateManager.PollAnswer);
+        Assert.That(updateManager.Update, Is.Not.Null);
+        Assert.That(updateManager.Message, Is.Not.Null);
+        Assert.That(updateManager.EditedMessage, Is.Not.Null);
+        Assert.That(updateManager.InlineQuery, Is.Not.Null);
+        Assert.That(updateManager.ChosenInlineResult, Is.Not.Null);
+        Assert.That(updateManager.CallbackQuery, Is.Not.Null);
+        Assert.That(updateManager.ChannelPost, Is.Not.Null);
+        Assert.That(updateManager.EditedChannelPost, Is.Not.Null);
+        Assert.That(updateManager.ShippingQuery, Is.Not.Null);
+        Assert.That(updateManager.PreCheckoutQuery, Is.Not.Null);
+        Assert.That(updateManager.Poll, Is.Not.Null);
+        Assert.That(updateManager.PollAnswer, Is.Not.Null);
     }
 
     [Test]
@@ -71,7 +72,7 @@ public class UpdateManagerTest
         updateManager.Subscribe(updateType, updateObserverMock);
 
         // Assert
-        Assert.Contains(updateObserverMock, updateManager.GetObservers(updateType));
+        Assert.That(updateManager.GetObservers(updateType), Contains.Item(updateObserverMock));
     }
 
     [Test]
