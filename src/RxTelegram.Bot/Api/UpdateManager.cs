@@ -46,6 +46,11 @@ public class UpdateManager : IUpdateManager
 
     public IObservable<ChatJoinRequest> ChatJoinRequest => _chatJoinRequest;
 
+    public IObservable<ChatBoostUpdated> ChatBoost => _chatBoostUpdated;
+
+    public IObservable<ChatBoostRemoved> RemovedChatBoost => _chatBoostRemoved;
+
+
     private readonly IDictionary<UpdateTypeWrapper<UpdateType?>, List<object>> _observerDictionary;
     private readonly Observable<Update> _update;
     private readonly Observable<Message> _message;
@@ -62,6 +67,8 @@ public class UpdateManager : IUpdateManager
     private readonly Observable<ChatMemberUpdated> _myChatMember;
     private readonly Observable<ChatMemberUpdated> _chatMember;
     private readonly Observable<ChatJoinRequest> _chatJoinRequest;
+    private readonly Observable<ChatBoostUpdated> _chatBoostUpdated;
+    private readonly Observable<ChatBoostRemoved> _chatBoostRemoved;
 
     private readonly ITelegramBot _telegramBot;
     private const int NotRunning = 0;
@@ -83,6 +90,8 @@ public class UpdateManager : IUpdateManager
                                   // add any update type
                                   .Append(UpdateTypeWrapper<UpdateType?>.Any())
                                   .ToDictionary(updateType => new UpdateTypeWrapper<UpdateType?>(updateType), _ => new List<object>());
+        _chatBoostUpdated = new Observable<ChatBoostUpdated>(UpdateType.ChatBoost, this);
+        _chatBoostRemoved = new Observable<ChatBoostRemoved>(UpdateType.RemovedChatBoost, this);
         _chatJoinRequest = new Observable<ChatJoinRequest>(UpdateType.ChatJoinRequest, this);
         _chatMember = new Observable<ChatMemberUpdated>(UpdateType.ChatMember, this);
         _myChatMember = new Observable<ChatMemberUpdated>(UpdateType.MyChatMember, this);
@@ -385,6 +394,10 @@ public class UpdateManager : IUpdateManager
     public IAsyncEnumerable<ChatMemberUpdated> ChatMemberEnumerable() => _chatMember.ToAsyncEnumerable();
 
     public IAsyncEnumerable<ChatJoinRequest> ChatJoinRequestEnumerable() => _chatJoinRequest.ToAsyncEnumerable();
+
+    public IAsyncEnumerable<ChatBoostUpdated> ChatBoostEnumerable() => _chatBoostUpdated.ToAsyncEnumerable();
+
+    public IAsyncEnumerable<ChatBoostRemoved> RemovedChatBoostEnumerable() => _chatBoostRemoved.ToAsyncEnumerable();
 #endif
 
     private struct UpdateTypeWrapper<T>

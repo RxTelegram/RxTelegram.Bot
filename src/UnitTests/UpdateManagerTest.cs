@@ -58,6 +58,11 @@ public class UpdateManagerTest
         Assert.That(updateManager.PreCheckoutQuery, Is.Not.Null);
         Assert.That(updateManager.Poll, Is.Not.Null);
         Assert.That(updateManager.PollAnswer, Is.Not.Null);
+        Assert.That(updateManager.MyChatMember, Is.Not.Null);
+        Assert.That(updateManager.ChatMember, Is.Not.Null);
+        Assert.That(updateManager.ChatJoinRequest, Is.Not.Null);
+        Assert.That(updateManager.ChatBoost, Is.Not.Null);
+        Assert.That(updateManager.RemovedChatBoost, Is.Not.Null);
     }
 
     [Test]

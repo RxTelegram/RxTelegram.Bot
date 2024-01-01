@@ -88,15 +88,15 @@ public class MultiTypeClassConverterTest : BaseConverterTest
     {
         const string response =
             """
-            {\n \"update_id\": 123,\n \"message\": {\n \"message_id\": 1,\n \"from\": {\n \"id\": 1,\n \"is_bot\": false,\n
-            \"first_name\": \"Rx\",\n \"last_name\": \"Telegram\",\n \"username\": \"RxTelegram\",\n \"language_code\":
-            \"en\"\n },\n \"chat\": {\n \"id\": 1,\n \"first_name\": \"Rx\",\n \"last_name\": \"Telegram\",\n \"username\":
-            \"RxTelegram\",\n \"type\": \"private\"\n },\n \"date\": 1704136224,\n \"forward_origin\": {\n \"type\": \"user\",\n
-            \"sender_user\": {\n \"id\": 1,\n \"is_bot\": false,\n \"first_name\": \"Dev\",\n \"last_name\": \"Eloper\"\n },\n
-            \"date\": 1704135815\n },\n \"forward_from\": {\n \"id\": 1,\n \"is_bot\": false,\n \"first_name\": \"Dev\",\n
-            \"last_name\": \"Eloper\"\n },\n \"forward_date\": 1704135815,\n \"text\": \"This is a scam!\"\n }\n}\n
+            {"update_id":496146950,
+            "message":{"message_id":668,"from":{"id":215983066,"is_bot":false,"first_name":"Niklas","last_name":"Weimann","username":
+            "niklasweimann","language_code":"en"},"chat":{"id":215983066,"first_name":"Niklas","last_name":"Weimann","username":
+            "niklasweimann","type":"private"},"date":1704136224,"forward_origin":{"type":"user","sender_user":{"id":870613851,
+            "is_bot":false,"first_name":"Thomas","last_name":"Weimann"},"date":1704135815},"forward_from":{"id":870613851,"is_bot":false,
+            "first_name":"Thomas","last_name":"Weimann"},"forward_date":1704135815,"text":"Jupp"}}
             """;
         var deserializedJson = JsonConvert.DeserializeObject<Update>(response, JsonSerializerSettings);
         Assert.That(deserializedJson, Is.Not.Null);
+        Assert.That(deserializedJson.Message.ForwardOrigin.Type, Is.EqualTo(MessageOriginType.User));
     }
 }
