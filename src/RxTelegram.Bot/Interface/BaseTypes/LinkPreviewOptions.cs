@@ -1,5 +1,8 @@
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
+/// <summary>
+/// Describes the options used for link preview generation.
+/// </summary>
 public class LinkPreviewOptions
 {
     /// <summary>

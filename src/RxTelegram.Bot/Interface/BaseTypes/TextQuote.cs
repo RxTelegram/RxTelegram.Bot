@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
+/// <summary>
+/// This object contains information about the quoted part of a message that is replied to by the given message.
+/// </summary>
 public class TextQuote
 {
     /// <summary>
