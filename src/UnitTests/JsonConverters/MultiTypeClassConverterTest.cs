@@ -65,4 +65,17 @@ public class MultiTypeClassConverterTest : BaseConverterTest
         Assert.That(deserializedJson.Source.Source, Is.EqualTo(ChatBoostSourceType.Giveaway));
         Assert.That(deserializedJson.Source, Is.TypeOf<ChatBoostSourceGiveaway>());
     }
+
+    [Test]
+    public void ShouldDeserializeExternalReplyInfo()
+    {
+        const string messageOriginUserJson = "{\"type\":\"user\",\"date\":123,\"sender_user\":" + User + "}";
+        const string json = "{\"origin\":" + messageOriginUserJson + "}";
+        var deserializedJson = JsonConvert.DeserializeObject<ExternalReplyInfo>(json, JsonSerializerSettings);
+        Assert.That(deserializedJson, Is.Not.Null);
+        Assert.That(deserializedJson.Origin.Type, Is.EqualTo(MessageOriginType.User));
+        Assert.That(deserializedJson.Origin, Is.TypeOf<MessageOriginUser>());
+        var user = (MessageOriginUser)deserializedJson.Origin;
+        Assert.That(user.SenderUser.Id, Is.EqualTo(123));
+    }
 }
