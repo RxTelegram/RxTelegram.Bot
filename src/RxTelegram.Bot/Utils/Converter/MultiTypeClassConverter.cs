@@ -21,7 +21,7 @@ public class MultiTypeClassConverter : JsonConverter
         var valueToDefineResultType = jsonObject.GetValue(distinguishingProperty) ??
                                       throw new InvalidOperationException("The property is not found");
         var resultTypeEnum = GetEnumOfGenericInterface(objectType);
-        var propertyName = ToSnakeCase(valueToDefineResultType.Value<string>());
+        var propertyName = ToPascalCase(valueToDefineResultType.Value<string>());
 
         // Get Attribute for enum entry
         var attributeOfEnumValue = resultTypeEnum.GetField(propertyName)
@@ -44,8 +44,8 @@ public class MultiTypeClassConverter : JsonConverter
     {
         var interfaces = objectType.GetInterfaces();
         var valueToDefineResultType =
-            interfaces.FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassBySource<>)) ??
-            interfaces.FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassByType<>));
+            Array.Find(interfaces, x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassBySource<>)) ??
+            Array.Find(interfaces, x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassByType<>));
 
         var resultTypeEnum = valueToDefineResultType?.GetGenericArguments()
                                                     .FirstOrDefault();
@@ -65,8 +65,10 @@ public class MultiTypeClassConverter : JsonConverter
             throw new NotSupportedException($"The specified type {objectType} is not supported by this converter.");
         }
 
-        if (destinationObjectAttributes.Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassBySource<>)) &&
-            destinationObjectAttributes.Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassByType<>)))
+        if (Array.Exists(destinationObjectAttributes,
+                         x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassBySource<>)) &&
+            Array.Exists(destinationObjectAttributes,
+                         x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassByType<>)))
         {
             throw new NotSupportedException($"The specified type {objectType} is not supported by this converter.");
         }
@@ -78,12 +80,14 @@ public class MultiTypeClassConverter : JsonConverter
 
         // Determine if object is MultiTypeClass by source or type
         var destinationObjectAttributes = objectType.GetInterfaces();
-        if (destinationObjectAttributes.Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassBySource<>)))
+        if (Array.Exists(destinationObjectAttributes,
+                         x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassBySource<>)))
         {
             distinguishingProperty = "source";
         }
 
-        if (destinationObjectAttributes.Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassByType<>)))
+        if (Array.Exists(destinationObjectAttributes,
+                         x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassByType<>)))
         {
             distinguishingProperty = "type";
         }
@@ -91,7 +95,7 @@ public class MultiTypeClassConverter : JsonConverter
         return distinguishingProperty;
     }
 
-    private static string ToSnakeCase(string str)
+    private static string ToPascalCase(string str)
     {
         var textInfo = new CultureInfo("en-US", false).TextInfo;
 
@@ -109,10 +113,10 @@ public class MultiTypeClassConverter : JsonConverter
     }
 
     public override bool CanConvert(Type objectType) => objectType.IsAbstract &&
-                                                        objectType.GetInterfaces()
-                                                                  .Any(x => x.IsGenericType &&
-                                                                            (x.GetGenericTypeDefinition() ==
-                                                                             typeof(IMultiTypeClassBySource<>) ||
-                                                                             x.GetGenericTypeDefinition() ==
-                                                                             typeof(IMultiTypeClassByType<>)));
+                                                        Array.Exists(objectType.GetInterfaces(),
+                                                                     x => x.IsGenericType &&
+                                                                          (x.GetGenericTypeDefinition() ==
+                                                                           typeof(IMultiTypeClassBySource<>) ||
+                                                                           x.GetGenericTypeDefinition() ==
+                                                                           typeof(IMultiTypeClassByType<>)));
 }
