@@ -21,10 +21,11 @@ public class MultiTypeClassConverter : JsonConverter
         var valueToDefineResultType = jsonObject.GetValue(distinguishingProperty) ??
                                       throw new InvalidOperationException("The property is not found");
         var resultTypeEnum = GetEnumOfGenericInterface(objectType);
-        var propertyName = ToPascalCase(valueToDefineResultType.Value<string>());
+        var enumValue = valueToDefineResultType.ToObject(resultTypeEnum, serializer) ??
+                        throw new InvalidOperationException("The value of enum is not defined");
 
         // Get Attribute for enum entry
-        var attributeOfEnumValue = resultTypeEnum.GetField(propertyName)
+        var attributeOfEnumValue = resultTypeEnum.GetField(enumValue.ToString())
                                                  .GetCustomAttributes(typeof(ImplementationTypeAttribute), false)
                                                  .Cast<ImplementationTypeAttribute>()
                                                  .FirstOrDefault();
@@ -93,23 +94,6 @@ public class MultiTypeClassConverter : JsonConverter
         }
 
         return distinguishingProperty;
-    }
-
-    private static string ToPascalCase(string str)
-    {
-        var textInfo = new CultureInfo("en-US", false).TextInfo;
-
-        // Split the string by underscores
-        var words = str.Split('_');
-
-        // Capitalize each word and concatenate
-        for (var i = 0; i < words.Length; i++)
-        {
-            words[i] = textInfo.ToTitleCase(words[i]);
-        }
-
-        // Join the words together without spaces
-        return string.Concat(words);
     }
 
     public override bool CanConvert(Type objectType) => objectType.IsAbstract &&
