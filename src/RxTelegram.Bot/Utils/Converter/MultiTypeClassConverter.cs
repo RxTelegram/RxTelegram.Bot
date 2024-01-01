@@ -18,16 +18,16 @@ public class MultiTypeClassConverter : JsonConverter
         CheckForValidInterfaces(objectType);
         var distinguishingProperty = GetNameOfDistinguishingProperty(objectType);
         var jsonObject = JObject.Load(reader);
-        var valueToDefineResultType =
-            jsonObject.GetValue(distinguishingProperty) ?? throw new InvalidOperationException("The property is not found");
+        var valueToDefineResultType = jsonObject.GetValue(distinguishingProperty) ??
+                                      throw new InvalidOperationException("The property is not found");
         var resultTypeEnum = GetEnumOfGenericInterface(objectType);
         var propertyName = ToSnakeCase(valueToDefineResultType.Value<string>());
 
         // Get Attribute for enum entry
         var attributeOfEnumValue = resultTypeEnum.GetField(propertyName)
-                                              .GetCustomAttributes(typeof(ImplementationTypeAttribute), false)
-                                              .Cast<ImplementationTypeAttribute>()
-                                              .FirstOrDefault();
+                                                 .GetCustomAttributes(typeof(ImplementationTypeAttribute), false)
+                                                 .Cast<ImplementationTypeAttribute>()
+                                                 .FirstOrDefault();
         if (attributeOfEnumValue == null)
         {
             throw new InvalidOperationException($"The specified type {valueToDefineResultType} is not supported by this converter.");
@@ -43,10 +43,9 @@ public class MultiTypeClassConverter : JsonConverter
     private static Type GetEnumOfGenericInterface(Type objectType)
     {
         var interfaces = objectType.GetInterfaces();
-        var valueToDefineResultType = interfaces.FirstOrDefault(x => x.IsGenericType &&
-                                                                     x.GetGenericTypeDefinition() == typeof(IMultiTypeClassBySource<>)) ??
-                                      interfaces.FirstOrDefault(x => x.IsGenericType &&
-                                                                     x.GetGenericTypeDefinition() == typeof(IMultiTypeClassByType<>));
+        var valueToDefineResultType =
+            interfaces.FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassBySource<>)) ??
+            interfaces.FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IMultiTypeClassByType<>));
 
         var resultTypeEnum = valueToDefineResultType?.GetGenericArguments()
                                                     .FirstOrDefault();
@@ -54,6 +53,7 @@ public class MultiTypeClassConverter : JsonConverter
         {
             throw new NotSupportedException($"The specified type {valueToDefineResultType} is not supported by this converter.");
         }
+
         return resultTypeEnum;
     }
 
@@ -108,8 +108,11 @@ public class MultiTypeClassConverter : JsonConverter
         return string.Concat(words);
     }
 
-    public override bool CanConvert(Type objectType) => objectType.GetInterfaces()
+    public override bool CanConvert(Type objectType) => objectType.IsAbstract &&
+                                                        objectType.GetInterfaces()
                                                                   .Any(x => x.IsGenericType &&
-                                                                            x.GetGenericTypeDefinition() ==
-                                                                            typeof(IMultiTypeClassBySource<>));
+                                                                            (x.GetGenericTypeDefinition() ==
+                                                                             typeof(IMultiTypeClassBySource<>) ||
+                                                                             x.GetGenericTypeDefinition() ==
+                                                                             typeof(IMultiTypeClassByType<>)));
 }
