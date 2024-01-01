@@ -132,7 +132,7 @@ public class Message
     public Document Document { get; set; }
 
     /// <summary>
-    /// Optional. Message is an animation, information about the animation. For backward compatibility, when this
+    /// Optional. Message is an Animation, information about the Animation. For backward compatibility, when this
     /// field is set, the document field will also be set
     /// </summary>
     public Animation Animation { get; set; }
@@ -173,12 +173,12 @@ public class Message
     public VideoNote VideoNote { get; set; }
 
     /// <summary>
-    /// Optional. Caption for the animation, audio, document, photo, video or voice
+    /// Optional. Caption for the Animation, audio, document, photo, video or voice
     /// </summary>
     public string Caption { get; set; }
 
     /// <summary>
-    /// Optional. True, if the message media is covered by a spoiler animation
+    /// Optional. True, if the message media is covered by a spoiler Animation
     /// </summary>
     public bool? HasMediaSpoiler { get; set; }
 

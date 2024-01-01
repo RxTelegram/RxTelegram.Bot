@@ -1,6 +1,8 @@
+using RxTelegram.Bot.Utils.MultiType;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
-public abstract class MessageOrigin
+public abstract class MessageOrigin : IMultiTypeClassByType<Enums.MessageOriginType>
 {
-    public Enums.MessageOrigin Type { get; set; }
+    public abstract Enums.MessageOriginType Type { get; set; }
 }

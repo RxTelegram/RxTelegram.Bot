@@ -11,7 +11,7 @@ public class ChatBoostSourceGiftCode : ChatBoostSource
     /// <summary>
     /// Source of the boost, always “gift_code”
     /// </summary>
-    public override ChatBoostSourceType Source { get; protected set; } = ChatBoostSourceType.GiftCode;
+    public override ChatBoostSourceType Source { get; set; } = ChatBoostSourceType.GiftCode;
 
     /// <summary>
     /// User for which the gift code was created

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.BaseTypes.InputMedia.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia;
@@ -10,7 +11,7 @@ public class InputMediaDocument : BaseInputMedia
     /// <summary>
     ///     Type of the result, must be document
     /// </summary>
-    public override string Type { get; set; } = "document";
+    public override InputMediaTypes Type { get; set; } = InputMediaTypes.Document;
 
     /// <summary>
     ///     Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.

@@ -1,6 +1,8 @@
-﻿namespace RxTelegram.Bot.Interface.Passport;
+﻿using RxTelegram.Bot.Interface.Passport.Enum;
+
+namespace RxTelegram.Bot.Interface.Passport;
 
 public class PassportElementErrorFrontSide : PassportElementError
 {
-    public override string Source { get; } = "front_side";
+    public override PassportErrorType Source { get; set; } = PassportErrorType.FrontSide;
 }

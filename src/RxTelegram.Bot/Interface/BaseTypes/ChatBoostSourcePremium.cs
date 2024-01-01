@@ -10,7 +10,7 @@ public class ChatBoostSourcePremium : ChatBoostSource
     /// <summary>
     /// Source of the boost, always “premium”
     /// </summary>
-    public override ChatBoostSourceType Source { get; protected set; } = ChatBoostSourceType.Premium;
+    public override ChatBoostSourceType Source { get; set; } = ChatBoostSourceType.Premium;
 
     /// <summary>
     /// User that boosted the chat

@@ -1,4 +1,6 @@
-﻿namespace RxTelegram.Bot.Interface.BotCommandScope;
+﻿using RxTelegram.Bot.Interface.BotCommandScope.Enums;
+
+namespace RxTelegram.Bot.Interface.BotCommandScope;
 
 /// <summary>
 /// Represents the default scope of bot commands.
@@ -9,5 +11,5 @@ public class BotCommandScopeDefault : BotCommandScopeBase
     /// <summary>
     /// Scope type, must be default
     /// </summary>
-    public override string Type => "default";
+    public override BotCommandScopeTypes Type { get; set; } = BotCommandScopeTypes.Default;
 }

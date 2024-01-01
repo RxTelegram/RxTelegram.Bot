@@ -1,9 +1,12 @@
-﻿namespace RxTelegram.Bot.Interface.BotCommandScope;
+﻿using RxTelegram.Bot.Interface.BotCommandScope.Enums;
+using RxTelegram.Bot.Utils.MultiType;
 
-public abstract class BotCommandScopeBase
+namespace RxTelegram.Bot.Interface.BotCommandScope;
+
+public abstract class BotCommandScopeBase : IMultiTypeClassByType<BotCommandScopeTypes>
 {
     /// <summary>
     /// Scope type
     /// </summary>
-    public abstract string Type { get; }
+    public abstract BotCommandScopeTypes Type { get; set; }
 }

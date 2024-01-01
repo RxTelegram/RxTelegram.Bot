@@ -1,4 +1,5 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.BotCommandScope.Enums;
 
 namespace RxTelegram.Bot.Interface.BotCommandScope;
 
@@ -10,7 +11,7 @@ public class BotCommandScopeChat : BotCommandScopeBase
     /// <summary>
     /// Scope type, must be chat
     /// </summary>
-    public override string Type => "chat";
+    public override BotCommandScopeTypes Type { get; set; } = BotCommandScopeTypes.Chat;
 
     /// <summary>
     /// Unique identifier for the target chat or username of the target supergroup

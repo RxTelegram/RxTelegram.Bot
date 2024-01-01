@@ -1,4 +1,5 @@
 using System;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
@@ -8,6 +9,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes;
 
 public class MessageOriginUser : MessageOrigin
 {
+    /// <summary>
+    /// Type of the message origin, always “user”
+    /// </summary>
+    public override MessageOriginType Type { get; set; } = MessageOriginType.User;
+
     /// <summary>
     /// Date the message was sent originally in Unix time
     /// </summary>

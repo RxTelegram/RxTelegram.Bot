@@ -1,4 +1,5 @@
 using System;
+using RxTelegram.Bot.Interface.BaseTypes.Enums;
 
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
@@ -7,6 +8,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes;
 /// </summary>
 public class MessageOriginChannel : MessageOrigin
 {
+    /// <summary>
+    /// Type of the message origin, always “channel”
+    /// </summary>
+    public override MessageOriginType Type { get; set; } = MessageOriginType.Channel;
+
     /// <summary>
     /// Date the message was sent originally in Unix time
     /// </summary>
@@ -26,4 +32,5 @@ public class MessageOriginChannel : MessageOrigin
     /// Optional. Signature of the original post author
     /// </summary>
     public string AuthorSignature { get; set; }
+
 }
