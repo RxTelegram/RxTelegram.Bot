@@ -1,4 +1,6 @@
-﻿namespace RxTelegram.Bot.Interface.BotCommandScope;
+﻿using RxTelegram.Bot.Interface.BotCommandScope.Enums;
+
+namespace RxTelegram.Bot.Interface.BotCommandScope;
 
 /// <summary>
 /// Represents the scope of bot commands, covering all group and supergroup chat administrators.
@@ -8,5 +10,5 @@ public class BotCommandScopeAllChatAdministrators : BotCommandScopeBase
     /// <summary>
     /// Scope type, must be all_chat_administrators
     /// </summary>
-    public override string Type => "all_chat_administrators";
+    public override BotCommandScopeTypes Type { get; set; } = BotCommandScopeTypes.AllChatAdministrators;
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using RxTelegram.Bot.Interface.BaseTypes.InputMedia.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Utils.MultiType;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 
-public abstract class BaseInputMedia
+public abstract class BaseInputMedia : IMultiTypeClassByType<InputMediaTypes>
 {
     protected BaseInputMedia(string fileId) => Media = new InputFile(fileId);
 
@@ -15,7 +17,7 @@ public abstract class BaseInputMedia
     /// <summary>
     ///     Type of the result
     /// </summary>
-    public abstract string Type { get; set; }
+    public abstract InputMediaTypes Type { get; set; }
 
     /// <summary>
     ///     File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended),

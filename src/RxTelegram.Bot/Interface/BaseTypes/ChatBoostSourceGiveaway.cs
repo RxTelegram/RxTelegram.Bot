@@ -11,7 +11,7 @@ public class ChatBoostSourceGiveaway : ChatBoostSource
     /// <summary>
     /// Source of the boost, always “giveaway”
     /// </summary>
-    public override ChatBoostSourceType Source { get; protected set; } = ChatBoostSourceType.Giveaway;
+    public override ChatBoostSourceType Source { get; set; } = ChatBoostSourceType.Giveaway;
 
     /// <summary>
     /// Identifier of a message in the chat with the giveaway; the message could have been deleted already.

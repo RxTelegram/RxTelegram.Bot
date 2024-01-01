@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.BaseTypes.InputMedia.Enums;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia;
 
@@ -10,7 +11,7 @@ public class InputMediaPhoto : BaseInputMedia
     /// <summary>
     /// Type of the result, must be photo
     /// </summary>
-    public override string Type { get; set; } = "photo";
+    public override InputMediaTypes Type { get; set; } = InputMediaTypes.Photo;
 
     /// <summary>
     /// Optional. Caption of the photo to be sent, 0-1024 characters after entities parsing
@@ -29,7 +30,7 @@ public class InputMediaPhoto : BaseInputMedia
     public IEnumerable<MessageEntity> CaptionEntities { get; set; }
 
     /// <summary>
-    /// Optional. Pass True if the photo needs to be covered with a spoiler animation
+    /// Optional. Pass True if the photo needs to be covered with a spoiler Animation
     /// </summary>
     public bool? HasSpoiler { get; set; }
 

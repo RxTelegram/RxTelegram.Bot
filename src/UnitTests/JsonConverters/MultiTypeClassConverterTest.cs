@@ -11,7 +11,7 @@ using RxTelegram.Bot.Utils;
 namespace RxTelegram.Bot.UnitTests.JsonConverters;
 
 [TestFixture]
-public class ChatBoostSourceConverterTest : BaseConverterTest
+public class MultiTypeClassConverterTest : BaseConverterTest
 {
     private const string User = "{\"id\":123,\"is_bot\":false,\"first_name\":\"Test\"}";
 
