@@ -90,6 +90,16 @@ public interface IUpdateManager
     /// </summary>
     IObservable<ChatJoinRequest> ChatJoinRequest { get; }
 
+    /// <summary>
+    /// A chat boost was added or changed. The bot must be an administrator in the chat to receive these updates.
+    /// </summary>
+    IObservable<ChatBoostUpdated> ChatBoost { get; }
+
+    /// <summary>
+    /// A boost was removed from a chat. The bot must be an administrator in the chat to receive these updates.
+    /// </summary>
+    IObservable<ChatBoostRemoved> RemovedChatBoost { get; }
+
 #if NETSTANDARD2_1
     /// <summary>
     /// Updates of all Types.
@@ -168,5 +178,16 @@ public interface IUpdateManager
     /// A request to join the chat has been sent. The bot must have the can_invite_users administrator right in the chat to receive these updates.
     /// </summary>
     IAsyncEnumerable<ChatJoinRequest> ChatJoinRequestEnumerable();
+
+
+    /// <summary>
+    /// A chat boost was added or changed. The bot must be an administrator in the chat to receive these updates.
+    /// </summary>
+    IAsyncEnumerable<ChatBoostUpdated> ChatBoostEnumerable();
+
+    /// <summary>
+    /// A boost was removed from a chat. The bot must be an administrator in the chat to receive these updates.
+    /// </summary>
+    IAsyncEnumerable<ChatBoostRemoved> RemovedChatBoostEnumerable();
 #endif
 }

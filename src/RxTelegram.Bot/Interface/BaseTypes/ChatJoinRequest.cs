@@ -1,3 +1,5 @@
+using System;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
@@ -26,7 +28,7 @@ public class ChatJoinRequest
     /// <summary>
     /// Date the request was sent in Unix time
     /// </summary>
-    public int Date { get; set; }
+    public DateTime Date { get; set; }
 
     /// <summary>
     /// Optional. Bio of the user.

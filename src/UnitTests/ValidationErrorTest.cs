@@ -23,7 +23,7 @@ public class ValidationErrorTest
         var result = target.GetMessage;
 
         // Assert
-        Assert.AreEqual(expectedResult, result);
+        Assert.That(result, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -43,7 +43,7 @@ public class ValidationErrorTest
         var result = target.GetMessage;
 
         // Assert
-        Assert.AreEqual(expectedResult, result);
+        Assert.That(result, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -56,6 +56,6 @@ public class ValidationErrorTest
         var result = target.ToString();
 
         // Assert
-        Assert.AreEqual("(Property1): \"At most 100 commands can be specified.\"", result);
+        Assert.That(result, Is.EqualTo("(Property1): \"At most 100 commands can be specified.\""));
     }
 }

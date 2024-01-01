@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
-namespace RxTelegram.Bot.Utils;
+namespace RxTelegram.Bot.Utils.Converter;
 
 internal class InputFileConverter : JsonConverter<InputFile>
 {

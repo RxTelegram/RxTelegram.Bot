@@ -9,7 +9,6 @@ namespace RxTelegram.Bot.Interface.InlineMode;
 /// Represents the content of a text message to be sent as the result of an inline query.
 /// </summary>
 public class InputTextMessageContent: InputMessageContent
-
 {
     /// <summary>
     /// Text of the message to be sent, 1-4096 characters
@@ -28,9 +27,9 @@ public class InputTextMessageContent: InputMessageContent
     public IEnumerable<MessageEntity> Entities { get; set; }
 
     /// <summary>
-    /// Optional. Disables link previews for links in the sent message
+    /// Optional. Link preview generation options for the message
     /// </summary>
-    public bool DisableWebPagePreview { get; set; }
+    public LinkPreviewOptions LinkPreviewOptions { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
 }

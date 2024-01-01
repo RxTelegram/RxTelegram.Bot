@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RxTelegram.Bot.Interface.Games;
+using RxTelegram.Bot.Interface.Giveaway;
 using RxTelegram.Bot.Interface.Passport;
 using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Stickers;
@@ -45,34 +46,9 @@ public class Message
     public Chat Chat { get; set; }
 
     /// <summary>
-    /// Optional. For forwarded messages, sender of the original message
+    /// Optional. Information about the original message for forwarded messages
     /// </summary>
-    public User ForwardFrom { get; set; }
-
-    /// <summary>
-    /// Optional. For messages forwarded from a channel, information about the original channel
-    /// </summary>
-    public Chat ForwardFromChat { get; set; }
-
-    /// <summary>
-    /// Optional. For forwarded channel posts, identifier of the original message in the channel
-    /// </summary>
-    public int? ForwardFromMessageId { get; set; }
-
-    /// <summary>
-    /// Optional. For messages forwarded from channels, signature of the post author if present
-    /// </summary>
-    public string ForwardSignature { get; set; }
-
-    /// <summary>
-    /// Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
-    /// </summary>
-    public string ForwardSenderName { get; set; }
-
-    /// <summary>
-    /// Optional. For forwarded messages, date the original message was sent in Unix time
-    /// </summary>
-    public DateTime? ForwardDate { get; set; }
+    public MessageOrigin ForwardOrigin { get; set; }
 
     /// <summary>
     /// Optional. True, if the message is sent to a forum topic
@@ -89,6 +65,16 @@ public class Message
     /// not contain further reply_to_message fields even if it itself is a reply.
     /// </summary>
     public Message ReplyToMessage { get; set; }
+
+    /// <summary>
+    /// Optional. Information about the message that is being replied to, which may come from another chat or forum topic
+    /// </summary>
+    public ExternalReplyInfo ExternalReply { get; set; }
+
+    /// <summary>
+    /// Optional. For replies that quote part of the original message, the quoted part of the message
+    /// </summary>
+    public TextQuote Quote { get; set; }
 
     /// <summary>
     /// Optional. Bot through which the message was sent
@@ -126,6 +112,11 @@ public class Message
     public IEnumerable<MessageEntity> Entities { get; set; }
 
     /// <summary>
+    /// Optional. Options used for link preview generation for the message, if it is a text message and link preview options were changed
+    /// </summary>
+    public LinkPreviewOptions LinkPreviewOptions { get; set; }
+
+    /// <summary>
     /// Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
     /// </summary>
     public IEnumerable<MessageEntity> CaptionEntities { get; set; }
@@ -141,7 +132,7 @@ public class Message
     public Document Document { get; set; }
 
     /// <summary>
-    /// Optional. Message is an animation, information about the animation. For backward compatibility, when this
+    /// Optional. Message is an Animation, information about the Animation. For backward compatibility, when this
     /// field is set, the document field will also be set
     /// </summary>
     public Animation Animation { get; set; }
@@ -182,12 +173,12 @@ public class Message
     public VideoNote VideoNote { get; set; }
 
     /// <summary>
-    /// Optional. Caption for the animation, audio, document, photo, video or voice
+    /// Optional. Caption for the Animation, audio, document, photo, video or voice
     /// </summary>
     public string Caption { get; set; }
 
     /// <summary>
-    /// Optional. True, if the message media is covered by a spoiler animation
+    /// Optional. True, if the message media is covered by a spoiler Animation
     /// </summary>
     public bool? HasMediaSpoiler { get; set; }
 
@@ -346,6 +337,26 @@ public class Message
     /// Optional. Service message: the 'General' forum topic unhidden
     /// </summary>
     public GeneralForumTopicUnhidden GeneralForumTopicUnhidden { get; set; }
+
+    /// <summary>
+    /// Optional. Service message: a scheduled giveaway was created
+    /// </summary>
+    public GiveawayCreated GiveawayCreated { get; set; }
+
+    /// <summary>
+    /// Optional. The message is a scheduled giveaway message
+    /// </summary>
+    public Giveaway.Giveaway Giveaway { get; set; }
+
+    /// <summary>
+    /// Optional. A giveaway with public winners was completed
+    /// </summary>
+    public GiveawayWinners GiveawayWinners { get; set; }
+
+    /// <summary>
+    /// Optional. Service message: a giveaway without public winners was completed
+    /// </summary>
+    public GiveawayCompleted GiveawayCompleted { get; set; }
 
     /// <summary>
     /// Optional. Service message: video chat scheduled

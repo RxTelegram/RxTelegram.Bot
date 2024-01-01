@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RxTelegram.Bot.Interface.BaseTypes;
 
-namespace RxTelegram.Bot.Utils;
+namespace RxTelegram.Bot.Utils.Converter;
 
 public class ChatIdConverter : JsonConverter<ChatId>
 {

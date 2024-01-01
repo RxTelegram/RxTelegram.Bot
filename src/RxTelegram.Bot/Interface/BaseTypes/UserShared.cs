@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
-/// This object contains information about the user whose identifier was shared with the bot using a <see cref="KeyboardButtonRequestUser"/> button.
+/// This object contains information about the user whose identifier was shared with the bot using a <see cref="KeyboardButtonRequestUsers"/> button.
 /// </summary>
 public class UserShared
 {
@@ -16,5 +18,5 @@ public class UserShared
     /// But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
     /// The bot may not have access to the user and could be unable to use this identifier, unless the user is already known to the bot by some other means.
     /// </summary>
-    public long UserId { get; set; }
+    public List<long> UserId { get; set; }
 }

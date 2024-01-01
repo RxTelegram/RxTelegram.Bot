@@ -16,6 +16,7 @@ using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
 using RxTelegram.Bot.Interface.Passport.Requests;
 using RxTelegram.Bot.Interface.Payments.Requests;
+using RxTelegram.Bot.Interface.Reaction.Requests;
 using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers.Requests;
 
@@ -622,4 +623,26 @@ public static class ValidationResultFactory
 
     public static ValidationResult<UnpinAllGeneralForumTopicMessages> CreateValidation(this UnpinAllGeneralForumTopicMessages value) =>
         new ValidationResult<UnpinAllGeneralForumTopicMessages>(value).ValidateRequired(x => x.ChatId);
+
+    public static ValidationResult<SetMessageReaction> CreateValidation(this SetMessageReaction value) =>
+        new ValidationResult<SetMessageReaction>(value).ValidateRequired(x => x.ChatId)
+                                                       .ValidateRequired(x => x.MessageId);
+
+    public static ValidationResult<DeleteMessages> CreateValidation(this DeleteMessages value) =>
+        new ValidationResult<DeleteMessages>(value).ValidateRequired(x => x.ChatId)
+                                                   .ValidateRequired(x => x.MessageIds);
+
+    public static ValidationResult<ForwardMessages> CreateValidation(this ForwardMessages value) =>
+        new ValidationResult<ForwardMessages>(value).ValidateRequired(x => x.ChatId)
+                                                    .ValidateRequired(x => x.FromChatId)
+                                                    .ValidateRequired(x => x.MessageIds);
+
+    public static ValidationResult<CopyMessages> CreateValidation(this CopyMessages value) =>
+        new ValidationResult<CopyMessages>(value).ValidateRequired(x => x.ChatId)
+                                                 .ValidateRequired(x => x.FromChatId)
+                                                 .ValidateRequired(x => x.MessageIds);
+
+    public static ValidationResult<GetUserChatBoosts> CreateValidation(this GetUserChatBoosts value) =>
+        new ValidationResult<GetUserChatBoosts>(value).ValidateRequired(x => x.UserId)
+                                                      .ValidateRequired(x => x.ChatId);
 }

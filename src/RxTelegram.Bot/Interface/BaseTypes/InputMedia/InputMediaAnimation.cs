@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.BaseTypes.InputMedia.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia;
@@ -23,7 +24,7 @@ public class InputMediaAnimation : BaseInputMedia
     /// <summary>
     ///     Type of the result, must be animation
     /// </summary>
-    public override string Type { get; set; } = "animation";
+    public override InputMediaTypes Type { get; set; } = InputMediaTypes.Animation;
 
     /// <summary>
     ///     Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.
@@ -67,7 +68,7 @@ public class InputMediaAnimation : BaseInputMedia
     public int Duration { get; set; }
 
     /// <summary>
-    /// Optional. Pass True if the photo needs to be covered with a spoiler animation
+    /// Optional. Pass True if the photo needs to be covered with a spoiler Animation
     /// </summary>
     public bool? HasSpoiler { get; set; }
 }

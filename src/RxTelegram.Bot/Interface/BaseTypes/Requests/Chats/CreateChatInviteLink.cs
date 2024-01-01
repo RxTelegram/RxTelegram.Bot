@@ -1,3 +1,4 @@
+using System;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Base;
 using RxTelegram.Bot.Validation;
 
@@ -17,7 +18,7 @@ public class CreateChatInviteLink : BaseRequest
     /// <summary>
     /// Point in time (Unix timestamp) when the link will expire
     /// </summary>
-    public int ExpireDate { get; set; }
+    public DateTime ExpireDate { get; set; }
 
     /// <summary>
     /// Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999

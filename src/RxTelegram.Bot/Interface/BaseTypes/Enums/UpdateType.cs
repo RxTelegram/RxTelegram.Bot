@@ -28,5 +28,9 @@ public enum UpdateType
 
     ChatMember,
 
-    ChatJoinRequest
+    ChatJoinRequest,
+
+    ChatBoost,
+
+    RemovedChatBoost
 }

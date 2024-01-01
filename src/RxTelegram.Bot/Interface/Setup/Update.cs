@@ -1,6 +1,7 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
+using RxTelegram.Bot.Interface.Reaction;
 
 namespace RxTelegram.Bot.Interface.Setup;
 
@@ -55,6 +56,20 @@ public class Update
     public Message EditedChannelPost { get; set; }
 
     /// <summary>
+    /// Optional. A reaction to a message was changed by a user.
+    /// The bot must be an administrator in the chat and must explicitly specify "message_reaction" in the list of allowed_updates to
+    /// receive these updates. The update isn't received for reactions set by bots.
+    /// </summary>
+    public MessageReactionUpdated MessageReaction { get; set; }
+
+    /// <summary>
+    /// Optional. Reactions to a message with anonymous reactions were changed.
+    /// The bot must be an administrator in the chat and must explicitly specify "message_reaction_count" in the list of allowed_updates to
+    /// receive these updates.
+    /// </summary>
+    public MessageReactionCountUpdated MessageReactionCount { get; set; }
+
+    /// <summary>
     /// Optional. New incoming shipping query. Only for invoices with flexible price
     /// </summary>
     public ShippingQuery ShippingQuery { get; set; }
@@ -92,4 +107,14 @@ public class Update
     /// the chat to receive these updates.
     /// </summary>
     public ChatJoinRequest ChatJoinRequest { get; set; }
+
+    /// <summary>
+    /// Optional. A chat boost was added or changed. The bot must be an administrator in the chat to receive these updates.
+    /// </summary>
+    public ChatBoostUpdated ChatBoost { get; set; }
+
+    /// <summary>
+    /// Optional. A boost was removed from a chat. The bot must be an administrator in the chat to receive these updates.
+    /// </summary>
+    public ChatBoostRemoved RemovedChatBoost { get; set; }
 }

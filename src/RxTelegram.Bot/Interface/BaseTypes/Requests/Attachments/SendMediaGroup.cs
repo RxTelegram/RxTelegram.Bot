@@ -24,14 +24,9 @@ public class SendMediaGroup : BaseRequest, IProtectContent
     public bool? DisableNotification { get; set; }
 
     /// <summary>
-    /// If the messages are a reply, ID of the original message
+    /// Description of the message to reply to
     /// </summary>
-    public int? ReplyToMessageId { get; set; }
-
-    /// <summary>
-    /// Pass True, if the message should be sent even if the specified replied-to message is not found
-    /// </summary>
-    public bool? AllowSendingWithoutReply { get; set; }
+    public ReplyParameters ReplyParameters { get; set; }
 
     /// <summary>
     /// Protects the contents of the sent message from forwarding and saving

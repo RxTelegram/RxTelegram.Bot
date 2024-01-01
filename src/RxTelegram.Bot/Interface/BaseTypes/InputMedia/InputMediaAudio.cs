@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.BaseTypes.InputMedia.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 
 namespace RxTelegram.Bot.Interface.BaseTypes.InputMedia;
@@ -22,7 +23,7 @@ public class InputMediaAudio : BaseInputMedia
     /// <summary>
     ///     Type of the result, must be audio
     /// </summary>
-    public override string Type { get; set; } = "audio";
+    public override InputMediaTypes Type { get; set; } = InputMediaTypes.Audio;
 
     /// <summary>
     ///     Optional. Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side.

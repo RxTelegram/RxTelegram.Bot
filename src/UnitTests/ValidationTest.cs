@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
@@ -25,7 +26,7 @@ public class ValidationTest
                                         .Where(myType => myType.IsClass &&
                                                          !myType.IsAbstract &&
                                                          myType.IsSubclassOf(typeof(BaseValidation)));
-        Assert.IsNotNull(classesToValidate);
+        Assert.That(classesToValidate, Is.Not.Null);
         var objects = classesToValidate.Select(type => (BaseValidation) Activator.CreateInstance(type, null))
                                        .ToList();
 
@@ -39,7 +40,7 @@ public class ValidationTest
     public void TestInvalid()
     {
         var obj = new CreateNewStickerSet();
-        Assert.False(obj.IsValid());
+        Assert.That(obj.IsValid(), Is.False);
         Assert.That(obj.Errors.Count, Is.EqualTo(5));
         var errors = obj.Errors.Select(x => x.GetMessage)
                         .ToList();
@@ -64,7 +65,7 @@ public class ValidationTest
                                     }
                                 }
                   };
-        Assert.IsFalse(obj.IsValid());
+        Assert.That(obj.IsValid(), Is.False);
         Assert.That(obj.Errors.Count, Is.EqualTo(4));
         var errors = obj.Errors.Select(x => x.GetMessage)
                         .ToList();
@@ -97,7 +98,7 @@ public class ValidationTest
             var memInfo = value.GetType().GetMember(value.ToString());
             var attributes = memInfo[0]
                 .GetCustomAttributes(typeof(ValidationErrorsStringAttribute), false);
-            Assert.IsNotNull(attributes.FirstOrDefault());
+            Assert.That(attributes.FirstOrDefault(), Is.Not.Null);
         }
     }
 }
