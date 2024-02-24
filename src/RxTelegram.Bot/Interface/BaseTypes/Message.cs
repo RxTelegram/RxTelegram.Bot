@@ -36,6 +36,16 @@ public class Message
     public Chat SenderChat { get; set; }
 
     /// <summary>
+    /// Optional. If the sender of the message boosted the chat, the number of boosts added by the user
+    /// </summary>
+    public int? SenderBoostCount { get; set; }
+
+    /// <summary>
+    /// Optional. If the sender of the message boosted the chat, the number of boosts added by the user
+    /// </summary>
+    public ChatBoostAdded BoostAdded { get; set; }
+
+    /// <summary>
     /// Date the message was sent
     /// </summary>
     public DateTime Date { get; set; }
@@ -75,6 +85,11 @@ public class Message
     /// Optional. For replies that quote part of the original message, the quoted part of the message
     /// </summary>
     public TextQuote Quote { get; set; }
+
+    /// <summary>
+    /// Optional. For replies to a story, the original story
+    /// </summary>
+    public Story ReplyToStory { get; set; }
 
     /// <summary>
     /// Optional. Bot through which the message was sent
