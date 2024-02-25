@@ -11,3 +11,11 @@ This is a reactive designed .NET Library for the Telegram Bot API. It works with
 
 ## Examples
 Example bot implementations can be found at [RxTelegram.Bot.Examples](https://github.com/RxTelegram/RxTelegram.Bot.Examples).
+
+## Changelog
+To see all the changes in a release, please visit the official [changelog](https://core.telegram.org/bots/api-changelog).
+
+## Versioning
+Major and minor versions always follow the telegram bot API versioning. Patch version changes indicate a bug fix in RxTelegram.Bot.
+
+For example, version 7.0.3 is compatible with Telegram Bot API 7.0 and is the third patch of RxTelegram.Bot.
