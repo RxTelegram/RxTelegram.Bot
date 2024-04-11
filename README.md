@@ -1,3 +1,5 @@
+| WARNING: Be careful when installing RxTelegram.Bot. DO NOT INSTALL RxTelegram.Bot2. Since RxTelegram.Bot2 does not send your Requests to the official Telegram API and can read your entire traffic. |
+| --- |
 # RxTelegram.Bot
 
 [![NuGet](http://img.shields.io/nuget/v/RxTelegram.Bot.svg)](https://www.nuget.org/packages/RxTelegram.Bot)
