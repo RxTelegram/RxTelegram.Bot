@@ -27,4 +27,19 @@ public class KeyboardButtonRequestUsers
     /// Optional. The maximum number of users to be selected; 1-10. Defaults to 1.
     /// </summary>
     public int MaxQuantity { get; set; }
+
+    /// <summary>
+    /// Optional. Pass True to request the users' first and last name
+    /// </summary>
+    public bool RequestName { get; set; }
+
+    /// <summary>
+    /// Optional. Pass True to request the users' username
+    /// </summary>
+    public bool RequestUsername { get; set; }
+
+    /// <summary>
+    /// Optional. Pass True to request the users' photo
+    /// </summary>
+    public bool RequestPhoto { get; set; }
 }

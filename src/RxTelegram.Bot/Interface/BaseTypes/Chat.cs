@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
+using RxTelegram.Bot.Interface.Business;
 using RxTelegram.Bot.Interface.Reaction;
 
 namespace RxTelegram.Bot.Interface.BaseTypes;
@@ -65,6 +66,36 @@ public class Chat
     public List<string> ActiveUsernames { get; set; }
 
     /// <summary>
+    /// Optional. For private chats, the date of birth of the user.
+    /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public Birthdate Birthdate { get; set; }
+
+    /// <summary>
+    /// Optional. For private chats with business accounts, the intro of the business.
+    /// Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public BusinessIntro BusinessIntro { get; set; }
+
+    /// <summary>
+    /// Optional. For private chats with business accounts, the location of the business.
+    /// Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public BusinessLocation BusinessLocation { get; set; }
+
+    /// <summary>
+    /// Optional. For private chats with business accounts, the opening hours of the business.
+    /// Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public BusinessOpeningHours BusinessOpeningHours { get; set; }
+
+    /// <summary>
+    /// Optional. For private chats, the personal channel of the user.
+    /// Returned only in <see cref="TelegramBot.GetChat(GetChat,CancellationToken)"/>.
+    /// </summary>
+    public Chat PersonalChat { get; set; }
+
+    /// <summary>
     /// Optional. List of available reactions allowed in the chat. If omitted, then all emoji reactions are allowed.
     /// Returned only in <see cref="GetChat"/>.
     /// </summary>
@@ -93,7 +124,7 @@ public class Chat
     /// Optional. Custom emoji identifier of the emoji chosen by the chat for its profile background.
     /// Returned only in <see cref="ITelegramBot.GetChat(GetChat,CancellationToken)"/>.
     /// </summary>
-    public string ProfileBackgroundCustomEmojiId { get; set;}
+    public string ProfileBackgroundCustomEmojiId { get; set; }
 
     /// <summary>
     /// Optional. Custom emoji identifier of emoji status of the other party in a private chat.

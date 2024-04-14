@@ -59,4 +59,19 @@ public class KeyboardButtonRequestChat
     /// Otherwise, no additional restrictions are applied.
     /// </summary>
     public bool BotIsMember { get; set; }
+
+    /// <summary>
+    /// Optional. Pass True to request the chat's title
+    /// </summary>
+    public bool RequestTitle { get; set; }
+
+    /// <summary>
+    /// Optional. Pass True to request the chat's username
+    /// </summary>
+    public bool RequestUsername { get; set; }
+
+    /// <summary>
+    /// Optional. Pass True to request the chat's photo
+    /// </summary>
+    public bool RequestPhoto { get; set; }
 }

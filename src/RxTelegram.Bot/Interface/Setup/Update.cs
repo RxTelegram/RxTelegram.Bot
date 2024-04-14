@@ -1,4 +1,5 @@
 ﻿using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.Business;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Reaction;
@@ -29,6 +30,26 @@ public class Update
     /// Optional. New version of a message that is known to the bot and was edited
     /// </summary>
     public Message EditedMessage { get; set; }
+
+    /// <summary>
+    /// Optional. The bot was connected to or disconnected from a business account, or a user edited an existing connection with the bot.
+    /// </summary>
+    public BusinessConnection BusinessConnection { get; set; }
+
+    /// <summary>
+    /// Optional. New non-service message from a connected business account
+    /// </summary>
+    public Message BusinessMessage { get; set; }
+
+    /// <summary>
+    /// Optional. New version of a message from a connected business account
+    /// </summary>
+    public Message EditedBusinessMessage { get; set; }
+
+    /// <summary>
+    /// Optional. Messages were deleted from a connected business account
+    /// </summary>
+    public BusinessMessagesDeleted DeletedBusinessMessages { get; set; }
 
     /// <summary>
     /// Optional. New incoming inline query
