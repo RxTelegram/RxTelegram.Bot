@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.Stickers.Enums;
 
 namespace RxTelegram.Bot.Interface.Stickers;
 
@@ -15,6 +16,11 @@ public class InputSticker
     /// Animated and video stickers can't be uploaded via HTTP URL.
     /// </summary>
     public InputFile Sticker { get; set; }
+
+    /// <summary>
+    /// Format of the added sticker, must be one of “static” for a .WEBP or .PNG image, “animated” for a .TGS animation, “video” for a WEBM video
+    /// </summary>
+    public StickerFormat Format { get; set; }
 
     /// <summary>
     /// List of 1-20 emoji associated with the sticker

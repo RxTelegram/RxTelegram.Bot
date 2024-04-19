@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
+using RxTelegram.Bot.Interface.Stickers.Enums;
 using RxTelegram.Bot.Interface.Validation;
 using RxTelegram.Bot.Validation;
 
@@ -31,6 +32,11 @@ public class SetStickerSetThumbnail : BaseValidation
     /// More info on Sending Files ». Animated sticker set thumbnail can't be uploaded via HTTP URL.
     /// </summary>
     public InputFile Thumbnail { get; set; }
+
+    /// <summary>
+    /// Format of the thumbnail, must be one of “static” for a .WEBP or .PNG image, “animated” for a .TGS animation, or “video” for a WEBM video
+    /// </summary>
+    public StickerFormat Format { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
 }

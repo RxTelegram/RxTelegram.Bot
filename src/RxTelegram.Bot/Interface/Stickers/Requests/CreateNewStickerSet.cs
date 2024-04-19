@@ -37,11 +37,6 @@ public class CreateNewStickerSet : BaseValidation
     public List<InputSticker> Stickers { get; set; }
 
     /// <summary>
-    /// Format of stickers in the set, must be one of “static”, “animated”, “video”
-    /// </summary>
-    public StickerFormat StickerFormat { get; set; }
-
-    /// <summary>
     /// Type of stickers in the set, pass “regular” or “mask”.
     /// Custom emoji sticker sets can't be created via the Bot API at the moment.
     /// By default, a regular sticker set is created.

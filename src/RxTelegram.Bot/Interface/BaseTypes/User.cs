@@ -59,4 +59,10 @@ public class User
     /// Optional. True, if the bot supports inline queries. Returned only in getMe
     /// </summary>
     public bool? SupportsInlineQueries { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the bot can be connected to a Telegram Business account to receive its messages.
+    /// Returned only in <see cref="ITelegramBot.GetMe"/>.
+    /// </summary>
+    public bool CanConnectToBusiness { get; set; }
 }

@@ -83,7 +83,6 @@ public class ValidationTest
                       UserId = 2,
                       Name = "StickerSet_by_BlaBot",
                       Title = "Title",
-                      StickerFormat = StickerFormat.Animated,
                       Stickers = new List<InputSticker>()
                   };
         Assert.That(obj.IsValid());
