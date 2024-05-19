@@ -29,7 +29,6 @@ public static class ValidationResultFactory
                                                         .ValidateRequired(x => x.UserId)
                                                         .ValidateRequired(x => x.Name)
                                                         .ValidateRequired(x => x.Title)
-                                                        .ValidateRequired(x => x.StickerFormat)
                                                         .ValidateRequired(x => x.Stickers)
                                                         .IsFalse(x => x.Name != null && x.Name.Contains("_by_"),
                                                                  ValidationErrors.InvalidStickerName);
@@ -473,7 +472,8 @@ public static class ValidationResultFactory
 
     public static ValidationResult<SetStickerSetThumbnail> CreateValidation(this SetStickerSetThumbnail value) =>
         new ValidationResult<SetStickerSetThumbnail>(value).ValidateRequired(x => x.Name)
-                                                           .ValidateRequired(x => x.UserId);
+                                                           .ValidateRequired(x => x.UserId)
+                                                           .ValidateRequired(x => x.Format);
 
     public static ValidationResult<SendDice> CreateValidation(this SendDice value) =>
         new ValidationResult<SendDice>(value).ValidateRequired(x => x.ChatId);
@@ -645,4 +645,10 @@ public static class ValidationResultFactory
     public static ValidationResult<GetUserChatBoosts> CreateValidation(this GetUserChatBoosts value) =>
         new ValidationResult<GetUserChatBoosts>(value).ValidateRequired(x => x.UserId)
                                                       .ValidateRequired(x => x.ChatId);
+
+    public static ValidationResult<ReplaceStickerInSet> CreateValidation(this ReplaceStickerInSet value) =>
+        new ValidationResult<ReplaceStickerInSet>(value).ValidateRequired(x => x.UserId)
+                                                        .ValidateRequired(x => x.Name)
+                                                        .ValidateRequired(x => x.Sticker)
+                                                        .ValidateRequired(x => x.OldSticker);
 }

@@ -1,3 +1,5 @@
+| WARNING: Be careful when installing RxTelegram.Bot. DO NOT INSTALL RxTelegram.Bot2. Since RxTelegram.Bot2 does not send your Requests to the official Telegram API and can read your entire traffic. |
+| --- |
 # RxTelegram.Bot
 
 [![NuGet](http://img.shields.io/nuget/v/RxTelegram.Bot.svg)](https://www.nuget.org/packages/RxTelegram.Bot)
@@ -5,7 +7,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RxTelegram_RxTelegram.Bot&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RxTelegram_RxTelegram.Bot)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=RxTelegram_RxTelegram.Bot&metric=coverage)](https://sonarcloud.io/summary/new_code?id=RxTelegram_RxTelegram.Bot)
 
-RxTelegram.Bot supports Telegram Bot API 7.1 (as at February 16, 2024).
+RxTelegram.Bot supports Telegram Bot API 7.2 (as at March 31, 2024).
 
 This is a reactive designed .NET Library for the Telegram Bot API. It works with the official [Reactive Extentions](https://github.com/dotnet/reactive).
 

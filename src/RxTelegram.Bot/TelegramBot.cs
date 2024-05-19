@@ -14,6 +14,8 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.GeneralForum;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
+using RxTelegram.Bot.Interface.Business;
+using RxTelegram.Bot.Interface.Business.Requests;
 using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.InlineMode;
@@ -1293,4 +1295,26 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns <see cref="UserChatBoosts"/> on success.</returns>
     public Task<UserChatBoosts> GetUserChatBoosts(GetUserChatBoosts getUserChatBoosts, CancellationToken cancellationToken = default) =>
         Post<UserChatBoosts>("getUserChatBoosts", getUserChatBoosts, cancellationToken);
+
+    /// <summary>
+    /// Use this method to get information about the connection of the bot with a business account.
+    /// Returns a <see cref="BusinessConnection"/> object on success.
+    /// </summary>
+    /// <param name="getBusinessConnection">BusinessConnection to get</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns <see cref="BusinessConnection"/> on success.</returns>
+    public Task<BusinessConnection> GetBusinessConnection(
+        GetBusinessConnection getBusinessConnection,
+        CancellationToken cancellationToken = default) =>
+        Post<BusinessConnection>("getBusinessConnection", getBusinessConnection, cancellationToken);
+
+    /// <summary>
+    /// Use this method to replace an existing sticker in a sticker set with a new one.
+    /// The method is equivalent to calling <see cref="ITelegramBot.DeleteStickerFromSet"/>, then <see cref="ITelegramBot.AddStickerToSet"/>, then <see cref="ITelegramBot.SetStickerPositionInSet"/>.
+    /// </summary>
+    /// <param name="replaceStickerInSet">Information about the Sticker to replace</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> ReplaceStickerInSet(ReplaceStickerInSet replaceStickerInSet, CancellationToken cancellationToken = default) =>
+        Post<bool>("replaceStickerInSet", replaceStickerInSet, cancellationToken);
 }

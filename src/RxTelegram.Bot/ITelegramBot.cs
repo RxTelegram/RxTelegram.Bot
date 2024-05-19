@@ -13,11 +13,14 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.GeneralForum;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
+using RxTelegram.Bot.Interface.Business;
+using RxTelegram.Bot.Interface.Business.Requests;
 using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Passport.Requests;
 using RxTelegram.Bot.Interface.Payments.Requests;
+using RxTelegram.Bot.Interface.Reaction.Requests;
 using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Requests;
@@ -182,9 +185,7 @@ public interface ITelegramBot
     /// <param name="editMessageLiveLocation">Details for the live location to edit.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if the edited message was sent by the bot, the edited <see cref="Message" /> is returned, otherwise True is returned.</returns>
-    Task<Message> EditMessageLiveLocation(
-        EditMessageLiveLocation editMessageLiveLocation,
-        CancellationToken cancellationToken = default);
+    Task<Message> EditMessageLiveLocation(EditMessageLiveLocation editMessageLiveLocation, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get up to date information about the chat (current name of the user for one-on-one conversations,
@@ -217,9 +218,7 @@ public interface ITelegramBot
     /// <param name="getUserProfilePhotos">Filter for the requested username.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns a <see cref="UserProfilePhotos" /> object.</returns>
-    Task<UserProfilePhotos> GetUserProfilePhotos(
-        GetUserProfilePhotos getUserProfilePhotos,
-        CancellationToken cancellationToken = default);
+    Task<UserProfilePhotos> GetUserProfilePhotos(GetUserProfilePhotos getUserProfilePhotos, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get a list of administrators in a chat.
@@ -377,9 +376,7 @@ public interface ITelegramBot
     /// <param name="setStickerSetThumbnail">Sets the thumbnail picture for the sticker set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> SetStickerSetThumbnail(
-        SetStickerSetThumbnail setStickerSetThumbnail,
-        CancellationToken cancellationToken = default);
+    Task<bool> SetStickerSetThumbnail(SetStickerSetThumbnail setStickerSetThumbnail, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send static .WEBP or animated .TGS stickers.
@@ -411,8 +408,7 @@ public interface ITelegramBot
     /// <param name="exportChatInviteLink">ChatId for the request</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the new invite link on success.</returns>
-    Task<string>
-        ExportChatInviteLink(ExportChatInviteLink exportChatInviteLink, CancellationToken cancellationToken = default);
+    Task<string> ExportChatInviteLink(ExportChatInviteLink exportChatInviteLink, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to promote or demote a user in a supergroup or a channel.
@@ -465,9 +461,7 @@ public interface ITelegramBot
     /// <param name="setStickerPositionInSet">Details for the sticker that should be repositioned in the sticker set.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> SetStickerPositionInSet(
-        SetStickerPositionInSet setStickerPositionInSet,
-        CancellationToken cancellationToken = default);
+    Task<bool> SetStickerPositionInSet(SetStickerPositionInSet setStickerPositionInSet, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method when you need to tell the user that something is happening on the bot's side.
@@ -544,9 +538,7 @@ public interface ITelegramBot
     ///     Will return the score of the specified user and several of their neighbors in a game.
     ///     On success, returns an Array of GameHighScore objects.
     /// </returns>
-    Task<IEnumerable<GameHighScore>> GetGameHighScores(
-        GetGameHighScores getGameHighScores,
-        CancellationToken cancellationToken = default);
+    Task<IEnumerable<GameHighScore>> GetGameHighScores(GetGameHighScores getGameHighScores, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to stop updating a live location message before live_period expires.
@@ -554,9 +546,7 @@ public interface ITelegramBot
     /// <param name="stopMessageLiveLocation">MessageId of the liveLocation that should be stopped.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.</returns>
-    Task<Message> StopMessageLiveLocation(
-        StopMessageLiveLocation stopMessageLiveLocation,
-        CancellationToken cancellationToken = default);
+    Task<Message> StopMessageLiveLocation(StopMessageLiveLocation stopMessageLiveLocation, CancellationToken cancellationToken = default);
 
     Task<bool> StopMessageLiveLocationInlineMessage(
         StopMessageLiveLocation stopMessageLiveLocation,
@@ -586,8 +576,7 @@ public interface ITelegramBot
     /// <param name="answerWebAppQuery">Answer details for web app query.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, a SentWebAppMessage object is returned.</returns>
-    Task<SentWebAppMessage>
-        AnswerWebAppQuery(AnswerWebAppQuery answerWebAppQuery, CancellationToken cancellationToken = default);
+    Task<SentWebAppMessage> AnswerWebAppQuery(AnswerWebAppQuery answerWebAppQuery, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to get the current list of the bot's commands.
@@ -629,9 +618,7 @@ public interface ITelegramBot
     /// <param name="editMessageReplyMarkup">New reply markup for the message.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.</returns>
-    Task<Message> EditMessageReplyMarkup(
-        EditMessageReplyMarkup editMessageReplyMarkup,
-        CancellationToken cancellationToken = default);
+    Task<Message> EditMessageReplyMarkup(EditMessageReplyMarkup editMessageReplyMarkup, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to send invoices.
@@ -658,9 +645,7 @@ public interface ITelegramBot
     /// <param name="answerPreCheckoutQuery">Answer for the preCheckoutQuery</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, True is returned.</returns>
-    Task<bool> AnswerPreCheckoutQuery(
-        AnswerPreCheckoutQuery answerPreCheckoutQuery,
-        CancellationToken cancellationToken = default);
+    Task<bool> AnswerPreCheckoutQuery(AnswerPreCheckoutQuery answerPreCheckoutQuery, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Informs a user that some of the Telegram Passport elements they provided contains errors.
@@ -675,9 +660,7 @@ public interface ITelegramBot
     /// <param name="setPassportDataErrors">Error that should be set on the passport data.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> SetPassportDataErrors(
-        SetPassportDataErrors setPassportDataErrors,
-        CancellationToken cancellationToken = default);
+    Task<bool> SetPassportDataErrors(SetPassportDataErrors setPassportDataErrors, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Use this method to edit animation, audio, document, photo, or video messages.
@@ -782,9 +765,7 @@ public interface ITelegramBot
     /// <param name="createChatInviteLink">Details for the chat invite link to create.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the new invite link as <see cref="ChatInviteLink"/>.</returns>
-    Task<ChatInviteLink> CreateChatInviteLink(
-        CreateChatInviteLink createChatInviteLink,
-        CancellationToken cancellationToken = default);
+    Task<ChatInviteLink> CreateChatInviteLink(CreateChatInviteLink createChatInviteLink, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to edit a non-primary invite link created by the bot.
@@ -793,9 +774,7 @@ public interface ITelegramBot
     /// <param name="editChatInviteLink">Details for the chat invite link to edit.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the edited invite link as a <see cref="ChatInviteLink"/>  object.</returns>
-    Task<ChatInviteLink> EditChatInviteLink(
-        EditChatInviteLink editChatInviteLink,
-        CancellationToken cancellationToken = default);
+    Task<ChatInviteLink> EditChatInviteLink(EditChatInviteLink editChatInviteLink, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to revoke an invite link created by the bot.
@@ -805,9 +784,7 @@ public interface ITelegramBot
     /// <param name="revokeChatInviteLink">Details for the invite link to revoke.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns the revoked invite link as <see cref="ChatInviteLink"/>  object.</returns>
-    Task<ChatInviteLink> RevokeChatInviteLink(
-        RevokeChatInviteLink revokeChatInviteLink,
-        CancellationToken cancellationToken = default);
+    Task<ChatInviteLink> RevokeChatInviteLink(RevokeChatInviteLink revokeChatInviteLink, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to approve a chat join request.
@@ -816,9 +793,7 @@ public interface ITelegramBot
     /// <param name="approveChatJoinRequest">Join request to approve</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> ApproveChatJoinRequest(
-        ApproveChatJoinRequest approveChatJoinRequest,
-        CancellationToken cancellationToken = default);
+    Task<bool> ApproveChatJoinRequest(ApproveChatJoinRequest approveChatJoinRequest, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to decline a chat join request.
@@ -827,9 +802,7 @@ public interface ITelegramBot
     /// <param name="declineChatJoinRequest">Join request to decline</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> DeclineChatJoinRequest(
-        DeclineChatJoinRequest declineChatJoinRequest,
-        CancellationToken cancellationToken = default);
+    Task<bool> DeclineChatJoinRequest(DeclineChatJoinRequest declineChatJoinRequest, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to ban a channel chat in a supergroup or a channel.
@@ -903,9 +876,7 @@ public interface ITelegramBot
     /// <param name="getCustomEmojiStickers">Sticker ids to get</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns an Array of Sticker objects.</returns>
-    Task<Sticker[]> GetCustomEmojiStickers(
-        GetCustomEmojiStickers getCustomEmojiStickers,
-        CancellationToken cancellationToken = default);
+    Task<Sticker[]> GetCustomEmojiStickers(GetCustomEmojiStickers getCustomEmojiStickers, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to create a topic in a forum supergroup chat.
@@ -980,8 +951,7 @@ public interface ITelegramBot
     /// <param name="editGeneralForumTopic">Data to edit the general forum topic</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool>
-        EditGeneralForumTopic(EditGeneralForumTopic editGeneralForumTopic, CancellationToken cancellationToken = default);
+    Task<bool> EditGeneralForumTopic(EditGeneralForumTopic editGeneralForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to close an open 'General' topic in a forum supergroup chat.
@@ -990,9 +960,7 @@ public interface ITelegramBot
     /// <param name="closeGeneralForumTopic">General Forum Topic to close</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> CloseGeneralForumTopic(
-        CloseGeneralForumTopic closeGeneralForumTopic,
-        CancellationToken cancellationToken = default);
+    Task<bool> CloseGeneralForumTopic(CloseGeneralForumTopic closeGeneralForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to reopen a closed 'General' topic in a forum supergroup chat.
@@ -1002,9 +970,7 @@ public interface ITelegramBot
     /// <param name="reopenGeneralForumTopic">General forum topic to reopen</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> ReopenGeneralForumTopic(
-        ReopenGeneralForumTopic reopenGeneralForumTopic,
-        CancellationToken cancellationToken = default);
+    Task<bool> ReopenGeneralForumTopic(ReopenGeneralForumTopic reopenGeneralForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to hide the 'General' topic in a forum supergroup chat.
@@ -1014,8 +980,7 @@ public interface ITelegramBot
     /// <param name="hideGeneralForumTopic">General Forum topic to hide</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool>
-        HideGeneralForumTopic(HideGeneralForumTopic hideGeneralForumTopic, CancellationToken cancellationToken = default);
+    Task<bool> HideGeneralForumTopic(HideGeneralForumTopic hideGeneralForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to unhide the 'General' topic in a forum supergroup chat.
@@ -1024,9 +989,7 @@ public interface ITelegramBot
     /// <param name="unhideGeneralForumTopic">General Forum topic to unhide</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> UnhideGeneralForumTopic(
-        UnhideGeneralForumTopic unhideGeneralForumTopic,
-        CancellationToken cancellationToken = default);
+    Task<bool> UnhideGeneralForumTopic(UnhideGeneralForumTopic unhideGeneralForumTopic, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the bot's description, which is shown in the chat with the bot if the chat is empty.
@@ -1051,8 +1014,7 @@ public interface ITelegramBot
     /// <param name="setMyShortDescription">Language to set the short bot description for</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool>
-        SetMyShortDescription(SetMyShortDescription setMyShortDescription, CancellationToken cancellationToken = default);
+    Task<bool> SetMyShortDescription(SetMyShortDescription setMyShortDescription, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get the current bot short description for the given user language.
@@ -1115,9 +1077,7 @@ public interface ITelegramBot
     /// <param name="setStickerMaskPosition">Mask position to set for a sticker</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> SetStickerMaskPosition(
-        SetStickerMaskPosition setStickerMaskPosition,
-        CancellationToken cancellationToken = default);
+    Task<bool> SetStickerMaskPosition(SetStickerMaskPosition setStickerMaskPosition, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to change the bot's name.
@@ -1134,4 +1094,71 @@ public interface ITelegramBot
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns <see cref="BotName"/> on success.</returns>
     Task<BotName> GetMyName(GetMyName getMyName, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to clear the list of pinned messages in a General forum topic.
+    /// The bot must be an administrator in the chat for this to work and must have the can_pin_messages administrator right in the supergroup.
+    /// </summary>
+    /// <param name="unpinAllGeneralForumTopicMessages">ChatId to unpin all general forum topic messages in </param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    Task<bool> UnpinAllGeneralForumTopicMessages(
+        UnpinAllGeneralForumTopicMessages unpinAllGeneralForumTopicMessages,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to change the chosen reactions on a message. Service messages can't be reacted to.
+    /// Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel.
+    /// In albums, bots must react to the first message.
+    /// </summary>
+    /// <param name="messageReaction">MessageReaction to set on the message</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    Task<bool> SetMessageReaction(SetMessageReaction messageReaction, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to delete multiple messages simultaneously.
+    /// If some of the specified messages can't be found, they are skipped.
+    /// </summary>
+    /// <param name="deleteMessages">MessageIds to delete</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    Task<bool> DeleteMessages(DeleteMessages deleteMessages, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to forward multiple messages of any kind. If some of the specified messages can't be found or forwarded, they are skipped.
+    /// Service messages and messages with protected content can't be forwarded. Album grouping is kept for forwarded messages.
+    /// </summary>
+    /// <param name="forwardMessages">MessageIds to forward</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    Task<bool> ForwardMessages(ForwardMessages forwardMessages, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to get the list of boosts added to a chat by a user. Requires administrator rights in the chat.
+    /// </summary>
+    /// <param name="getUserChatBoosts">UserChatBoosts to get</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns <see cref="UserChatBoosts"/> on success.</returns>
+    Task<UserChatBoosts> GetUserChatBoosts(GetUserChatBoosts getUserChatBoosts, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to get information about the connection of the bot with a business account.
+    /// Returns a <see cref="BusinessConnection"/> object on success.
+    /// </summary>
+    /// <param name="getBusinessConnection">BusinessConnection to get</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns <see cref="BusinessConnection"/> on success.</returns>
+    Task<BusinessConnection> GetBusinessConnection(
+        GetBusinessConnection getBusinessConnection,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to replace an existing sticker in a sticker set with a new one.
+    /// The method is equivalent to calling <see cref="ITelegramBot.DeleteStickerFromSet"/>, then <see cref="ITelegramBot.AddStickerToSet"/>, then <see cref="ITelegramBot.SetStickerPositionInSet"/>.
+    /// </summary>
+    /// <param name="replaceStickerInSet">Information about the Sticker to replace</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    Task<bool> ReplaceStickerInSet(ReplaceStickerInSet replaceStickerInSet, CancellationToken cancellationToken = default);
 }

@@ -27,16 +27,6 @@ public class StickerSet
     public StickerType StickerType { get; set; }
 
     /// <summary>
-    /// True, if the sticker set contains animated stickers
-    /// </summary>
-    public bool IsAnimated { get; set; }
-
-    /// <summary>
-    /// True, if the sticker set contains video stickers
-    /// </summary>
-    public bool IsVideo { get; set; }
-
-    /// <summary>
     /// True, if the sticker set contains masks
     /// </summary>
     [Obsolete]
