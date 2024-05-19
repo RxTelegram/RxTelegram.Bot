@@ -1282,8 +1282,8 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="forwardMessages">MessageIds to forward</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    public Task<bool> ForwardMessages(ForwardMessages forwardMessages, CancellationToken cancellationToken = default) =>
-        Post<bool>("forwardMessages", forwardMessages, cancellationToken);
+    public Task<MessageIdObject[]> ForwardMessages(ForwardMessages forwardMessages, CancellationToken cancellationToken = default) =>
+        Post<MessageIdObject[]>("forwardMessages", forwardMessages, cancellationToken);
 
     /// <summary>
     /// Use this method to get the list of boosts added to a chat by a user. Requires administrator rights in the chat.
