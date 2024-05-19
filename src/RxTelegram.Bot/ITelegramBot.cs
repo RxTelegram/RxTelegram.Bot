@@ -1132,7 +1132,7 @@ public interface ITelegramBot
     /// <param name="forwardMessages">MessageIds to forward</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
-    Task<bool> ForwardMessages(ForwardMessages forwardMessages, CancellationToken cancellationToken = default);
+    Task<MessageIdObject[]> ForwardMessages(ForwardMessages forwardMessages, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Use this method to get the list of boosts added to a chat by a user. Requires administrator rights in the chat.
