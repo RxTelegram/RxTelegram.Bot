@@ -1,3 +1,5 @@
+using RxTelegram.Bot.Interface.ChatBackground.Enums;
+
 namespace RxTelegram.Bot.Interface.ChatBackground;
 
 /// <summary>
@@ -8,7 +10,7 @@ public class BackgroundFillGradient : BackgroundFill
     /// <summary>
     /// Type of the background fill, always “gradient”
     /// </summary>
-    public override string Type { get; } = "gradient";
+    public override BackgroundFillTypes Type { get; set; } = BackgroundFillTypes.Gradient;
 
     /// <summary>
     /// Top color of the gradient in the RGB24 format

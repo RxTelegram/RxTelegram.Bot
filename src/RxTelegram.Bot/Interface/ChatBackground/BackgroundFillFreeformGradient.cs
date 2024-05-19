@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RxTelegram.Bot.Interface.ChatBackground.Enums;
 
 namespace RxTelegram.Bot.Interface.ChatBackground;
 
@@ -10,7 +11,7 @@ public class BackgroundFillFreeformGradient : BackgroundFill
     /// <summary>
     /// Type of the background fill, always “freeform_gradient”
     /// </summary>
-    public override string Type { get; } = "freeform_gradient";
+    public override BackgroundFillTypes Type { get; set; } = BackgroundFillTypes.FreeformGradient;
 
     /// <summary>
     /// A list of the 3 or 4 base colors that are used to generate the freeform gradient in the RGB24 format

@@ -1,6 +1,9 @@
+using RxTelegram.Bot.Interface.ChatBackground.Enums;
+using RxTelegram.Bot.Utils.MultiType;
+
 namespace RxTelegram.Bot.Interface.ChatBackground;
 
-public abstract class BackgroundType
+public abstract class BackgroundType : IMultiTypeClassByType<BackgroundTypes>
 {
-    public abstract string Type { get; }
+    public abstract BackgroundTypes Type { get; set; }
 }

@@ -1,3 +1,5 @@
+using RxTelegram.Bot.Interface.ChatBackground.Enums;
+
 namespace RxTelegram.Bot.Interface.ChatBackground;
 
 /// <summary>
@@ -8,7 +10,7 @@ public class BackgroundTypeFill : BackgroundType
     /// <summary>
     /// Type of the background, always “fill”
     /// </summary>
-    public override string Type { get; } = "fill";
+    public override BackgroundTypes Type { get; set; } = BackgroundTypes.Fill;
 
     /// <summary>
     /// The background fill

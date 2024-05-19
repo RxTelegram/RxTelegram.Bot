@@ -1,4 +1,5 @@
 using RxTelegram.Bot.Interface.BaseTypes;
+using RxTelegram.Bot.Interface.ChatBackground.Enums;
 
 namespace RxTelegram.Bot.Interface.ChatBackground;
 
@@ -7,7 +8,7 @@ public class BackgroundTypeWallpaper : BackgroundType
     /// <summary>
     /// Type of the background, always “wallpaper”
     /// </summary>
-    public override string Type { get; } = "wallpaper";
+    public override BackgroundTypes Type { get; set; } = BackgroundTypes.Wallpaper;
 
     /// <summary>
     /// Document with the wallpaper
