@@ -3,11 +3,29 @@ using System.Globalization;
 
 namespace RxTelegram.Bot.Utils;
 
-public class HexToRgb24
+public static class HexToRgb24
 {
-    public int Convert(string hexColor) => int.Parse(FormatHexString(hexColor), NumberStyles.HexNumber);
+    public static int Convert(string hexColor)
+    {
+        var formatHexString = FormatHexString(hexColor);
+        if (formatHexString.Length != 6)
+        {
+            throw new ArgumentException("Invalid hex color", nameof(hexColor));
+        }
+        return int.Parse(formatHexString, NumberStyles.HexNumber);
+    }
 
-    public bool TryConvert(string hexColor, out int result) => int.TryParse(FormatHexString(hexColor), NumberStyles.HexNumber, null, out result);
+    public static bool TryConvert(string hexColor, out int result)
+    {
+        var formatHexString = FormatHexString(hexColor);
+        if (formatHexString.Length == 6)
+        {
+            return int.TryParse(FormatHexString(hexColor), NumberStyles.HexNumber, null, out result);
+        }
+
+        result = -1;
+        return false;
+    }
 
     private static string FormatHexString(string hexColor)
     {
@@ -15,10 +33,6 @@ public class HexToRgb24
         if (hexColor.Length == 3)
         {
             hexColor = string.Concat(hexColor[0], hexColor[0], hexColor[1], hexColor[1], hexColor[2], hexColor[2]);
-        }
-        else if (hexColor.Length != 6)
-        {
-            throw new ArgumentException("Hex color must be 3 or 6 characters long.");
         }
 
         return hexColor;
