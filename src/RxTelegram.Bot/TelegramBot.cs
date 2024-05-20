@@ -217,8 +217,8 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getChat">ChatId for the request.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns a <see cref="Chat" /> object on success.</returns>
-    public Task<Chat> GetChat(GetChat getChat, CancellationToken cancellationToken = default) =>
-        Post<Chat>("getChat", getChat, cancellationToken);
+    public Task<ChatFullInfo> GetChat(GetChat getChat, CancellationToken cancellationToken = default) =>
+        Post<ChatFullInfo>("getChat", getChat, cancellationToken);
 
     /// <summary>
     ///     Use this method to get information about a member of a chat.
@@ -1283,9 +1283,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// </summary>
     /// <param name="forwardMessages">MessageIds to forward</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-    /// <returns>Returns True on success.</returns>
-    public Task<bool> ForwardMessages(ForwardMessages forwardMessages, CancellationToken cancellationToken = default) =>
-        Post<bool>("forwardMessages", forwardMessages, cancellationToken);
+    /// <returns>On success, an array of<see cref="MessageIdObject"/> with the send messages is returned.</returns>
+    public Task<MessageIdObject[]> ForwardMessages(ForwardMessages forwardMessages, CancellationToken cancellationToken = default) =>
+        Post<MessageIdObject[]>("forwardMessages", forwardMessages, cancellationToken);
 
     /// <summary>
     /// Use this method to get the list of boosts added to a chat by a user. Requires administrator rights in the chat.
@@ -1317,4 +1317,17 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns True on success.</returns>
     public Task<bool> ReplaceStickerInSet(ReplaceStickerInSet replaceStickerInSet, CancellationToken cancellationToken = default) =>
         Post<bool>("replaceStickerInSet", replaceStickerInSet, cancellationToken);
+
+    /// <summary>
+    /// Use this method to copy messages of any kind. If some of the specified messages can't be found or copied, they are skipped.
+    /// Service messages, giveaway messages, giveaway winners messages, and invoice messages can't be copied.
+    /// A quiz poll can be copied only if the value of the field correct_option_id is known to the bot.
+    /// The method is analogous to the method forwardMessages, but the copied messages don't have a link to the original message.
+    /// Album grouping is kept for copied messages.
+    /// </summary>
+    /// <param name="copyMessages">Information about the messages to copy</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns an array of <see cref="MessageIdObject"/> on success.</returns>
+    public Task<MessageIdObject[]> CopyMessages(CopyMessages copyMessages, CancellationToken cancellationToken = default) =>
+        Post<MessageIdObject[]>("copyMessages", copyMessages, cancellationToken);
 }

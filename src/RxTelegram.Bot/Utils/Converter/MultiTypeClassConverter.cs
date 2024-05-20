@@ -17,6 +17,12 @@ public class MultiTypeClassConverter : JsonConverter
         CheckForValidInterfaces(objectType);
         var distinguishingProperty = GetNameOfDistinguishingProperty(objectType);
         var jsonObject = JObject.Load(reader);
+        if (!jsonObject.HasValues)
+        {
+            return null;
+        }
+        jsonObject[distinguishingProperty] = ToPascalCaseIfNecessary(jsonObject[distinguishingProperty]
+                                                                         ?.ToString());
         var valueToDefineResultType = jsonObject.GetValue(distinguishingProperty) ??
                                       throw new InvalidOperationException("The property is not found");
         var resultTypeEnum = GetEnumOfGenericInterface(objectType);
@@ -38,6 +44,15 @@ public class MultiTypeClassConverter : JsonConverter
         var objectInstance = Activator.CreateInstance(attributesType) ?? throw new InvalidOperationException();
         serializer.Populate(jsonObject.CreateReader(), objectInstance);
         return objectInstance;
+    }
+
+    private static JToken ToPascalCaseIfNecessary(string toString)
+    {
+        var words = toString.Split(new[] { '-', '_' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(word => word.Substring(0, 1).ToUpper() +
+                                            word.Substring(1).ToLower());
+
+        return string.Concat(words);
     }
 
     private static Type GetEnumOfGenericInterface(Type objectType)

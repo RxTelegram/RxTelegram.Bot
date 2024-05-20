@@ -29,10 +29,21 @@ public class SendPoll : BaseRequest, IProtectContent
     public string Question { get; set; }
 
     /// <summary>
+    /// Mode for parsing entities in the question. See formatting options for more details.
+    /// urrently, only custom emoji entities are allowed
+    /// </summary>
+    public string QuestionParseMode { get; set; }
+
+    /// <summary>
+    /// A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode
+    /// </summary>
+    public IEnumerable<MessageEntity> QuestionEntities { get; set; }
+
+    /// <summary>
     /// Required
     /// A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
     /// </summary>
-    public IEnumerable<string>  Options { get; set; }
+    public IEnumerable<InputPollOption>  Options { get; set; }
 
     /// <summary>
     /// Optional

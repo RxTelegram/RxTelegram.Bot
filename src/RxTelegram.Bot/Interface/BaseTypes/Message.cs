@@ -46,6 +46,11 @@ public class Message
     public ChatBoostAdded BoostAdded { get; set; }
 
     /// <summary>
+    /// Optional. Service message: chat background set
+    /// </summary>
+    public ChatBackground.ChatBackground ChatBackgroundSet { get; set; }
+
+    /// <summary>
     /// Optional. The bot that actually sent the message on behalf of the business account.
     /// Available only for outgoing messages sent on behalf of the connected business account.
     /// </summary>

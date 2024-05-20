@@ -19,6 +19,11 @@ public class Poll
     public string Question { get; set; }
 
     /// <summary>
+    /// Optional. Special entities that appear in the question. Currently, only custom emoji entities are allowed in poll questions
+    /// </summary>
+    public List<MessageEntity> QuestionEntities { get; set; }
+
+    /// <summary>
     /// List of poll options
     /// </summary>
     public IEnumerable<PollOption> Options { get; set; }
