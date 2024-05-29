@@ -26,7 +26,7 @@ public class MessageOriginChannel : MessageOrigin
     /// <summary>
     /// Unique message identifier inside the chat
     /// </summary>
-    public long MessageId { get; set; }
+    public int MessageId { get; set; }
 
     /// <summary>
     /// Optional. Signature of the original post author
