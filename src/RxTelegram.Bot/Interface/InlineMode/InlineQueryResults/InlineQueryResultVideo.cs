@@ -65,5 +65,10 @@ public class InlineQueryResultVideo : BaseInlineQueryResultMedia
     /// </summary>
     public string Description { get; set; }
 
+    /// <summary>
+    /// Optional. True, if the caption must be shown above the message media
+    /// </summary>
+    public bool ShowCaptionAboveMedia { get; set; }
+
     protected override IValidationResult Validate() => this.CreateValidation();
 }

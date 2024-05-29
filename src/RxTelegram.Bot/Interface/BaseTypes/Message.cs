@@ -155,9 +155,19 @@ public class Message
     public LinkPreviewOptions LinkPreviewOptions { get; set; }
 
     /// <summary>
+    /// Optional. Unique identifier of the message effect added to the message
+    /// </summary>
+    public string EffectId { get; set; }
+
+    /// <summary>
     /// Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
     /// </summary>
     public IEnumerable<MessageEntity> CaptionEntities { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the caption must be shown above the message media
+    /// </summary>
+    public bool ShowCaptionAboveMedia { get; set; }
 
     /// <summary>
     /// Optional. Description is an audio file, information about the file

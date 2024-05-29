@@ -35,6 +35,11 @@ public class SendMessage : BaseTextRequest, IProtectContent
     public bool? DisableNotification { get; set; }
 
     /// <summary>
+    /// Unique identifier of the message effect to be added to the message; for private chats only
+    /// </summary>
+    public string MessageEffectId { get; set; }
+
+    /// <summary>
     /// Description of the message to reply to
     /// </summary>
     public ReplyParameters ReplyParameters { get; set; }

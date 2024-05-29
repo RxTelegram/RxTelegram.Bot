@@ -34,6 +34,11 @@ public class InputMediaPhoto : BaseInputMedia
     /// </summary>
     public bool? HasSpoiler { get; set; }
 
+    /// <summary>
+    /// Optional. True, if the caption must be shown above the message media
+    /// </summary>
+    public bool ShowCaptionAboveMedia { get; set; }
+
     public InputMediaPhoto(string fileId) : base(fileId)
     {
     }

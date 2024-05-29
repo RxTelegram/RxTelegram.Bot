@@ -1330,4 +1330,13 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns an array of <see cref="MessageIdObject"/> on success.</returns>
     public Task<MessageIdObject[]> CopyMessages(CopyMessages copyMessages, CancellationToken cancellationToken = default) =>
         Post<MessageIdObject[]>("copyMessages", copyMessages, cancellationToken);
+
+    /// <summary>
+    /// Refunds a successful payment in Telegram Stars.
+    /// </summary>
+    /// <param name="refundStarPayment">Information about the payment</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> RefundStarPayment(RefundStarPayment refundStarPayment, CancellationToken cancellationToken = default) =>
+        Post<bool>("refundStarPayment", refundStarPayment, cancellationToken);
 }

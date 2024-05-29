@@ -444,7 +444,6 @@ public static class ValidationResultFactory
                                                                                             .ValidateRequired(x => x.ChatId)
                                                                                             .ValidateRequired(x => x.Title)
                                                                                             .ValidateRequired(x => x.Payload)
-                                                                                            .ValidateRequired(x => x.ProviderToken)
                                                                                             .ValidateRequired(x => x.Currency)
                                                                                             .ValidateRequired(x => x.Prices)
                                                                                             .ValidateRequired(x => x.Description);
@@ -527,7 +526,6 @@ public static class ValidationResultFactory
                                                                    x.Description.Length >= 1 &&
                                                                    x.Description.Length <= 255)
                                                       .ValidateRequired(x => x.Payload)
-                                                      .ValidateRequired(x => x.ProviderToken)
                                                       .ValidateRequired(x => x.Currency)
                                                       .ValidateRequired(x => x.Prices);
 
@@ -649,4 +647,8 @@ public static class ValidationResultFactory
                                                         .ValidateRequired(x => x.Name)
                                                         .ValidateRequired(x => x.Sticker)
                                                         .ValidateRequired(x => x.OldSticker);
+
+    public static ValidationResult<RefundStarPayment> CreateValidation(this RefundStarPayment value) =>
+        new ValidationResult<RefundStarPayment>(value).ValidateRequired(x => x.UserId)
+                                                      .ValidateRequired(x => x.TelegramPaymentChargeId);
 }
