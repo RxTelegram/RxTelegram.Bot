@@ -24,7 +24,7 @@ public class ExternalReplyInfo
     /// <summary>
     /// Optional. Unique message identifier inside the original chat. Available only if the original chat is a supergroup or a channel.
     /// </summary>
-    public long MessageId { get; set; }
+    public int MessageId { get; set; }
 
     /// <summary>
     /// Optional. Options used for link preview generation for the original message, if it is a text message

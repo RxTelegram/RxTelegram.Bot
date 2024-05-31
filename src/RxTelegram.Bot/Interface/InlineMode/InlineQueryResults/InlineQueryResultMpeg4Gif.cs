@@ -54,5 +54,10 @@ public class InlineQueryResultMpeg4Gif : BaseInlineQueryResultMedia
     /// </summary>
     public ParseMode ParseMode { get; set; }
 
+    /// <summary>
+    /// Optional. True, if the caption must be shown above the message media
+    /// </summary>
+    public bool ShowCaptionAboveMedia { get; set; }
+
     protected override IValidationResult Validate() => this.CreateValidation();
 }

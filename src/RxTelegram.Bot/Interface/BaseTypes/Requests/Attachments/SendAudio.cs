@@ -69,6 +69,11 @@ public class SendAudio : BaseSend, IProtectContent
     public IEnumerable<MessageEntity> CaptionEntities { get; set; }
 
     /// <summary>
+    /// Unique identifier of the message effect to be added to the message; for private chats only
+    /// </summary>
+    public string MessageEffectId { get; set; }
+
+    /// <summary>
     /// Protects the contents of the sent message from forwarding and saving
     /// </summary>
     public bool? ProtectContent { get; set; }

@@ -49,5 +49,10 @@ public class CopyMessage : BaseSend, IProtectContent
     /// </summary>
     public bool? ProtectContent { get; set; }
 
+    /// <summary>
+    /// Optional. True, if the caption must be shown above the message media
+    /// </summary>
+    public bool ShowCaptionAboveMedia { get; set; }
+
     protected override IValidationResult Validate() => this.CreateValidation();
 }

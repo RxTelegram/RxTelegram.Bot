@@ -15,7 +15,7 @@ public class SetMessageReaction : BaseRequest
     /// <summary>
     /// Identifier of the target message
     /// </summary>
-    public long MessageId { get; set; }
+    public int MessageId { get; set; }
 
     /// <summary>
     /// New list of reaction types to set on the message.

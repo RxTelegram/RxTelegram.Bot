@@ -16,7 +16,7 @@ public class MessageReactionCountUpdated
     /// <summary>
     /// Unique message identifier inside the chat
     /// </summary>
-    public long MessageId { get; set; }
+    public int MessageId { get; set; }
 
     /// <summary>
     /// Date of the change in Unix timestamp format

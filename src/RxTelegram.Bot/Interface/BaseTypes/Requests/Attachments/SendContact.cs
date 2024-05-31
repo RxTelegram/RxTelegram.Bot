@@ -60,6 +60,11 @@ public class SendContact : BaseRequest, IProtectContent
     public IReplyMarkup ReplyMarkup { get; set; }
 
     /// <summary>
+    /// Unique identifier of the message effect to be added to the message; for private chats only
+    /// </summary>
+    public string MessageEffectId { get; set; }
+
+    /// <summary>
     /// Protects the contents of the sent message from forwarding and saving
     /// </summary>
     public bool? ProtectContent { get; set; }

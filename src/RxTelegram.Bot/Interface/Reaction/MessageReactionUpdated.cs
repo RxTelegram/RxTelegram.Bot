@@ -16,7 +16,7 @@ public class MessageReactionUpdated
     /// <summary>
     /// Unique identifier of the message inside the chat
     /// </summary>
-    public long MessageId { get; set; }
+    public int MessageId { get; set; }
 
     /// <summary>
     /// Optional. The user that changed the reaction, if the user isn't anonymous
