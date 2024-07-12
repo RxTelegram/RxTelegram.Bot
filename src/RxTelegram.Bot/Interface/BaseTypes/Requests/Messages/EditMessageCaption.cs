@@ -11,6 +11,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 public class EditMessageCaption : BaseTextRequest
 {
     /// <summary>
+    /// Unique identifier of the business connection on behalf of which the message to be edited was sent
+    /// </summary>
+    public string BusinessConnectionId { get; set; }
+
+    /// <summary>
     /// Required if inline_message_id is not specified. Identifier of the message to edit
     /// </summary>
     public int? MessageId { get; set; }

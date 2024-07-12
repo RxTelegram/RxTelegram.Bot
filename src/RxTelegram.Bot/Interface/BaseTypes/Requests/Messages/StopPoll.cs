@@ -9,6 +9,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 public class StopPoll : BaseRequest
 {
     /// <summary>
+    /// Unique identifier of the business connection on behalf of which the message to be edited was sent
+    /// </summary>
+    public string BusinessConnectionId { get; set; }
+
+    /// <summary>
     /// Required
     /// Identifier of the original message with the poll
     /// </summary>
