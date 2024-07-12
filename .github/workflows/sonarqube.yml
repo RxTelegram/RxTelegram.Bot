@@ -1,7 +1,5 @@
 name: Check code quality
 on:
-  push:
-  pull_request:
   workflow_run:
     workflows: ["Build and test"]
     types:

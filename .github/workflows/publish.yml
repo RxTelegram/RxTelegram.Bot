@@ -2,11 +2,9 @@ name: Publish to nuget.org
 on:
   workflow_run:
     workflows: ["Check code quality"]
+    branches: ["v[0-9]+.[0-9]+.[0-9]+"]
     types:
       - completed
-  push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
 jobs:
   publish:
     runs-on: ubuntu-latest
