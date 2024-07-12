@@ -180,6 +180,11 @@ public class Message
     public Document Document { get; set; }
 
     /// <summary>
+    /// Optional. Message contains paid media; information about the paid media
+    /// </summary>
+    public PaidMediaInfo PaidMedia { get; set; }
+
+    /// <summary>
     /// Optional. Message is an Animation, information about the Animation. For backward compatibility, when this
     /// field is set, the document field will also be set
     /// </summary>

@@ -1,29 +1,22 @@
 name: Publish to nuget.org
 on:
-    push:
-        tags:
-            - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_run:
+    workflows: ["Check code quality"]
+    branches: ["v[0-9]+.[0-9]+.[0-9]+"]
+    types:
+      - completed
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        timeout-minutes: 3
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v4
-                with:
-                    fetch-depth: 0
-            -   name: Verify commit exists in origin/master
-                run: git branch --remote --contains | grep origin/master
-            -   name: Extract release notes
-                run: |
-                    git log --pretty=format:'%d %s' ${GITHUB_REF} | perl -pe 's| \(.*tag: v(\d+.\d+.\d+(-preview\d{3})?)(, .*?)*\)|\n## \1\n|g' > RELEASE-NOTES
-            -   name: Set VERSION variable from tag
-                run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
-            -   name: Build
-                run: dotnet build /warnaserror --configuration Release /p:Version=${VERSION}
-            -   name: Test
-                run: dotnet test --configuration Release /p:Version=${VERSION} --no-build
-            -   name: Pack
-                run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
-            -   name: Push nuget to nuget.org
-                run: dotnet nuget push RxTelegram.Bot.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Download build result
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+      - name: Set VERSION variable from tag
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      - name: Pack
+        run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
+      - name: Push nuget to nuget.org
+        run: dotnet nuget push RxTelegram.Bot.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json

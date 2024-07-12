@@ -651,4 +651,8 @@ public static class ValidationResultFactory
     public static ValidationResult<RefundStarPayment> CreateValidation(this RefundStarPayment value) =>
         new ValidationResult<RefundStarPayment>(value).ValidateRequired(x => x.UserId)
                                                       .ValidateRequired(x => x.TelegramPaymentChargeId);
+
+    public static ValidationResult<SendPaidMedia> CreateValidation(this SendPaidMedia value) =>
+        new ValidationResult<SendPaidMedia>(value).ValidateRequired(x => x.StarCount)
+                                                  .ValidateRequired(x => x.Media);
 }

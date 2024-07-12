@@ -1,8 +1,12 @@
 name: Check code quality
-on: [ push, pull_request ]
+on:
+  workflow_run:
+    workflows: ["Build and test"]
+    types:
+      - completed
 jobs:
-  build:
-    name: Build
+  sonarqube:
+    name: sonarqube
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
