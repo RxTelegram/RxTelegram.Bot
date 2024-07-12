@@ -20,6 +20,7 @@ using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Passport.Requests;
+using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Payments.Requests;
 using RxTelegram.Bot.Interface.Reaction.Requests;
 using RxTelegram.Bot.Interface.Setup;
@@ -1339,4 +1340,13 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns True on success.</returns>
     public Task<bool> RefundStarPayment(RefundStarPayment refundStarPayment, CancellationToken cancellationToken = default) =>
         Post<bool>("refundStarPayment", refundStarPayment, cancellationToken);
+
+    /// <summary>
+    /// Returns the bot's Telegram Star transactions in chronological order.
+    /// </summary>
+    /// <param name="getStarTransactions">Information about the transactions</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>On success, returns a <see cref="StarTransactions"/> object.</returns>
+    public Task<StarTransactions> GetStarTransactions(GetStarTransactions getStarTransactions, CancellationToken cancellationToken = default) =>
+        Post<StarTransactions>("getStarTransactions", getStarTransactions, cancellationToken);
 }
