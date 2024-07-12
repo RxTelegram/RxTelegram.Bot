@@ -1349,4 +1349,13 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>On success, returns a <see cref="StarTransactions"/> object.</returns>
     public Task<StarTransactions> GetStarTransactions(GetStarTransactions getStarTransactions, CancellationToken cancellationToken = default) =>
         Post<StarTransactions>("getStarTransactions", getStarTransactions, cancellationToken);
+
+    /// <summary>
+    /// Use this method to send paid media to channel chats.
+    /// </summary>
+    /// <param name="sendPaidMedia">Details for the media to send</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>On success, the sent <see cref="Message"/> is returned.</returns>
+    public Task<Message> SendPaidMedia(SendPaidMedia sendPaidMedia, CancellationToken cancellationToken = default) =>
+        Post<Message>("sendPaidMedia", sendPaidMedia, cancellationToken);
 }
