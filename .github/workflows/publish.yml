@@ -22,7 +22,7 @@ jobs:
         run: dotnet test --configuration Release
   sonarqube:
     name: sonarqube
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: test
     steps:
       - name: Set up JDK 17
