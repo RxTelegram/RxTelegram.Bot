@@ -65,4 +65,9 @@ public class User
     /// Returned only in <see cref="ITelegramBot.GetMe"/>.
     /// </summary>
     public bool CanConnectToBusiness { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the bot has a main Web App. Returned only in <see cref="ITelegramBot.GetMe"/>.
+    /// </summary>
+    public bool? HasMainWebApp { get; set; }
 }

@@ -11,6 +11,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 public class UnpinChatMessage : BaseRequest
 {
     /// <summary>
+    /// Unique identifier of the business connection on behalf of which the message will be pinned
+    /// </summary>
+    public string BusinessConnectionId { get; set; }
+
+    /// <summary>
     /// Identifier of a message to unpin. If not specified, the most recent pinned message (by sending date) will be unpinned.
     /// </summary>
     public int? MessageId { get; set; }
