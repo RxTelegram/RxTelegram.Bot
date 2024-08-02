@@ -29,7 +29,7 @@ jobs:
   sonarqube:
     name: sonarqube
     runs-on: windows-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: test
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
