@@ -11,6 +11,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Chats;
 public class PinChatMessage : BaseRequest
 {
     /// <summary>
+    /// Unique identifier of the business connection on behalf of which the message will be pinned
+    /// </summary>
+    public string BusinessConnectionId { get; set; }
+
+    /// <summary>
     /// Required
     /// Identifier of a message to pin
     /// </summary>
