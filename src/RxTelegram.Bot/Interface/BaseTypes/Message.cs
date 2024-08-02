@@ -332,6 +332,11 @@ public class Message
     public SuccessfulPayment SuccessfulPayment { get; set; }
 
     /// <summary>
+    /// Optional. Message is a service message about a refunded payment, information about the payment.
+    /// </summary>
+    public RefundedPayment RefundedPayment { get; set; }
+
+    /// <summary>
     /// Optional. Service message: a user was shared with the bot
     /// </summary>
     public UsersShared UsersShared { get; set; }
