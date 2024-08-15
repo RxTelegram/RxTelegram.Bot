@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 
@@ -22,4 +23,6 @@ public class TransactionPartnerUser : TransactionPartner
     /// Optional. Bot-specified invoice payload
     /// </summary>
     public string InvoicePayload { get; set; }
+
+    public List<PaidMedia> PaidMedia { get; set; }
 }

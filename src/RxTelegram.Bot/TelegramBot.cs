@@ -1347,7 +1347,9 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <param name="getStarTransactions">Information about the transactions</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>On success, returns a <see cref="StarTransactions"/> object.</returns>
-    public Task<StarTransactions> GetStarTransactions(GetStarTransactions getStarTransactions, CancellationToken cancellationToken = default) =>
+    public Task<StarTransactions> GetStarTransactions(
+        GetStarTransactions getStarTransactions,
+        CancellationToken cancellationToken = default) =>
         Post<StarTransactions>("getStarTransactions", getStarTransactions, cancellationToken);
 
     /// <summary>
@@ -1358,4 +1360,28 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>On success, the sent <see cref="Message"/> is returned.</returns>
     public Task<Message> SendPaidMedia(SendPaidMedia sendPaidMedia, CancellationToken cancellationToken = default) =>
         Post<Message>("sendPaidMedia", sendPaidMedia, cancellationToken);
+
+    /// <summary>
+    /// Use this method to create a subscription invite link for a channel chat.
+    /// The bot must have the can_invite_users administrator rights.
+    /// The link can be edited using the method editChatSubscriptionInviteLink or revoked using the method <see cref="RevokeChatInviteLink"/>.
+    /// </summary>
+    /// <param name="createChatSubscriptionInviteLink">Details for the invite link</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns the new invite link as a <see cref="ChatInviteLink"/> object.</returns>
+    public Task<ChatInviteLink> CreateChatSubscriptionInviteLink(
+        CreateChatSubscriptionInviteLink createChatSubscriptionInviteLink,
+        CancellationToken cancellationToken = default) =>
+        Post<ChatInviteLink>("createChatSubscriptionInviteLink", createChatSubscriptionInviteLink, cancellationToken);
+
+    /// <summary>
+    /// Use this method to edit a subscription invite link created by the bot. The bot must have the can_invite_users administrator rights
+    /// </summary>
+    /// <param name="editChatSubscriptionInviteLink">Details for the invite link</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns the new invite link as a <see cref="ChatInviteLink"/> object.</returns>
+    public Task<ChatInviteLink> EditChatSubscriptionInviteLink(
+        EditChatSubscriptionInviteLink editChatSubscriptionInviteLink,
+        CancellationToken cancellationToken = default) =>
+        Post<ChatInviteLink>("editChatSubscriptionInviteLink", editChatSubscriptionInviteLink, cancellationToken);
 }
