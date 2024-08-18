@@ -12,6 +12,11 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 public class SendPaidMedia : BaseTextRequest
 {
     /// <summary>
+    /// Unique identifier of the business connection on behalf of which the message will be sent
+    /// </summary>
+    public string BusinessConnectionId { get; set; }
+
+    /// <summary>
     /// The number of Telegram Stars that must be paid to buy access to the media
     /// </summary>
     public int StarCount { get; set; }

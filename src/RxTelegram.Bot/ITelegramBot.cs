@@ -19,6 +19,7 @@ using RxTelegram.Bot.Interface.Games;
 using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Passport.Requests;
+using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Payments.Requests;
 using RxTelegram.Bot.Interface.Reaction.Requests;
 using RxTelegram.Bot.Interface.Setup;
@@ -1207,4 +1208,52 @@ public interface ITelegramBot
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns an array of <see cref="MessageIdObject"/> on success.</returns>
     Task<MessageIdObject[]> CopyMessages(CopyMessages copyMessages, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Refunds a successful payment in Telegram Stars.
+    /// </summary>
+    /// <param name="refundStarPayment">Information about the payment</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    Task<bool> RefundStarPayment(RefundStarPayment refundStarPayment, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns the bot's Telegram Star transactions in chronological order.
+    /// </summary>
+    /// <param name="getStarTransactions">Information about the transactions</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>On success, returns a <see cref="StarTransactions"/> object.</returns>
+    Task<StarTransactions> GetStarTransactions(
+        GetStarTransactions getStarTransactions,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to send paid media to channel chats.
+    /// </summary>
+    /// <param name="sendPaidMedia">Details for the media to send</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>On success, the sent <see cref="Message"/> is returned.</returns>
+    Task<Message> SendPaidMedia(SendPaidMedia sendPaidMedia, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to create a subscription invite link for a channel chat.
+    /// The bot must have the can_invite_users administrator rights.
+    /// The link can be edited using the method editChatSubscriptionInviteLink or revoked using the method <see cref="TelegramBot.RevokeChatInviteLink"/>.
+    /// </summary>
+    /// <param name="createChatSubscriptionInviteLink">Details for the invite link</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns the new invite link as a <see cref="ChatInviteLink"/> object.</returns>
+    Task<ChatInviteLink> CreateChatSubscriptionInviteLink(
+        CreateChatSubscriptionInviteLink createChatSubscriptionInviteLink,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Use this method to edit a subscription invite link created by the bot. The bot must have the can_invite_users administrator rights
+    /// </summary>
+    /// <param name="editChatSubscriptionInviteLink">Details for the invite link</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns the new invite link as a <see cref="ChatInviteLink"/> object.</returns>
+    Task<ChatInviteLink> EditChatSubscriptionInviteLink(
+        EditChatSubscriptionInviteLink editChatSubscriptionInviteLink,
+        CancellationToken cancellationToken = default);
 }

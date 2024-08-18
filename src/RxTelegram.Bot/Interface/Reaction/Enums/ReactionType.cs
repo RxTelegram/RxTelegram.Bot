@@ -8,5 +8,8 @@ public enum ReactionType
     Emoji,
 
     [ImplementationType(typeof(ReactionTypeCustomEmoji))]
-    CustomEmoji
+    CustomEmoji,
+
+    [ImplementationType(typeof(ReactionTypePaid))]
+    Paid
 }

@@ -655,4 +655,14 @@ public static class ValidationResultFactory
     public static ValidationResult<SendPaidMedia> CreateValidation(this SendPaidMedia value) =>
         new ValidationResult<SendPaidMedia>(value).ValidateRequired(x => x.StarCount)
                                                   .ValidateRequired(x => x.Media);
+
+    public static ValidationResult<CreateChatSubscriptionInviteLink> CreateValidation(this CreateChatSubscriptionInviteLink value) =>
+        new ValidationResult<CreateChatSubscriptionInviteLink>(value).ValidateRequired(x => x.ChatId)
+                                                                     .ValidateRequired(x => x.Name)
+                                                                     .ValidateRequired(x => x.SubscriptionPeriod)
+                                                                     .ValidateRequired(x => x.SubscriptionPrice);
+
+    public static ValidationResult<EditChatSubscriptionInviteLink> CreateValidation(this EditChatSubscriptionInviteLink value) =>
+        new ValidationResult<EditChatSubscriptionInviteLink>(value).ValidateRequired(x => x.ChatId)
+                                                                   .ValidateRequired(x => x.InviteLink);
 }
