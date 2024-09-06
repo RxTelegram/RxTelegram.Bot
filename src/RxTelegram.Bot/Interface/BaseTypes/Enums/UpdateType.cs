@@ -20,6 +20,8 @@ public enum UpdateType
 
     PreCheckoutQuery,
 
+    PurchasedPaidMedia,
+
     Poll,
 
     PollAnswer,

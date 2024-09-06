@@ -46,6 +46,11 @@ public class Giveaway
     public List<string> CountryCodes { get; set; }
 
     /// <summary>
+    /// Optional. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only
+    /// </summary>
+    public int PrizeStarCount { get; set; }
+
+    /// <summary>
     /// Optional. The number of months the Telegram Premium subscription won from the giveaway will be active for
     /// </summary>
     public int PremiumSubscriptionMonthCount { get; set; }

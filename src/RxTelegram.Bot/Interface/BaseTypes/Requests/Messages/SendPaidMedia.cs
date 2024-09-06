@@ -27,6 +27,11 @@ public class SendPaidMedia : BaseTextRequest
     public List<BaseInputPaidMedia> Media { get; set; }
 
     /// <summary>
+    /// Bot-defined paid media payload, 0-128 bytes. This will not be displayed to the user, use it for your internal processes.
+    /// </summary>
+    public string Payload { get; set; }
+
+    /// <summary>
     /// Media caption, 0-1024 characters after entities parsing
     /// </summary>
     public string Caption { get; set; }

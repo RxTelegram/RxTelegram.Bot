@@ -187,6 +187,7 @@ public class UpdateManager : IUpdateManager
         var updateStrategies = new List<Action<Update>>
                                {
                                    update => OnNext(UpdateType.PreCheckoutQuery, update.PreCheckoutQuery),
+                                   update => OnNext(UpdateType.PurchasedPaidMedia, update.PurchasedPaidMedia),
                                    update => OnNext(UpdateType.ShippingQuery, update.ShippingQuery),
                                    update => OnNext(UpdateType.EditedChannelPost, update.EditedChannelPost),
                                    update => OnNext(UpdateType.ChannelPost, update.ChannelPost),
