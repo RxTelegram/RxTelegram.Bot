@@ -25,6 +25,11 @@ public class ChatBoostSourceGiveaway : ChatBoostSource
     public User User { get; set; }
 
     /// <summary>
+    /// Optional. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only
+    /// </summary>
+    public int PrizeStarCount { get; set; }
+
+    /// <summary>
     /// Optional. True, if the giveaway was completed, but there was no user to win the prize
     /// </summary>
     public bool IsUnclaimed { get; set; }

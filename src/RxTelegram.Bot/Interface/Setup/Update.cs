@@ -101,6 +101,11 @@ public class Update
     public PreCheckoutQuery PreCheckoutQuery { get; set; }
 
     /// <summary>
+    /// Optional. A user purchased paid media with a non-empty payload sent by the bot in a non-channel chat
+    /// </summary>
+    public PaidMediaPurchased PurchasedPaidMedia { get; set; }
+
+    /// <summary>
     /// New poll state. Bots receive only updates about polls, which are sent or stopped by the bot
     /// </summary>
     public Poll Poll { get; set; }

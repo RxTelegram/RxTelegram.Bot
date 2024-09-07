@@ -5,4 +5,8 @@ namespace RxTelegram.Bot.Interface.Giveaway;
 /// </summary>
 public class GiveawayCreated
 {
+    /// <summary>
+    /// Optional. The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only
+    /// </summary>
+    public int? PrizeStarCount { get; set; }
 }

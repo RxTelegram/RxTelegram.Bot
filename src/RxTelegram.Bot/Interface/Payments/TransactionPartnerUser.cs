@@ -24,5 +24,13 @@ public class TransactionPartnerUser : TransactionPartner
     /// </summary>
     public string InvoicePayload { get; set; }
 
+    /// <summary>
+    /// Optional. Information about the paid media bought by the user
+    /// </summary>
     public List<PaidMedia> PaidMedia { get; set; }
+
+    /// <summary>
+    /// Optional. Bot-specified paid media payload
+    /// </summary>
+    public string PaidMediaPayload { get; set; }
 }
