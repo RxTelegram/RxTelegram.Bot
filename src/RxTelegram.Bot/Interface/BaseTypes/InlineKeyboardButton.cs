@@ -58,6 +58,11 @@ public class InlineKeyboardButton
     public string SwitchInlineQueryCurrentChat { get; set; }
 
     /// <summary>
+    /// Optional. Description of the button that copies the specified text to the clipboard.
+    /// </summary>
+    public CopyTextButton CopyTextButton { get; set; }
+
+    /// <summary>
     /// Optional. Description of the game that will be launched when the user presses the button.
     /// NOTE: This type of button must always be the first button in the first row.
     /// </summary>

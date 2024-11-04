@@ -9,7 +9,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 ///     Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned.
 ///     Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 /// </summary>
-public class SendAnimation : BaseSend, IProtectContent
+public class SendAnimation : BaseSend, IProtectContent, IAllowPaidBroadcast
 {
     /// <summary>
     /// Unique identifier of the business connection on behalf of which the message will be sent
@@ -87,4 +87,10 @@ public class SendAnimation : BaseSend, IProtectContent
     public bool? ProtectContent { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
+
+    /// <summary>
+    /// Pass True to allow up to 1000 messages per second, ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+    /// The relevant Stars will be withdrawn from the bot's balance
+    /// </summary>
+    public bool? AllowPaidBroadcast { get; set; }
 }

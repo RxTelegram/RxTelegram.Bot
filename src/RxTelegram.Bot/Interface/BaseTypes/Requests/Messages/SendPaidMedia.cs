@@ -9,7 +9,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 /// <summary>
 /// Use this method to send paid media to channel chats. On success, the sent Message is returned.
 /// </summary>
-public class SendPaidMedia : BaseTextRequest
+public class SendPaidMedia : BaseTextRequest, IAllowPaidBroadcast
 {
     /// <summary>
     /// Unique identifier of the business connection on behalf of which the message will be sent
@@ -68,6 +68,12 @@ public class SendPaidMedia : BaseTextRequest
     /// custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
     /// </summary>
     public IReplyMarkup ReplyMarkup { get; set; }
+
+    /// <summary>
+    /// Pass True to allow up to 1000 messages per second, ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+    /// The relevant Stars will be withdrawn from the bot's balance
+    /// </summary>
+    public bool? AllowPaidBroadcast { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
 }

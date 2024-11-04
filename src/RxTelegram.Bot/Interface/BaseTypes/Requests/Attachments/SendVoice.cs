@@ -10,7 +10,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 /// your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message
 /// is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 /// </summary>
-public class SendVoice : BaseSend, IProtectContent
+public class SendVoice : BaseSend, IProtectContent, IAllowPaidBroadcast
 {
     /// <summary>
     /// Unique identifier of the business connection on behalf of which the message will be sent
@@ -55,6 +55,12 @@ public class SendVoice : BaseSend, IProtectContent
     /// Protects the contents of the sent message from forwarding and saving
     /// </summary>
     public bool? ProtectContent { get; set; }
+
+    /// <summary>
+    /// Pass True to allow up to 1000 messages per second, ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+    /// The relevant Stars will be withdrawn from the bot's balance
+    /// </summary>
+    public bool? AllowPaidBroadcast { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
 }

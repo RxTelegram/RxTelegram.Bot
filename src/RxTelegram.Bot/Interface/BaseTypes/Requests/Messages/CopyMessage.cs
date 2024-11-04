@@ -9,7 +9,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 /// Use this method to copy messages of any kind. The method is analogous to the method forwardMessages,
 /// but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
 /// </summary>
-public class CopyMessage : BaseSend, IProtectContent
+public class CopyMessage : BaseSend, IProtectContent, IAllowPaidBroadcast
 {
     /// <summary>
     /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
@@ -53,6 +53,12 @@ public class CopyMessage : BaseSend, IProtectContent
     /// Optional. True, if the caption must be shown above the message media
     /// </summary>
     public bool ShowCaptionAboveMedia { get; set; }
+
+    /// <summary>
+    /// Pass True to allow up to 1000 messages per second, ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+    /// The relevant Stars will be withdrawn from the bot's balance
+    /// </summary>
+    public bool? AllowPaidBroadcast { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
 }

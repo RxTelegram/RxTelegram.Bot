@@ -17,5 +17,8 @@ public enum TransactionPartnerType
 
 
     [ImplementationType(typeof(TransactionPartnerOther))]
-    Other
+    Other,
+
+    [ImplementationType(typeof(TransactionPartnerTelegramApi))]
+    TelegramApi
 }

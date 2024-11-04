@@ -8,7 +8,7 @@ namespace RxTelegram.Bot.Interface.Games.Requests;
 /// <summary>
 /// Use this method to send a game. On success, the sent Message is returned.
 /// </summary>
-public class SendGame : BaseRequest, IProtectContent
+public class SendGame : BaseRequest, IProtectContent, IAllowPaidBroadcast
 {
     /// <summary>
     /// Unique identifier of the business connection on behalf of which the message will be sent
@@ -51,6 +51,12 @@ public class SendGame : BaseRequest, IProtectContent
     /// Protects the contents of the sent message from forwarding and saving
     /// </summary>
     public bool? ProtectContent { get; set; }
+
+    /// <summary>
+    /// Pass True to allow up to 1000 messages per second, ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+    /// The relevant Stars will be withdrawn from the bot's balance
+    /// </summary>
+    public bool? AllowPaidBroadcast { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
 }

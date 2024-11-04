@@ -8,7 +8,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 /// Use this method to send a dice, which will have a random value from 1 to 6. On success, the sent Message is returned.
 /// (Yes, we're aware of the “proper” singular of die. But it's awkward, and we decided to help it change. One dice at a time!)
 /// </summary>
-public class SendDice : BaseRequest, IProtectContent
+public class SendDice : BaseRequest, IProtectContent, IAllowPaidBroadcast
 {
     /// <summary>
     /// Unique identifier of the business connection on behalf of which the message will be sent
@@ -51,6 +51,12 @@ public class SendDice : BaseRequest, IProtectContent
     /// Protects the contents of the sent message from forwarding and saving
     /// </summary>
     public bool? ProtectContent { get; set; }
+
+    /// <summary>
+    /// Pass True to allow up to 1000 messages per second, ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+    /// The relevant Stars will be withdrawn from the bot's balance
+    /// </summary>
+    public bool? AllowPaidBroadcast { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
 }
