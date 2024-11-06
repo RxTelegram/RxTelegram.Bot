@@ -11,7 +11,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 ///     limit may be changed in the future.
 ///     For sending voice messages, use the sendVoice method instead.
 /// </summary>
-public class SendAudio : BaseSend, IProtectContent
+public class SendAudio : BaseSend, IProtectContent, IAllowPaidBroadcast
 {
     /// <summary>
     /// Unique identifier of the business connection on behalf of which the message will be sent
@@ -79,4 +79,10 @@ public class SendAudio : BaseSend, IProtectContent
     public bool? ProtectContent { get; set; }
 
     protected override IValidationResult Validate() => this.CreateValidation();
+
+    /// <summary>
+    /// Pass True to allow up to 1000 messages per second, ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+    /// The relevant Stars will be withdrawn from the bot's balance
+    /// </summary>
+    public bool? AllowPaidBroadcast { get; set; }
 }
