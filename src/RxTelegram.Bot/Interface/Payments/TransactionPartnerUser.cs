@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
+using RxTelegram.Bot.Interface.Stickers;
 
 namespace RxTelegram.Bot.Interface.Payments;
 
@@ -25,6 +26,11 @@ public class TransactionPartnerUser : TransactionPartner
     public string InvoicePayload { get; set; }
 
     /// <summary>
+    /// Optional. The duration of the paid subscription
+    /// </summary>
+    public int? SubscriptionPeriod { get; set; }
+
+    /// <summary>
     /// Optional. Information about the paid media bought by the user
     /// </summary>
     public List<PaidMedia> PaidMedia { get; set; }
@@ -33,4 +39,9 @@ public class TransactionPartnerUser : TransactionPartner
     /// Optional. Bot-specified paid media payload
     /// </summary>
     public string PaidMediaPayload { get; set; }
+
+    /// <summary>
+    /// Optional. The gift sent to the user by the bot
+    /// </summary>
+    public Gift Gift { get; set; }
 }

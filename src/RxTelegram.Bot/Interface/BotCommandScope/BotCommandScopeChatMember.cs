@@ -22,5 +22,5 @@ public class BotCommandScopeChatMember : BotCommandScopeBase
     /// <summary>
     /// Unique identifier of the target user
     /// </summary>
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 }

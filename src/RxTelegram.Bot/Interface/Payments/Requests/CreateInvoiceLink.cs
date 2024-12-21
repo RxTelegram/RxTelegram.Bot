@@ -10,6 +10,12 @@ namespace RxTelegram.Bot.Interface.Payments.Requests;
 public class CreateInvoiceLink : BaseValidation
 {
     /// <summary>
+    /// Unique identifier of the business connection on behalf of which the link will be created.
+    /// For payments in Telegram Stars only.
+    /// </summary>
+    public string BusinessConnectionId { get; set; }
+
+    /// <summary>
     /// Product name, 1-32 characters
     /// </summary>
     public string Title { get; set; }
@@ -39,6 +45,16 @@ public class CreateInvoiceLink : BaseValidation
     /// (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
     /// </summary>
     public List<LabeledPrice> Prices { get; set; }
+
+    /// <summary>
+    /// The number of seconds the subscription will be active for before the next payment.
+    /// The currency must be set to “XTR” (Telegram Stars) if the parameter is used.
+    /// Currently, it must always be 2592000 (30 days) if specified.
+    /// Any number of subscriptions can be active for a given bot at the same time,
+    /// including multiple concurrent subscriptions from the same user.
+    /// Subscription price must not exceed 2500 Telegram Stars.
+    /// </summary>
+    public int SubscriptionPeriod { get; set; }
 
     /// <summary>
     /// The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double).

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.BaseTypes.InputMedia;
+using RxTelegram.Bot.Interface.BaseTypes.Requests;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Attachments;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Bot;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Callbacks;
@@ -665,4 +666,22 @@ public static class ValidationResultFactory
     public static ValidationResult<EditChatSubscriptionInviteLink> CreateValidation(this EditChatSubscriptionInviteLink value) =>
         new ValidationResult<EditChatSubscriptionInviteLink>(value).ValidateRequired(x => x.ChatId)
                                                                    .ValidateRequired(x => x.InviteLink);
+
+    public static ValidationResult<GetStarTransactions> CreateValidation(this GetStarTransactions value) => new(value);
+
+    public static ValidationResult<EditUserStarSubscription> CreateValidation(this EditUserStarSubscription value) =>
+        new ValidationResult<EditUserStarSubscription>(value).ValidateRequired(x => x.UserId)
+                                                             .ValidateRequired(x => x.TelegramPaymentChargeId)
+                                                             .ValidateRequired(x => x.IsCanceled);
+
+    public static ValidationResult<SetUserEmojiStatus> CreateValidation(this SetUserEmojiStatus value) =>
+        new ValidationResult<SetUserEmojiStatus>(value).ValidateRequired(x => x.UserId);
+
+    public static ValidationResult<SavePreparedInlineMessage> CreateValidation(this SavePreparedInlineMessage value) =>
+        new ValidationResult<SavePreparedInlineMessage>(value).ValidateRequired(x => x.UserId)
+                                                              .ValidateRequired(x => x.Result);
+
+    public static ValidationResult<SendGift> CreateValidation(this SendGift value) => new ValidationResult<SendGift>(value)
+                                                                                      .ValidateRequired(x => x.UserId)
+                                                                                      .ValidateRequired(x => x.GiftId);
 }
