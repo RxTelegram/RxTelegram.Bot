@@ -1289,7 +1289,7 @@ public interface ITelegramBot
     /// Returns the list of gifts that can be sent by the bot to users. Requires no parameters.
     /// </summary>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-    /// <returns>Returns a <see cref="Gifts"/> object.</returns>
+    /// <returns>Returns a <see cref="GiftsObject"/> object.</returns>
     Task<GiftsObject> GetAvailableGifts(CancellationToken cancellationToken = default);
 
     /// <summary>
