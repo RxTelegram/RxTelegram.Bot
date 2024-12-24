@@ -25,6 +25,21 @@ public class SuccessfulPayment
     public string InvoicePayload { get; set; }
 
     /// <summary>
+    /// Optional. Expiration date of the subscription, in Unix time; for recurring payments only
+    /// </summary>
+    public int SubscriptionExpirationDate { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the payment is a recurring payment for a subscription
+    /// </summary>
+    public bool IsRecurring { get; set; }
+
+    /// <summary>
+    /// Optional. True, if the payment is the first payment for a subscription
+    /// </summary>
+    public bool IsFirstRecurring { get; set; }
+
+    /// <summary>
     ///     Optional. Identifier of the shipping option chosen by the user
     /// </summary>
     public string ShippingOptionId { get; set; }

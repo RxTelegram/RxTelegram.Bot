@@ -1384,4 +1384,52 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
         EditChatSubscriptionInviteLink editChatSubscriptionInviteLink,
         CancellationToken cancellationToken = default) =>
         Post<ChatInviteLink>("editChatSubscriptionInviteLink", editChatSubscriptionInviteLink, cancellationToken);
+
+    /// <summary>
+    /// Allows the bot to cancel or re-enable extension of a subscription paid in Telegram Stars.
+    /// </summary>
+    /// <param name="editUserStarSubscription">Details for the subscription update</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> EditUserStarSubscription(
+        EditUserStarSubscription editUserStarSubscription,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("editUserStarSubscription", editUserStarSubscription, cancellationToken);
+
+    /// <summary>
+    /// Changes the emoji status for a given user that previously allowed the bot to manage their emoji status via the Mini App method requestEmojiStatusAccess
+    /// </summary>
+    /// <param name="setUserEmojiStatus">Status to set for the user</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> SetUserEmojiStatus(SetUserEmojiStatus setUserEmojiStatus, CancellationToken cancellationToken = default) =>
+        Post<bool>("setUserEmojiStatus", setUserEmojiStatus, cancellationToken);
+
+    /// <summary>
+    /// Stores a message that can be sent by a user of a Mini App
+    /// </summary>
+    /// <param name="savePreparedInlineMessage">Prepared inline Message to save</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns a <see cref="PreparedInlineMessage"/> object.</returns>
+    public Task<PreparedInlineMessage> SavePreparedInlineMessage(
+        SavePreparedInlineMessage savePreparedInlineMessage,
+        CancellationToken cancellationToken = default) =>
+        Post<PreparedInlineMessage>("savePreparedInlineMessage", savePreparedInlineMessage, cancellationToken);
+
+    /// <summary>
+    /// Returns the list of gifts that can be sent by the bot to users. Requires no parameters.
+    /// </summary>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns a <see cref="Gifts"/> object.</returns>
+    public Task<GiftsObject> GetAvailableGifts(CancellationToken cancellationToken = default) =>
+        Get<GiftsObject>("getAvailableGifts", cancellationToken);
+
+    /// <summary>
+    /// Sends a gift to the given user. The gift can't be converted to Telegram Stars by the user.
+    /// </summary>
+    /// <param name="sendGift">The gift to send</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> SendGift(SendGift sendGift, CancellationToken cancellationToken = default) =>
+        Post<bool>("sendGift", sendGift, cancellationToken);
 }
