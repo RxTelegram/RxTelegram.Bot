@@ -5,7 +5,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RxTelegram_RxTelegram.Bot&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RxTelegram_RxTelegram.Bot)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=RxTelegram_RxTelegram.Bot&metric=coverage)](https://sonarcloud.io/summary/new_code?id=RxTelegram_RxTelegram.Bot)
 
-RxTelegram.Bot supports Telegram Bot API 7.11 (as at October 31, 2024).
+RxTelegram.Bot supports Telegram Bot API 8.0 (as at November 17, 2024).
 
 This is a reactive designed .NET Library for the Telegram Bot API. It works with the official [Reactive Extentions](https://github.com/dotnet/reactive).
 
