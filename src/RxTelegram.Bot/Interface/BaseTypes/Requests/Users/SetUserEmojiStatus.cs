@@ -5,7 +5,7 @@ namespace RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
 
 /// <summary>
 /// Changes the emoji status for a given user that previously allowed the bot to manage their
-/// emoji status via the Mini App method <see cref="TelegramBot.RequestEmojiStatusAccess"/> . Returns True on success.
+/// emoji status via the Mini App method RequestEmojiStatusAccess. Returns True on success.
 /// </summary>
 public class SetUserEmojiStatus : BaseValidation
 {
