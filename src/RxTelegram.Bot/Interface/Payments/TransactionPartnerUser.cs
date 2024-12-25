@@ -20,6 +20,8 @@ public class TransactionPartnerUser : TransactionPartner
     /// </summary>
     public User User { get; set; }
 
+    public AffiliateInfo Affiliate { get; set; }
+
     /// <summary>
     /// Optional. Bot-specified invoice payload
     /// </summary>

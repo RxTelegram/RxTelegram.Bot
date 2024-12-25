@@ -10,5 +10,5 @@ public class TransactionPartnerTelegramAds : TransactionPartner
     /// <summary>
     /// Type of the transaction partner, always “telegram_ads”
     /// </summary>
-    public override TransactionPartnerType Type { get; set; }
+    public override TransactionPartnerType Type { get; set; } = TransactionPartnerType.TelegramAds;
 }
