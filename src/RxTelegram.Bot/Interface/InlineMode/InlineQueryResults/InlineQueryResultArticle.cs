@@ -17,12 +17,6 @@ public class InlineQueryResultArticle : BaseInlineQueryResultMedia
 
     /// <summary>
     /// Optional.
-    /// Pass True, if you don't want the URL to be shown in the message
-    /// </summary>
-    public bool? HideUrl { get; set; }
-
-    /// <summary>
-    /// Optional.
     /// Short description of the result
     /// </summary>
     public string Description { get; set; }

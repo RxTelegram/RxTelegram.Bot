@@ -684,4 +684,16 @@ public static class ValidationResultFactory
     public static ValidationResult<SendGift> CreateValidation(this SendGift value) => new ValidationResult<SendGift>(value)
                                                                                       .ValidateRequired(x => x.UserId)
                                                                                       .ValidateRequired(x => x.GiftId);
+
+    public static ValidationResult<VerifyUser> CreateValidation(this VerifyUser value) =>
+        new ValidationResult<VerifyUser>(value).ValidateRequired(x => x.UserId);
+
+    public static ValidationResult<VerifyChat> CreateValidation(this VerifyChat value) =>
+        new ValidationResult<VerifyChat>(value).ValidateRequired(x => x.ChatId);
+
+    public static ValidationResult<RemoveUserVerification> CreateValidation(this RemoveUserVerification value) =>
+        new ValidationResult<RemoveUserVerification>(value).ValidateRequired(x => x.UserId);
+
+    public static ValidationResult<RemoveChatVerification> CreateValidation(this RemoveChatVerification value) =>
+        new ValidationResult<RemoveChatVerification>(value).ValidateRequired(x => x.ChatId);
 }
