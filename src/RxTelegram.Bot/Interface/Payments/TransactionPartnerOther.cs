@@ -10,5 +10,5 @@ public class TransactionPartnerOther : TransactionPartner
     /// <summary>
     /// Type of the transaction partner, always “other”
     /// </summary>
-    public override TransactionPartnerType Type { get; set; }
+    public override TransactionPartnerType Type { get; set; } = TransactionPartnerType.Other;
 }

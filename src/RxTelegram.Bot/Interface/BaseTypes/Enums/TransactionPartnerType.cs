@@ -15,10 +15,12 @@ public enum TransactionPartnerType
     [ImplementationType(typeof(TransactionPartnerTelegramAds))]
     TelegramAds,
 
-
     [ImplementationType(typeof(TransactionPartnerOther))]
     Other,
 
     [ImplementationType(typeof(TransactionPartnerTelegramApi))]
-    TelegramApi
+    TelegramApi,
+
+    [ImplementationType(typeof(TransactionPartnerAffiliateProgram))]
+    AffiliateProgram
 }

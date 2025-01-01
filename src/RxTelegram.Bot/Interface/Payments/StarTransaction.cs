@@ -17,6 +17,11 @@ public class StarTransaction
     public int Amount { get; set; }
 
     /// <summary>
+    /// Optional. The number of 1/1000000000 shares of Telegram Stars transferred by the transaction; from 0 to 999999999
+    /// </summary>
+    public int? NanostarAmount { get; set; }
+
+    /// <summary>
     /// Date the transaction was created in Unix time
     /// </summary>
     public int Date { get; set; }
