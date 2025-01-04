@@ -21,6 +21,11 @@ public class Gift
     public int StarCount { get; set; }
 
     /// <summary>
+    /// Optional. The number of Telegram Stars that must be paid to upgrade the gift to a unique one
+    /// </summary>
+    public int? UpgradeStarCount { get; set; }
+
+    /// <summary>
     /// Optional. The total number of the gifts of this type that can be sent; for limited gifts only
     /// </summary>
     public int TotalCount { get; set; }

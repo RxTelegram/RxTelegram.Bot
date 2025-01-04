@@ -1432,4 +1432,42 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns True on success.</returns>
     public Task<bool> SendGift(SendGift sendGift, CancellationToken cancellationToken = default) =>
         Post<bool>("sendGift", sendGift, cancellationToken);
+
+    /// <summary>
+    /// Verifies a user on behalf of the organization which is represented by the bot. Returns True on success.
+    /// </summary>
+    /// <param name="verifyUser">The user to verify</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> VerifyUser(VerifyUser verifyUser, CancellationToken cancellationToken = default) =>
+        Post<bool>("verifyUser", verifyUser, cancellationToken);
+
+    /// <summary>
+    /// Verifies a chat on behalf of the organization which is represented by the bot. Returns True on success.
+    /// </summary>
+    /// <param name="verifyChat">The chat to verify</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> VerifyChat(VerifyChat verifyChat, CancellationToken cancellationToken = default) =>
+        Post<bool>("verifyChat", verifyChat, cancellationToken);
+
+    /// <summary>
+    /// Removes verification from a user who is currently verified on behalf of the organization represented by the bot.
+    /// Returns True on success.
+    /// </summary>
+    /// <param name="removeUserVerification">The user to remove verification from</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> RemoveUserVerification(RemoveUserVerification removeUserVerification, CancellationToken cancellationToken = default) =>
+        Post<bool>("removeUserVerification", removeUserVerification, cancellationToken);
+
+    /// <summary>
+    /// Removes verification from a chat that is currently verified on behalf of the organization represented by the bot.
+    /// Returns True on success.
+    /// </summary>
+    /// <param name="removeChatVerification">The chat to remove verification from</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> RemoveChatVerification(RemoveChatVerification removeChatVerification, CancellationToken cancellationToken = default) =>
+        Post<bool>("removeChatVerification", removeChatVerification, cancellationToken);
 }
