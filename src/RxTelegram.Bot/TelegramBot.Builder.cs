@@ -1,0 +1,35 @@
+
+using System;
+using RxTelegram.Bot.Api;
+using RxTelegram.Bot.Interface.Setup;
+
+namespace RxTelegram.Bot;
+
+public partial class TelegramBot : BaseTelegramBot, ITelegramBot
+{
+  public class Builder
+  {
+    private readonly string _token;
+    private IObservable<Update> _tracker = null;
+    private IUpdateManager _updateManager = null;
+
+    public Builder(string token) { _token = token; }
+    public Builder SetTracker(IObservable<Update> tracker)
+    {
+      _tracker = tracker;
+      return this;
+    }
+    public Builder SetManager(IUpdateManager updateManager)
+    {
+      _updateManager = updateManager;
+      return this;
+    }
+    public TelegramBot Build()
+    {
+      var bot = new TelegramBot(_token);
+      _tracker ??= new LongpollingUpdateTracker(bot);
+      bot.Updates =_updateManager?? new UpdateDistributor(_tracker);
+      return bot;
+    }
+  }
+}

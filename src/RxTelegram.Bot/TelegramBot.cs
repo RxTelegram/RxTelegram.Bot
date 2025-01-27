@@ -30,15 +30,19 @@ using File = RxTelegram.Bot.Interface.BaseTypes.File;
 
 namespace RxTelegram.Bot;
 
-public class TelegramBot : BaseTelegramBot, ITelegramBot
+public partial class TelegramBot : BaseTelegramBot, ITelegramBot
 {
     public TelegramBot(string token) : this(new BotInfo(token))
     {
     }
 
-    public TelegramBot(BotInfo botInfo) : base(botInfo) => Updates = new UpdateManager(this);
+    public TelegramBot(BotInfo botInfo) : base(botInfo)
+    {
+        var tracker = new LongpollingUpdateTracker(this);
+        Updates = new UpdateDistributor(tracker);
+    }
 
-    public IUpdateManager Updates { get; }
+    public IUpdateManager Updates { get; private set; }
 
     /// <summary>
     ///     Use this method to get basic info about a file and prepare it for downloading.
