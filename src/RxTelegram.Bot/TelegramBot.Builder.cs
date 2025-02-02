@@ -1,4 +1,3 @@
-
 using System;
 using RxTelegram.Bot.Api;
 using RxTelegram.Bot.Interface.Setup;
@@ -28,7 +27,9 @@ public partial class TelegramBot : BaseTelegramBot, ITelegramBot
     {
       var bot = new TelegramBot(_token);
       _tracker ??= new LongpollingUpdateTracker(bot);
-      bot.Updates =_updateManager?? new UpdateDistributor(_tracker);
+      bot.Updates = _updateManager ?? new UpdateDistributor(_tracker);
+      bot.Updates.Set(_tracker);
+
       return bot;
     }
   }
