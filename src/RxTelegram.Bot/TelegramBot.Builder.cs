@@ -8,11 +8,17 @@ public partial class TelegramBot : BaseTelegramBot, ITelegramBot
 {
   public class Builder
   {
-    private readonly string _token;
+    private string _token;
     private IObservable<Update> _tracker = null;
     private IUpdateManager _updateManager = null;
+    public Builder() { }
+    public Builder(string token) : this() { _token = token; }
 
-    public Builder(string token) { _token = token; }
+    public Builder SetToken(string token)
+    {
+      _token = token;
+      return this;
+    }
     public Builder SetTracker(IObservable<Update> tracker)
     {
       _tracker = tracker;
