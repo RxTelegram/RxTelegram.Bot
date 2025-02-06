@@ -13,6 +13,12 @@ namespace RxTelegram.Bot.Api;
 public interface IUpdateManager
 {
     /// <summary>
+    /// Allows to set custom updates tracker
+    /// </summary>
+    /// <param name="tracker"></param>
+    void Set(IObservable<Update> tracker);
+    
+    /// <summary>
     /// Updates of all Types.
     /// </summary>
     IObservable<Update> Update { get; }

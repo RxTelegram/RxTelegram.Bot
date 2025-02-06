@@ -16,6 +16,8 @@ namespace RxTelegram.Bot.Api;
 
 public class UpdateManager : IUpdateManager
 {
+    public void Set(IObservable<Update> tracker) => throw new NotImplementedException();
+
     public IObservable<Update> Update => _update;
 
     public IObservable<Message> Message => _message;
