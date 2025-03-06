@@ -17,7 +17,7 @@ public class LongpollingUpdateTracker(ITelegramBot telegramBot)
   private int _isRunning = NotRunning;
   private CancellationTokenSource _cancellationTokenSource;
   UpdateType[] _trackedUpdateTypes = [];
-  List<IObserver<Update>> _observers = new List<IObserver<Update>>();
+  readonly List<IObserver<Update>> _observers = new List<IObserver<Update>>();
 
   private IEnumerable<UpdateType> GetTrackingUpdateTypes()
     => _trackedUpdateTypes;
@@ -54,6 +54,7 @@ public class LongpollingUpdateTracker(ITelegramBot telegramBot)
     finally
     {
       Volatile.Write(ref _isRunning, NotRunning);
+      _cancellationTokenSource.Dispose();
       _cancellationTokenSource = null;
     }
   }

@@ -10,6 +10,8 @@ namespace RxTelegram.Bot.Utils.Rx;
 /// <typeparam name="TInput">Incoming type that the subject listens to</typeparam>
 /// <typeparam name="TOut">Result type that the subject emits</typeparam>
 public class CustomSubject<TInput, TOut> : IObserver<TInput>, IObservable<TOut>
+where TOut: class //Should be 'class' because it is being compared to null in OnNext
+                  //Changing to comparison with default will result in unexpected behaviour for value types
 {
   private readonly Func<TInput, TOut> _selector;
   private readonly Action _onSubscribe;
@@ -37,7 +39,7 @@ public class CustomSubject<TInput, TOut> : IObserver<TInput>, IObservable<TOut>
   }
   public void OnNext(TInput value)
   {
-    var result = _selector(value);
+    TOut result = _selector(value);
     if (result == null) return;
     for (int oid = 0; oid != _observers.Count; ++oid)
       _observers[oid].OnNext(result);

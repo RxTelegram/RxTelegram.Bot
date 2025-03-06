@@ -20,8 +20,8 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
   private IObservable<Update> _tracker;
 
   #region Observable Update properties
-  private Dictionary<UpdateType, UpdateTypeInfo> _updateInfos = new Dictionary<UpdateType, UpdateTypeInfo>();
-  private UpdateTypeInfo _update = new UpdateTypeInfo();
+  private readonly Dictionary<UpdateType, UpdateTypeInfo> _updateInfos;
+  private UpdateTypeInfo _update;
   public IObservable<CallbackQuery> CallbackQuery => Selector(UpdateType.CallbackQuery, _update => _update.CallbackQuery);
   public IObservable<Message> ChannelPost => Selector(UpdateType.ChannelPost, _update => _update.ChannelPost);
   public IObservable<ChatBoostUpdated> ChatBoost => Selector(UpdateType.ChatBoost, _update => _update.ChatBoost);
@@ -65,6 +65,7 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
 #endif
   public UpdateDistributor(IObservable<Update> updateTracker)
   {
+    _update = new UpdateTypeInfo();
     _updateInfos = Enum.GetValues(typeof(UpdateType))
       .Cast<UpdateType>()
       .ToDictionary(x => x, _ => new UpdateTypeInfo());
@@ -106,6 +107,7 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
     UpdateTrackerTypes();
   }
   public IObservable<T> Selector<T>(UpdateType updateType, Func<Update, T> propertySelector)
+  where T: class
   {
     var info = _updateInfos[updateType];
     if (info.Observer != null)
@@ -156,7 +158,7 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
 
   public void Dispose() => DisposeTrackerSubcription();
 
-  private class UpdateTypeInfo
+  sealed private class UpdateTypeInfo
   {
     public int Listeners { get; set; } = 0;
     public IObserver<Update> Observer { get; set; } = null;
