@@ -109,7 +109,7 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
   {
     var info = _updateInfos[updateType];
     if (info.Observer != null)
-      return (IObservable<T>)info;
+      return (IObservable<T>)info.Observer;
 
     var subject = new UpdateSubject<T>(propertySelector,
          onSubscribe: () => AddListener(updateType),
