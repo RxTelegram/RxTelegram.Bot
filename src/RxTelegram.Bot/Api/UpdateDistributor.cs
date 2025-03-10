@@ -90,7 +90,6 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
 
       if (info.Listeners != 1) return;
       UpdateTrackerTypes();
-      //info.Subscription = _tracker.Subscribe(info.Observer);
     }
   }
   private UpdateTypeInfo GetInfo(UpdateType? type)
@@ -104,9 +103,6 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
       var info = GetInfo(type);
       --info.Listeners;
       if (info.Listeners != 0) return;
-
-      //info.Subscription.Dispose();
-      //info.Subscription = null;
 
       UpdateTrackerTypes();
     }
@@ -125,26 +121,10 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
     //Setup current tracker to listen all messages before change to a new one
     var current = _tracker.Current;
     (current as ITrackerSetup)?.Set(null);
-    //DisposeTrackerSubcription();
-    //_tracker = tracker;
     UpdateTrackerTypes();
 
     _tracker.OnNext(tracker);
-    //SubscribeToTracker();
   }
-  // public void DisposeTrackerSubcription()
-  // {
-  //   _updateInfo.Subscription?.Dispose();
-  //   foreach (var info in _updateInfos.Values)
-  //     info.Subscription?.Dispose();
-  // }
-  // public void SubscribeToTracker()
-  // {
-  //   if (_updateInfo.Listeners != 0)
-  //     _updateInfo.Subscription = _tracker.Subscribe(_updateInfo.Observer);
-  //   foreach (var info in _updateInfos.Values.Where(x => x.Observer != null))
-  //     info.Subscription = _tracker.Subscribe(info.Observer);
-  // }
   private void UpdateTrackerTypes()
   {
     if (_tracker.Current is not ITrackerSetup setup) return;
@@ -169,8 +149,5 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
   sealed private class UpdateTypeInfo
   {
     public int Listeners { get; set; } = 0;
-    // public IObserver<Update> Observer { get; set; } = null;
-    // public IObservable<Update> Observable { get; set; } = null;
-    // public IDisposable Subscription { get; set; } = null;
   }
 }
