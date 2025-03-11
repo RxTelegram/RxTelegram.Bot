@@ -17,19 +17,17 @@ public class LongpollingUpdateTracker(ITelegramBot telegramBot)
   private int _isRunning = NotRunning;
   private CancellationTokenSource _cancellationTokenSource;
   UpdateType[] _trackedUpdateTypes = [];
-  List<IObserver<Update>> _observers = new List<IObserver<Update>>();
+  readonly List<IObserver<Update>> _observers = new List<IObserver<Update>>();
 
-  private IEnumerable<UpdateType> GetTrackingUpdateTypes()
-    => _trackedUpdateTypes;
   public void Set(IEnumerable<UpdateType> types)
   {
-    if (types == null && _trackedUpdateTypes == null)
-      return;
-
     if (types == null)
     {
-      _trackedUpdateTypes = null;
-      _cancellationTokenSource?.Cancel();
+      if (_trackedUpdateTypes != null)
+      {
+        _trackedUpdateTypes = null;
+        _cancellationTokenSource?.Cancel();
+      }
       return;
     }
 
@@ -47,20 +45,28 @@ public class LongpollingUpdateTracker(ITelegramBot telegramBot)
       _cancellationTokenSource = new CancellationTokenSource();
       await RunUpdate();
     }
-    catch (Exception)
+    catch (Exception ex)
     {
       // ignored
+      ExceptionHelpers.ThrowIfFatal(ex);
     }
     finally
     {
-      Volatile.Write(ref _isRunning, NotRunning);
+      _cancellationTokenSource.Dispose();
       _cancellationTokenSource = null;
+      
+      if (!_observers.Any())
+        Volatile.Write(ref _isRunning, NotRunning);
+      else
+        RunUpdateTask();
     }
+    void RunUpdateTask() => Task.Run(RunUpdateSafe);
   }
-
+  
+  int? offset = null; // Offset must be preserved for all errors except TaskCanceledException.  
+                      // Using a local variable may cause duplicates if an exception occurs.
   internal async Task RunUpdate()
   {
-    int? offset = null;
 
     while (_observers.Count != 0)
     {
@@ -76,8 +82,9 @@ public class LongpollingUpdateTracker(ITelegramBot telegramBot)
           Timeout = 60,
 
           // if there is a null value in the list, it means that all updates are allowed
-          AllowedUpdates = GetTrackingUpdateTypes() ?? null
+          AllowedUpdates = _trackedUpdateTypes ?? null
         };
+
         var result = await _telegramBot.GetUpdate(getUpdate, _cancellationTokenSource.Token);
         if (!result.Any())
         {
@@ -85,18 +92,16 @@ public class LongpollingUpdateTracker(ITelegramBot telegramBot)
           continue;
         }
 
-        offset = result.Max(x => x.UpdateId) + 1;
         NotifyObservers(result);
+        offset = result.Last().UpdateId + 1;
       }
       catch (TaskCanceledException)
       {
-        // create new token and check observers
         offset = null;
         _cancellationTokenSource = new CancellationTokenSource();
       }
       catch (Exception exception)
       {
-        // unexpected exception report them to the observers and cancel run update
         OnException(exception);
         throw;
       }
@@ -110,8 +115,27 @@ public class LongpollingUpdateTracker(ITelegramBot telegramBot)
   }
   internal void OnException(Exception exception)
   {
-    for (int oid = 0; oid != _observers.Count; ++oid)
-      _observers[oid].OnError(exception);
+    IObserver<Update>[] current;
+    lock (_observers)
+    {
+      current = _observers.ToArray(); // Caching current observers to prevent
+                                      // notifying those who subscribed after an error occurred.
+      _observers.Clear();
+    }
+
+    for (int oid = 0; oid != current.Length; ++oid)
+    {
+      try
+      {
+        current[oid].OnError(exception);
+      }
+      catch (Exception ex)
+      {
+        // Ignore exceptions from observers without an error handler,
+        // as it would break the process and propagate the exception to the outer scope.
+        ExceptionHelpers.ThrowIfFatal(ex);
+      }
+    }
   }
   internal void Remove(IObserver<Update> observer)
   {
@@ -128,14 +152,12 @@ public class LongpollingUpdateTracker(ITelegramBot telegramBot)
   }
   public IDisposable Subscribe(IObserver<Update> observer)
   {
-    if(observer==null)
+    if (observer == null)
       throw new ArgumentNullException(nameof(observer));
+
     lock (_observers)
     {
-      if (!_observers.Contains(observer))
-      {
-        _observers.Add(observer);
-      }
+      _observers.Add(observer);
     }
 
     if (Interlocked.Exchange(ref _isRunning, Running) == NotRunning)

@@ -1,8 +1,10 @@
 using System;
+
 namespace RxTelegram.Bot.Utils.Rx;
 
-public class DisposableAction : IDisposable
+sealed public class DisposableAction : IDisposable
 {
+  static public DisposableAction Empty { get; } = new DisposableAction(() => { });
   private readonly Action action;
 
   public DisposableAction(Action action)

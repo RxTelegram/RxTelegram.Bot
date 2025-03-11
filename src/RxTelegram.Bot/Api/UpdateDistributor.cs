@@ -3,6 +3,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Setup;
+using RxTelegram.Bot.Utils.Rx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,14 @@ namespace RxTelegram.Bot.Api;
 
 public sealed class UpdateDistributor : IUpdateManager, IDisposable
 {
-  private IObservable<Update> _tracker;
 
   #region Observable Update properties
-  private Dictionary<UpdateType, UpdateTypeInfo> _updateInfos = new Dictionary<UpdateType, UpdateTypeInfo>();
-  private UpdateTypeInfo _update = new UpdateTypeInfo();
+  private readonly Dictionary<UpdateType, UpdateTypeInfo> _updateInfos;
+  private readonly UpdateTypeInfo _updateInfo;
+  private readonly IEnumerable<UpdateType> _trackedTypes;
+  private readonly ReactiveProperty<IObservable<Update>> _tracker;
+  private bool _isDisposed = false;
+  private readonly object _lock;
   public IObservable<CallbackQuery> CallbackQuery => Selector(UpdateType.CallbackQuery, _update => _update.CallbackQuery);
   public IObservable<Message> ChannelPost => Selector(UpdateType.ChannelPost, _update => _update.ChannelPost);
   public IObservable<ChatBoostUpdated> ChatBoost => Selector(UpdateType.ChatBoost, _update => _update.ChatBoost);
@@ -38,9 +42,7 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
   public IObservable<PreCheckoutQuery> PreCheckoutQuery => Selector(UpdateType.PreCheckoutQuery, _update => _update.PreCheckoutQuery);
   public IObservable<ChatBoostRemoved> RemovedChatBoost => Selector(UpdateType.RemovedChatBoost, _update => _update.RemovedChatBoost);
   public IObservable<ShippingQuery> ShippingQuery => Selector(UpdateType.ShippingQuery, _update => _update.ShippingQuery);
-  public IObservable<Update> Update => (IObservable<Update>)(_update.Observer ??= new UpdateSubject<Update>(x => x,
-        onSubscribe: AddGeneralListener,
-        onDispose: RemoveGeneralListener));
+  public IObservable<Update> Update => Selector(null, _update => _update);
   #endregion
 
 #if NETSTANDARD2_1
@@ -65,101 +67,85 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
 #endif
   public UpdateDistributor(IObservable<Update> updateTracker)
   {
+    _lock = new();
     _updateInfos = Enum.GetValues(typeof(UpdateType))
       .Cast<UpdateType>()
       .ToDictionary(x => x, _ => new UpdateTypeInfo());
+
+    _updateInfo = new UpdateTypeInfo();
+
+    _trackedTypes = _updateInfos.Where(x => x.Value.Listeners != 0)
+       .Select(x => x.Key);
+
+    _tracker = new ReactiveProperty<IObservable<Update>>(updateTracker);
     Set(updateTracker);
   }
-
-  private void AddGeneralListener()
+  private void AddListener(UpdateType? type)
   {
-    ++_update.Listeners;
+    lock (_lock)
+    {
+      var info = GetInfo(type);
+      ++info.Listeners;
 
-    (_tracker as ITrackerSetup)?.Set(null);
-
-    _update.Subscription ??= _tracker.Subscribe(_update.Observer);
+      if (info.Listeners != 1) return;
+      UpdateTrackerTypes();
+    }
   }
-  private void AddListener(UpdateType type)
+  private UpdateTypeInfo GetInfo(UpdateType? type)
+    => type == null ? _updateInfo : _updateInfos[(UpdateType)type];
+
+  private void RemoveListener(UpdateType? type)
   {
-    var updateType = _updateInfos[type];
-    ++updateType.Listeners;
+    lock (_lock)
+    {
+      var info = GetInfo(type);
+      --info.Listeners;
+      if (info.Listeners != 0) return;
 
-    UpdateTrackerTypes();
-
-    updateType.Subscription ??= _tracker.Subscribe(updateType.Observer);
+      UpdateTrackerTypes();
+    }
   }
-  private void RemoveGeneralListener()
+  public IObservable<T> Selector<T>(UpdateType? type, Func<Update, T> propertySelector)
+  where T : class
   {
-    --_update.Listeners;
-    _update.Subscription?.Dispose();
-    _update.Subscription = null;
-
-    UpdateTrackerTypes();
+    return _tracker.Switch().Select(propertySelector)
+      .Where(x => x != null)
+      .DoOnSubscribe(() => AddListener(type))
+      .Finally(() => RemoveListener(type));
   }
-  private void RemoveListener(UpdateType type)
-  {
-    var updateType = _updateInfos[type];
-    --updateType.Listeners;
-    _update.Subscription?.Dispose();
-    _update.Subscription = null;
 
-    UpdateTrackerTypes();
-  }
-  public IObservable<T> Selector<T>(UpdateType updateType, Func<Update, T> propertySelector)
-  {
-    var info = _updateInfos[updateType];
-    if (info.Observer != null)
-      return (IObservable<T>)info;
-
-    var subject = new UpdateSubject<T>(propertySelector,
-         onSubscribe: () => AddListener(updateType),
-         onDispose: () => RemoveListener(updateType));
-    info.Observer = subject;
-    info.Subscription = _tracker.Subscribe(info.Observer);
-    return subject;
-  }
   public void Set(IObservable<Update> tracker)
   {
-    //Setup current tracker to listen all messages before change to a new one
-    (_tracker as ITrackerSetup)?.Set(null);
-    DisposeTrackerSubcription();
-    _tracker = tracker;
+    // Configure the current tracker to listen for all types of updates 
+    // before switching to a new one
+    (_tracker.Current as ITrackerSetup)?.Set(null);
+    
+    _tracker.OnNext(tracker);
     UpdateTrackerTypes();
-    SubscribeToTracker();
-  }
-  public void DisposeTrackerSubcription()
-  {
-    _update.Subscription?.Dispose();
-    foreach (var info in _updateInfos.Values)
-      info.Subscription?.Dispose();
-  }
-  public void SubscribeToTracker()
-  {
-    if(_update.Observer!=null)
-    _update.Subscription = _tracker.Subscribe(_update.Observer);
-    foreach (var info in _updateInfos.Values.Where(x=>x.Observer!=null))
-      info.Subscription = _tracker.Subscribe(info.Observer);
   }
   private void UpdateTrackerTypes()
   {
-    if (_tracker is not ITrackerSetup) return;
+    if (_tracker.Current is not ITrackerSetup setup) return;
 
-    IEnumerable<UpdateType> types = null;
-    if (_update.Listeners == 0)
-    {
-      types = _updateInfos.Where(x => x.Value.Listeners != 0).Select(x => x.Key);
-      if (!types.Any())
-        types = null;
-    }
-      (_tracker as ITrackerSetup).Set(types);
+    setup.Set(_updateInfo.Listeners != 0 || !_trackedTypes.Any() ?
+      null : _trackedTypes);
   }
 
-  public void Dispose() => DisposeTrackerSubcription();
+  public void Dispose() => Dispose(true);
+  void Dispose(bool explicitDisposing)
+  {
+    if (_isDisposed) return;
 
-  private class UpdateTypeInfo
+    if (explicitDisposing)
+      _tracker.Dispose();
+
+    _isDisposed = true;
+  }
+
+  ~UpdateDistributor() => Dispose(false);
+
+  sealed private class UpdateTypeInfo
   {
     public int Listeners { get; set; } = 0;
-    public IObserver<Update> Observer { get; set; } = null;
-    public IDisposable Subscription { get; set; } = null;
   }
 }
