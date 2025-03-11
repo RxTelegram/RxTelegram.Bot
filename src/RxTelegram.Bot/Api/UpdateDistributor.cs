@@ -118,11 +118,10 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
   {
     // Configure the current tracker to listen for all types of updates 
     // before switching to a new one
-    var current = _tracker.Current;
-    (current as ITrackerSetup)?.Set(null);
-    UpdateTrackerTypes();
-
+    (_tracker.Current as ITrackerSetup)?.Set(null);
+    
     _tracker.OnNext(tracker);
+    UpdateTrackerTypes();
   }
   private void UpdateTrackerTypes()
   {
