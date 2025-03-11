@@ -8,6 +8,8 @@ static public class ObservableOperators
     => new DoOnDisposeObservable<T>(source, onDispose);
   static public IObservable<T> DoOnSubscribe<T>(this IObservable<T> source, Action onSubscribe)
     => new DoOnSubscribeObservable<T>(source, onSubscribe);
+  static public IObservable<T> Finally<T>(this IObservable<T> source, Action onTerminate)
+    => new FinallyObservable<T>(source,onTerminate);
   static public IObservable<KOut> Select<TIn, KOut>(this IObservable<TIn> source, Func<TIn, KOut> selector)
     => new SelectObservable<TIn, KOut>(source, selector);
   static public IObservable<T> Switch<T>(this IObservable<IObservable<T>> source)

@@ -111,7 +111,7 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
     return _tracker.Switch().Select(propertySelector)
       .Where(x => x != null)
       .DoOnSubscribe(() => AddListener(type))
-      .DoOnDispose(() => RemoveListener(type));
+      .Finally(() => RemoveListener(type));
   }
 
   public void Set(IObservable<Update> tracker)
