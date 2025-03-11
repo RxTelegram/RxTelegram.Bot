@@ -84,7 +84,6 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
   {
     lock (_lock)
     {
-      Console.WriteLine("Adding Listener: " + type.ToString());
       var info = GetInfo(type);
       ++info.Listeners;
 
@@ -99,7 +98,6 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
   {
     lock (_lock)
     {
-      Console.WriteLine("Removing Listener: " + type.ToString());
       var info = GetInfo(type);
       --info.Listeners;
       if (info.Listeners != 0) return;
@@ -118,7 +116,8 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
 
   public void Set(IObservable<Update> tracker)
   {
-    //Setup current tracker to listen all messages before change to a new one
+    // Configure the current tracker to listen for all types of updates 
+    // before switching to a new one
     var current = _tracker.Current;
     (current as ITrackerSetup)?.Set(null);
     UpdateTrackerTypes();
