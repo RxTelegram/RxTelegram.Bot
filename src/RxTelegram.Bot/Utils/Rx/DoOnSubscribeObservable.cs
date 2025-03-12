@@ -2,22 +2,16 @@ using System;
 
 namespace RxTelegram.Bot.Utils.Rx;
 
-internal class DoOnSubscribeObservable<T> : IObservable<T>
+internal class DoOnSubscribeObservable<T>(IObservable<T> source, Action onSubscribe) : IObservable<T>
 {
-  private readonly IObservable<T> _source;
-  private readonly Action _onSbuscribe;
+    private readonly IObservable<T> _source = source ?? throw new ArgumentNullException(nameof(source));
+    private readonly Action _onSubscribe = onSubscribe ?? throw new ArgumentNullException(nameof(onSubscribe));
 
-  public DoOnSubscribeObservable(IObservable<T> source, Action onSubscribe)
-  {
-    this._source = source ?? throw new ArgumentNullException(nameof(source));
-    this._onSbuscribe = onSubscribe ?? throw new ArgumentNullException(nameof(onSubscribe));
-  }
+    public IDisposable Subscribe(IObserver<T> observer)
+    {
 
-  public IDisposable Subscribe(IObserver<T> observer)
-  {
-
-    var subscription = _source.Subscribe(observer);
-    _onSbuscribe();
-    return subscription;
-  }
+        var subscription = _source.Subscribe(observer);
+        _onSubscribe();
+        return subscription;
+    }
 }

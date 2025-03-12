@@ -8,163 +8,180 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace RxTelegram.Bot.Api;
-public class LongpollingUpdateTracker(ITelegramBot telegramBot)
+public class LongPollingUpdateTracker(ITelegramBot telegramBot)
   : IObservable<Update>, ITrackerSetup
 {
-  private readonly ITelegramBot _telegramBot = telegramBot;
-  private const int NotRunning = 0;
-  private const int Running = 1;
-  private int _isRunning = NotRunning;
-  private CancellationTokenSource _cancellationTokenSource;
-  UpdateType[] _trackedUpdateTypes = [];
-  readonly List<IObserver<Update>> _observers = new List<IObserver<Update>>();
+    private readonly ITelegramBot _telegramBot = telegramBot;
+    private const int NotRunning = 0;
+    private const int Running = 1;
+    private int _isRunning = NotRunning;
+    private CancellationTokenSource _cancellationTokenSource;
+    private UpdateType[] _trackedUpdateTypes = [];
+    readonly List<IObserver<Update>> _observers = new List<IObserver<Update>>();
 
-  public void Set(IEnumerable<UpdateType> types)
-  {
-    if (types == null)
+    public void Set(IEnumerable<UpdateType> types)
     {
-      if (_trackedUpdateTypes != null)
-      {
-        _trackedUpdateTypes = null;
-        _cancellationTokenSource?.Cancel();
-      }
-      return;
-    }
-
-    if (_trackedUpdateTypes == null || !types.SequenceEqual(_trackedUpdateTypes))
-    {
-      _trackedUpdateTypes = types.ToArray();
-      _cancellationTokenSource?.Cancel();
-    }
-  }
-
-  internal async Task RunUpdateSafe()
-  {
-    try
-    {
-      _cancellationTokenSource = new CancellationTokenSource();
-      await RunUpdate();
-    }
-    catch (Exception ex)
-    {
-      // ignored
-      ExceptionHelpers.ThrowIfFatal(ex);
-    }
-    finally
-    {
-      _cancellationTokenSource.Dispose();
-      _cancellationTokenSource = null;
-      
-      if (!_observers.Any())
-        Volatile.Write(ref _isRunning, NotRunning);
-      else
-        RunUpdateTask();
-    }
-    void RunUpdateTask() => Task.Run(RunUpdateSafe);
-  }
-  
-  int? offset = null; // Offset must be preserved for all errors except TaskCanceledException.  
-                      // Using a local variable may cause duplicates if an exception occurs.
-  internal async Task RunUpdate()
-  {
-
-    while (_observers.Count != 0)
-    {
-      try
-      {
-        // if the token already canceled before the first request reset token
-        if (_cancellationTokenSource.IsCancellationRequested)
-          _cancellationTokenSource = new CancellationTokenSource();
-
-        var getUpdate = new GetUpdate
+        if (types == null)
         {
-          Offset = offset,
-          Timeout = 60,
-
-          // if there is a null value in the list, it means that all updates are allowed
-          AllowedUpdates = _trackedUpdateTypes ?? null
-        };
-
-        var result = await _telegramBot.GetUpdate(getUpdate, _cancellationTokenSource.Token);
-        if (!result.Any())
-        {
-          await Task.Delay(1000);
-          continue;
+            if (_trackedUpdateTypes != null)
+            {
+                _trackedUpdateTypes = null;
+                _cancellationTokenSource?.Cancel();
+            }
+            return;
         }
 
-        NotifyObservers(result);
-        offset = result.Last().UpdateId + 1;
-      }
-      catch (TaskCanceledException)
-      {
-        offset = null;
-        _cancellationTokenSource = new CancellationTokenSource();
-      }
-      catch (Exception exception)
-      {
-        OnException(exception);
-        throw;
-      }
+        var updateTypes = types as UpdateType[] ?? types.ToArray();
+        if (_trackedUpdateTypes == null || !updateTypes.SequenceEqual(_trackedUpdateTypes))
+        {
+            _trackedUpdateTypes = updateTypes;
+            _cancellationTokenSource?.Cancel();
+        }
     }
-  }
-  internal void NotifyObservers(Update[] updates)
-  {
-    for (int uid = 0; uid != updates.Length; ++uid)
-      for (int oid = 0; oid != _observers.Count; ++oid)
-        _observers[oid].OnNext(updates[uid]);
-  }
-  internal void OnException(Exception exception)
-  {
-    IObserver<Update>[] current;
-    lock (_observers)
+
+    internal async Task RunUpdateSafe()
     {
-      current = _observers.ToArray(); // Caching current observers to prevent
-                                      // notifying those who subscribed after an error occurred.
-      _observers.Clear();
+        try
+        {
+            _cancellationTokenSource = new CancellationTokenSource();
+            await RunUpdate();
+        }
+        catch (Exception ex)
+        {
+            // ignored
+            ExceptionHelpers.ThrowIfFatal(ex);
+        }
+        finally
+        {
+            _cancellationTokenSource.Dispose();
+            _cancellationTokenSource = null;
+
+            if (!_observers.Any())
+            {
+                Volatile.Write(ref _isRunning, NotRunning);
+            }
+            else
+            {
+                RunUpdateTask();
+            }
+        }
+        void RunUpdateTask() => Task.Run(RunUpdateSafe);
     }
 
-    for (int oid = 0; oid != current.Length; ++oid)
+    private int? _offset; // Offset must be preserved for all errors except TaskCanceledException.
+                        // Using a local variable may cause duplicates if an exception occurs.
+    internal async Task RunUpdate()
     {
-      try
-      {
-        current[oid].OnError(exception);
-      }
-      catch (Exception ex)
-      {
-        // Ignore exceptions from observers without an error handler,
-        // as it would break the process and propagate the exception to the outer scope.
-        ExceptionHelpers.ThrowIfFatal(ex);
-      }
-    }
-  }
-  internal void Remove(IObserver<Update> observer)
-  {
-    if (!_observers.Contains(observer))
-      return;
 
-    lock (_observers)
+        while (_observers.Count != 0)
+        {
+            try
+            {
+                // if the token already canceled before the first request reset token
+                if (_cancellationTokenSource.IsCancellationRequested)
+                {
+                    _cancellationTokenSource = new CancellationTokenSource();
+                }
+
+                var getUpdate = new GetUpdate
+                                {
+                                    Offset = _offset,
+                                    Timeout = 60,
+
+                                    // if there is a null value in the list, it means that all updates are allowed
+                                    AllowedUpdates = _trackedUpdateTypes
+                                };
+
+                var result = await _telegramBot.GetUpdate(getUpdate, _cancellationTokenSource.Token);
+                if (!result.Any())
+                {
+                    await Task.Delay(1000);
+                    continue;
+                }
+
+                NotifyObservers(result);
+                _offset = result.Last().UpdateId + 1;
+            }
+            catch (TaskCanceledException)
+            {
+                _offset = null;
+                _cancellationTokenSource = new CancellationTokenSource();
+            }
+            catch (Exception exception)
+            {
+                OnException(exception);
+                throw;
+            }
+        }
+    }
+    internal void NotifyObservers(Update[] updates)
     {
-      _observers.Remove(observer);
+        for (var uid = 0; uid != updates.Length; ++uid)
+        {
+            for (var oid = 0; oid != _observers.Count; ++oid)
+            {
+                _observers[oid].OnNext(updates[uid]);
+            }
+        }
     }
-
-    if (!_observers.Any() && Volatile.Read(ref _isRunning) == Running)
-      _cancellationTokenSource?.Cancel();
-  }
-  public IDisposable Subscribe(IObserver<Update> observer)
-  {
-    if (observer == null)
-      throw new ArgumentNullException(nameof(observer));
-
-    lock (_observers)
+    internal void OnException(Exception exception)
     {
-      _observers.Add(observer);
-    }
+        IObserver<Update>[] current;
+        lock (_observers)
+        {
+            current = _observers.ToArray(); // Caching current observers to prevent
+                                            // notifying those who subscribed after an error occurred.
+            _observers.Clear();
+        }
 
-    if (Interlocked.Exchange(ref _isRunning, Running) == NotRunning)
+        for (var oid = 0; oid != current.Length; ++oid)
+        {
+            try
+            {
+                current[oid].OnError(exception);
+            }
+            catch (Exception ex)
+            {
+                // Ignore exceptions from observers without an error handler,
+                // as it would break the process and propagate the exception to the outer scope.
+                ExceptionHelpers.ThrowIfFatal(ex);
+            }
+        }
+    }
+    internal void Remove(IObserver<Update> observer)
     {
-      Task.Run(RunUpdateSafe);
-    }
+        if (!_observers.Contains(observer))
+        {
+            return;
+        }
 
-    return new DisposableAction(() => Remove(observer));
-  }
+        lock (_observers)
+        {
+            _observers.Remove(observer);
+        }
+
+        if (!_observers.Any() && Volatile.Read(ref _isRunning) == Running)
+        {
+            _cancellationTokenSource?.Cancel();
+        }
+    }
+    public IDisposable Subscribe(IObserver<Update> observer)
+    {
+        if (observer == null)
+        {
+            throw new ArgumentNullException(nameof(observer));
+        }
+
+        lock (_observers)
+        {
+            _observers.Add(observer);
+        }
+
+        if (Interlocked.Exchange(ref _isRunning, Running) == NotRunning)
+        {
+            Task.Run(RunUpdateSafe);
+        }
+
+        return new DisposableAction(() => Remove(observer));
+    }
 }
