@@ -1,51 +1,39 @@
 using System;
 
 namespace RxTelegram.Bot.Utils.Rx;
-internal class SelectObservable<T, K> : IObservable<K>
+internal class SelectObservable<TIn, TOut>(IObservable<TIn> source, Func<TIn, TOut> selector) : IObservable<TOut>
 {
-  private readonly IObservable<T> _source;
-  internal readonly Func<T, K> _selector;
+    private readonly IObservable<TIn> _source = source ?? throw new ArgumentNullException(nameof(source));
+    private readonly Func<TIn, TOut> _selector = selector ?? throw new ArgumentNullException(nameof(selector));
 
-  public SelectObservable(IObservable<T> source, Func<T, K> selector)
-  {
-    this._source = source ?? throw new ArgumentNullException(nameof(source)); 
-    this._selector = selector ?? throw new ArgumentNullException(nameof(selector));
-  }
-
-  public IDisposable Subscribe(IObserver<K> observer)
-  {
-    if (observer == null)
-      throw new ArgumentNullException(nameof(observer));
-    var selectObserver = new SelectObserver(observer, _selector);
-    return _source.Subscribe(selectObserver);
-  }
-  private class SelectObserver : IObserver<T>
-  {
-    private readonly IObserver<K> _observer;
-    private readonly Func<T, K> _selector;
-
-    public SelectObserver(IObserver<K> observer, Func<T, K> selector)
+    public IDisposable Subscribe(IObserver<TOut> observer)
     {
-      this._observer = observer;
-      this._selector = selector;
-    }
+        if (observer == null)
+        {
+            throw new ArgumentNullException(nameof(observer));
+        }
 
-    public void OnCompleted() => _observer.OnCompleted();
-    public void OnError(Exception error) => _observer.OnError(error);
-    public void OnNext(T value)
+        var selectObserver = new SelectObserver(observer, _selector);
+        return _source.Subscribe(selectObserver);
+    }
+    private sealed class SelectObserver(IObserver<TOut> observer, Func<TIn, TOut> selector) : IObserver<TIn>
     {
-      K result;
-      try
-      {
-        result = _selector(value);
-      }
-      catch (Exception ex)
-      {
-        _observer.OnError(ex);
-        return;
-      }
+        public void OnCompleted() => observer.OnCompleted();
+        public void OnError(Exception error) => observer.OnError(error);
+        public void OnNext(TIn value)
+        {
+            TOut result;
+            try
+            {
+                result = selector(value);
+            }
+            catch (Exception ex)
+            {
+                observer.OnError(ex);
+                return;
+            }
 
-      _observer.OnNext(result);
+            observer.OnNext(result);
+        }
     }
-  }
 }

@@ -38,7 +38,7 @@ public partial class TelegramBot : BaseTelegramBot, ITelegramBot
 
     public TelegramBot(BotInfo botInfo) : base(botInfo)
     {
-        var tracker = new LongpollingUpdateTracker(this);
+        var tracker = new LongPollingUpdateTracker(this);
         Updates = new UpdateDistributor(tracker);
     }
 

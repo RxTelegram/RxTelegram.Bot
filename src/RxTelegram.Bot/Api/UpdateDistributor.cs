@@ -19,31 +19,31 @@ namespace RxTelegram.Bot.Api;
 public sealed class UpdateDistributor : IUpdateManager, IDisposable
 {
 
-  #region Observable Update properties
-  private readonly Dictionary<UpdateType, UpdateTypeInfo> _updateInfos;
-  private readonly UpdateTypeInfo _updateInfo;
-  private readonly IEnumerable<UpdateType> _trackedTypes;
-  private readonly ReactiveProperty<IObservable<Update>> _tracker;
-  private bool _isDisposed = false;
-  private readonly object _lock;
-  public IObservable<CallbackQuery> CallbackQuery => Selector(UpdateType.CallbackQuery, _update => _update.CallbackQuery);
-  public IObservable<Message> ChannelPost => Selector(UpdateType.ChannelPost, _update => _update.ChannelPost);
-  public IObservable<ChatBoostUpdated> ChatBoost => Selector(UpdateType.ChatBoost, _update => _update.ChatBoost);
-  public IObservable<ChatJoinRequest> ChatJoinRequest => Selector(UpdateType.ChatJoinRequest, _update => _update.ChatJoinRequest);
-  public IObservable<ChatMemberUpdated> ChatMember => Selector(UpdateType.ChatMember, _update => _update.ChatMember);
-  public IObservable<ChosenInlineResult> ChosenInlineResult => Selector(UpdateType.ChosenInlineResult, _update => _update.ChosenInlineResult);
-  public IObservable<Message> EditedChannelPost => Selector(UpdateType.EditedChannelPost, _update => _update.EditedChannelPost);
-  public IObservable<Message> EditedMessage => Selector(UpdateType.EditedMessage, _update => _update.EditedMessage);
-  public IObservable<InlineQuery> InlineQuery => Selector(UpdateType.InlineQuery, _update => _update.InlineQuery);
-  public IObservable<Message> Message => Selector(UpdateType.Message, _update => _update.Message);
-  public IObservable<ChatMemberUpdated> MyChatMember => Selector(UpdateType.MyChatMember, _update => _update.MyChatMember);
-  public IObservable<Poll> Poll => Selector(UpdateType.Poll, _update => _update.Poll);
-  public IObservable<PollAnswer> PollAnswer => Selector(UpdateType.PollAnswer, _update => _update.PollAnswer);
-  public IObservable<PreCheckoutQuery> PreCheckoutQuery => Selector(UpdateType.PreCheckoutQuery, _update => _update.PreCheckoutQuery);
-  public IObservable<ChatBoostRemoved> RemovedChatBoost => Selector(UpdateType.RemovedChatBoost, _update => _update.RemovedChatBoost);
-  public IObservable<ShippingQuery> ShippingQuery => Selector(UpdateType.ShippingQuery, _update => _update.ShippingQuery);
-  public IObservable<Update> Update => Selector(null, _update => _update);
-  #endregion
+    #region Observable Update properties
+    private readonly Dictionary<UpdateType, UpdateTypeInfo> _updateInfos;
+    private readonly UpdateTypeInfo _updateInfo;
+    private readonly IEnumerable<UpdateType> _trackedTypes;
+    private readonly ReactiveProperty<IObservable<Update>> _tracker;
+    private bool _isDisposed;
+    private readonly object _lock;
+    public IObservable<CallbackQuery> CallbackQuery => Selector(UpdateType.CallbackQuery, update => update.CallbackQuery);
+    public IObservable<Message> ChannelPost => Selector(UpdateType.ChannelPost, update => update.ChannelPost);
+    public IObservable<ChatBoostUpdated> ChatBoost => Selector(UpdateType.ChatBoost, update => update.ChatBoost);
+    public IObservable<ChatJoinRequest> ChatJoinRequest => Selector(UpdateType.ChatJoinRequest, update => update.ChatJoinRequest);
+    public IObservable<ChatMemberUpdated> ChatMember => Selector(UpdateType.ChatMember, update => update.ChatMember);
+    public IObservable<ChosenInlineResult> ChosenInlineResult => Selector(UpdateType.ChosenInlineResult, update => update.ChosenInlineResult);
+    public IObservable<Message> EditedChannelPost => Selector(UpdateType.EditedChannelPost, update => update.EditedChannelPost);
+    public IObservable<Message> EditedMessage => Selector(UpdateType.EditedMessage, update => update.EditedMessage);
+    public IObservable<InlineQuery> InlineQuery => Selector(UpdateType.InlineQuery, update => update.InlineQuery);
+    public IObservable<Message> Message => Selector(UpdateType.Message, update => update.Message);
+    public IObservable<ChatMemberUpdated> MyChatMember => Selector(UpdateType.MyChatMember, update => update.MyChatMember);
+    public IObservable<Poll> Poll => Selector(UpdateType.Poll, update => update.Poll);
+    public IObservable<PollAnswer> PollAnswer => Selector(UpdateType.PollAnswer, update => update.PollAnswer);
+    public IObservable<PreCheckoutQuery> PreCheckoutQuery => Selector(UpdateType.PreCheckoutQuery, update => update.PreCheckoutQuery);
+    public IObservable<ChatBoostRemoved> RemovedChatBoost => Selector(UpdateType.RemovedChatBoost, update => update.RemovedChatBoost);
+    public IObservable<ShippingQuery> ShippingQuery => Selector(UpdateType.ShippingQuery, update => update.ShippingQuery);
+    public IObservable<Update> Update => Selector(null, update => update);
+    #endregion
 
 #if NETSTANDARD2_1
   public IAsyncEnumerable<CallbackQuery> CallbackQueryEnumerable() => CallbackQuery.ToAsyncEnumerable();
@@ -65,87 +65,106 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
   public IAsyncEnumerable<Update> UpdateEnumerable() => Update.ToAsyncEnumerable();
 
 #endif
-  public UpdateDistributor(IObservable<Update> updateTracker)
-  {
-    _lock = new();
-    _updateInfos = Enum.GetValues(typeof(UpdateType))
-      .Cast<UpdateType>()
-      .ToDictionary(x => x, _ => new UpdateTypeInfo());
-
-    _updateInfo = new UpdateTypeInfo();
-
-    _trackedTypes = _updateInfos.Where(x => x.Value.Listeners != 0)
-       .Select(x => x.Key);
-
-    _tracker = new ReactiveProperty<IObservable<Update>>(updateTracker);
-    Set(updateTracker);
-  }
-  private void AddListener(UpdateType? type)
-  {
-    lock (_lock)
+    public UpdateDistributor(IObservable<Update> updateTracker)
     {
-      var info = GetInfo(type);
-      ++info.Listeners;
+        _lock = new();
+        _updateInfos = Enum.GetValues(typeof(UpdateType))
+          .Cast<UpdateType>()
+          .ToDictionary(x => x, _ => new UpdateTypeInfo());
 
-      if (info.Listeners != 1) return;
-      UpdateTrackerTypes();
+        _updateInfo = new UpdateTypeInfo();
+
+        _trackedTypes = _updateInfos.Where(x => x.Value.Listeners != 0)
+           .Select(x => x.Key);
+
+        _tracker = new ReactiveProperty<IObservable<Update>>(updateTracker);
+        Set(updateTracker);
     }
-  }
-  private UpdateTypeInfo GetInfo(UpdateType? type)
-    => type == null ? _updateInfo : _updateInfos[(UpdateType)type];
-
-  private void RemoveListener(UpdateType? type)
-  {
-    lock (_lock)
+    private void AddListener(UpdateType? type)
     {
-      var info = GetInfo(type);
-      --info.Listeners;
-      if (info.Listeners != 0) return;
+        lock (_lock)
+        {
+            var info = GetInfo(type);
+            ++info.Listeners;
 
-      UpdateTrackerTypes();
+            if (info.Listeners != 1)
+            {
+                return;
+            }
+
+            UpdateTrackerTypes();
+        }
     }
-  }
-  public IObservable<T> Selector<T>(UpdateType? type, Func<Update, T> propertySelector)
-  where T : class
-  {
-    return _tracker.Switch().Select(propertySelector)
-      .Where(x => x != null)
-      .DoOnSubscribe(() => AddListener(type))
-      .Finally(() => RemoveListener(type));
-  }
+    private UpdateTypeInfo GetInfo(UpdateType? type)
+      => type == null ? _updateInfo : _updateInfos[(UpdateType)type];
 
-  public void Set(IObservable<Update> tracker)
-  {
-    // Configure the current tracker to listen for all types of updates 
-    // before switching to a new one
-    (_tracker.Current as ITrackerSetup)?.Set(null);
-    
-    _tracker.OnNext(tracker);
-    UpdateTrackerTypes();
-  }
-  private void UpdateTrackerTypes()
-  {
-    if (_tracker.Current is not ITrackerSetup setup) return;
+    private void RemoveListener(UpdateType? type)
+    {
+        lock (_lock)
+        {
+            var info = GetInfo(type);
+            --info.Listeners;
+            if (info.Listeners != 0)
+            {
+                return;
+            }
 
-    setup.Set(_updateInfo.Listeners != 0 || !_trackedTypes.Any() ?
-      null : _trackedTypes);
-  }
+            UpdateTrackerTypes();
+        }
+    }
 
-  public void Dispose() => Dispose(true);
-  void Dispose(bool explicitDisposing)
-  {
-    if (_isDisposed) return;
+    private IObservable<T> Selector<T>(UpdateType? type, Func<Update, T> propertySelector)
+    where T : class
+    {
+        return _tracker.Switch().Select(propertySelector)
+          .Where(x => x != null)
+          .DoOnSubscribe(() => AddListener(type))
+          .Finally(() => RemoveListener(type));
+    }
 
-    if (explicitDisposing)
-      _tracker.Dispose();
+    public void Set(IObservable<Update> tracker)
+    {
+        // Configure the current tracker to listen for all types of updates
+        // before switching to a new one
+        (_tracker.Current as ITrackerSetup)?.Set(null);
 
-    _isDisposed = true;
-  }
+        _tracker.OnNext(tracker);
+        UpdateTrackerTypes();
+    }
+    private void UpdateTrackerTypes()
+    {
+        if (_tracker.Current is not ITrackerSetup setup)
+        {
+            return;
+        }
 
-  ~UpdateDistributor() => Dispose(false);
+        lock (_lock)
+        {
+            setup.Set(_updateInfo.Listeners != 0 || !_trackedTypes.Any() ?
+                          null : _trackedTypes);
+        }
+    }
 
-  sealed private class UpdateTypeInfo
-  {
-    public int Listeners { get; set; } = 0;
-  }
+    public void Dispose() => Dispose(true);
+    private void Dispose(bool explicitDisposing)
+    {
+        if (_isDisposed)
+        {
+            return;
+        }
+
+        if (explicitDisposing)
+        {
+            _tracker.Dispose();
+        }
+
+        _isDisposed = true;
+    }
+
+    ~UpdateDistributor() => Dispose(false);
+
+    private sealed class UpdateTypeInfo
+    {
+        public int Listeners { get; set; }
+    }
 }

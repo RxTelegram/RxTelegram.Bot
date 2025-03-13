@@ -3,75 +3,64 @@ using System.Threading;
 
 namespace RxTelegram.Bot.Utils.Rx;
 
-internal class FinallyObservable<T> : IObservable<T>
+internal class FinallyObservable<T>(IObservable<T> source, Action onTerminate) : IObservable<T>
 {
-  private readonly IObservable<T> _source;
-  private readonly Action _onTerminate;
+    private readonly IObservable<T> _source = source ?? throw new ArgumentNullException(nameof(source));
+    private readonly Action _onTerminate = onTerminate ?? throw new ArgumentNullException(nameof(onTerminate));
 
-  public FinallyObservable(IObservable<T> source, Action onTerminate)
-  {
-    _source = source ?? throw new ArgumentNullException(nameof(source));
-    _onTerminate = onTerminate ?? throw new ArgumentNullException(nameof(onTerminate));
-  }
-
-  public IDisposable Subscribe(IObserver<T> observer)
-  {
-    if (observer == null)
-      throw new ArgumentNullException(nameof(observer));
-
-    var finallyObserver = new FinallyObserver(observer, _onTerminate);
-    var subscription = _source.Subscribe(finallyObserver);
-
-    return new DisposableAction(() => finallyObserver.Dispose(subscription));
-  }
-
-  private class FinallyObserver : IObserver<T>
-  {
-    private readonly IObserver<T> _observer;
-    private readonly Action _onTerminate;
-    private int _terminated;
-
-    public FinallyObserver(IObserver<T> observer, Action onTerminate)
+    public IDisposable Subscribe(IObserver<T> observer)
     {
-      _observer = observer;
-      _onTerminate = onTerminate;
-    }
-    public void Dispose(IDisposable subscription)
-    {
-      subscription.Dispose();
-      Terminate();
+        if (observer == null)
+        {
+            throw new ArgumentNullException(nameof(observer));
+        }
+
+        var finallyObserver = new FinallyObserver(observer, _onTerminate);
+        var subscription = _source.Subscribe(finallyObserver);
+
+        return new DisposableAction(() => finallyObserver.DisposeSubscription(subscription));
     }
 
-    public void OnCompleted()
+    private sealed class FinallyObserver(IObserver<T> observer, Action onTerminate) : IObserver<T>
     {
-      _observer.OnCompleted();
-      Terminate();
-    }
+        private int _terminated;
 
-    public void OnError(Exception error)
-    {
-      try
-      {
-        _observer.OnError(error);
-      }
-      catch (Exception ex)
-      {
-        ExceptionHelpers.ThrowIfFatal(ex);
-      }
-      finally
-      {
-        Terminate();
-      }
-    }
+        public void DisposeSubscription(IDisposable subscription)
+        {
+            subscription.Dispose();
+            Terminate();
+        }
 
-    public void OnNext(T value) => _observer.OnNext(value);
+        public void OnCompleted()
+        {
+            observer.OnCompleted();
+            Terminate();
+        }
 
-    private void Terminate()
-    {
-      if (Interlocked.Exchange(ref _terminated, 1) == 0)
-      {
-        _onTerminate();
-      }
+        public void OnError(Exception error)
+        {
+            try
+            {
+                observer.OnError(error);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelpers.ThrowIfFatal(ex);
+            }
+            finally
+            {
+                Terminate();
+            }
+        }
+
+        public void OnNext(T value) => observer.OnNext(value);
+
+        private void Terminate()
+        {
+            if (Interlocked.Exchange(ref _terminated, 1) == 0)
+            {
+                onTerminate();
+            }
+        }
     }
-  }
 }
