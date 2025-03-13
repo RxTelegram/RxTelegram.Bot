@@ -13,4 +13,13 @@ internal static class ExceptionHelpers
             throw ex;
         }
     }
+
+    internal static void ThrowIfDisposed(this IDisposable disposable, Func<bool> isDisposed)
+    {
+        if (isDisposed())
+        {
+            throw new ObjectDisposedException(disposable.GetType().FullName);
+        }
+
+    }
 }

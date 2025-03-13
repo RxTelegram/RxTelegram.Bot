@@ -24,12 +24,6 @@ internal class SwitchObservable<T>(IObservable<IObservable<T>> source) : IObserv
         private IDisposable _subscription;
         private bool _isDisposed;
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         public void OnCompleted()
         {
             lock (_lock)
@@ -76,6 +70,15 @@ internal class SwitchObservable<T>(IObservable<IObservable<T>> source) : IObserv
                 _subscription = stream.Subscribe(_observer);
             }
         }
+
+        ~SwitchObserver() => Dispose(false);
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         void Dispose(bool explicitDisposing)
         {
             if (_isDisposed)
@@ -92,7 +95,5 @@ internal class SwitchObservable<T>(IObservable<IObservable<T>> source) : IObserv
 
             _isDisposed = true;
         }
-
-        ~SwitchObserver() => Dispose(false);
     }
 }

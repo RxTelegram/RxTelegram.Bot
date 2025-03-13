@@ -17,7 +17,7 @@ internal class WhereObservable<T>(IObservable<T> source, Func<T, bool> predicate
             where.Dispose();
         });
     }
-    private class WhereObserver(IObserver<T> observer, Func<T, bool> predicate) : IObserver<T>, IDisposable
+    private sealed class WhereObserver(IObserver<T> observer, Func<T, bool> predicate) : IObserver<T>, IDisposable
     {
         private readonly object _lock = new();
         private readonly Func<T, bool> _predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
@@ -80,11 +80,22 @@ internal class WhereObservable<T>(IObservable<T> source, Func<T, bool> predicate
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private void Dispose(bool explicitDisposing)
+        {
+            if (_isDisposed) return;
+
             lock (_lock)
             {
+                if (explicitDisposing)
+                {
+                    _observer = null;
+                }
                 _isDisposed = true;
-                _observer = null;
             }
         }
+        ~WhereObserver() => Dispose(false);
     }
 }

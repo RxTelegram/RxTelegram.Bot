@@ -16,7 +16,7 @@ internal class SelectObservable<TIn, TOut>(IObservable<TIn> source, Func<TIn, TO
         var selectObserver = new SelectObserver(observer, _selector);
         return _source.Subscribe(selectObserver);
     }
-    private class SelectObserver(IObserver<TOut> observer, Func<TIn, TOut> selector) : IObserver<TIn>
+    private sealed class SelectObserver(IObserver<TOut> observer, Func<TIn, TOut> selector) : IObserver<TIn>
     {
         public void OnCompleted() => observer.OnCompleted();
         public void OnError(Exception error) => observer.OnError(error);

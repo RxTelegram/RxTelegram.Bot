@@ -18,14 +18,14 @@ internal class FinallyObservable<T>(IObservable<T> source, Action onTerminate) :
         var finallyObserver = new FinallyObserver(observer, _onTerminate);
         var subscription = _source.Subscribe(finallyObserver);
 
-        return new DisposableAction(() => finallyObserver.Dispose(subscription));
+        return new DisposableAction(() => finallyObserver.DisposeSubscription(subscription));
     }
 
-    private class FinallyObserver(IObserver<T> observer, Action onTerminate) : IObserver<T>
+    private sealed class FinallyObserver(IObserver<T> observer, Action onTerminate) : IObserver<T>
     {
         private int _terminated;
 
-        public void Dispose(IDisposable subscription)
+        public void DisposeSubscription(IDisposable subscription)
         {
             subscription.Dispose();
             Terminate();

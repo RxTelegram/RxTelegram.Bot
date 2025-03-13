@@ -26,31 +26,7 @@ public class ReactiveProperty<T>() : ISubject<T>, IDisposable
     {
         Current = initValue;
     }
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
 
-    void Dispose(bool explicitDisposing)
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        if (explicitDisposing)
-        {
-            DisposeManaged();
-        }
-
-        IsDisposed = true;
-    }
-    protected virtual void DisposeManaged()
-    {
-        OnCompleted();
-        Interlocked.Exchange(ref _observers, Terminated);
-    }
     public void OnCompleted()
     {
         lock (_lock)
@@ -120,12 +96,12 @@ public class ReactiveProperty<T>() : ISubject<T>, IDisposable
             }
 
             return new DisposableAction(() =>
-                                        {
-                                            lock (_lock)
-                                            {
-                                                _observers.Remove(observer);
-                                            }
-                                        });
+                {
+                    lock (_lock)
+                    {
+                        _observers.Remove(observer);
+                    }
+                });
         }
     }
 
@@ -136,5 +112,28 @@ public class ReactiveProperty<T>() : ISubject<T>, IDisposable
             throw new ObjectDisposedException(nameof(ReactiveProperty<T>));
         }
     }
+
     ~ReactiveProperty() => Dispose(false);
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected void Dispose(bool explicitDisposing)
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+
+        if (explicitDisposing)
+        {
+            OnCompleted();
+            Interlocked.Exchange(ref _observers, Terminated);
+        }
+
+        IsDisposed = true;
+    }
 }

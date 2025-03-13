@@ -146,7 +146,7 @@ public sealed class UpdateDistributor : IUpdateManager, IDisposable
     }
 
     public void Dispose() => Dispose(true);
-    void Dispose(bool explicitDisposing)
+    private void Dispose(bool explicitDisposing)
     {
         if (_isDisposed)
         {

@@ -100,7 +100,9 @@ public class LongPollingUpdateTracker(ITelegramBot telegramBot)
                 }
 
                 NotifyObservers(result);
-                _offset = result.Last().UpdateId + 1;
+
+                var lastId = result.Length - 1;
+                _offset = result[lastId].UpdateId + 1;
             }
             catch (TaskCanceledException)
             {
