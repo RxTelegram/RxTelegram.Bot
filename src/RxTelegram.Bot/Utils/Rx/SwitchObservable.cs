@@ -17,7 +17,7 @@ internal class SwitchObservable<T>(IObservable<IObservable<T>> source) : IObserv
         });
     }
 
-    private class SwitchObserver(IObserver<T> observer) : IObserver<IObservable<T>>, IDisposable
+    private sealed class SwitchObserver(IObserver<T> observer) : IObserver<IObservable<T>>, IDisposable
     {
         private readonly object _lock = new();
         private IObserver<T> _observer = observer ?? throw new ArgumentNullException(nameof(observer));
@@ -79,7 +79,7 @@ internal class SwitchObservable<T>(IObservable<IObservable<T>> source) : IObserv
             GC.SuppressFinalize(this);
         }
 
-        void Dispose(bool explicitDisposing)
+        private void Dispose(bool explicitDisposing)
         {
             if (_isDisposed)
             {
