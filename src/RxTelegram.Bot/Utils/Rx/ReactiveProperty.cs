@@ -121,7 +121,7 @@ public class ReactiveProperty<T>() : ISubject<T>, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    protected void Dispose(bool explicitDisposing)
+    protected virtual void Dispose(bool explicitDisposing)
     {
         if (IsDisposed)
         {
