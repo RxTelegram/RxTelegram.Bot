@@ -10,6 +10,7 @@ using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
+using RxTelegram.Bot.Interface.Reaction;
 using RxTelegram.Bot.Interface.Setup;
 
 namespace RxTelegram.Bot.UnitTests;
@@ -387,6 +388,75 @@ public class UpdateManagerTest
                                   .PollAnswer);
         disposableAll.Dispose();
     }
+
+    private void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers<T>(
+        Update update,
+        Func<UpdateManager,IObservable<T>> observable,
+        Func<Update, T> selector)
+    {
+        // Arrange
+        var observer = Substitute.For<IObserver<T>>();
+        var updateManager = new UpdateManager(_telegramBotMock);
+        var disposableAll = observable(updateManager).Subscribe(observer);
+        Update[] updates = [update];
+
+        // Act
+        updateManager.DistributeUpdates(updates);
+
+        // Assert
+        observer.Received()
+                   .OnNext(selector(updates.Single()));
+        disposableAll.Dispose();
+    }
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ChatMemberObservers()
+        => Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers(
+            new Update { ChatMember = new ChatMemberUpdated() },
+            (UpdateManager updateManager) => updateManager.ChatMember,
+            (Update update) => update.ChatMember);
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_MyChatMemberObservers()
+        => Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers(
+            new Update { MyChatMember = new ChatMemberUpdated() },
+            (UpdateManager updateManager) => updateManager.MyChatMember,
+            (Update update) => update.MyChatMember);
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ChatJoinRequestObservers()
+        => Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers(
+            new Update { ChatJoinRequest = new ChatJoinRequest() },
+            (UpdateManager updateManager) => updateManager.ChatJoinRequest,
+            (Update update) => update.ChatJoinRequest);
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_ChatBoostObservers()
+        => Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers(
+            new Update { ChatBoost = new ChatBoostUpdated() },
+            (UpdateManager updateManager) => updateManager.ChatBoost,
+            (Update update) => update.ChatBoost);
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_RemovedChatBoostObservers()
+        => Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers(
+            new Update { RemovedChatBoost = new ChatBoostRemoved() },
+            (UpdateManager updateManager) => updateManager.RemovedChatBoost,
+            (Update update) => update.RemovedChatBoost);
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_MessageReactionObservers()
+        => Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers(
+            new Update { MessageReaction = new MessageReactionUpdated() },
+            (UpdateManager updateManager) => updateManager.MessageReaction,
+            (Update update) => update.MessageReaction);
+
+    [Test]
+    public void Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_MessageReactionCountObservers()
+        => Given_ValidUpdate_On_DistributeUpdates_Should_PushUpdatesTo_Observers(
+            new Update { MessageReactionCount = new MessageReactionCountUpdated() },
+            (UpdateManager updateManager) => updateManager.MessageReactionCount,
+            (Update update) => update.MessageReactionCount);
 
     #endregion
 }

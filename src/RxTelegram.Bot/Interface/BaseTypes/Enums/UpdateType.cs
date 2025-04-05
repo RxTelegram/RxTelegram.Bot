@@ -16,6 +16,10 @@ public enum UpdateType
 
     EditedChannelPost,
 
+    MessageReaction,
+
+    MessageReactionCount,
+
     ShippingQuery,
 
     PreCheckoutQuery,
