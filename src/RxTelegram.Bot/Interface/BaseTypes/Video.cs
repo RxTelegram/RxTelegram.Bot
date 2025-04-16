@@ -1,4 +1,6 @@
-﻿namespace RxTelegram.Bot.Interface.BaseTypes;
+﻿using System.Collections.Generic;
+
+namespace RxTelegram.Bot.Interface.BaseTypes;
 
 /// <summary>
 /// This object represents a video file.
@@ -24,6 +26,16 @@ public class Video : FileBase
     /// Video thumbnail
     /// </summary>
     public PhotoSize Thumbnail { get; set; }
+
+    /// <summary>
+    /// Optional. Available sizes of the cover of the video in the message
+    /// </summary>
+    public List<PhotoSize> Cover { get; set; }
+
+    /// <summary>
+    /// Optional. Timestamp in seconds from which the video will play in the message
+    /// </summary>
+    public long StartTimestamp { get; set; }
 
     /// <summary>
     /// Original filename as defined by sender

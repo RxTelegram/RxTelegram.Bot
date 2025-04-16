@@ -28,6 +28,12 @@ public class CopyMessage : BaseSend, IProtectContent, IAllowPaidBroadcast
 
     /// <summary>
     /// Optional
+    /// New start timestamp for the forwarded video in the message
+    /// </summary>
+    public long VideoStartTimestamp { get; set; }
+
+    /// <summary>
+    /// Optional
     /// New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept
     /// </summary>
     public string Caption { get; set; }

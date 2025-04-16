@@ -22,5 +22,8 @@ public enum TransactionPartnerType
     TelegramApi,
 
     [ImplementationType(typeof(TransactionPartnerAffiliateProgram))]
-    AffiliateProgram
+    AffiliateProgram,
+
+    [ImplementationType(typeof(TransactionPartnerChat))]
+    Chat
 }

@@ -682,7 +682,10 @@ public static class ValidationResultFactory
                                                               .ValidateRequired(x => x.Result);
 
     public static ValidationResult<SendGift> CreateValidation(this SendGift value) => new ValidationResult<SendGift>(value)
-                                                                                      .ValidateRequired(x => x.UserId)
+                                                                                      .IsFalse(x => x.ChatId == null && x.UserId == null,
+                                                                                              ValidationErrors.FieldRequired)
+                                                                                      .IsFalse(x => x.ChatId != null && x.UserId != null,
+                                                                                              ValidationErrors.OnlyOnePropertyCanBeSet)
                                                                                       .ValidateRequired(x => x.GiftId);
 
     public static ValidationResult<VerifyUser> CreateValidation(this VerifyUser value) =>

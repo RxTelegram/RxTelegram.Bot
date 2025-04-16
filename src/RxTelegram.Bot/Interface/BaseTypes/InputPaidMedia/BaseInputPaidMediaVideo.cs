@@ -29,6 +29,19 @@ public class BaseInputPaidMediaVideo : BaseInputPaidMedia
     public InputFile Thumbnail { get; set; }
 
     /// <summary>
+    /// Cover for the video in the message.
+    /// Pass a file_id to send a file that exists on the Telegram servers (recommended),
+    /// pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://file_attach_name”
+    /// to upload a new one using multipart/form-data under file_attach_name name.
+    /// </summary>
+    public string Cover { get; set; }
+
+    /// <summary>
+    /// Optional. Start timestamp for the video in the message
+    /// </summary>
+    public long StartTimestamp { get; set; }
+
+    /// <summary>
     /// Optional. Video width
     /// </summary>
     public int Width { get; set; }
