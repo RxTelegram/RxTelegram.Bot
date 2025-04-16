@@ -3,6 +3,8 @@ using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
 using RxTelegram.Bot.Interface.Setup;
+using RxTelegram.Bot.Interface.Reaction;
+
 
 #if NETSTANDARD2_1
 using System.Collections.Generic;
@@ -100,6 +102,20 @@ public interface IUpdateManager
     /// </summary>
     IObservable<ChatBoostRemoved> RemovedChatBoost { get; }
 
+    /// <summary>
+    /// A reaction to a message was changed by a user.
+    /// The bot must be an administrator in the chat and must explicitly specify "message_reaction" in the list of allowed_updates to receive these updates.
+    /// The update isn't received for reactions set by bots.
+    /// </summary>
+    IObservable<MessageReactionUpdated> MessageReaction { get; }
+
+    /// <summary>
+    /// Reactions to a message with anonymous reactions were changed.
+    /// The bot must be an administrator in the chat and must explicitly specify "message_reaction_count" in the list of allowed_updates to receive these updates.
+    /// The updates are grouped and can be sent with delay up to a few minutes.
+    /// </summary>
+    IObservable<MessageReactionCountUpdated> MessageReactionCount { get; }
+
 #if NETSTANDARD2_1
     /// <summary>
     /// Updates of all Types.
@@ -189,5 +205,19 @@ public interface IUpdateManager
     /// A boost was removed from a chat. The bot must be an administrator in the chat to receive these updates.
     /// </summary>
     IAsyncEnumerable<ChatBoostRemoved> RemovedChatBoostEnumerable();
+
+    /// <summary>
+    /// A reaction to a message was changed by a user.
+    /// The bot must be an administrator in the chat and must explicitly specify "message_reaction" in the list of allowed_updates to receive these updates.
+    /// The update isn't received for reactions set by bots.
+    /// </summary>
+    IAsyncEnumerable<MessageReactionUpdated> MessageReactionEnumerable();
+
+    /// <summary>
+    /// Reactions to a message with anonymous reactions were changed.
+    /// The bot must be an administrator in the chat and must explicitly specify "message_reaction_count" in the list of allowed_updates to receive these updates.
+    /// The updates are grouped and can be sent with delay up to a few minutes.
+    /// </summary>
+    IAsyncEnumerable<MessageReactionCountUpdated> MessageReactionCountEnumerable();
 #endif
 }

@@ -7,6 +7,7 @@ using RxTelegram.Bot.Interface.BaseTypes;
 using RxTelegram.Bot.Interface.BaseTypes.Enums;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.Payments;
+using RxTelegram.Bot.Interface.Reaction;
 using RxTelegram.Bot.Interface.Setup;
 #if NETSTANDARD2_1
 using RxTelegram.Bot.Utils;
@@ -50,6 +51,10 @@ public class UpdateManager : IUpdateManager
 
     public IObservable<ChatBoostRemoved> RemovedChatBoost => _chatBoostRemoved;
 
+    public IObservable<MessageReactionUpdated> MessageReaction => _messageReaction;
+
+    public IObservable<MessageReactionCountUpdated> MessageReactionCount => _messageReactionCount;
+
 
     private readonly IDictionary<UpdateTypeWrapper<UpdateType?>, List<object>> _observerDictionary;
     private readonly Observable<Update> _update;
@@ -69,6 +74,8 @@ public class UpdateManager : IUpdateManager
     private readonly Observable<ChatJoinRequest> _chatJoinRequest;
     private readonly Observable<ChatBoostUpdated> _chatBoostUpdated;
     private readonly Observable<ChatBoostRemoved> _chatBoostRemoved;
+    private readonly Observable<MessageReactionUpdated> _messageReaction;
+    private readonly Observable<MessageReactionCountUpdated> _messageReactionCount;
 
     private readonly ITelegramBot _telegramBot;
     private const int NotRunning = 0;
@@ -106,6 +113,8 @@ public class UpdateManager : IUpdateManager
         _inlineQuery = new Observable<InlineQuery>(UpdateType.InlineQuery, this);
         _editedMessage = new Observable<Message>(UpdateType.EditedMessage, this);
         _message = new Observable<Message>(UpdateType.Message, this);
+        _messageReaction = new Observable<MessageReactionUpdated>(UpdateType.MessageReaction, this);
+        _messageReactionCount = new Observable<MessageReactionCountUpdated>(UpdateType.MessageReactionCount, this);
         _update = new Observable<Update>(null, this);
     }
 
@@ -198,6 +207,13 @@ public class UpdateManager : IUpdateManager
                                    update => OnNext(UpdateType.InlineQuery, update.InlineQuery),
                                    update => OnNext(UpdateType.EditedMessage, update.EditedMessage),
                                    update => OnNext(UpdateType.Message, update.Message),
+                                   update => OnNext(UpdateType.MessageReaction, update.MessageReaction),
+                                   update => OnNext(UpdateType.MessageReactionCount, update.MessageReactionCount),
+                                   update => OnNext(UpdateType.MyChatMember, update.MyChatMember),
+                                   update => OnNext(UpdateType.ChatMember, update.ChatMember),
+                                   update => OnNext(UpdateType.ChatJoinRequest, update.ChatJoinRequest),
+                                   update => OnNext(UpdateType.ChatBoost, update.ChatBoost),
+                                   update => OnNext(UpdateType.RemovedChatBoost, update.RemovedChatBoost),
                                };
 
         foreach (var update in updates)
@@ -399,6 +415,10 @@ public class UpdateManager : IUpdateManager
     public IAsyncEnumerable<ChatBoostUpdated> ChatBoostEnumerable() => _chatBoostUpdated.ToAsyncEnumerable();
 
     public IAsyncEnumerable<ChatBoostRemoved> RemovedChatBoostEnumerable() => _chatBoostRemoved.ToAsyncEnumerable();
+
+    public IAsyncEnumerable<MessageReactionUpdated> MessageReactionEnumerable() => _messageReaction.ToAsyncEnumerable();
+
+    public IAsyncEnumerable<MessageReactionCountUpdated> MessageReactionCountEnumerable() => _messageReactionCount.ToAsyncEnumerable();
 #endif
 
     private struct UpdateTypeWrapper<T>
