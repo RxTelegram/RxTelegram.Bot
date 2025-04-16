@@ -23,6 +23,12 @@ public class ForwardMessage : BaseRequest, IProtectContent
 
     /// <summary>
     /// Optional
+    /// New start timestamp for the forwarded video in the message
+    /// </summary>
+    public long VideoStartTimestamp { get; set; }
+
+    /// <summary>
+    /// Optional
     /// Sends the message silently. Users will receive a notification with no sound.
     /// </summary>
     public bool? DisableNotification { get; set; }

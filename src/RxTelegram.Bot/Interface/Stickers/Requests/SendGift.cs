@@ -11,9 +11,16 @@ namespace RxTelegram.Bot.Interface.Stickers.Requests;
 public class SendGift : BaseValidation
 {
     /// <summary>
-    /// Unique identifier of the target user that will receive the gift
+    /// Required if chat_id is not specified.
+    /// Unique identifier of the target user who will receive the gift.
     /// </summary>
-    public long UserId { get; set; }
+    public long? UserId { get; set; }
+
+    /// <summary>
+    /// Required if user_id is not specified.
+    /// Unique identifier for the chat or username of the channel (in the format @channelusername) that will receive the gift.
+    /// </summary>
+    public ChatId ChatId { get; set; }
 
     /// <summary>
     /// Identifier of the gift

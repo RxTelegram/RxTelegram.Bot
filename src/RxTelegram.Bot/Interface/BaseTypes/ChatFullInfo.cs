@@ -19,6 +19,8 @@ public class ChatFullInfo
     /// </summary>
     public ChatType Type { get; set; }
 
+    public bool CanSendGift { get; set; }
+
     /// <summary>
     /// Optional. Title, for channels and group chats
     /// </summary>
