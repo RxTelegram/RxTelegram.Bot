@@ -142,7 +142,7 @@ public class KeyboardBuilder : IReplyKeyboardRow, IReplyKeyboardBuilder, IInline
         _inlineRow.Add(new InlineKeyboardButton
                        {
                            Text = text,
-                           CopyTextButton = new CopyTextButton()
+                           CopyText = new CopyTextButton()
                            {
                                 Text = copyText
                            }

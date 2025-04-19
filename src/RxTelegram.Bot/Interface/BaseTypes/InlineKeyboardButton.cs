@@ -60,7 +60,7 @@ public class InlineKeyboardButton
     /// <summary>
     /// Optional. Description of the button that copies the specified text to the clipboard.
     /// </summary>
-    public CopyTextButton CopyTextButton { get; set; }
+    public CopyTextButton CopyText { get; set; }
 
     /// <summary>
     /// Optional. Description of the game that will be launched when the user presses the button.
@@ -72,5 +72,5 @@ public class InlineKeyboardButton
     /// Optional. Specify True, to send a Pay button.
     /// NOTE: This type of button must always be the first button in the first row.
     /// </summary>
-    public bool Pay { get; set; }
+    public bool? Pay { get; set; }
 }
