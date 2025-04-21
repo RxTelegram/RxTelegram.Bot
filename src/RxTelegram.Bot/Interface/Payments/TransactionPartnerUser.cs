@@ -46,4 +46,9 @@ public class TransactionPartnerUser : TransactionPartner
     /// Optional. The gift sent to the user by the bot
     /// </summary>
     public Gift Gift { get; set; }
+
+    /// <summary>
+    /// Optional. Number of months the gifted Telegram Premium subscription will be active for; for “premium_purchase” transactions only
+    /// </summary>
+    public int PremiumSubscriptionDuration { get; set; }
 }

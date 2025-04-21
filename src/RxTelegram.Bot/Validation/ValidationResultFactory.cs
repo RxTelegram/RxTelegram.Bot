@@ -634,10 +634,10 @@ public static class ValidationResultFactory
                                                     .ValidateRequired(x => x.FromChatId)
                                                     .ValidateRequired(x => x.MessageIds);
 
-    public static ValidationResult<CopyMessages> CreateValidation(this CopyMessages value) =>
-        new ValidationResult<CopyMessages>(value).ValidateRequired(x => x.ChatId)
-                                                 .ValidateRequired(x => x.FromChatId)
-                                                 .ValidateRequired(x => x.MessageIds);
+    public static ValidationResult<CopyMessages> CreateValidation(this CopyMessages value) => new ValidationResult<CopyMessages>(value)
+        .ValidateRequired(x => x.ChatId)
+        .ValidateRequired(x => x.FromChatId)
+        .ValidateRequired(x => x.MessageIds);
 
     public static ValidationResult<GetUserChatBoosts> CreateValidation(this GetUserChatBoosts value) =>
         new ValidationResult<GetUserChatBoosts>(value).ValidateRequired(x => x.UserId)
@@ -653,9 +653,9 @@ public static class ValidationResultFactory
         new ValidationResult<RefundStarPayment>(value).ValidateRequired(x => x.UserId)
                                                       .ValidateRequired(x => x.TelegramPaymentChargeId);
 
-    public static ValidationResult<SendPaidMedia> CreateValidation(this SendPaidMedia value) =>
-        new ValidationResult<SendPaidMedia>(value).ValidateRequired(x => x.StarCount)
-                                                  .ValidateRequired(x => x.Media);
+    public static ValidationResult<SendPaidMedia> CreateValidation(this SendPaidMedia value) => new ValidationResult<SendPaidMedia>(value)
+        .ValidateRequired(x => x.StarCount)
+        .ValidateRequired(x => x.Media);
 
     public static ValidationResult<CreateChatSubscriptionInviteLink> CreateValidation(this CreateChatSubscriptionInviteLink value) =>
         new ValidationResult<CreateChatSubscriptionInviteLink>(value).ValidateRequired(x => x.ChatId)
@@ -683,9 +683,9 @@ public static class ValidationResultFactory
 
     public static ValidationResult<SendGift> CreateValidation(this SendGift value) => new ValidationResult<SendGift>(value)
                                                                                       .IsFalse(x => x.ChatId == null && x.UserId == null,
-                                                                                              ValidationErrors.FieldRequired)
+                                                                                          ValidationErrors.FieldRequired)
                                                                                       .IsFalse(x => x.ChatId != null && x.UserId != null,
-                                                                                              ValidationErrors.OnlyOnePropertyCanBeSet)
+                                                                                          ValidationErrors.OnlyOnePropertyCanBeSet)
                                                                                       .ValidateRequired(x => x.GiftId);
 
     public static ValidationResult<VerifyUser> CreateValidation(this VerifyUser value) =>
@@ -699,4 +699,9 @@ public static class ValidationResultFactory
 
     public static ValidationResult<RemoveChatVerification> CreateValidation(this RemoveChatVerification value) =>
         new ValidationResult<RemoveChatVerification>(value).ValidateRequired(x => x.ChatId);
+
+    public static ValidationResult<GiftPremiumSubscription> CreateValidation(this GiftPremiumSubscription value) =>
+        new ValidationResult<GiftPremiumSubscription>(value).ValidateRequired(x => x.UserId)
+                                                            .ValidateRequired(x => x.MonthCount)
+                                                            .ValidateRequired(x => x.StarCount);
 }
