@@ -137,6 +137,25 @@ public class KeyboardBuilder : IReplyKeyboardRow, IReplyKeyboardBuilder, IInline
         return this;
     }
 
+    public IInlineKeyboardRow AddCopyText(string text, string copyText)
+    {
+        _inlineRow.Add(new InlineKeyboardButton
+                       {
+                           Text = text,
+                           CopyText = new CopyTextButton()
+                           {
+                                Text = copyText
+                           }
+                       });
+        return this;
+    }
+
+    public IInlineKeyboardRow AddButton(InlineKeyboardButton button)
+    {
+        _inlineRow.Add(button);
+        return this;
+    }
+
     public IInlineKeyboardRow AddSwitchInlineQuery(string text, string switchInlineQuery)
     {
         _inlineRow.Add(new InlineKeyboardButton { Text = text, SwitchInlineQuery = switchInlineQuery });

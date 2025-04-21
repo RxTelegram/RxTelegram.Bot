@@ -4,6 +4,8 @@ namespace RxTelegram.Bot.Utils.Keyboard.Interfaces;
 
 public interface IInlineKeyboardRow
 {
+    public IInlineKeyboardRow AddButton(InlineKeyboardButton button);
+
     public IInlineKeyboardRow AddUrl(string text, string url);
 
     public IInlineKeyboardRow AddLoginUrl(string text, LoginUrl loginUrl);
@@ -13,6 +15,8 @@ public interface IInlineKeyboardRow
     public IInlineKeyboardRow AddCallbackData(string text, string callbackData);
 
     public IInlineKeyboardRow AddCallbackGame(string text);
+
+    public IInlineKeyboardRow AddCopyText(string text, string copyText);
 
     public IInlineKeyboardRow AddSwitchInlineQuery(string text, string switchInlineQuery);
 
