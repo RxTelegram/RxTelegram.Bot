@@ -1470,4 +1470,13 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns True on success.</returns>
     public Task<bool> RemoveChatVerification(RemoveChatVerification removeChatVerification, CancellationToken cancellationToken = default) =>
         Post<bool>("removeChatVerification", removeChatVerification, cancellationToken);
+
+    /// <summary>
+    /// Gifts a Telegram Premium subscription to the given user.
+    /// </summary>
+    /// <param name="giftPremiumSubscription">Details for the premium subscription to gift.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> GiftPremiumSubscription(GiftPremiumSubscription giftPremiumSubscription, CancellationToken cancellationToken = default) =>
+        Post<bool>("giftPremiumSubscription", giftPremiumSubscription, cancellationToken);
 }
