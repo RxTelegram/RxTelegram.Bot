@@ -140,6 +140,11 @@ public class Message
     public string AuthorSignature { get; set; }
 
     /// <summary>
+    /// Optional. The number of Telegram Stars that were paid by the sender of the message to send it
+    /// </summary>
+    public long PaidStarCount { get; set; }
+
+    /// <summary>
     /// Optional. For text messages, the actual UTF-8 text of the message
     /// </summary>
     public string Text { get; set; }
@@ -415,6 +420,11 @@ public class Message
     /// Optional. Service message: a giveaway without public winners was completed
     /// </summary>
     public GiveawayCompleted GiveawayCompleted { get; set; }
+
+    /// <summary>
+    /// Optional. Service message: the price for paid messages has changed in the chat
+    /// </summary>
+    public PaidMessagePriceChanged PaidMessagePriceChanged { get; set; }
 
     /// <summary>
     /// Optional. Service message: video chat scheduled
