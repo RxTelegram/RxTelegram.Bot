@@ -32,7 +32,7 @@ public class BusinessConnection
     /// <summary>
     /// True, if the bot can act on behalf of the business account in chats that were active in the last 24 hours
     /// </summary>
-    public bool CanReply { get; set; }
+    public BusinessBotRights Rights { get; set; }
 
     /// <summary>
     /// True, if the connection is active

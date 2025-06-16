@@ -12,6 +12,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.GeneralForum;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
+using RxTelegram.Bot.Interface.Business.Requests;
 using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
@@ -704,4 +705,44 @@ public static class ValidationResultFactory
         new ValidationResult<GiftPremiumSubscription>(value).ValidateRequired(x => x.UserId)
                                                             .ValidateRequired(x => x.MonthCount)
                                                             .ValidateRequired(x => x.StarCount);
+
+    public static ValidationResult<ReadBusinessMessage> CreateValidation(this ReadBusinessMessage value) =>
+        new ValidationResult<ReadBusinessMessage>(value)
+            .ValidateRequired(x => x.BusinessConnectionId)
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.MessageId);
+
+    public static ValidationResult<DeleteBusinessMessages> CreateValidation(this DeleteBusinessMessages value) =>
+        new ValidationResult<DeleteBusinessMessages>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                           .ValidateRequired(x => x.MessageIds);
+
+    public static ValidationResult<SetBusinessAccountName> CreateValidation(this SetBusinessAccountName value) =>
+        new ValidationResult<SetBusinessAccountName>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                            .ValidateRequired(x => x.FirstName)
+                                                            .IsTrue(x => x.FirstName.Length <= 64, ValidationErrors.TextTooLong);
+
+    public static ValidationResult<SetBusinessAccountUsername> CreateValidation(this SetBusinessAccountUsername value) =>
+        new ValidationResult<SetBusinessAccountUsername>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                                .ValidateRequired(x => x.Username)
+                                                                .IsTrue(x => x.Username.Length <= 32, ValidationErrors.TextTooLong);
+
+    public static ValidationResult<SetBusinessAccountBio> CreateValidation(this SetBusinessAccountBio value) =>
+        new ValidationResult<SetBusinessAccountBio>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                           .ValidateRequired(x => x.Bio)
+                                                           .IsTrue(x => x.Bio.Length <= 140, ValidationErrors.TextTooLong);
+
+    public static ValidationResult<SetBusinessAccountProfilePhoto> CreateValidation(this SetBusinessAccountProfilePhoto value) =>
+        new ValidationResult<SetBusinessAccountProfilePhoto>(value)
+            .ValidateRequired(x => x.BusinessConnectionId)
+            .ValidateRequired(x => x.Photo);
+
+    public static ValidationResult<RemoveBusinessAccountProfilePhoto> CreateValidation(this RemoveBusinessAccountProfilePhoto value) =>
+        new ValidationResult<RemoveBusinessAccountProfilePhoto>(value)
+            .ValidateRequired(x => x.BusinessConnectionId);
+
+    public static ValidationResult<SetBusinessAccountGiftSettings> CreateValidation(this SetBusinessAccountGiftSettings value) =>
+        new ValidationResult<SetBusinessAccountGiftSettings>(value)
+            .ValidateRequired(x => x.BusinessConnectionId)
+            .ValidateRequired(x => x.ShowGiftButton)
+            .ValidateRequired(x => x.AccpetedGiftTypes);
 }

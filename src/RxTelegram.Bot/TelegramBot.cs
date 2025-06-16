@@ -1479,4 +1479,79 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns True on success.</returns>
     public Task<bool> GiftPremiumSubscription(GiftPremiumSubscription giftPremiumSubscription, CancellationToken cancellationToken = default) =>
         Post<bool>("giftPremiumSubscription", giftPremiumSubscription, cancellationToken);
+
+    /// <summary>
+    /// Marks incoming message as read on behalf of a business account.
+    ///
+    /// Requires the can_read_messages business bot right
+    /// </summary>
+    /// <param name="readBusinessMessage"></param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> ReadBusinessMessage(ReadBusinessMessage readBusinessMessage, CancellationToken cancellationToken = default) =>
+        Post<bool>("readBusinessMessage", readBusinessMessage, cancellationToken);
+
+    /// <summary>
+    /// Delete messages on behalf of a business account.
+    ///
+    /// Requires the can_delete_sent_messages business bot right to delete messages sent by the bot itself,
+    /// or the can_delete_all_messages business bot right to delete any message.
+    /// </summary>
+    /// <param name="deleteBusinessMessages">Messages to delete</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> DeleteBusinessMessages(DeleteBusinessMessages deleteBusinessMessages, CancellationToken cancellationToken = default) =>
+        Post<bool>("deleteBusinessMessages", deleteBusinessMessages, cancellationToken);
+
+    /// <summary>
+    /// Changes the first and last name of a managed business account.
+    ///
+    /// Requires the can_change_name business bot right.
+    /// </summary>
+    /// <param name="setBusinessAccountUsername">New first and last name for the business account</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> SetBusinessAccountUsername(
+        SetBusinessAccountUsername setBusinessAccountUsername,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("setBusinessAccountUsername", setBusinessAccountUsername, cancellationToken);
+
+    /// <summary>
+    /// Changes the bio of a managed business account.
+    ///
+    /// Requires the can_change_bio business bot right.
+    /// </summary>
+    /// <param name="setBusinessAccountBio">Sets the bio for the business account</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> SetBusinessAccountBio(
+        SetBusinessAccountBio setBusinessAccountBio,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("setBusinessAccountBio", setBusinessAccountBio, cancellationToken);
+
+    /// <summary>
+    /// Changes the profile photo of a managed business account.
+    ///
+    /// Requires the can_edit_profile_photo business bot right.
+    /// </summary>
+    /// <param name="setBusinessAccountProfilePhoto">The profile photo to set for the business account.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> SetBusinessAccountProfilePhoto(
+        SetBusinessAccountProfilePhoto setBusinessAccountProfilePhoto,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("setBusinessAccountProfilePhoto", setBusinessAccountProfilePhoto, cancellationToken);
+
+    /// <summary>
+    /// Removes the current profile photo of a managed business account.
+    ///
+    /// Requires the can_edit_profile_photo business bot right.
+    /// </summary>
+    /// <param name="removeBusinessAccountProfilePhoto">Information about the profile photo to remove.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> RemoveBusinessAccountProfilePhoto(
+        RemoveBusinessAccountProfilePhoto removeBusinessAccountProfilePhoto,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("removeBusinessAccountProfilePhoto", removeBusinessAccountProfilePhoto, cancellationToken);
 }
