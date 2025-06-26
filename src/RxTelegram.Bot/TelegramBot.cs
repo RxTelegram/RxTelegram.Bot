@@ -26,6 +26,7 @@ using RxTelegram.Bot.Interface.Reaction.Requests;
 using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers;
 using RxTelegram.Bot.Interface.Stickers.Requests;
+using RxTelegram.Bot.Interface.Story.Requests;
 using File = RxTelegram.Bot.Interface.BaseTypes.File;
 
 namespace RxTelegram.Bot;
@@ -1554,4 +1555,102 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
         RemoveBusinessAccountProfilePhoto removeBusinessAccountProfilePhoto,
         CancellationToken cancellationToken = default) =>
         Post<bool>("removeBusinessAccountProfilePhoto", removeBusinessAccountProfilePhoto, cancellationToken);
+
+    /// <summary>
+    /// Returns the amount of Telegram Stars owned by a managed business account. Requires the can_view_gifts_and_stars business bot right.
+    /// </summary>
+    /// <param name="getBusinessAccountStarBalance">Request to get the business account star balance</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns a <see cref="StarAmount"/> object on success.</returns>
+    public Task<StarAmount> GetBusinessAccountStarBalance(
+        GetBusinessAccountStarBalance getBusinessAccountStarBalance,
+        CancellationToken cancellationToken = default) =>
+        Post<StarAmount>("getBusinessAccountStarBalance", getBusinessAccountStarBalance, cancellationToken);
+
+    /// <summary>
+    /// Transfers Telegram Stars from the business account balance to the bot's balance.
+    /// </summary>
+    /// <param name="transferBusinessAccountStars">Amount to transfer</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> TransferBusinessAccountStars(
+        TransferBusinessAccountStars transferBusinessAccountStars,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("transferBusinessAccountStars", transferBusinessAccountStars, cancellationToken);
+
+    /// <summary>
+    /// Returns the gifts received and owned by a managed business account. Requires the can_view_gifts_and_stars business bot right.
+    /// </summary>
+    /// <param name="getBusinessAccountGifts"></param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns OwnedGifts on success.</returns>
+    public Task<OwnedGifts> GetBusinessAccountGifts(
+        GetBusinessAccountGifts getBusinessAccountGifts,
+        CancellationToken cancellationToken = default) =>
+        Post<OwnedGifts>("getBusinessAccountGifts", getBusinessAccountGifts, cancellationToken);
+
+    /// <summary>
+    /// Converts a given regular gift to Telegram Stars. Requires the can_convert_gifts_to_stars business bot right.
+    /// </summary>
+    /// <param name="convertGiftToStars">Information about the gift to convert</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> ConvertGiftToStars(
+        ConvertGiftToStars convertGiftToStars,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("convertGiftToStars", convertGiftToStars, cancellationToken);
+
+    /// <summary>
+    /// Upgrades a given regular gift to a unique gift. Requires the can_transfer_and_upgrade_gifts business bot right.
+    /// Additionally requires the can_transfer_stars business bot right if the upgrade is paid.
+    /// </summary>
+    /// <param name="upgradeGift">Gift to upgrade</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> UpgradeGift(
+        UpgradeGift upgradeGift,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("upgradeGift", upgradeGift, cancellationToken);
+
+    /// <summary>
+    /// Transfers an owned unique gift to another user. Requires the can_transfer_and_upgrade_gifts business bot right.
+    /// Requires can_transfer_stars business bot right if the transfer is paid.
+    /// </summary>
+    /// <param name="transferGift">Information about the transfer</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> TransferGift(
+        TransferGift transferGift,
+        CancellationToken cancellationToken = default) =>
+        Post<bool>("transferGift", transferGift, cancellationToken);
+
+    /// <summary>
+    /// Posts a story on behalf of a managed business account. Requires the can_manage_stories business bot right.
+    /// </summary>
+    /// <param name="postStory"></param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns Story on success.</returns>
+    public Task<Story> PostStory(
+        PostStory postStory,
+        CancellationToken cancellationToken = default) => Post<Story>("postStory", postStory, cancellationToken);
+
+    /// <summary>
+    /// Edits a story previously posted by the bot on behalf of a managed business account. Requires the can_manage_stories business bot right.
+    /// </summary>
+    /// <param name="editStory"></param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<Story> EditStory(
+        EditStory editStory,
+        CancellationToken cancellationToken = default) => Post<Story>("editStory", editStory, cancellationToken);
+
+    /// <summary>
+    /// Deletes a story previously posted by the bot on behalf of a managed business account. Requires the can_manage_stories business bot right.
+    /// </summary>
+    /// <param name="deleteStory"></param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    public Task<bool> DeleteStory(
+        DeleteStory deleteStory,
+        CancellationToken cancellationToken = default) => Post<bool>("deleteStory", deleteStory, cancellationToken);)
 }
