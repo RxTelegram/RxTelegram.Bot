@@ -1652,5 +1652,5 @@ public class TelegramBot : BaseTelegramBot, ITelegramBot
     /// <returns>Returns True on success.</returns>
     public Task<bool> DeleteStory(
         DeleteStory deleteStory,
-        CancellationToken cancellationToken = default) => Post<bool>("deleteStory", deleteStory, cancellationToken);)
+        CancellationToken cancellationToken = default) => Post<bool>("deleteStory", deleteStory, cancellationToken);
 }
