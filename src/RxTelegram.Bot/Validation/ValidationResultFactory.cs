@@ -12,6 +12,7 @@ using RxTelegram.Bot.Interface.BaseTypes.Requests.GeneralForum;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Inline;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Messages;
 using RxTelegram.Bot.Interface.BaseTypes.Requests.Users;
+using RxTelegram.Bot.Interface.Business.Requests;
 using RxTelegram.Bot.Interface.Games.Requests;
 using RxTelegram.Bot.Interface.InlineMode;
 using RxTelegram.Bot.Interface.InlineMode.InlineQueryResults;
@@ -20,6 +21,8 @@ using RxTelegram.Bot.Interface.Payments.Requests;
 using RxTelegram.Bot.Interface.Reaction.Requests;
 using RxTelegram.Bot.Interface.Setup;
 using RxTelegram.Bot.Interface.Stickers.Requests;
+using RxTelegram.Bot.Interface.Story;
+using RxTelegram.Bot.Interface.Story.Requests;
 
 namespace RxTelegram.Bot.Validation;
 
@@ -634,10 +637,10 @@ public static class ValidationResultFactory
                                                     .ValidateRequired(x => x.FromChatId)
                                                     .ValidateRequired(x => x.MessageIds);
 
-    public static ValidationResult<CopyMessages> CreateValidation(this CopyMessages value) =>
-        new ValidationResult<CopyMessages>(value).ValidateRequired(x => x.ChatId)
-                                                 .ValidateRequired(x => x.FromChatId)
-                                                 .ValidateRequired(x => x.MessageIds);
+    public static ValidationResult<CopyMessages> CreateValidation(this CopyMessages value) => new ValidationResult<CopyMessages>(value)
+        .ValidateRequired(x => x.ChatId)
+        .ValidateRequired(x => x.FromChatId)
+        .ValidateRequired(x => x.MessageIds);
 
     public static ValidationResult<GetUserChatBoosts> CreateValidation(this GetUserChatBoosts value) =>
         new ValidationResult<GetUserChatBoosts>(value).ValidateRequired(x => x.UserId)
@@ -653,9 +656,9 @@ public static class ValidationResultFactory
         new ValidationResult<RefundStarPayment>(value).ValidateRequired(x => x.UserId)
                                                       .ValidateRequired(x => x.TelegramPaymentChargeId);
 
-    public static ValidationResult<SendPaidMedia> CreateValidation(this SendPaidMedia value) =>
-        new ValidationResult<SendPaidMedia>(value).ValidateRequired(x => x.StarCount)
-                                                  .ValidateRequired(x => x.Media);
+    public static ValidationResult<SendPaidMedia> CreateValidation(this SendPaidMedia value) => new ValidationResult<SendPaidMedia>(value)
+        .ValidateRequired(x => x.StarCount)
+        .ValidateRequired(x => x.Media);
 
     public static ValidationResult<CreateChatSubscriptionInviteLink> CreateValidation(this CreateChatSubscriptionInviteLink value) =>
         new ValidationResult<CreateChatSubscriptionInviteLink>(value).ValidateRequired(x => x.ChatId)
@@ -683,9 +686,9 @@ public static class ValidationResultFactory
 
     public static ValidationResult<SendGift> CreateValidation(this SendGift value) => new ValidationResult<SendGift>(value)
                                                                                       .IsFalse(x => x.ChatId == null && x.UserId == null,
-                                                                                              ValidationErrors.FieldRequired)
+                                                                                          ValidationErrors.FieldRequired)
                                                                                       .IsFalse(x => x.ChatId != null && x.UserId != null,
-                                                                                              ValidationErrors.OnlyOnePropertyCanBeSet)
+                                                                                          ValidationErrors.OnlyOnePropertyCanBeSet)
                                                                                       .ValidateRequired(x => x.GiftId);
 
     public static ValidationResult<VerifyUser> CreateValidation(this VerifyUser value) =>
@@ -699,4 +702,83 @@ public static class ValidationResultFactory
 
     public static ValidationResult<RemoveChatVerification> CreateValidation(this RemoveChatVerification value) =>
         new ValidationResult<RemoveChatVerification>(value).ValidateRequired(x => x.ChatId);
+
+    public static ValidationResult<GiftPremiumSubscription> CreateValidation(this GiftPremiumSubscription value) =>
+        new ValidationResult<GiftPremiumSubscription>(value).ValidateRequired(x => x.UserId)
+                                                            .ValidateRequired(x => x.MonthCount)
+                                                            .ValidateRequired(x => x.StarCount);
+
+    public static ValidationResult<ReadBusinessMessage> CreateValidation(this ReadBusinessMessage value) =>
+        new ValidationResult<ReadBusinessMessage>(value)
+            .ValidateRequired(x => x.BusinessConnectionId)
+            .ValidateRequired(x => x.ChatId)
+            .ValidateRequired(x => x.MessageId);
+
+    public static ValidationResult<DeleteBusinessMessages> CreateValidation(this DeleteBusinessMessages value) =>
+        new ValidationResult<DeleteBusinessMessages>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                           .ValidateRequired(x => x.MessageIds);
+
+    public static ValidationResult<SetBusinessAccountName> CreateValidation(this SetBusinessAccountName value) =>
+        new ValidationResult<SetBusinessAccountName>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                            .ValidateRequired(x => x.FirstName)
+                                                            .IsTrue(x => x.FirstName.Length <= 64, ValidationErrors.TextTooLong);
+
+    public static ValidationResult<SetBusinessAccountUsername> CreateValidation(this SetBusinessAccountUsername value) =>
+        new ValidationResult<SetBusinessAccountUsername>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                                .ValidateRequired(x => x.Username)
+                                                                .IsTrue(x => x.Username.Length <= 32, ValidationErrors.TextTooLong);
+
+    public static ValidationResult<SetBusinessAccountBio> CreateValidation(this SetBusinessAccountBio value) =>
+        new ValidationResult<SetBusinessAccountBio>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                           .ValidateRequired(x => x.Bio)
+                                                           .IsTrue(x => x.Bio.Length <= 140, ValidationErrors.TextTooLong);
+
+    public static ValidationResult<SetBusinessAccountProfilePhoto> CreateValidation(this SetBusinessAccountProfilePhoto value) =>
+        new ValidationResult<SetBusinessAccountProfilePhoto>(value)
+            .ValidateRequired(x => x.BusinessConnectionId)
+            .ValidateRequired(x => x.Photo);
+
+    public static ValidationResult<RemoveBusinessAccountProfilePhoto> CreateValidation(this RemoveBusinessAccountProfilePhoto value) =>
+        new ValidationResult<RemoveBusinessAccountProfilePhoto>(value)
+            .ValidateRequired(x => x.BusinessConnectionId);
+
+    public static ValidationResult<SetBusinessAccountGiftSettings> CreateValidation(this SetBusinessAccountGiftSettings value) =>
+        new ValidationResult<SetBusinessAccountGiftSettings>(value)
+            .ValidateRequired(x => x.BusinessConnectionId)
+            .ValidateRequired(x => x.ShowGiftButton)
+            .ValidateRequired(x => x.AccpetedGiftTypes);
+
+    public static ValidationResult<GetBusinessAccountStarBalance> CreateValidation(this GetBusinessAccountStarBalance value) =>
+        new ValidationResult<GetBusinessAccountStarBalance>(value).ValidateRequired(x => x.BusinessConnectionId);
+
+    public static ValidationResult<TransferBusinessAccountStars> CreateValidation(this TransferBusinessAccountStars value) =>
+        new ValidationResult<TransferBusinessAccountStars>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                                 .ValidateRequired(x => x.StarCount);
+
+    public static ValidationResult<ConvertGiftToStars> CreateValidation(this ConvertGiftToStars value) =>
+        new ValidationResult<ConvertGiftToStars>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                        .ValidateRequired(x => x.OwnedGiftId);
+
+    public static ValidationResult<UpgradeGift> CreateValidation(this UpgradeGift value) =>
+        new ValidationResult<UpgradeGift>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                 .ValidateRequired(x => x.OwnedGiftId);
+
+    public static ValidationResult<TransferGift> CreateValidation(this TransferGift value) =>
+        new ValidationResult<TransferGift>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                  .ValidateRequired(x => x.OwnedGiftId)
+                                                  .ValidateRequired(x => x.NewOwnerChatId);
+
+    public static ValidationResult<PostStory> CreateValidation(this PostStory value) =>
+        new ValidationResult<PostStory>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                               .ValidateRequired(x => x.Content)
+                                               .ValidateRequired(x => x.ActivePeriod);
+
+    public static ValidationResult<EditStory> CreateValidation(this EditStory value) =>
+        new ValidationResult<EditStory>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                               .ValidateRequired(x => x.StoryId)
+                                               .ValidateRequired(x => x.Content);
+
+    public static ValidationResult<DeleteStory> CreateValidation(this DeleteStory value) =>
+        new ValidationResult<DeleteStory>(value).ValidateRequired(x => x.BusinessConnectionId)
+                                                 .ValidateRequired(x => x.StoryId);
 }

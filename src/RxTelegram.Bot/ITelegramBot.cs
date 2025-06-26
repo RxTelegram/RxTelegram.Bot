@@ -1299,4 +1299,12 @@ public interface ITelegramBot
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
     /// <returns>Returns True on success.</returns>
     Task<bool> SendGift(SendGift sendGift, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gifts a Telegram Premium subscription to the given user.
+    /// </summary>
+    /// <param name="giftPremiumSubscription">Details for the premium subscription to gift.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns True on success.</returns>
+    Task<bool> GiftPremiumSubscription(GiftPremiumSubscription giftPremiumSubscription, CancellationToken cancellationToken = default);
 }
