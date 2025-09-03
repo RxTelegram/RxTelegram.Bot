@@ -107,4 +107,4 @@ jobs:
       - name: Push nuget to nuget.org
         run: dotnet nuget push RxTelegram.Bot.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
       - name: Publish release
-        uses: ghalactic/github-release-from-tag@v5
+        uses: ghalactic/github-release-from-tag@v6
