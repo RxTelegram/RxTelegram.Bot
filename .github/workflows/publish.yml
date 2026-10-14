@@ -13,7 +13,7 @@ jobs:
       - name: Setup dotnet '8.0.x'
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
       - name: Display dotnet version
         run: dotnet --version
       - name: Build
@@ -27,7 +27,7 @@ jobs:
       - name: Setup dotnet '8.0.x'
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
       - name: Display dotnet version
         run: dotnet --version
       - name: Test
@@ -48,7 +48,7 @@ jobs:
       - name: Setup dotnet '8.0.x'
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
       - name: Display dotnet version
         run: dotnet --version
       - name: Cache SonarCloud packages
@@ -92,7 +92,7 @@ jobs:
       - name: Setup dotnet '8.0.x'
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
       - name: Display dotnet version
         run: dotnet --version
       - name: Extract release notes
